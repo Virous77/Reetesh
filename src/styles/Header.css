@@ -1,0 +1,123 @@
+.home {
+  padding-top: 14rem;
+  overflow-x: scroll;
+  height: 100vh;
+  background-image: url("../assets/cool.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+  padding-bottom: 4rem;
+  position: relative;
+}
+
+.home::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+.badgeSection {
+  text-align: center;
+}
+
+.badgeSection span {
+  font-size: 2rem;
+}
+
+.badgeSection h1 {
+  font-size: 3.4rem;
+  width: 95%;
+  margin: auto;
+}
+
+.contentAbout {
+  text-align: center;
+  opacity: 0.9;
+  font-weight: 100;
+  font-size: 1.4rem;
+  width: 95%;
+  margin: auto;
+  margin-top: 1rem;
+}
+
+.contentImg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: auto;
+  margin-top: 5rem;
+}
+
+.contentImg img {
+  width: 12rem;
+  height: 12rem;
+  border-radius: 100px;
+}
+
+.sideBar {
+  position: absolute;
+  background-color: white;
+  width: 70px;
+  height: 200px;
+  left: 0;
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 10px;
+  gap: 1.5rem;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.sideBar a {
+  color: black;
+  font-size: 2rem;
+}
+
+.githubIcon {
+  transition: all 0.5s ease-in;
+}
+
+.githubIcon:hover {
+  color: white;
+  background-color: black;
+  border-radius: 100px;
+}
+
+.twitterIcon:hover {
+  color: rgb(82, 82, 254);
+}
+
+.linkdIcon:hover {
+  color: rgb(82, 82, 254);
+}
+
+@media (max-width: 768px) {
+  .home {
+    height: auto;
+    padding-top: 11rem;
+  }
+
+  .sideBar {
+    width: 60;
+    top: 55%;
+  }
+
+  .contentAbout {
+    text-align: center;
+    width: 90%;
+    font-size: 1.1rem;
+    margin-top: 1.3rem;
+  }
+
+  .badgeSection {
+    text-align: center;
+  }
+
+  .badgeSection h1 {
+    font-size: 2rem;
+    width: 90%;
+  }
+}
