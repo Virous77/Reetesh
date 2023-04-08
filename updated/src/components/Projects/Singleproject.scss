@@ -1,0 +1,94 @@
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-weight: bold;
+}
+
+.activeWindow {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 3rem;
+  align-items: center;
+}
+
+.modalImgSection {
+  width: 100%;
+}
+
+.modalImgSection img {
+  width: 100%;
+  height: 400px;
+  box-shadow: 3px 4px 5px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+}
+
+.modalProjectInfo {
+  text-align: center;
+}
+
+.modalProjectInfo h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  text-transform: capitalize;
+}
+
+.modalProjectInfo p {
+  width: 90%;
+  margin: auto;
+}
+
+.modalProjectLink {
+  margin-top: 3rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.githubButton {
+  padding: 7px 2rem;
+  color: white;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  transition: all 1s ease-in-out;
+}
+
+.modalGithubIcon {
+  display: flex;
+  margin-right: 0.5rem;
+}
+
+.projectButton {
+  padding: 7px 2rem;
+  background-color: rgb(72, 72, 250);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.5s ease-in-out;
+}
+
+.projectButton:hover,
+.githubButton:hover {
+  scale: 1.05;
+}
+
+@media (max-width: 1085px) {
+  .modalProjectLink {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 820px) {
+  .activeWindow {
+    grid-template-columns: 1fr;
+  }
+
+  .modalImgSection img {
+    height: 200px;
+  }
+}

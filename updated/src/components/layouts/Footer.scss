@@ -1,0 +1,30 @@
+@import "../common//variables.scss";
+
+.down {
+  text-align: center;
+  padding-bottom: 1rem;
+}
+
+.down a {
+  margin-top: 1rem;
+  color: black;
+  margin-left: 0.5rem;
+}
+
+.socialSub {
+  @include displayFlex;
+  padding: 1rem 4rem;
+  gap: 1rem;
+  padding-bottom: 0.5rem;
+  justify-content: center;
+}
+
+.socialSub a {
+  color: black;
+  font-size: 1.4rem;
+  transition: ease 0.7s;
+}
+
+.socialSub a:hover {
+  scale: 1.3;
+}
