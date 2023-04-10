@@ -1,8 +1,28 @@
 import React from "react";
 import "./Skills.scss";
 import { motion } from "framer-motion";
+import { useQuery } from "react-query";
+import { fetchData } from "../../api/api";
+import svg from "../../assets/cool.jpg";
+
+type SkillType = {
+  about: string;
+  icon: string;
+  level: string;
+  name: string;
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+};
 
 const Skills = () => {
+  const { data, error, isLoading } = useQuery(
+    ["skills"],
+    (): Promise<SkillType[]> => fetchData("/skills")
+  );
+
+  console.log(data);
+
   return (
     <section className="skills">
       <div className="aboutSkillView">
@@ -30,22 +50,25 @@ const Skills = () => {
           </motion.p>
         </div>
       </div>
-      {/* 
-  {!isLoading ? (
-    <motion.div
-      className="mySkillList"
-      whileInView={{ opacity: [0, 1], scale: [0, 1] }}
-      transition={{ duration: 1.4 }}
-    >
-      {skills?.map((skill) => (
-        <li key={skill?._id}>
-          <img src={urlFor(skill?.icon)} alt="" />
-        </li>
-      ))}
-    </motion.div>
-  ) : (
-    <Loader />
-  )} */}
+
+      {!isLoading ? (
+        <motion.div
+          className="mySkillList"
+          whileInView={{ opacity: [0, 1], scale: [0, 1] }}
+          transition={{ duration: 1.4 }}
+        >
+          {data?.map((skill) => (
+            <li key={skill?._id}>
+              <img
+                src={skill.icon.length > 10 ? skill.icon : svg}
+                alt={skill.name}
+              />
+            </li>
+          ))}
+        </motion.div>
+      ) : (
+        <p>Loading....</p>
+      )}
     </section>
   );
 };

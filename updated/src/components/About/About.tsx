@@ -58,28 +58,6 @@ const About = () => {
             </div>
           </div>
         </motion.div>
-
-        {/* <motion.div
-      className="aboutSkill"
-      whileInView={{ opacity: [0, 1], scale: [0, 1] }}
-      transition={{ duration: 1.4 }}
-    >
-      {about.map((data) => (
-        <motion.div
-          key={data._id}
-          className="aboutData"
-          whileHover={{ scale: 1.03 }}
-          transition={{ duration: 0.4 }}
-        >
-          <img src={urlFor(data?.imgUrl)} alt={data.title} />
-
-          <div className="aboutMy">
-            <h2 className="aboutDataTitle">{data?.title}</h2>
-            <p>{data?.description}</p>
-          </div>
-        </motion.div>
-      ))}
-    </motion.div> */}
       </div>
     </section>
   );

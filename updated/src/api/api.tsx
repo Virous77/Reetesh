@@ -10,7 +10,24 @@ export const fetchData = async (url: string) => {
     const { data } = await instance.get(url);
     return data.data;
   } catch (error: any) {
-    console.log(error);
+    return error.message || error.response;
+  }
+};
+
+type SendEmailProps = {
+  url: string;
+  body: {
+    userName: string;
+    email: string;
+    message: string;
+  };
+};
+
+export const sendEmail = async ({ url, body }: SendEmailProps) => {
+  try {
+    const { data } = await instance.post(url, body);
+    return data;
+  } catch (error: any) {
     return error.message || error.response;
   }
 };

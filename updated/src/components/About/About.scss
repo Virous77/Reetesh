@@ -1,5 +1,4 @@
 .about {
-  /* height: 100vh; */
   background-color: black;
   color: white;
   padding: 1rem;
@@ -13,7 +12,7 @@
   width: fit-content;
   text-align: center;
   margin: auto;
-  margin-bottom: 5rem;
+  margin-bottom: 2rem;
   font-size: 1.5rem;
 }
 
@@ -85,9 +84,6 @@ h2:hover::before {
 }
 
 .aboutGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
   max-width: 1200px;
   margin: auto;
   align-items: center;

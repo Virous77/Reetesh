@@ -1,14 +1,35 @@
-import React from "react";
+import React, { useRef } from "react";
 import "./Contact.scss";
 import { HiOutlineMail } from "react-icons/hi";
 import { IoHomeOutline } from "react-icons/io5";
 import win from "../../assets/259.png";
+import { useMutation } from "react-query";
+import { sendEmail } from "../../api/api";
 
 const Contact = () => {
-  const isSubmitted = false;
-  const submitForm = () => {};
+  const emailRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const messageRef = useRef<HTMLInputElement>(null);
 
-  let dataFetching = false;
+  const { isLoading, mutate, status } = useMutation(sendEmail);
+
+  const handleEmail = () => {
+    if (
+      !nameRef.current?.value ||
+      !emailRef.current?.value ||
+      !messageRef.current?.value
+    )
+      return;
+    const info = {
+      url: "/send-email",
+      body: {
+        userName: nameRef.current?.value,
+        email: emailRef.current?.value,
+        message: messageRef.current?.value,
+      },
+    };
+    mutate(info);
+  };
 
   return (
     <section className="contactMe">
@@ -30,24 +51,35 @@ const Contact = () => {
         </div>
 
         <div className="messageMe">
-          {!isSubmitted ? (
-            <form onSubmit={submitForm}>
+          {status === "idle" || status === "loading" ? (
+            <form onSubmit={(e) => e.preventDefault()}>
               <div className="yourName">
                 <div className="input">
-                  <input type="text" placeholder="Enter Name" />
+                  <input type="text" placeholder="Enter Name" ref={nameRef} />
                 </div>
 
                 <div className="input">
-                  <input type="email" placeholder="Enter Email" />
+                  <input
+                    type="email"
+                    placeholder="Enter Email"
+                    ref={emailRef}
+                  />
                 </div>
               </div>
 
               <div className="textMessage input">
-                <textarea cols="30" rows="10" placeholder="Your Message" />
+                <textarea
+                  cols="30"
+                  rows="10"
+                  placeholder="Your Message"
+                  ref={messageRef}
+                />
               </div>
 
               <div className="sendMessage">
-                <button>{dataFetching ? "Sending..." : "Submit"}</button>
+                <button onClick={handleEmail} type="button">
+                  {isLoading ? "Sending..." : "Submit"}
+                </button>
               </div>
             </form>
           ) : (
