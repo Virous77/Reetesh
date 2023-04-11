@@ -3,7 +3,6 @@ import "./Skills.scss";
 import { motion } from "framer-motion";
 import { useQuery } from "react-query";
 import { fetchData } from "../../api/api";
-import svg from "../../assets/cool.jpg";
 
 type SkillType = {
   about: string;
@@ -16,7 +15,7 @@ type SkillType = {
 };
 
 const Skills = () => {
-  const { data, error, isLoading } = useQuery(
+  const { data, isLoading } = useQuery(
     ["skills"],
     (): Promise<SkillType[]> => fetchData("/skills")
   );
@@ -34,19 +33,24 @@ const Skills = () => {
             transition={{ duration: 1.4 }}
             className="skillPara"
           >
-            I create successful responsive websites that are fast, easy to use,
-            and built with best practices. The main area of my expertise is
-            front-end development, HTML, CSS, JS, building small and medium web
-            apps.
+            I specialize in crafting top-notch responsive websites that load
+            quickly, provide an intuitive user experience, and adhere to best
+            coding practices. My primary focus is front-end development,
+            including TypeScript, and JavaScript, and I excel in building both
+            small and medium-sized web applications.
           </motion.p>
 
           <motion.p
             whileInView={{ opacity: [0, 1], x: [-200, 0] }}
             transition={{ duration: 1.4 }}
           >
-            I Build client-side applications with modern features like SPA and
-            maintain semantic coding style among other best practices for SEO
-            optimisation. Use modern tech such as React (next.js), TailwindCSS.
+            My expertise extends to client-side applications with modern
+            features such as single-page applications (SPA), and I am committed
+            to maintaining semantic coding styles to ensure optimal search
+            engine optimization (SEO). I leverage the latest technologies, such
+            as React (including Next.js) and SASS, to create visually appealing
+            and feature-rich web applications that exceed my clients'
+            expectations.
           </motion.p>
         </div>
       </div>
@@ -59,10 +63,7 @@ const Skills = () => {
         >
           {data?.map((skill) => (
             <li key={skill?._id}>
-              <img
-                src={skill.icon.length > 10 ? skill.icon : svg}
-                alt={skill.name}
-              />
+              <img src={skill.icon} alt={skill.name} />
             </li>
           ))}
         </motion.div>

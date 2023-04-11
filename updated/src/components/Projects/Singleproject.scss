@@ -96,6 +96,7 @@
 .tech-list p {
   color: var(--opposite-color);
   font-size: 15px;
+  white-space: nowrap;
 }
 
 @media (max-width: 1085px) {

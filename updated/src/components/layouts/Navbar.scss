@@ -116,3 +116,24 @@ nav {
     height: 600px;
   }
 }
+
+.theme {
+  position: absolute;
+  right: 3%;
+  top: 10%;
+  z-index: 10;
+}
+
+@media (max-width: 820px) {
+  .theme {
+    right: 13%;
+    top: 39%;
+  }
+}
+
+@media (max-width: 640px) {
+  .theme {
+    right: 17%;
+    top: 39%;
+  }
+}

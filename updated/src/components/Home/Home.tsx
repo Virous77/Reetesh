@@ -29,8 +29,8 @@ const Home = () => {
           transition={{ duration: 1.2 }}
         >
           <p>
-            I love to build and code beautifully simple things, and I passionate
-            about my work.
+            I love Building fast, responsive, and accessible websites that
+            engage and delight users.
           </p>
         </motion.div>
 

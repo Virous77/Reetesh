@@ -53,15 +53,17 @@ const SingleProject: React.FC<SingleProjectProps> = ({
           </a>
         </div>
 
-        <div className="tech">
-          <h3>Technology which I have use to build this project.</h3>
+        {item?.tags.length > 0 && (
+          <div className="tech">
+            <h3>Technology which I have use to build this project.</h3>
 
-          <div className="tech-list">
-            {item?.tags?.map((tag, i) => (
-              <p key={i}>{tag}</p>
-            ))}
+            <div className="tech-list">
+              {item?.tags?.map((tag, i) => (
+                <p key={i}>{tag}</p>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

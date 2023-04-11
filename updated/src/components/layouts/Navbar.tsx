@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import Reetesh from "../../assets/reetesh.jpg";
 import "./Navbar.scss";
 import MobileMenu from "./MobileMenu";
+import Theme from "../Theme";
 
 const Navbar = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -63,6 +64,7 @@ const Navbar = () => {
 
         {showMobileMenu && <MobileMenu setShowMobileMenu={setShowMobileMenu} />}
       </div>
+      <Theme />
     </nav>
   );
 };

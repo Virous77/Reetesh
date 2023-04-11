@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { useQuery } from "react-query";
 import { fetchData } from "../../api/api";
 import { Project } from "../../interfaces/interface";
-import svg from "../../assets/react.svg";
 import SingleProject from "./SingleProject";
 
 const Work = () => {
@@ -38,10 +37,7 @@ const Work = () => {
               whileInView={{ opacity: [0, 1], scale: [0, 1] }}
               transition={{ duration: 0.3 }}
             >
-              <img
-                src={project.images.length > 10 ? project.images : svg}
-                alt={project.title}
-              />
+              <img src={project.images} alt={project.title} />
               <div
                 className="projectViewHover"
                 onClick={() => {

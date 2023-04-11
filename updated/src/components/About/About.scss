@@ -126,8 +126,12 @@ h2:hover::before {
 .aboutMe {
   display: flex;
   flex-direction: column;
-  margin-top: 2rem;
   gap: 1rem;
+  text-align: center;
+  justify-content: center;
+  width: 90%;
+  margin: auto;
+  margin-top: 2rem;
 }
 
 .aboutMe p {
