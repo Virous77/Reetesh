@@ -5,10 +5,11 @@ nav {
   flex-direction: column;
   gap: 1.5rem;
   padding: 1rem 3rem;
-  background-color: #edf2f8;
+  background-color: var(--body-color);
   position: fixed;
   width: 100%;
   z-index: 10;
+  box-shadow: var(--box-shadow);
 }
 
 .logo img {
@@ -25,7 +26,6 @@ nav {
 }
 
 .navLinks li a {
-  color: black;
   text-transform: uppercase;
 }
 
@@ -35,6 +35,15 @@ nav {
 
 .mobileMenuBar {
   display: none;
+}
+
+.activeLink {
+  color: var(--opposite-color);
+  font-weight: bold;
+}
+
+.inactiveLink {
+  color: var(--secondary-font-color);
 }
 
 @media (max-width: 820px) {
@@ -88,7 +97,6 @@ nav {
   }
 
   .mobileMenuLinks li a {
-    color: black;
     text-transform: uppercase;
     width: fit-content;
     font-weight: bold;
@@ -101,7 +109,7 @@ nav {
 
   .bubble {
     width: 100%;
-    background-image: url("../assets/bgWhite.png");
+    background-image: url("../../assets//bgWhite.png");
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;

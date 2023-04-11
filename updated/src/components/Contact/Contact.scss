@@ -12,16 +12,18 @@
   font-size: 3rem;
   text-align: start;
   margin-bottom: 0.5rem;
+  color: var(--main-font-color);
 }
 
 .contactHead p {
   width: 80%;
   letter-spacing: 0.5px;
   min-height: 1.2;
+  color: var(--main-font-color);
 }
 
 .email {
-  background-color: black;
+  background-color: var(--opposite-color);
   padding: 10px 4rem;
   width: fit-content;
   margin: auto;
@@ -32,7 +34,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: white;
+  color: var(--absolute-color);
 }
 
 .messageMe {
@@ -94,15 +96,15 @@
 .sendMessage button {
   width: 50%;
   border: none;
-  background-color: rgb(110, 110, 251);
-  color: white;
+  background-color: var(--opposite-color);
+  color: var(--absolute-color);
   font-size: 1rem;
   padding: 12px 2rem;
   cursor: pointer;
 }
 
 .sendMessage button:hover {
-  background-color: rgb(94, 94, 255);
+  opacity: 0.9;
 }
 
 .googleMap {
@@ -117,7 +119,6 @@
 
 .homeIcon {
   font-size: 1.2rem;
-  color: blueviolet;
 }
 
 .mapouter {
@@ -154,7 +155,7 @@
 .input input:focus,
 .input textarea:focus {
   width: 100%;
-  border-bottom: 2px solid red;
+  border-bottom: 2px solid var(--opposite-color);
 }
 
 .greet {
@@ -198,6 +199,7 @@
 
 @media (max-width: 760px) {
   .contactMe {
+    padding: 2rem 1rem;
     padding-top: 10rem;
   }
 }

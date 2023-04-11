@@ -35,12 +35,26 @@ const About = () => {
           </h1>
           <div className="aboutMe">
             <p>
-              I'm a Frontend Web Developer building the Front-end of Websites.
+              I'm a Frontend Web Developer building the Frontend of Websites.
+              located in Patna(India). I have a serious passion for Frontend
+              Development
             </p>
 
             <p>
-              I’m a Front-End Developer located in Patna(India). I have a
-              serious passion for Frontend Development.
+              As a frontend developer, I have extensive experience in building
+              user interfaces using <span>REACT</span>, <span>NEXT.JS</span>,{" "}
+              <span>JAVASCRIPT</span>, <span>TYPESCRIPT</span>, <span>CSS</span>
+              , and <span>SASS</span>. I am proficient in designing and
+              developing responsive and mobile-first websites and web
+              applications that are optimized for performance and accessibility.
+            </p>
+
+            <p>
+              In addition to technical skills, I also have a strong eye for
+              design and a passion for creating visually stunning and intuitive
+              user interfaces. I understand the importance of designing
+              interfaces that are easy to use and accessible to all users,
+              regardless of their abilities or devices.
             </p>
 
             <p>

@@ -32,7 +32,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: white;
+  background-color: var(--body-color);
+  color: var(--main-font-color);
   width: 7rem;
   height: 7rem;
   border-radius: 100px;
@@ -57,7 +58,7 @@
 
 .singleData {
   position: fixed;
-  background-color: #edf2f8;
+  background-color: var(--body-color);
   width: 80%;
   top: 50%;
   height: 600px;
@@ -75,7 +76,7 @@
 }
 
 .cancelIcon {
-  color: white;
+  color: var(--main-font-color);
   position: absolute;
   z-index: 101;
   right: 1.5%;
@@ -124,5 +125,9 @@
 
   .singleData {
     padding: 2rem;
+  }
+
+  .work {
+    padding: 2rem 1rem;
   }
 }

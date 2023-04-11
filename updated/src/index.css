@@ -8,7 +8,7 @@
 
 body {
   font-family: "Urbanist", sans-serif;
-  background-color: #f2f4f8;
+  /* background-color: #f2f4f8; */
   scroll-behavior: smooth;
   background-position: center;
   background-repeat: no-repeat;
@@ -19,9 +19,27 @@ a {
   text-decoration: none;
 }
 
-/* #edf2f8 */
-/* #313bac */
-/* #030303 */
-/* #e4e4e4 */
-/* #46364a */
-/* #6b7688 */
+:root {
+  --body-color: hsl(0, 22%, 95%);
+  --main-font-color: hsl(247, 38%, 30%);
+  --box-shadow: 10px -10px 20px hsl(279, 16%, 60%);
+  --opposite-color: hsl(199, 76%, 33%);
+  --absolute-color: hsl(0, 22%, 95%);
+  --primary-font-size: 1.8rem;
+  --secondary-font-size: 1.2rem;
+  --primary-pSize: 16px;
+  --secondary-pSize: 13px;
+}
+
+.darkTheme {
+  --main-font-color: hsl(0, 22%, 95%);
+  --body-color: hsl(247, 38%, 30%);
+  --box-shadow: 10px -10px 20px hsl(279, 16%, 60%);
+  --opposite-color: hsl(199, 76%, 33%);
+  --secondary-font-color: hsl(0, 22%, 95%);
+  --absolute-color: hsl(0, 22%, 95%);
+}
+
+body {
+  background-color: var(--body-color);
+}

@@ -8,7 +8,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  color: white;
+  color: var(--absolute-color);
   padding-bottom: 4rem;
   position: relative;
 }
@@ -58,7 +58,7 @@
 
 .sideBar {
   position: absolute;
-  background-color: white;
+  background-color: var(--body-color);
   width: 70px;
   height: 200px;
   left: 0;
@@ -73,7 +73,7 @@
 }
 
 .sideBar a {
-  color: black;
+  color: var(--main-font-color);
   font-size: 2rem;
 }
 
@@ -83,16 +83,16 @@
 
 .githubIcon:hover {
   color: white;
-  background-color: black;
+  background-color: var(--opposite-color);
   border-radius: 100px;
 }
 
 .twitterIcon:hover {
-  color: rgb(82, 82, 254);
+  color: var(--opposite-color);
 }
 
 .linkdIcon:hover {
-  color: rgb(82, 82, 254);
+  color: var(--opposite-color);
 }
 
 @media (max-width: 768px) {

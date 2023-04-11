@@ -6,7 +6,7 @@ import { Project } from "../../interfaces/interface";
 import svg from "../../assets/react.svg";
 
 type SingleProjectProps = {
-  item: Project;
+  item: Project | undefined;
   dataFetching: boolean;
 };
 
@@ -14,8 +14,6 @@ const SingleProject: React.FC<SingleProjectProps> = ({
   item,
   dataFetching,
 }) => {
-  console.log(item);
-
   if (dataFetching) {
     return <p className="empty">Fetching, Hold a sec..</p>;
   }
@@ -53,6 +51,16 @@ const SingleProject: React.FC<SingleProjectProps> = ({
             <AiOutlineLink className="modalLinkIcon" />
             Live Project
           </a>
+        </div>
+
+        <div className="tech">
+          <h3>Technology which I have use to build this project.</h3>
+
+          <div className="tech-list">
+            {item?.tags?.map((tag, i) => (
+              <p key={i}>{tag}</p>
+            ))}
+          </div>
         </div>
       </div>
     </section>

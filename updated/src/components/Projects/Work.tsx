@@ -61,7 +61,7 @@ const Work = () => {
           className="backdrop"
           onClick={() => {
             document.body.classList.remove("cool");
-            setShow(false);
+            setShow("");
           }}
         ></div>
       )}
@@ -72,7 +72,7 @@ const Work = () => {
             className="cancelIcon"
             onClick={() => {
               document.body.classList.remove("cool");
-              setShow(false);
+              setShow("");
             }}
           />
           <SingleProject item={singleProjectData} dataFetching={loading} />

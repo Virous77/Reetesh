@@ -6,7 +6,7 @@ const Footer = () => {
   const date = new Date().getFullYear();
 
   return (
-    <section>
+    <section className="footer">
       <div className="socialSub">
         <a href="https://github.com/Virous77" target="_blank">
           <BsGithub className="githubIcon" />

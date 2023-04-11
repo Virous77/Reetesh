@@ -133,6 +133,22 @@ h2:hover::before {
 .aboutMe p {
   font-size: 1.1rem;
   font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 1.5px;
+}
+
+.aboutMe span {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.aboutMe span:hover {
+  color: blueviolet;
+}
+
+.aboutMe span:active {
+  scale: 0.1;
+  color: red;
 }
 
 .aboutButton {

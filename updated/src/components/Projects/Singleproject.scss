@@ -27,6 +27,7 @@
 
 .modalProjectInfo {
   text-align: center;
+  color: var(--main-font-color);
 }
 
 .modalProjectInfo h1 {
@@ -64,8 +65,8 @@
 
 .projectButton {
   padding: 7px 2rem;
-  background-color: rgb(72, 72, 250);
   color: white;
+  background-color: hsl(280, 42%, 35%);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -75,6 +76,26 @@
 .projectButton:hover,
 .githubButton:hover {
   scale: 1.05;
+}
+
+.tech {
+  max-width: 80%;
+  margin: auto;
+  margin-top: 2rem;
+}
+
+.tech-list {
+  display: grid;
+  align-items: center;
+  gap: 1rem;
+  grid-template-columns: repeat(5, 1fr);
+  width: 100%;
+  margin-top: 10px;
+}
+
+.tech-list p {
+  color: var(--opposite-color);
+  font-size: 15px;
 }
 
 @media (max-width: 1085px) {
