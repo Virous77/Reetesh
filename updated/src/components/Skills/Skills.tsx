@@ -20,8 +20,6 @@ const Skills = () => {
     (): Promise<SkillType[]> => fetchData("/skills")
   );
 
-  console.log(data);
-
   return (
     <section className="skills">
       <div className="aboutSkillView">

@@ -1,6 +1,5 @@
 .about {
-  background-color: black;
-  color: white;
+  color: var(--absolute-color);
   padding: 1rem;
   padding-top: 12rem;
   background-image: url("../../assets/slanted-gradient.svg");
@@ -26,7 +25,7 @@ h2::before {
   width: 100%;
   height: 3px;
   border-radius: 4px;
-  background-color: whitesmoke;
+  background-color: var(--main-font-color);
   bottom: 0;
   left: 0;
   transform-origin: right;
@@ -147,12 +146,12 @@ h2:hover::before {
 }
 
 .aboutMe span:hover {
-  color: blueviolet;
+  color: var(--opposite-color);
 }
 
 .aboutMe span:active {
   scale: 0.1;
-  color: red;
+  color: var(--main-font-color);
 }
 
 .aboutButton {

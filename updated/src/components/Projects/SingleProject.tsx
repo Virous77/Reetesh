@@ -21,10 +21,7 @@ const SingleProject: React.FC<SingleProjectProps> = ({
   return (
     <section className="activeWindow">
       <div className="modalImgSection">
-        <img
-          src={item?.images.length > 10 ? item?.images : svg}
-          alt={item?.title}
-        />
+        <img src={item?.images} alt={item?.title} />
       </div>
 
       <div className="modalProjectInfo">

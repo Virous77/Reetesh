@@ -84,7 +84,7 @@ const Contact = () => {
             </form>
           ) : (
             <div className="greet">
-              <p>Thank You for reaching to me!!</p>
+              <p>Thank You for reaching to me. will contact you soon!</p>
               <img src={win} alt="nice" />
             </div>
           )}
