@@ -25,10 +25,6 @@ a {
   --box-shadow: 10px -10px 20px hsl(279, 16%, 60%);
   --opposite-color: hsl(199, 76%, 33%);
   --absolute-color: hsl(0, 22%, 95%);
-  --primary-font-size: 1.8rem;
-  --secondary-font-size: 1.2rem;
-  --primary-pSize: 16px;
-  --secondary-pSize: 13px;
 }
 
 .darkTheme {
