@@ -49,7 +49,7 @@ const SingleProject: React.FC<SingleProjectProps> = ({
           </a>
         </div>
 
-        {item?.tags.length > 0 && (
+        {item?.tags && item.tags.length > 0 ? (
           <div className="tech">
             <h3>Technology which I have use to build this project.</h3>
 
@@ -59,7 +59,7 @@ const SingleProject: React.FC<SingleProjectProps> = ({
               ))}
             </div>
           </div>
-        )}
+        ) : null}
       </div>
     </section>
   );
