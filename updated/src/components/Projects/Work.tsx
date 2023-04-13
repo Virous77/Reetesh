@@ -6,7 +6,7 @@ import { useQuery } from "react-query";
 import { fetchData } from "../../api/api";
 import { Project } from "../../interfaces/interface";
 import SingleProject from "./SingleProject";
-import Loader from "../layouts/UI/Loader";
+import ShimmeredParagraphs from "../layouts/UI/Shimmers";
 
 const Work = () => {
   const [show, setShow] = useState("");
@@ -27,7 +27,14 @@ const Work = () => {
     setShow(id);
   };
 
-  if (isLoading) return <Loader />;
+  if (isLoading)
+    return (
+      <div className="workGrid" style={{ padding: "2rem" }}>
+        {[...Array(12).fill(1)].map((list, i) => (
+          <ShimmeredParagraphs key={i} />
+        ))}{" "}
+      </div>
+    );
 
   return (
     <section className="work">
