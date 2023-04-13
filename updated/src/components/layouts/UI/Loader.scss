@@ -1,0 +1,22 @@
+.spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5rem;
+  height: 60vh;
+}
+
+.spinnerIcon {
+  color: var(--main-font-color);
+  font-size: 2rem;
+  animation: App-logo-spin infinite 5s linear;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

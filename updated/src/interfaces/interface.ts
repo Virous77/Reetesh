@@ -9,3 +9,13 @@ export interface Project {
   _id: string;
   tags: string[];
 }
+
+export type SkillType = {
+  about: string;
+  icon: string;
+  level: string;
+  name: string;
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+};

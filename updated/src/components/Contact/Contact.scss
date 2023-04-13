@@ -2,9 +2,8 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
-  padding: 3rem 2rem;
-  padding-top: 12rem;
-  height: 100vh;
+  padding: 2rem 2rem;
+  height: fit-content;
   align-items: center;
 }
 
@@ -201,7 +200,6 @@
 @media (max-width: 760px) {
   .contactMe {
     padding: 2rem 1rem;
-    padding-top: 10rem;
   }
 }
 

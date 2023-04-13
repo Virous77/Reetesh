@@ -6,10 +6,11 @@ import { useQuery } from "react-query";
 import { fetchData } from "../../api/api";
 import { Project } from "../../interfaces/interface";
 import SingleProject from "./SingleProject";
+import Loader from "../layouts/UI/Loader";
 
 const Work = () => {
   const [show, setShow] = useState("");
-  const { data } = useQuery(
+  const { data, isLoading } = useQuery(
     ["projects"],
     (): Promise<Project[]> => fetchData("/projects")
   );
@@ -25,6 +26,8 @@ const Work = () => {
   const getProjectId = (id: string) => {
     setShow(id);
   };
+
+  if (isLoading) return <Loader />;
 
   return (
     <section className="work">

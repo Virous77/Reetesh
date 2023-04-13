@@ -113,4 +113,16 @@
   .modalImgSection img {
     height: 200px;
   }
+
+  .modalImgSection img {
+    width: 100%;
+  }
+
+  .tech {
+    max-width: 100%;
+  }
+
+  .tech-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
