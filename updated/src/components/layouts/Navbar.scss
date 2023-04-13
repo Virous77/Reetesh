@@ -6,7 +6,8 @@ nav {
   gap: 1.5rem;
   padding: 1rem 3rem;
   background-color: var(--body-color);
-  position: fixed;
+  position: sticky;
+  top: 0%;
   width: 100%;
   z-index: 10;
   box-shadow: var(--box-shadow);

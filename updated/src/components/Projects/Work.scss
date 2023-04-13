@@ -1,6 +1,5 @@
 .work {
-  padding: 0 2rem;
-  padding-top: 11rem;
+  padding: 1rem 2rem;
   position: relative;
 }
 
@@ -66,8 +65,8 @@
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 3rem;
-  overflow: scroll;
   border-radius: 3px;
+  overflow-y: scroll;
 }
 
 .singleData::-webkit-scrollbar {
@@ -95,7 +94,7 @@
   background-color: rgba(0, 0, 0, 0.8);
   width: 100%;
   height: 100%;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 70;
@@ -123,7 +122,8 @@
   }
 
   .singleData {
-    padding: 2rem;
+    padding: 2rem 1rem;
+    width: 95%;
   }
 
   .work {

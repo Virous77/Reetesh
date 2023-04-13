@@ -1,7 +1,6 @@
 @import "../common//variables.scss";
 
 .home {
-  padding-top: 14rem;
   overflow-x: scroll;
   height: fit-content;
   background-image: url("../../assets/cool.jpg");
@@ -9,7 +8,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   color: var(--absolute-color);
-  padding-bottom: 4rem;
+  padding: 4rem 0;
   position: relative;
 }
 
@@ -98,7 +97,6 @@
 @media (max-width: 768px) {
   .home {
     height: auto;
-    padding-top: 11rem;
   }
 
   .sideBar {

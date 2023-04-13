@@ -1,6 +1,5 @@
 .skills {
-  padding: 0 4rem;
-  padding-top: 12rem;
+  padding: 2rem 4rem;
   display: grid;
   grid-template-columns: 1fr;
   gap: 3rem;
@@ -105,8 +104,7 @@ li {
 
 @media (max-width: 768px) {
   .skills {
-    padding: 0 1rem;
-    padding-top: 12rem;
+    padding: 2rem 1rem;
   }
 }
 

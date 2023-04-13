@@ -3,22 +3,16 @@ import "./Skills.scss";
 import { motion } from "framer-motion";
 import { useQuery } from "react-query";
 import { fetchData } from "../../api/api";
-
-type SkillType = {
-  about: string;
-  icon: string;
-  level: string;
-  name: string;
-  _id: string;
-  createdAt: string;
-  updatedAt: string;
-};
+import { SkillType } from "../../interfaces/interface";
+import Loader from "../layouts/UI/Loader";
 
 const Skills = () => {
   const { data, isLoading } = useQuery(
     ["skills"],
     (): Promise<SkillType[]> => fetchData("/skills")
   );
+
+  if (isLoading) return <Loader />;
 
   return (
     <section className="skills">

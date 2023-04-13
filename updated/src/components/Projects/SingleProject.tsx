@@ -3,7 +3,6 @@ import { BsGithub } from "react-icons/bs";
 import { AiOutlineLink } from "react-icons/ai";
 import "./Singleproject.scss";
 import { Project } from "../../interfaces/interface";
-import svg from "../../assets/react.svg";
 
 type SingleProjectProps = {
   item: Project | undefined;
