@@ -9,7 +9,7 @@ import { sendEmail } from "../../api/api";
 const Contact = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
-  const messageRef = useRef<HTMLInputElement>(null);
+  const messageRef = useRef<HTMLTextAreaElement>(null);
 
   const { isLoading, mutate, status } = useMutation(sendEmail);
 
@@ -69,8 +69,8 @@ const Contact = () => {
 
               <div className="textMessage input">
                 <textarea
-                  cols="30"
-                  rows="10"
+                  cols={30}
+                  rows={10}
                   placeholder="Your Message"
                   ref={messageRef}
                 />
@@ -99,8 +99,8 @@ const Contact = () => {
               width="100%"
               frameBorder="0"
               scrolling="no"
-              marginHeight="0"
-              marginWidth="0"
+              marginHeight={0}
+              marginWidth={0}
               src="https://maps.google.com/maps?width=500&amp;height=400&amp;hl=en&amp;q=mahendru patna&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
             ></iframe>
           </div>
