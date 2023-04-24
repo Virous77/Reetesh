@@ -16,7 +16,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ setShowMobileMenu }) => {
       transition={{ duration: 0.6 }}
       onClick={(e) => e.stopPropagation()}
     >
-      {["about", "contact", "work", "skills"].map((navlink, idx) => (
+      {["about", "contact", "work", "skills", "blogs"].map((navlink, idx) => (
         <motion.li
           whileHover={{ textDecoration: "underline", x: -2 }}
           key={idx}

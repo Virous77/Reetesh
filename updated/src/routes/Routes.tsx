@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, Routes } from "react-router-dom";
 import {
   HomePage,
@@ -6,6 +5,8 @@ import {
   WorkPage,
   SkillsPage,
   ContactPage,
+  BlogPage,
+  BlogDetailsPage,
 } from "../pages/index";
 
 const Router = () => {
@@ -17,6 +18,8 @@ const Router = () => {
         <Route path="/work" element={<WorkPage />} />
         <Route path="/skills" element={<SkillsPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/blogs" element={<BlogPage />} />
+        <Route path="/blog/:id" element={<BlogDetailsPage />} />
       </Routes>
     </>
   );
