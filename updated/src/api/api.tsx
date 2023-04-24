@@ -10,7 +10,7 @@ export const fetchData = async (url: string) => {
     const { data } = await instance.get(url);
     return data.data;
   } catch (error: any) {
-    return error.message || error.response;
+    throw error.message || error.response;
   }
 };
 
@@ -28,6 +28,6 @@ export const sendEmail = async ({ url, body }: SendEmailProps) => {
     const { data } = await instance.post(url, body);
     return data;
   } catch (error: any) {
-    return error.message || error.response;
+    throw error.message || error.response;
   }
 };

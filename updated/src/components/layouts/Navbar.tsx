@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { HiMenuAlt4, HiX } from "react-icons/hi";
 import { NavLink } from "react-router-dom";
@@ -19,7 +19,7 @@ const Navbar = () => {
       </div>
 
       <ul className="navLinks">
-        {["about", "contact", "work", "skills"].map((navlink, idx) => (
+        {["about", "contact", "work", "skills", "blogs"].map((navlink, idx) => (
           <motion.li
             whileHover={{ textDecoration: "underline", y: -2 }}
             key={idx}
