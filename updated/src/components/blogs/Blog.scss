@@ -1,0 +1,81 @@
+@import "../common/variables.scss";
+
+.blog-wrap {
+  max-width: 1200px;
+  margin: auto;
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.blog-sub {
+  box-shadow: var(--box-shadow-two);
+  padding: 1rem;
+  border-radius: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 300ms ease-in-out;
+
+  &:hover {
+    scale: 1.025;
+  }
+}
+
+.thumbnail {
+  width: 100%;
+  height: 240px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  background-color: red;
+}
+
+.blog-details {
+  color: var(--main-font-color);
+
+  h1 {
+    font-size: 27px;
+    margin-top: 10px;
+    line-height: 1.3;
+  }
+}
+
+.author-main {
+  display: flex;
+  align-self: flex-start;
+  gap: 10px;
+
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+  }
+}
+
+.author-details {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  p {
+    font-size: 13px;
+  }
+}
+
+.date {
+  font-size: 14px;
+}
+
+@media (max-width: 1090px) {
+  .blog-wrap {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .blog-wrap {
+    grid-template-columns: 1fr;
+  }
+}

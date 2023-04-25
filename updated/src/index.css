@@ -25,6 +25,7 @@ a {
   --box-shadow: 10px -10px 20px hsl(279, 16%, 60%);
   --opposite-color: hsl(199, 76%, 33%);
   --absolute-color: hsl(0, 22%, 95%);
+  --box-shadow-two: 0px 2px 8px rgba(0, 0, 0, 0.13);
 }
 
 .darkTheme {
