@@ -35,7 +35,7 @@ const Contact = () => {
     <section className="contactMe">
       <div className="contactHead">
         <div>
-          <h2>Contact Me</h2>
+          <h2 className="styleh2">Contact Me</h2>
 
           <p>
             I’m interested in freelance opportunities – especially ambitious or

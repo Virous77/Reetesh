@@ -14,11 +14,11 @@
   font-size: 1.5rem;
 }
 
-h2 {
+.styleh2 {
   text-align: center;
   position: relative;
 }
-h2::before {
+.styleh2::before {
   content: "";
   position: absolute;
   width: 100%;
