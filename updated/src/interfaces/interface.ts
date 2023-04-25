@@ -19,3 +19,12 @@ export type SkillType = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type BlogType = {
+  _id: string;
+  description: string;
+  sanitizedHTML: string;
+  slug: string;
+  title: string;
+  createdAt: string;
+};
