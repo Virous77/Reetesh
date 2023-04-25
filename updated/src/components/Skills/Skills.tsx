@@ -17,7 +17,7 @@ const Skills = () => {
   return (
     <section className="skills">
       <div className="aboutSkillView">
-        <h2>My Skills</h2>
+        <h2 className="styleh2">My Skills</h2>
 
         <div className="skillInfo">
           <motion.p

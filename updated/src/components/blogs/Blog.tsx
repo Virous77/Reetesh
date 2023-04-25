@@ -23,7 +23,11 @@ const Blog = () => {
           data?.map((blog) => (
             <Link to={`/blog/${blog.slug}`} key={blog._id}>
               <div className="blog-sub">
-                <img src={react} alt={blog.title} className="thumbnail" />
+                <img
+                  src={blog.image || react}
+                  alt={blog.title}
+                  className="thumbnail"
+                />
 
                 <div className="blog-details">
                   <Author date={blog.createdAt} />

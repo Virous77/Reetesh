@@ -6,6 +6,21 @@ export const author = {
   about: "Full Stack Developer",
 };
 
+export const month = [
+  "Jan",
+  "Feb",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
 export const formattedDate = (date: Date) => {
   return new Intl.DateTimeFormat("en-US", {
     year: "numeric",
