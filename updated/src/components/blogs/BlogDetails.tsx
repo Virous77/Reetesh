@@ -23,7 +23,7 @@ const BlogDetails = () => {
         <AuthorDetails data={data} />
         <h1>{data?.title}</h1>
 
-        <div className="blog-body">{data && parse(data?.sanitizedHTML)}</div>
+        <div className="blog-body">{data && parse(data?.sanitizedHTML)} </div>
       </div>
     </main>
   );
