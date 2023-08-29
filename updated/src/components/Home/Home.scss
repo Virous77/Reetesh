@@ -10,25 +10,25 @@
   color: var(--absolute-color);
   padding: 4rem 0;
   position: relative;
-}
 
-.home::-webkit-scrollbar {
-  width: 0px;
-  background: transparent;
+  &::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
 }
 
 .badgeSection {
   text-align: center;
-}
 
-.badgeSection span {
-  font-size: 2rem;
-}
+  span {
+    font-size: 2rem;
+  }
 
-.badgeSection h1 {
-  font-size: 3.4rem;
-  width: 95%;
-  margin: auto;
+  h1 {
+    font-size: 3.4rem;
+    width: 95%;
+    margin: auto;
+  }
 }
 
 .contentAbout {
@@ -47,12 +47,12 @@
   width: 100%;
   margin: auto;
   margin-top: 5rem;
-}
 
-.contentImg img {
-  width: 12rem;
-  height: 12rem;
-  border-radius: 100px;
+  img {
+    width: 12rem;
+    height: 12rem;
+    border-radius: 100px;
+  }
 }
 
 .sideBar {
@@ -69,21 +69,21 @@
   gap: 1.5rem;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
-}
 
-.sideBar a {
-  color: var(--main-font-color);
-  font-size: 2rem;
+  a {
+    color: var(--main-font-color);
+    font-size: 2rem;
+  }
 }
 
 .githubIcon {
   transition: all 0.5s ease-in;
-}
 
-.githubIcon:hover {
-  color: white;
-  background-color: var(--opposite-color);
-  border-radius: 100px;
+  &:hover {
+    color: white;
+    background-color: var(--opposite-color);
+    border-radius: 100px;
+  }
 }
 
 .twitterIcon:hover {
@@ -113,10 +113,10 @@
 
   .badgeSection {
     text-align: center;
-  }
 
-  .badgeSection h1 {
-    font-size: 2rem;
-    width: 90%;
+    h1 {
+      font-size: 2rem;
+      width: 90%;
+    }
   }
 }

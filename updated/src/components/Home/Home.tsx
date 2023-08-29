@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import Reetesh from "../../assets/image.jpg";
 import { BsGithub, BsTwitter, BsLinkedin } from "react-icons/bs";
@@ -17,7 +16,7 @@ const Home = () => {
         >
           <span>👋</span>
           <div>
-            <h1>A self motivated Frontend Developer.</h1>
+            <h1>A self motivated Full-Stack Developer.</h1>
           </div>
         </motion.div>
 
@@ -29,7 +28,7 @@ const Home = () => {
           transition={{ duration: 1.2 }}
         >
           <p>
-            I love Building fast, responsive, and accessible websites that
+            I love Building fast, responsive, and accessible web apps that
             engage and delight users.
           </p>
         </motion.div>
@@ -66,9 +65,7 @@ const Home = () => {
         </a>
 
         <a
-          href="
-          https://www.linkedin.com/public-profile/settings?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_self_edit_contact-info%3BlLFnKZvySiCcK4N0OkM3%2FQ%3D%3D
-          "
+          href="https://www.linkedin.com/in/reetesh-kumar-a1b952178/"
           target="_blank"
         >
           <BsLinkedin className="linkdIcon" />

@@ -27,9 +27,8 @@ const Skills = () => {
           >
             I specialize in crafting top-notch responsive websites that load
             quickly, provide an intuitive user experience, and adhere to best
-            coding practices. My primary focus is front-end development,
-            including TypeScript, and JavaScript, and I excel in building both
-            small and medium-sized web applications.
+            coding practices. I excel in building both medium and big-sized web
+            apps, for client and server.
           </motion.p>
 
           <motion.p
@@ -40,8 +39,8 @@ const Skills = () => {
             features such as single-page applications (SPA), and I am committed
             to maintaining semantic coding styles to ensure optimal search
             engine optimization (SEO). I leverage the latest technologies, such
-            as React (including Next.js) and SASS, to create visually appealing
-            and feature-rich web applications that exceed my clients'
+            as React (including Next.js) and SASS, Tailwind, to create visually
+            appealing and feature-rich web applications that exceed my clients
             expectations.
           </motion.p>
         </div>
@@ -56,6 +55,7 @@ const Skills = () => {
           {data?.map((skill) => (
             <li key={skill?._id}>
               <img src={skill.icon} alt={skill.name} />
+              <p>{skill.name}</p>
             </li>
           ))}
         </motion.div>
