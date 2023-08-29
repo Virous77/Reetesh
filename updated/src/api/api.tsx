@@ -28,6 +28,6 @@ export const sendEmail = async ({ url, body }: SendEmailProps) => {
     const { data } = await instance.post(url, body);
     return data;
   } catch (error: any) {
-    throw error.message || error.response;
+    throw error.response.data.message || error.message;
   }
 };

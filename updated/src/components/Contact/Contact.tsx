@@ -2,16 +2,17 @@ import React, { useRef } from "react";
 import "./Contact.scss";
 import { HiOutlineMail } from "react-icons/hi";
 import { IoHomeOutline } from "react-icons/io5";
-import win from "../../assets/259.png";
+import successImage from "../../assets/259.png";
 import { useMutation } from "react-query";
 import { sendEmail } from "../../api/api";
+import errorImage from "../../assets/error.svg";
 
 const Contact = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
   const messageRef = useRef<HTMLTextAreaElement>(null);
 
-  const { isLoading, mutate, status } = useMutation(sendEmail);
+  const { data, isLoading, mutate, isError } = useMutation(sendEmail);
 
   const handleEmail = () => {
     if (
@@ -51,7 +52,7 @@ const Contact = () => {
         </div>
 
         <div className="messageMe">
-          {status === "idle" || status === "loading" ? (
+          {!data && !isError ? (
             <form onSubmit={(e) => e.preventDefault()}>
               <div className="yourName">
                 <div className="input">
@@ -83,10 +84,22 @@ const Contact = () => {
               </div>
             </form>
           ) : (
-            <div className="greet">
-              <p>Thank You for reaching to me. will contact you soon!</p>
-              <img src={win} alt="nice" />
-            </div>
+            <>
+              {data && data.status === true ? (
+                <div className="greet">
+                  <p>Thank You for reaching to me. will contact you soon!</p>
+                  <img src={successImage} alt="nice" />
+                </div>
+              ) : (
+                <div className="greet">
+                  <p>
+                    There something went wrong while sending mail. Try again
+                    later!
+                  </p>
+                  <img src={errorImage} alt="nice" />
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
