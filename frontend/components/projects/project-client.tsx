@@ -18,17 +18,14 @@ const ProjectClient: React.FC<TProjects> = ({ projects }) => {
     <Header scroll={projectScroll} name="Project">
       <React.Fragment>
         {projects?.slice(0, 5).map((project) => (
-          <Card
-            key={project._id}
-            className=" m-1 cursor-pointer hover:bg-default-100"
-          >
+          <Card key={project._id} className=" m-1  hover:bg-default-100">
             <CardBody>
               <div></div>
               <div>
                 <h3 className=" text-[18px] text-success">{project.title}</h3>
                 {project?.develop && (
                   <span className=" text-[13px] flex items-center gap-2 text-default-400 mb-1">
-                    <CalendarDays size={17} color="#ff6933" />
+                    <CalendarDays size={17} />
                     {project.develop}
                   </span>
                 )}
@@ -39,6 +36,8 @@ const ProjectClient: React.FC<TProjects> = ({ projects }) => {
                   src={project.images}
                   alt={project.title}
                   className=" mt-2"
+                  isBlurred
+                  shadow="lg"
                 />
 
                 <div className=" mt-2 flex flex-wrap gap-2 ">
