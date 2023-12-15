@@ -9,7 +9,7 @@ const About = () => {
 
   return (
     <Header scroll={aboutScroll} name="About">
-      <p className="  leading-[1.65] tracking-wide text-default-500">
+      <p className="  leading-[1.65] tracking-wide text-default-500 ">
         My journey in the field of software development commenced in{" "}
         <span className=" text-default-900 font-[500]">2020</span>, and from the
         very first day, I found an unwavering passion for coding. The allure of
