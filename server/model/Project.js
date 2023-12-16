@@ -24,15 +24,19 @@ const ProjectSchema = new mongoose.Schema(
     },
     images: {
       type: String,
+      required: true,
     },
     weight: {
       type: Number,
       required: true,
     },
+    develop: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
-    minimize: false,
   }
 );
 

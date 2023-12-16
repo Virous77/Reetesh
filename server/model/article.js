@@ -1,33 +1,34 @@
 import mongoose from "mongoose";
 import slugify from "slugify";
 
-const articleSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-  },
+const articleSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+    },
 
-  createdAt: {
-    type: Date,
-    default: Date.now,
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    sanitizedHTML: {
+      type: String,
+      required: true,
+    },
+    image: {
+      type: String,
+      required: true,
+    },
   },
-  slug: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  sanitizedHTML: {
-    type: String,
-    required: true,
-  },
-  image: {
-    type: String,
-    required: true,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 articleSchema.pre("validate", function (next) {
   if (this.title) {
