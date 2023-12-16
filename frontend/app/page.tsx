@@ -1,8 +1,8 @@
 import Author from "@/components/author/author";
-import About from "@/components/about/about";
+import AboutRender from "@/components/about/about-render";
 import ThemeSwitcher from "@/components/theme/theme-switcher";
 import Project from "@/components/projects/project";
-import { ScrollShadow } from "@nextui-org/react";
+import About from "@/components/about/about";
 
 const Home = () => {
   // useEffect(() => {
@@ -35,7 +35,7 @@ const Home = () => {
       <Author />
 
       <div className="body md:h-full md:overflow-scroll md:pt-[70px]  md:pb-8 flex flex-col md:gap-[100px]">
-        <About />
+        <AboutRender aboutComp={<About />} />
         <Project />
       </div>
     </main>

@@ -1,14 +1,10 @@
-"use client";
+"use server";
 
 import React from "react";
-import { useAppContext } from "@/contexts/useAppContext";
-import Header from "../common/header";
 
 const About = () => {
-  const { aboutScroll } = useAppContext();
-
   return (
-    <Header scroll={aboutScroll} name="About">
+    <React.Fragment>
       <p className="  leading-[1.65] tracking-wide text-default-500 ">
         My journey in the field of software development commenced in{" "}
         <span className=" text-default-900 font-[500]">2020</span>, and from the
@@ -51,7 +47,7 @@ const About = () => {
         and expertise to make meaningful contributions to the ever-evolving
         landscape of software development.
       </p>
-    </Header>
+    </React.Fragment>
   );
 };
 
