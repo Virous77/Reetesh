@@ -3,6 +3,7 @@
 import Link from "next/link";
 import useHash from "@/hooks/use-hash";
 import { useAppContext } from "@/contexts/useAppContext";
+import Navigation from "./navigation";
 
 const Tab = () => {
   const hash = useHash();
@@ -34,6 +35,8 @@ const Tab = () => {
           </Link>
         ))}
       </ul>
+
+      <Navigation />
     </div>
   );
 };

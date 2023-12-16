@@ -14,7 +14,7 @@ const ProjectsPage = async () => {
   });
 
   return (
-    <main className=" grid l-template items-start gap-4 h-screen p-[30px]">
+    <main className=" md:grid flex l-template items-start gap-4 h-fit md:h-screen md:p-[30px] relative flex-col pb-4 md:pb-0">
       <MyProjects projects={projects.data} />
       <Sidebar />
     </main>
