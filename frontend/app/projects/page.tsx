@@ -1,6 +1,7 @@
 import { getServerData } from "@/api/server-api";
+import MyProjects from "@/components/projects/my-projects/my-projects";
+import Sidebar from "@/components/projects/my-projects/sidebar";
 import { TProject, TQueryData } from "@/types/type";
-import MyProjects from "@/components/projects/my-projects";
 
 type TResponse = TQueryData & {
   data: TProject[];
@@ -11,7 +12,12 @@ const ProjectsPage = async () => {
     endpoint: "/projects",
     tag: "my-projects",
   });
-  return <MyProjects projects={projects.data} />;
+  return (
+    <main className=" grid l-template items-start gap-4 h-screen p-[30px]">
+      <MyProjects projects={projects.data} />
+      <Sidebar />
+    </main>
+  );
 };
 
 export default ProjectsPage;

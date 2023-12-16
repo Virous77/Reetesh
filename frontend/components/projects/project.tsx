@@ -14,7 +14,11 @@ const Project = async () => {
   });
 
   return (
-    <ProjectClient projectComp={<ProjectList projects={projects.data} />} />
+    <ProjectClient
+      projectComp={
+        <ProjectList projects={projects.data?.slice(0, 5)} isActive />
+      }
+    />
   );
 };
 

@@ -9,13 +9,14 @@ import Link from "next/link";
 
 type TProjects = {
   projects: TProject[];
+  isActive: boolean;
 };
 
-const ProjectList: React.FC<TProjects> = ({ projects }) => {
+const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
   return (
     <React.Fragment>
-      {projects?.slice(0, 5).map((project) => (
-        <Card key={project._id} className=" m-1  hover:bg-default-100">
+      {projects?.map((project) => (
+        <Card key={project._id} className=" m-1  hover:bg-default-100 h-fit">
           <CardBody>
             <div></div>
             <div>
@@ -71,12 +72,14 @@ const ProjectList: React.FC<TProjects> = ({ projects }) => {
           </CardBody>
         </Card>
       ))}
-      <Link
-        className=" cursor-pointer text-[14px] text-primary flex items-center gap-2"
-        href="/projects"
-      >
-        Visit all Projects <MoveRight size={19} />
-      </Link>
+      {isActive && (
+        <Link
+          className=" cursor-pointer text-[14px] text-primary flex items-center gap-2"
+          href="/projects"
+        >
+          Visit all Projects <MoveRight size={19} />
+        </Link>
+      )}
     </React.Fragment>
   );
 };

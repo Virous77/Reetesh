@@ -1,8 +1,9 @@
 import Author from "@/components/author/author";
 import AboutRender from "@/components/about/about-render";
-import ThemeSwitcher from "@/components/theme/theme-switcher";
 import Project from "@/components/projects/project";
 import About from "@/components/about/about";
+import ContactRender from "@/components/contact/contact-render";
+import Contact from "@/components/contact/contact";
 
 const Home = () => {
   // useEffect(() => {
@@ -31,13 +32,13 @@ const Home = () => {
 
   return (
     <main className="md:grid items-start grid-cols-2 gap-5 md:max-w-[1000px] px-4 sm:max-w-full m-auto h-screen md:overflow-hidden relative">
-      <ThemeSwitcher />
       <Author />
 
-      <div className="body md:h-full md:overflow-scroll md:pt-[70px]  md:pb-8 flex flex-col md:gap-[100px]">
+      <section className="body md:h-full md:overflow-scroll md:pt-[70px]  md:pb-8 flex flex-col md:gap-[100px]">
         <AboutRender aboutComp={<About />} />
         <Project />
-      </div>
+        <ContactRender contactComp={<Contact />} />
+      </section>
     </main>
   );
 };
