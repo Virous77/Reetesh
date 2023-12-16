@@ -12,6 +12,7 @@ const ProjectsPage = async () => {
     endpoint: "/projects",
     tag: "my-projects",
   });
+
   return (
     <main className=" grid l-template items-start gap-4 h-screen p-[30px]">
       <MyProjects projects={projects.data} />

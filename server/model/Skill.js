@@ -8,17 +8,19 @@ const SkillSchema = new mongoose.Schema(
     },
     level: {
       type: String,
+      required: true,
     },
     about: {
       type: String,
+      required: true,
     },
     icon: {
       type: String,
+      required: true,
     },
   },
   {
     timestamps: true,
-    minimize: false,
   }
 );
 

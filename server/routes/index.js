@@ -3,7 +3,6 @@ import {
   createProject,
   deleteProject,
   getAllProjects,
-  getSingleProject,
 } from "../controllers/project.js";
 import { sendAutoMatedEmail } from "../controllers/email.js";
 import { createSkill, getSkills } from "../controllers/skill.js";
@@ -14,27 +13,33 @@ import {
   deleteBlog,
   getBlog,
 } from "../controllers/blog.js";
+import {
+  ArticleValidate,
+  EmailValidate,
+  ProjectValidate,
+  SkillValidate,
+} from "../validation/validate.js";
+import { authenticate } from "../middleware/middleware.js";
 
 const router = express.Router();
 
 //Projects
-router.post("/projects", createProject);
-router.get("/projects", getAllProjects);
-router.get("/projects/:id", getSingleProject);
-router.delete("/projects/:id", deleteProject);
+router.post("/projects", [authenticate, ProjectValidate], createProject);
+router.get("/projects", [authenticate], getAllProjects);
+router.delete("/projects/:id", [authenticate], deleteProject);
 
 //Email
-router.post("/send-email", sendAutoMatedEmail);
+router.post("/send-email", [authenticate, EmailValidate], sendAutoMatedEmail);
 
 //Skills
-router.post("/skills", createSkill);
-router.get("/skills", getSkills);
+router.post("/skills", [SkillValidate], createSkill);
+router.get("/skills", [authenticate], getSkills);
 
 //blog
-router.post("/articles", createBlog);
-router.get("/articles", getBlogs);
-router.put("/articles", updateBlog);
-router.delete("/articles", deleteBlog);
-router.get("/articles/:id", getBlog);
+router.post("/articles", [authenticate, ArticleValidate], createBlog);
+router.get("/articles", [authenticate], getBlogs);
+router.put("/articles", [authenticate], updateBlog);
+router.delete("/articles", [authenticate], deleteBlog);
+router.get("/articles/:id", [authenticate], getBlog);
 
 export default router;

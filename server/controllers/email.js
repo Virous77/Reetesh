@@ -11,7 +11,6 @@ export const sendAutoMatedEmail = async (req, res, next) => {
       res.status(400).json({ message: "Email not sent!", status: false });
     }
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
