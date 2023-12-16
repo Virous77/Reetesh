@@ -16,12 +16,12 @@ const Sidebar = () => {
     },
     {
       name: "Blog",
-      path: "/blog",
+      path: "/blogs",
       icon: null,
     },
   ];
   return (
-    <aside className=" h-[50vh] flex items-center relative">
+    <aside className="px-[40px] md:px-0 md:h-[50vh] flex items-center relative">
       <ul className=" flex flex-col gap-3">
         {Links.map((link, idx) => (
           <Link href={link.path} key={idx} className=" flex items-center gap-2">

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Social from "../social/social";
 import Tab from "../tab/tab";
+import Navigation from "../tab/navigation";
 
 const Author = () => {
   return (
@@ -23,6 +24,9 @@ const Author = () => {
 
       <Tab />
       <Social styles="mt-8 md:absolute left-0 bottom-12 z-10" />
+      <div className=" md:hidden block">
+        <Navigation />
+      </div>
     </section>
   );
 };

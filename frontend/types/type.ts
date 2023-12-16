@@ -16,3 +16,13 @@ export type TQueryData = {
   status: number;
   success: boolean;
 };
+
+export type TSkill = {
+  _id: string;
+  name: string;
+  level: string;
+  createdAt: string;
+  updatedAt: string;
+  about: string;
+  icon: string;
+};
