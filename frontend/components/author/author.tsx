@@ -22,7 +22,7 @@ const Author = () => {
       </div>
 
       <Tab />
-      <Social />
+      <Social styles="mt-8 md:absolute left-0 bottom-12 z-10" />
     </section>
   );
 };

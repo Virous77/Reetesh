@@ -1,8 +1,12 @@
 import { socials } from "@/utils/utils";
 
-const Social = () => {
+type TSocial = {
+  styles: string;
+};
+
+const Social: React.FC<TSocial> = ({ styles }) => {
   return (
-    <div className=" mt-8 md:absolute left-0 bottom-12 z-10 flex items-center gap-4">
+    <div className={`flex items-center gap-4 ${styles}`}>
       {socials.map((social, idx) => (
         <a
           href={social.url}

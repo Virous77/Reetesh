@@ -18,11 +18,10 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
       {projects?.map((project) => (
         <Card key={project._id} className=" m-1  hover:bg-default-100 h-fit">
           <CardBody>
-            <div></div>
             <div>
               <h3 className=" text-[18px] text-success">{project.title}</h3>
               {project?.develop && (
-                <span className=" text-[13px] flex items-center gap-2 text-default-400 mb-1">
+                <span className="flex items-center gap-2 text-default-400 mb-1 text-tiny uppercase font-bold">
                   <CalendarDays size={17} />
                   {project.develop}
                 </span>

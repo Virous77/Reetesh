@@ -4,6 +4,9 @@ import Project from "@/components/projects/project";
 import About from "@/components/about/about";
 import ContactRender from "@/components/contact/contact-render";
 import Contact from "@/components/contact/contact";
+import ExperienceRender from "@/components/experience/experience-render";
+import Experience from "@/components/experience/experience";
+import Footer from "@/components/contact/footer";
 
 const Home = () => {
   // useEffect(() => {
@@ -31,13 +34,15 @@ const Home = () => {
   // }, []);
 
   return (
-    <main className="md:grid items-start grid-cols-2 gap-5 md:max-w-[1000px] px-4 sm:max-w-full m-auto h-screen md:overflow-hidden relative">
+    <main className="md:grid items-start grid-cols-2 gap-5 md:max-w-[1050px] px-4 sm:max-w-full m-auto h-screen md:overflow-hidden relative">
       <Author />
 
       <section className="body md:h-full md:overflow-scroll md:pt-[70px]  md:pb-8 flex flex-col md:gap-[100px]">
         <AboutRender aboutComp={<About />} />
+        <ExperienceRender experienceComp={<Experience />} />
         <Project />
         <ContactRender contactComp={<Contact />} />
+        <Footer />
       </section>
     </main>
   );

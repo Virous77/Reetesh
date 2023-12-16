@@ -42,8 +42,12 @@ export default function RootLayout({
           sizes="16x16"
           href="/favicon-16x16.png"
         />
+        <meta
+          name="viewport"
+          content="width=device-width initial-scale=1 viewport-fit=cover maximum-scale=1 user-scalable=no"
+        />
       </head>
-      <body className={poppins.className}>
+      <body className={`${poppins.className} bg-white dark:bg-black`}>
         <NextUIProviderComp>
           <ThemeProviderComp>
             <AppContextProvider>
