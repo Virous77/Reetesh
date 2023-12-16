@@ -6,6 +6,8 @@ import { contactActions } from "./actions";
 import { SubmitButton } from "./button";
 import { useState } from "react";
 import messageSent from "../../public/message.svg";
+import Social from "../social/social";
+import Footer from "./footer";
 
 const initialState = {
   name: "",
@@ -27,7 +29,7 @@ const Contact = () => {
   }
 
   return (
-    <div className=" h-[85vh]">
+    <div className=" h-[85vh] relative">
       {formState?.status === "success" ? (
         <div className=" flex items-center justify-center flex-col gap-2">
           <Image
@@ -91,6 +93,10 @@ const Contact = () => {
           </form>
         </>
       )}
+
+      <div className="mt-20 md:hidden block">
+        <Social styles="" />
+      </div>
     </div>
   );
 };

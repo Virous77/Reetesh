@@ -48,6 +48,7 @@ export const AppContextProvider = ({
   });
 
   const hash = useHash();
+
   const aboutScroll = useRef<HTMLDivElement | null>(null);
   const projectScroll = useRef<HTMLDivElement | null>(null);
   const contactScroll = useRef<HTMLDivElement | null>(null);
@@ -88,6 +89,8 @@ export const AppContextProvider = ({
   useEffect(() => {
     if (hash) {
       executeScroll(hash);
+    } else {
+      executeScroll("about");
     }
   }, [hash]);
 
