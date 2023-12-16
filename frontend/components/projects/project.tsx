@@ -1,6 +1,7 @@
 import { getServerData } from "@/api/server-api";
-import ProjectClient from "./project-client";
+import ProjectClient from "./project-render";
 import { TProject, TQueryData } from "@/types/type";
+import ProjectList from "./project-list";
 
 type TResponse = TQueryData & {
   data: TProject[];
@@ -12,7 +13,9 @@ const Project = async () => {
     tag: "projects",
   });
 
-  return <ProjectClient projects={projects.data} />;
+  return (
+    <ProjectClient projectComp={<ProjectList projects={projects.data} />} />
+  );
 };
 
 export default Project;

@@ -11,7 +11,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Reetesh",
+  title: "Reetesh | Full-Stack Developer",
   description:
     "This is my personal website. I am a full stack developer. Here i have shared my projects and blogs.",
 };
@@ -23,6 +23,25 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="../public/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="../public/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="../public/favicon-16x16.png"
+        />
+      </head>
       <body className={poppins.className}>
         <NextUIProviderComp>
           <ThemeProviderComp>
