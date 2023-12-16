@@ -4,6 +4,7 @@ import "./globals.css";
 import NextUIProviderComp from "@/lib/nextui-provider";
 import ThemeProviderComp from "@/lib/theme-provider";
 import { AppContextProvider } from "@/contexts/useAppContext";
+import ThemeSwitcher from "@/components/theme/theme-switcher";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -27,25 +28,28 @@ export default function RootLayout({
         <link
           rel="apple-touch-icon"
           sizes="180x180"
-          href="../public/apple-touch-icon.png"
+          href="/apple-touch-icon.png"
         />
         <link
           rel="icon"
           type="image/png"
           sizes="32x32"
-          href="../public/favicon-32x32.png"
+          href="/favicon-32x32.png"
         />
         <link
           rel="icon"
           type="image/png"
           sizes="16x16"
-          href="../public/favicon-16x16.png"
+          href="/favicon-16x16.png"
         />
       </head>
       <body className={poppins.className}>
         <NextUIProviderComp>
           <ThemeProviderComp>
-            <AppContextProvider>{children}</AppContextProvider>
+            <AppContextProvider>
+              {children}
+              <ThemeSwitcher />
+            </AppContextProvider>
           </ThemeProviderComp>
         </NextUIProviderComp>
       </body>

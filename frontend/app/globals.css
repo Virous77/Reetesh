@@ -10,3 +10,7 @@ body {
   display: none !important;
   width: 0 !important;
 }
+
+.l-template {
+  grid-template-columns: 2fr 1fr;
+}
