@@ -40,3 +40,42 @@ export const hashData = () => {
 
   return encryptedData;
 };
+
+export const commonMetaData = ({
+  name,
+  desc,
+  image,
+}: {
+  name: string;
+  desc: string;
+  image: string;
+}) => {
+  return {
+    title: name,
+    description: desc,
+    authors: [
+      {
+        name: "Reetesh Kumar",
+        url: "https://reetesh-virous.vercel.app/",
+      },
+    ],
+    twitter: {
+      card: "summary_large_image",
+      creator: "@imbitcoinb",
+      images: image,
+    },
+    openGraph: {
+      type: "website",
+      url: "https://reetesh-virous.vercel.app/",
+      title: name,
+      description: desc,
+      siteName: "Reetesh Virous",
+      images: [
+        {
+          url: image,
+        },
+      ],
+    },
+    assets: image,
+  };
+};
