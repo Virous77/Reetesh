@@ -20,3 +20,7 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+pre {
+  background: transparent !important;
+}

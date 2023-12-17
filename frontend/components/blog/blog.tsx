@@ -10,16 +10,19 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
   const createSlug = (title: string) =>
     title.toLowerCase().split(" ").join("-");
   return (
-    <section className="h-fit md:h-full overflow-scroll body">
-      <ul className=" grid grid-cols-2 items-start gap-4 ">
+    <section className="h-fit md:h-full overflow-scroll body p-2 md:p-0">
+      <ul className=" grid grid-cols-1 lg:grid-cols-2 items-start gap-4 ">
         {blogs.map((blog) => (
-          <Card key={blog.id} className=" bg-transparent hover:bg-default-50">
+          <Card
+            key={blog.id}
+            className=" bg-transparent hover:bg-default-50 w-full"
+          >
             <CardBody>
               <Image
                 src={blog.blogImage}
                 alt={blog.title}
                 isBlurred
-                className=" w-full h-[250px]"
+                className=" w-full md:h-[250px]"
               />
 
               <div className=" flex items-center gap-3 mt-3">

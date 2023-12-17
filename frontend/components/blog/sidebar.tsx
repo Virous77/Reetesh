@@ -22,8 +22,8 @@ const Sidebar = () => {
     },
   ];
   return (
-    <section className=" pt-12">
-      <Card className="max-w-[440px] p-2 pb-3 bg-transparent border">
+    <section className=" p-4 md:p-0 md:pt-12 ">
+      <Card className="max-w-[440px] p-2 pb-3 bg-transparent border mb-6 md:mb-0">
         <CardHeader className="justify-between">
           <Author />
 
