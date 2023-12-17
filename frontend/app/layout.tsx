@@ -14,7 +14,7 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Reetesh | Full-Stack Developer",
   description:
-    "This is my personal website. I am a full stack developer. Here i have shared my projects and blogs.",
+    "A passionate full-stack developer with a strong proficiency in a versatile set of technologies. Having extensively worked with React, Next.js, Node.js, Express, MongoDB, TypeScript, GraphQL, REST API, Docker, Kubernetes, Solidity, and Anchor, I bring a wealth of experience to the table",
 };
 
 export default function RootLayout({
