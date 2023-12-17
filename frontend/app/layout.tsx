@@ -5,6 +5,7 @@ import NextUIProviderComp from "@/lib/nextui-provider";
 import ThemeProviderComp from "@/lib/theme-provider";
 import { AppContextProvider } from "@/contexts/useAppContext";
 import ThemeSwitcher from "@/components/theme/theme-switcher";
+import "highlight.js/styles/shades-of-purple.css";
 
 const poppins = Poppins({
   subsets: ["latin"],

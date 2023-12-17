@@ -20,8 +20,8 @@ const CommonTab: React.FC<TCommonTab> = ({ links, type = true }) => {
   return (
     <aside
       className={`px-[40px] md:px-0 ${
-        type ? "md:h-[50vh]" : "md:mt-6 pb-4"
-      } flex items-center relative`}
+        type ? "md:h-[50vh] items-center" : "md:mt-6 pb-4"
+      }  flex relative flex-col md:flex-row `}
     >
       <ul className=" flex flex-col gap-3">
         {links.map((link, idx) => (

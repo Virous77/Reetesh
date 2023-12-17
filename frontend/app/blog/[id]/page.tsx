@@ -1,8 +1,9 @@
 import { getServerData } from "@/api/server-api";
+import SingleBlog from "@/components/blog/signle-blog/single-blog";
 
 type TResponse = {
   status: boolean;
-  blog: BlogPost;
+  blog: BlogPost & { contentHtml: string };
 };
 
 const SingleBlogPage = async ({
@@ -15,7 +16,7 @@ const SingleBlogPage = async ({
     tag: id,
   });
 
-  return <div>SingleBlogPage</div>;
+  return <SingleBlog blog={blog.blog} />;
 };
 
 export default SingleBlogPage;
