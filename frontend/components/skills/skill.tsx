@@ -1,5 +1,5 @@
 import { TSkill } from "@/types/type";
-import { Image } from "@nextui-org/react";
+import { Image, Tooltip } from "@nextui-org/react";
 import Social from "../social/social";
 import { Home } from "lucide-react";
 import Link from "next/link";
@@ -27,12 +27,12 @@ const Skill: React.FC<TSkills> = ({ skills }) => {
             </p>
 
             <p className=" text-center opacity-70 tracking-wider">
-              My commitment to innovation extends to the realm of TypeScript and
-              GraphQL, where I&apos;ve leveraged these technologies to enhance
-              project efficiency and maintainability. Additionally, my
-              experience in REST API development, Docker, and Kubernetes
-              reflects a comprehensive understanding of modern application
-              deployment and orchestration.
+              My commitment to innovation extends to the realm of React,
+              Next.js, Node.js, TypeScript and GraphQL, where I&apos;ve
+              leveraged these technologies to enhance project efficiency and
+              maintainability. Additionally my experience in Docker, and
+              Kubernetes reflects a comprehensive understanding of modern
+              application deployment and orchestration.
             </p>
 
             <p className=" text-center opacity-70 tracking-wider">
@@ -49,16 +49,18 @@ const Skill: React.FC<TSkills> = ({ skills }) => {
         <ul className=" flex flex-wrap items-center gap-5">
           {skills.map((skill) => (
             <li key={skill._id}>
-              <Image
-                src={skill.icon}
-                alt={skill.name}
-                width={40}
-                height={40}
-                isBlurred
-                shadow="lg"
-                isZoomed
-                className=" rounded-full hover:opacity-100 opacity-0 cursor-pointer"
-              />
+              <Tooltip content={skill.name}>
+                <Image
+                  src={skill.icon}
+                  alt={skill.name}
+                  width={40}
+                  height={40}
+                  isBlurred
+                  shadow="lg"
+                  isZoomed
+                  className=" rounded-full hover:opacity-100 opacity-0 cursor-pointer"
+                />
+              </Tooltip>
             </li>
           ))}
         </ul>

@@ -14,12 +14,16 @@
     "axios": "^1.6.2",
     "crypto-js": "^4.2.0",
     "framer-motion": "^10.16.16",
+    "gray-matter": "^4.0.3",
     "html-react-parser": "^5.0.7",
     "lucide-react": "^0.295.0",
     "next": "14.0.4",
     "next-themes": "^0.2.1",
     "react": "^18",
     "react-dom": "^18",
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1",
+    "sharp": "^0.33.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {

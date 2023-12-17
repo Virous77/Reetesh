@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Reetesh | Projects",
+  title: "Reetesh | Skill",
   description:
-    "Discover my projects on this personal website. I'm a full-stack developer passionate about crafting innovative solutions",
+    "Explore the technology landscape with Reetesh Kumar, a full-stack developer. Discover my expertise in React, Next.js, Node.js, Express, TypeScript, GraphQL, MongoDB, Docker, and more on this personal website.",
 };
 
 export default function RootLayout({
