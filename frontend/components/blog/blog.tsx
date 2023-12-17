@@ -10,7 +10,8 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
   const createSlug = (title: string) =>
     title.toLowerCase().split(" ").join("-");
   return (
-    <section className="h-fit md:h-full overflow-scroll body p-2 md:p-0">
+    <section className="h-fit md:h-full overflow-scroll body p-2 md:p-0 relative">
+      <h1 className=" my-5 text-[25px]">From My Blogs</h1>
       <ul className=" grid grid-cols-1 lg:grid-cols-2 items-start gap-4 ">
         {blogs.map((blog) => (
           <Card

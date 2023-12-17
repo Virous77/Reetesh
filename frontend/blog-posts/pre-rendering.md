@@ -1,5 +1,5 @@
 ---
-title: "Two Forms of Pre-rendering-two"
+title: "One Forms of Pre-rendering-two"
 date: "Dec 17 2023"
 author: "Reetesh Kumar"
 authorImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1681244753/css_uiqpme.png"

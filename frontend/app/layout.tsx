@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import NextUIProviderComp from "@/lib/nextui-provider";
@@ -6,17 +5,23 @@ import ThemeProviderComp from "@/lib/theme-provider";
 import { AppContextProvider } from "@/contexts/useAppContext";
 import ThemeSwitcher from "@/components/theme/theme-switcher";
 import "highlight.js/styles/shades-of-purple.css";
+import { commonMetaData } from "@/utils/utils";
 
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
 
-export const metadata: Metadata = {
-  title: "Reetesh | Full-Stack Developer",
-  description:
-    "A passionate full-stack developer with a strong proficiency in a versatile set of technologies. Having extensively worked with React, Next.js, Node.js, Express, MongoDB, TypeScript, GraphQL, REST API, Docker, Kubernetes, Solidity, and Anchor, I bring a wealth of experience to the table",
-};
+export async function generateMetadata() {
+  const metaData = commonMetaData({
+    name: "Reetesh | Full-Stack Developer",
+    desc: "A passionate full-stack developer with a strong proficiency in a versatile set of technologies. Having extensively worked with React, Next.js, Node.js, Express, MongoDB, TypeScript, GraphQL, REST API, Docker, Kubernetes, Solidity, and Anchor, I bring a wealth of experience to the table",
+    image: "https://avatars.githubusercontent.com/u/101452588?v=4",
+  });
+  return {
+    ...metaData,
+  };
+}
 
 export default function RootLayout({
   children,

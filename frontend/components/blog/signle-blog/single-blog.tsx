@@ -35,6 +35,17 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog }) => {
             <HtmlContent>{parse(blog.contentHtml)}</HtmlContent>
           </div>
         </div>
+        <p className="pb-7 flex items-center gap-2 justify-center mt-4">
+          Got any questions about this article?
+          <a
+            href="https://twitter.com/imbitcoinb"
+            target="_blank"
+            referrerPolicy="no-referrer"
+            className=" text-primary-500 underline hover:text-primary-800"
+          >
+            Just reach me out here 😇
+          </a>
+        </p>
       </div>
     </section>
   );

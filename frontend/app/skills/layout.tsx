@@ -1,11 +1,16 @@
-import type { Metadata } from "next";
+import { commonMetaData } from "@/utils/utils";
 import React from "react";
 
-export const metadata: Metadata = {
-  title: "Reetesh | Skill",
-  description:
-    "Explore the technology landscape with Reetesh Kumar, a full-stack developer. Discover my expertise in React, Next.js, Node.js, Express, TypeScript, GraphQL, MongoDB, Docker, and more on this personal website.",
-};
+export async function generateMetadata() {
+  const metaData = commonMetaData({
+    name: "Reetesh | Skills",
+    desc: "Explore the technology landscape with Reetesh Kumar, a full-stack developer. Discover my expertise in React, Next.js, Node.js, Express, TypeScript, GraphQL, MongoDB, Docker, and more on this personal website.",
+    image: "https://avatars.githubusercontent.com/u/101452588?v=4",
+  });
+  return {
+    ...metaData,
+  };
+}
 
 export default function RootLayout({
   children,
