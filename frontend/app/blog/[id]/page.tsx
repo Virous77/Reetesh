@@ -26,7 +26,7 @@ const SingleBlogPage = async ({
   params: { id: string };
 }) => {
   const blog: TResponse = await getServerData({
-    url: `http:localhost:3000/api/blog/${id}`,
+    url: `${process.env.URL}/api/blog/${id}`,
     tag: id,
   });
 

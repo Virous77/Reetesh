@@ -51,6 +51,7 @@ export const commonMetaData = ({
   image: string;
 }) => {
   return {
+    metadataBase: new URL("https://reetesh-virous.vercel.app"),
     title: name,
     description: desc,
     authors: [
