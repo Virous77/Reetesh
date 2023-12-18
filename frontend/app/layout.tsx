@@ -17,6 +17,7 @@ export async function generateMetadata() {
     name: "Reetesh | Full-Stack Developer",
     desc: "A passionate full-stack developer with a strong proficiency in a versatile set of technologies. Having extensively worked with React, Next.js, Node.js, Express, MongoDB, TypeScript, GraphQL, REST API, Docker, Kubernetes, Solidity, and Anchor, I bring a wealth of experience to the table",
     image: "https://avatars.githubusercontent.com/u/101452588?v=4",
+    url: "/",
   });
   return {
     ...metaData,
@@ -31,6 +32,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <meta
+          name="viewport"
+          content="width=device-width initial-scale=1 viewport-fit=cover maximum-scale=1 user-scalable=no"
+        />
+
         <link
           rel="apple-touch-icon"
           sizes="180x180"
@@ -47,10 +53,6 @@ export default function RootLayout({
           type="image/png"
           sizes="16x16"
           href="/favicon-16x16.png"
-        />
-        <meta
-          name="viewport"
-          content="width=device-width initial-scale=1 viewport-fit=cover maximum-scale=1 user-scalable=no"
         />
       </head>
       <body className={`${poppins.className} bg-white dark:bg-black`}>

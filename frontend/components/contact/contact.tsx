@@ -29,7 +29,7 @@ const Contact = () => {
   }
 
   return (
-    <div className=" h-[85vh] relative">
+    <div className=" mb-8 md:mb-0 md:h-[85vh] relative">
       {formState?.status === "success" ? (
         <div className=" flex items-center justify-center flex-col gap-2">
           <Image
