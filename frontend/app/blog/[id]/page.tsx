@@ -8,6 +8,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
     name: blog.title,
     desc: blog.about,
     image: blog.blogImage,
+    url: `/${blog.title}`,
   });
   return {
     ...metaData,

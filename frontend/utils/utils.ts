@@ -45,10 +45,12 @@ export const commonMetaData = ({
   name,
   desc,
   image,
+  url,
 }: {
   name: string;
   desc: string;
   image: string;
+  url: string;
 }) => {
   return {
     metadataBase: new URL("https://reetesh-virous.vercel.app"),
@@ -64,6 +66,13 @@ export const commonMetaData = ({
       card: "summary_large_image",
       creator: "@imbitcoinb",
       images: image,
+    },
+    robots: "index, follow",
+    alternates: {
+      canonical: `https://reetesh.vercel.app${url}`,
+      languages: {
+        "en-US": "/en-US",
+      },
     },
     openGraph: {
       type: "website",
