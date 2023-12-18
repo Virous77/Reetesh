@@ -29,7 +29,13 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog }) => {
         <div className=" w-[95%] md:w-[70%] m-auto mb-8 mt-4">
           <div className="hidden md:flex items-center justify-between mb-3">
             <Author />
-            <Social styles="" />
+
+            <div className=" flex items-center gap-3">
+              <Link href="/">
+                <Home />
+              </Link>
+              <Social styles="" />
+            </div>
           </div>
           <h1 className=" text-[22px] md:text-[28px] -mb-1 text-center mt-8 leading-snug">
             {blog.title}

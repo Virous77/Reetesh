@@ -4,6 +4,7 @@ import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
 import blogJson from "../lib/blog.json";
+import { redirect } from "next/navigation";
 
 const postsDirectory = path.join(process.cwd(), "blog-posts");
 
@@ -19,22 +20,26 @@ const common = (matterResult: matter.GrayMatterFile<string>) => {
 };
 
 export async function getAllBlogPosts() {
-  const fileNames = fs.readdirSync(postsDirectory);
-  const allPostsData = fileNames.map((fileName) => {
-    const id = fileName.replace(/\.md$/, "");
+  try {
+    const fileNames = fs.readdirSync(postsDirectory);
+    const allPostsData = fileNames.map((fileName) => {
+      const id = fileName.replace(/\.md$/, "");
 
-    const fullPath = path.join(postsDirectory, fileName);
-    const fileContents = fs.readFileSync(fullPath, "utf8");
-    const matterResult = matter(fileContents);
+      const fullPath = path.join(postsDirectory, fileName);
+      const fileContents = fs.readFileSync(fullPath, "utf8");
+      const matterResult = matter(fileContents);
 
-    const blogPost: BlogPost = {
-      id,
-      ...common(matterResult),
-    };
+      const blogPost: BlogPost = {
+        id,
+        ...common(matterResult),
+      };
 
-    return blogPost;
-  });
-  return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1));
+      return blogPost;
+    });
+    return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1));
+  } catch (error) {
+    return redirect("/error");
+  }
 }
 
 type PreRenderingInfo = {
@@ -43,21 +48,29 @@ type PreRenderingInfo = {
 
 export async function getBlog(id: string) {
   const p = blogJson as PreRenderingInfo;
-  const fullPath = path.join(postsDirectory, `${p[id]}.md`);
-  const fileContents = fs.readFileSync(fullPath, "utf8");
-  const matterResult = matter(fileContents);
 
-  const processedContent = await remark()
-    .use(html)
-    .process(matterResult.content);
+  if (!p[id]) {
+    return redirect("/error");
+  }
+  try {
+    const fullPath = path.join(postsDirectory, `${p[id]}.md`);
+    const fileContents = fs.readFileSync(fullPath, "utf8");
+    const matterResult = matter(fileContents);
 
-  const contentHtml = processedContent.toString();
+    const processedContent = await remark()
+      .use(html)
+      .process(matterResult.content);
 
-  const blogPostWithHTML: BlogPost & { contentHtml: string } = {
-    id: p[id],
-    contentHtml,
-    ...common(matterResult),
-  };
+    const contentHtml = processedContent.toString();
 
-  return blogPostWithHTML;
+    const blogPostWithHTML: BlogPost & { contentHtml: string } = {
+      id: p[id],
+      contentHtml,
+      ...common(matterResult),
+    };
+
+    return blogPostWithHTML;
+  } catch (error) {
+    return redirect("/error");
+  }
 }
