@@ -1,6 +1,7 @@
 "use client";
 
 import useHash from "@/hooks/use-hash";
+import { useRouter } from "next/navigation";
 import {
   createContext,
   useState,
@@ -10,6 +11,7 @@ import {
   useRef,
   LegacyRef,
   useEffect,
+  MutableRefObject,
 } from "react";
 
 export type TState = {
@@ -48,6 +50,7 @@ export const AppContextProvider = ({
   });
 
   const hash = useHash();
+  const router = useRouter();
 
   const aboutScroll = useRef<HTMLDivElement | null>(null);
   const projectScroll = useRef<HTMLDivElement | null>(null);
@@ -86,6 +89,17 @@ export const AppContextProvider = ({
     }
   };
 
+  const commonObserverCallback = (
+    ref: MutableRefObject<HTMLDivElement | null>,
+    name: string,
+    observer: IntersectionObserver
+  ) => {
+    if (ref.current) {
+      observer.observe(ref.current);
+      ref.current.setAttribute("data-section", name);
+    }
+  };
+
   useEffect(() => {
     if (hash) {
       executeScroll(hash);
@@ -93,6 +107,34 @@ export const AppContextProvider = ({
       executeScroll("about");
     }
   }, [hash]);
+
+  useEffect(() => {
+    if (window.innerWidth > 768) {
+      const observerCallback = (entries: any) => {
+        entries.forEach((entry: any) => {
+          const triggerElement = entry.target;
+          const triggerElementName =
+            triggerElement.getAttribute("data-section");
+          if (entry.isIntersecting) {
+            router.replace(`/#${triggerElementName}`);
+          }
+        });
+      };
+
+      const observer = new IntersectionObserver(observerCallback, {
+        threshold: 1,
+      });
+
+      commonObserverCallback(aboutScroll, "about", observer);
+      commonObserverCallback(projectScroll, "projects", observer);
+      commonObserverCallback(experienceScroll, "experience", observer);
+      commonObserverCallback(contactScroll, "contact", observer);
+
+      return () => {
+        observer.disconnect();
+      };
+    }
+  }, [projectScroll, aboutScroll, contactScroll, experienceScroll, router]);
 
   return (
     <AppContext.Provider

@@ -3,9 +3,9 @@
 import { TProject } from "@/types/type";
 import { Card, CardBody, Image } from "@nextui-org/react";
 import { CalendarDays, Code, Link2, MoveRight } from "lucide-react";
-import React from "react";
 import parse from "html-react-parser";
 import Link from "next/link";
+import React from "react";
 
 type TProjects = {
   projects: TProject[];
@@ -14,7 +14,7 @@ type TProjects = {
 
 const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
   return (
-    <React.Fragment>
+    <div className="flex flex-col gap-2 md:mt-[-90px]">
       {projects?.map((project) => (
         <Card key={project._id} className=" m-1  hover:bg-default-100 h-fit">
           <CardBody>
@@ -79,7 +79,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
           Visit all Projects <MoveRight size={19} />
         </Link>
       )}
-    </React.Fragment>
+    </div>
   );
 };
 
