@@ -18,7 +18,6 @@ export const getServerData = async ({ endpoint, tag, url }: GetProps) => {
       Authorization: `Bearer ${hashKey}`,
     },
     next: { tags: [tag] },
-    cache: "default",
   });
 
   const data = await res.json();

@@ -1,46 +1,39 @@
 import Author from "@/components/author/author";
 import AboutRender from "@/components/about/about-render";
-import Project from "@/components/projects/project";
 import About from "@/components/about/about";
 import ContactRender from "@/components/contact/contact-render";
 import Contact from "@/components/contact/contact";
 import ExperienceRender from "@/components/experience/experience-render";
 import Experience from "@/components/experience/experience";
 import Footer from "@/components/contact/footer";
+import ProjectRender from "@/components/projects/project-render";
+import { TProject, TQueryData } from "@/types/type";
+import { getServerData } from "@/api/server-api";
+import ProjectList from "@/components/projects/project-list";
+import FakeRender from "@/components/fake/fake-render";
+import Fake from "@/components/fake/fake";
 
-const Home = () => {
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver(
-  //     (entries) => {
-  //       entries.forEach((entry) => {
-  //         if (entry.isIntersecting) {
-  //           console.log("scroller2 is in view");
-  //           // Call your function or perform any action when scroller2 is in view
-  //         }
-  //       });
-  //     },
-  //     { threshold: 0.95 } // Adjust the threshold as needed
-  //   );
+type TResponse = TQueryData & {
+  data: TProject[];
+};
 
-  //   if (scroller2.current) {
-  //     observer.observe(scroller2.current);
-  //   }
-
-  //   return () => {
-  //     if (scroller2.current) {
-  //       observer.unobserve(scroller2.current);
-  //     }
-  //   };
-  // }, []);
-
+const Home = async () => {
+  const projects: TResponse = await getServerData({
+    endpoint: "/projects",
+    tag: "projects",
+  });
   return (
     <main className="md:grid items-start grid-cols-2 gap-5 md:max-w-[1050px] px-4 sm:max-w-full m-auto h-screen md:overflow-hidden relative">
       <Author />
-
       <section className="body md:h-full md:overflow-scroll md:pt-[70px]  md:pb-8 flex flex-col md:gap-[100px]">
         <AboutRender aboutComp={<About />} />
         <ExperienceRender experienceComp={<Experience />} />
-        <Project />
+        <FakeRender experienceComp={<Fake />} />
+        <ProjectRender
+          projectComp={
+            <ProjectList projects={projects.data?.slice(0, 5)} isActive />
+          }
+        />
         <ContactRender contactComp={<Contact />} />
         <Footer />
       </section>
