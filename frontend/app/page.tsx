@@ -22,6 +22,10 @@ const Home = async () => {
     endpoint: "/projects",
     tag: "projects",
   });
+
+  const makeTile = (title: string) => title.replace(/\s+/g, "-").toLowerCase();
+
+  console.log(makeTile("State management in React apps"));
   return (
     <main className="md:grid items-start grid-cols-2 gap-5 md:max-w-[1050px] px-4 sm:max-w-full m-auto h-screen md:overflow-hidden relative">
       <Author />

@@ -53,13 +53,13 @@ export const commonMetaData = ({
   url: string;
 }) => {
   return {
-    metadataBase: new URL("https://reetesh-virous.vercel.app"),
+    metadataBase: new URL("https://reetesh.vercel.app"),
     title: name,
     description: desc,
     authors: [
       {
         name: "Reetesh Kumar",
-        url: "https://reetesh-virous.vercel.app/",
+        url: "https://reetesh.vercel.app/",
       },
     ],
     twitter: {
@@ -71,15 +71,15 @@ export const commonMetaData = ({
     alternates: {
       canonical: `https://reetesh.vercel.app${url}`,
       languages: {
-        "en-US": "/en-US",
+        "en-US": "/",
       },
     },
     openGraph: {
       type: "website",
-      url: "https://reetesh-virous.vercel.app/",
+      url: "https://reetesh.vercel.app/",
       title: name,
       description: desc,
-      siteName: "Reetesh Virous",
+      siteName: "Reetesh Kumar",
       images: [
         {
           url: image,
