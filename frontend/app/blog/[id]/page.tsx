@@ -4,11 +4,13 @@ import { commonMetaData } from "@/utils/utils";
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
   const blog = await getBlog(params.id);
+
+  const makeTile = (title: string) => title.replace(/\s+/g, "-").toLowerCase();
   const metaData = commonMetaData({
     name: blog.title,
     desc: blog.about,
     image: blog.blogImage,
-    url: `/${blog.title}`,
+    url: `/${makeTile(blog.title)}`,
   });
   return {
     ...metaData,
