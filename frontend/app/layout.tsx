@@ -7,6 +7,7 @@ import ThemeSwitcher from "@/components/theme/theme-switcher";
 import "highlight.js/styles/shades-of-purple.css";
 import { commonMetaData } from "@/utils/utils";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -65,6 +66,7 @@ export default function RootLayout({
             <AppContextProvider>
               {children}
               <Analytics />
+              <SpeedInsights />
               <ThemeSwitcher />
             </AppContextProvider>
           </ThemeProviderComp>
