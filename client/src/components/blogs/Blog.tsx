@@ -10,7 +10,10 @@ import { Link } from "react-router-dom";
 const Blog = () => {
   const { data, isLoading } = useQuery(
     ["blog"],
-    (): Promise<BlogType[]> => fetchData("/articles")
+    (): Promise<BlogType[]> => fetchData("/articles"),
+    {
+      staleTime: Infinity,
+    }
   );
 
   if (isLoading) return <Loader />;

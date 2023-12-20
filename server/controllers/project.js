@@ -22,6 +22,17 @@ export const getAllProjects = handleCallback(async (req, res) => {
   });
 });
 
+export const getSingleProject = handleCallback(async (req, res) => {
+  const project = await Project.findById(req.params.id);
+  sendResponse({
+    message: "Projects fetched successfully",
+    status: true,
+    code: 200,
+    res,
+    data: project,
+  });
+});
+
 export const deleteProject = handleCallback(async (req, res, next) => {
   await Project.findByIdAndDelete(req.params.id);
   sendResponse({

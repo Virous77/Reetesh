@@ -3,6 +3,7 @@ import {
   createProject,
   deleteProject,
   getAllProjects,
+  getSingleProject,
 } from "../controllers/project.js";
 import { sendAutoMatedEmail } from "../controllers/email.js";
 import { createSkill, getSkills } from "../controllers/skill.js";
@@ -26,6 +27,7 @@ const router = express.Router();
 //Projects
 router.post("/projects", [authenticate, ProjectValidate], createProject);
 router.get("/projects", [authenticate], getAllProjects);
+router.get("/project/:id", [authenticate], getSingleProject);
 router.delete("/projects/:id", [authenticate], deleteProject);
 
 //Email
