@@ -1,0 +1,60 @@
+---
+title: "State management in React apps"
+date: "Dec 20 2023"
+author: "Reetesh Kumar"
+authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
+blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1703089201/1_hYSKyofnqThnPIsYRfnUUQ_texaef.png"
+about: "Managing state in React apps is one of the most important and challenging tasks. In this article, we will learn about state management in React apps."
+---
+
+## What is state in React?
+
+State in **React** is an object that determines how a component renders and behaves. In other words, state is what allows you to create components that are dynamic and interactive. State is mutable, which means that it can be changed over time.
+
+## Why do we need state?
+
+State is used to store data that can change over time. For example, if you have a counter component that displays the number of times a button has been clicked, then the state would be used to store the current count value.
+
+React applications often need to update the user interface dynamically in response to user interactions, server responses, or other events. State allows you to represent and manage these changes.
+
+## Types of state in React
+
+1. Local state
+2. Global state
+3. External state
+
+### Local state
+
+Local state is a state that is accessible to the component it is defined in, or its children. It is not accessible to other components in the application.
+
+### Global state
+
+Global state is a state that is accessible to all components in the application. It is usually defined in a top-level component, such as App.js, and passed down to other components as props. or it can be managed by a state management library like [Redux](https://redux.js.org/), [Context API](https://react.dev/learn/passing-data-deeply-with-context), [Zustand](https://zustand-demo.pmnd.rs/).
+
+### External state
+
+External state is a state that is managed by an external library, such as [Redux](https://redux.js.org/) or [Zustand](https://zustand-demo.pmnd.rs/). Redux being the most popular one. external libraries make it easier to manage state in large applications. since they provide a centralized place for storing and updating state.
+
+These libraries also provide tools for debugging and testing, which can be very helpful when working on large applications. also optimizing the performance of the application.
+
+## What is the best way to manage state in React?
+
+- We should keep state as close to the component that needs it as possible. This means that if a component needs to access state, it should be defined in the same component or parent.
+
+  This helps to keep our code clean and easy to understand. It also makes it easier to debug and test our application. and it also helps us to avoid unnecessary re-renders.
+
+- We should avoid using global state as much as possible. Global state can be useful in some cases, but it should not be used for everything. It is better to use local state or external state libraries like Redux or Zustand.
+
+## How to manage remote data in React?
+
+Remote data is data that is stored on a server and accessed via an API. It can be used to store information about users, products, or any other type of data that needs to be accessed from multiple locations.
+
+For remote data, we can use libraries like [React Query](https://tanstack.com/query/v3/), [SWR](https://swr.vercel.app/). These libraries make it easy to fetch data from an API and give us data back.
+
+They also provide tools for caching, pagination, and other features that make it easier to work with remote data. These libraries are very useful when working with large applications that need to fetch data from multiple sources.
+
+### conclusion
+
+managing state in React apps is one of the most important and challenging tasks. In this article, we learned about state management in React apps. We also learned about the different types of state and how to manage remote data in React.
+
+That's it for this article. I hope you found it useful. If you have any questions or feedback, please share me on Twitter.
