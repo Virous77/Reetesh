@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
     name: blog.title,
     desc: blog.about,
     image: blog.blogImage,
-    url: `/${makeTile(blog.title)}`,
+    url: `/blog/${makeTile(blog.title)}`,
   });
   return {
     ...metaData,

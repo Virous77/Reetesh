@@ -76,7 +76,7 @@ export const commonMetaData = ({
     },
     openGraph: {
       type: "website",
-      url: "https://reetesh.vercel.app/",
+      url: `https://reetesh.vercel.app${url}`,
       title: name,
       description: desc,
       siteName: "Reetesh Kumar",
