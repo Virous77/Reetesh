@@ -12,7 +12,10 @@ const BlogDetails = () => {
 
   const { data, isLoading } = useQuery(
     [slug],
-    (): Promise<BlogType> => fetchData(`articles/${slug}`)
+    (): Promise<BlogType> => fetchData(`articles/${slug}`),
+    {
+      staleTime: Infinity,
+    }
   );
 
   if (isLoading) return <Loader />;

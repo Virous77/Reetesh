@@ -12,14 +12,18 @@ const Work = () => {
   const [show, setShow] = useState("");
   const { data, isLoading } = useQuery(
     ["projects"],
-    (): Promise<Project[]> => fetchData("/projects")
+    (): Promise<Project[]> => fetchData("/projects"),
+    {
+      staleTime: Infinity,
+    }
   );
 
   const { data: singleProjectData, isLoading: loading } = useQuery(
-    ["project"],
-    async (): Promise<Project> => fetchData(`/projects/${show}`),
+    [`project-${show}`],
+    async (): Promise<Project> => fetchData(`/project/${show}`),
     {
       enabled: show.length > 1,
+      staleTime: Infinity,
     }
   );
 

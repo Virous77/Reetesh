@@ -1,4 +1,3 @@
-import React from "react";
 import "./Skills.scss";
 import { motion } from "framer-motion";
 import { useQuery } from "react-query";
@@ -9,7 +8,10 @@ import Loader from "../layouts/UI/Loader";
 const Skills = () => {
   const { data, isLoading } = useQuery(
     ["skills"],
-    (): Promise<SkillType[]> => fetchData("/skills")
+    (): Promise<SkillType[]> => fetchData("/skills"),
+    {
+      staleTime: Infinity,
+    }
   );
 
   if (isLoading) return <Loader />;

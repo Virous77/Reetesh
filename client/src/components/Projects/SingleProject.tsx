@@ -3,6 +3,7 @@ import { BsGithub } from "react-icons/bs";
 import { AiOutlineLink } from "react-icons/ai";
 import "./Singleproject.scss";
 import { Project } from "../../interfaces/interface";
+import parse from "html-react-parser";
 
 type SingleProjectProps = {
   item: Project | undefined;
@@ -25,7 +26,7 @@ const SingleProject: React.FC<SingleProjectProps> = ({
 
       <div className="modalProjectInfo">
         <h1>{item?.title}</h1>
-        <p>{item?.desc}</p>
+        <p>{parse(item?.desc!)}</p>
 
         <div className="modalProjectLink">
           <a

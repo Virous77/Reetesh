@@ -1,8 +1,13 @@
 import axios from "axios";
+import { hashData } from "../utils/author";
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL,
   timeout: 30000,
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${hashData()}`,
+  },
 });
 
 export const fetchData = async (url: string) => {

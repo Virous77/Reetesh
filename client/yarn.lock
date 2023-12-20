@@ -381,6 +381,11 @@
   resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.5.0.tgz#57618e57942a5f0131374a9fdb0167e25a117fdc"
   integrity sha512-bkUDCp8o1MvFO+qxkODcbhSqRa6P2GXgrGZVpt0dCXNW2HCSCqYI0ZoAqEOSAjRWmmlKcYgFvN4B4S+zo/f8kg==
 
+"@types/crypto-js@^4.2.1":
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@types/crypto-js/-/crypto-js-4.2.1.tgz#480edd76991a63050cb88db1a8840758c55a7135"
+  integrity sha512-FSPGd9+OcSok3RsM0UZ/9fcvMOXJ1ENE/ZbLfOPlBWj7BgXtEAM8VYfTtT760GiLbQIMoVozwVuisjvsVwqYWw==
+
 "@types/prop-types@*":
   version "15.7.5"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.5.tgz#5f19d2b85a98e9558036f6a3cacc8819420f05cf"
@@ -558,6 +563,11 @@ convert-source-map@^1.7.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-1.9.0.tgz#7faae62353fb4213366d0ca98358d22e8368b05f"
   integrity sha512-ASFBup0Mz1uyiIjANan1jzLQami9z1PoYSZCiiYW2FczPbenXc45FZdBZLzOT+r6+iciuEModtmCti+hjaAk0A==
+
+crypto-js@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.2.0.tgz#4d931639ecdfd12ff80e8186dba6af2c2e856631"
+  integrity sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==
 
 csstype@^3.0.2:
   version "3.1.2"
