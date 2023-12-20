@@ -6,6 +6,7 @@ import { AppContextProvider } from "@/contexts/useAppContext";
 import ThemeSwitcher from "@/components/theme/theme-switcher";
 import "highlight.js/styles/shades-of-purple.css";
 import { commonMetaData } from "@/utils/utils";
+import { Analytics } from "@vercel/analytics/react";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -63,6 +64,7 @@ export default function RootLayout({
           <ThemeProviderComp>
             <AppContextProvider>
               {children}
+              <Analytics />
               <ThemeSwitcher />
             </AppContextProvider>
           </ThemeProviderComp>
