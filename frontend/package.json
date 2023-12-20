@@ -13,6 +13,7 @@
     "@nextui-org/react": "^2.2.9",
     "@tailwindcss/typography": "^0.5.10",
     "@tinymce/tinymce-react": "^4.3.2",
+    "@vercel/analytics": "^1.1.1",
     "axios": "^1.6.2",
     "crypto-js": "^4.2.0",
     "framer-motion": "^10.16.16",
