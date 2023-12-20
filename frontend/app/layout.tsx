@@ -36,7 +36,10 @@ export default function RootLayout({
           name="viewport"
           content="width=device-width initial-scale=1 viewport-fit=cover maximum-scale=1 user-scalable=no"
         />
-
+        <meta
+          name="google-site-verification"
+          content="3tZVGdTelf7aq7SWKaQ9uX5W3tWH8GQjhhSHiAM1PcA"
+        />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
