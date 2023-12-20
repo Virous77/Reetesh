@@ -11,7 +11,6 @@
   "dependencies": {
     "@nextui-org/react": "^2.2.9",
     "@tailwindcss/typography": "^0.5.10",
-    "@tinymce/tinymce-react": "^4.3.2",
     "@vercel/analytics": "^1.1.1",
     "@vercel/speed-insights": "^1.0.2",
     "axios": "^1.6.2",
