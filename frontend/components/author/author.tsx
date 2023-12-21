@@ -7,7 +7,7 @@ const Author = () => {
   return (
     <section className=" relative md:h-full pt-[70px] pb-6 md:pb-0 ">
       <div>
-        <Link href="/">
+        <Link href="/#about">
           <h1 className=" text-[40px] md:text-[50px] font-[600] tracking-tight  md:tracking-tighter leading-tight">
             Reetesh Kumar
           </h1>

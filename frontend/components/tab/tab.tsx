@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import useHash from "@/hooks/use-hash";
 import { useAppContext } from "@/contexts/useAppContext";
 import Navigation from "./navigation";
 
 const Tab = () => {
-  const hash = useHash();
-  const { executeScroll } = useAppContext();
+  const {
+    state: { activeSection },
+    setState,
+  } = useAppContext();
   const tabs = ["About", "Experience", "Projects", "Contact"];
 
   return (
@@ -18,16 +19,31 @@ const Tab = () => {
             href={`/#${tab.toLowerCase()}`}
             className="text-[16px] leading-[1.1] flex items-center gap-3 cursor-pointer"
             key={tab}
-            onClick={() => executeScroll(tab.toLowerCase())}
+            onClick={() => {
+              setState((prev) => ({
+                ...prev,
+                activeSection: tab.toLowerCase(),
+                active: tab.toLowerCase(),
+              }));
+
+              setTimeout(() => {
+                setState((prev) => ({
+                  ...prev,
+                  active: undefined,
+                }));
+              }, 1000);
+            }}
           >
-            {hash === tab.toLowerCase() ? (
+            {activeSection === tab.toLowerCase() ? (
               <span className="block h-[2px] bg-foreground w-16"></span>
             ) : (
               <span className="block h-[1px] opacity-50 bg-foreground w-10"></span>
             )}
             <span
               className={`${
-                hash === tab.toLowerCase() ? "opacity-100" : "opacity-50"
+                activeSection === tab.toLowerCase()
+                  ? "opacity-100"
+                  : "opacity-50"
               }`}
             >
               {tab}
