@@ -6,6 +6,7 @@ import { CalendarDays, Code, Link2, MoveRight } from "lucide-react";
 import parse from "html-react-parser";
 import Link from "next/link";
 import React from "react";
+import NextImage from "next/image";
 
 type TProjects = {
   projects: TProject[];
@@ -26,15 +27,23 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
                   {project.develop}
                 </span>
               )}
-              <span className="text-[14px] leading-5 whitespace-pre-wrap block mt-4">
+              <span className="text-[14px] leading-5 whitespace-pre-wrap block mt-4 mb-3">
                 {parse(project.desc)}
               </span>
+
               <Image
                 src={project.images}
                 alt={project.title}
-                className=" mt-2"
                 isBlurred
                 shadow="lg"
+                as={NextImage}
+                height={0}
+                width={0}
+                sizes="100vw"
+                style={{ width: "100%", height: "auto" }}
+                classNames={{
+                  wrapper: "overflow-hidden",
+                }}
               />
 
               <div className=" mt-2 flex flex-wrap gap-2 ">

@@ -46,11 +46,13 @@ export const commonMetaData = ({
   desc,
   image,
   url,
+  keywords,
 }: {
   name: string;
   desc: string;
   image: string;
   url: string;
+  keywords?: string[];
 }) => {
   return {
     metadataBase: new URL("https://reetesh.vercel.app"),
@@ -87,5 +89,23 @@ export const commonMetaData = ({
       ],
     },
     assets: image,
+    keywords: keywords || [
+      "Reetesh Kumar",
+      "Reetesh",
+      "reetesh",
+      "nextjs",
+      "react",
+      "typescript",
+      "tailwindcss",
+      "express",
+      "nodejs",
+      "mongodb",
+      "mysql",
+      "javascript",
+      "html",
+      "docker",
+      "github",
+      "git",
+    ],
   };
 };

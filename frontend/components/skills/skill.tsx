@@ -3,6 +3,7 @@ import { Image, Tooltip } from "@nextui-org/react";
 import Social from "../social/social";
 import { Home } from "lucide-react";
 import Link from "next/link";
+import NextImage from "next/image";
 
 type TSkills = {
   skills: TSkill[];
@@ -59,6 +60,7 @@ const Skill: React.FC<TSkills> = ({ skills }) => {
                   shadow="lg"
                   isZoomed
                   className=" rounded-full hover:opacity-100 opacity-0 cursor-pointer"
+                  as={NextImage}
                 />
               </Tooltip>
             </li>

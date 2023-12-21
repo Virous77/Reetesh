@@ -43,7 +43,7 @@ const Tab = () => {
               className={`${
                 activeSection === tab.toLowerCase()
                   ? "opacity-100"
-                  : "opacity-50"
+                  : "opacity-70"
               }`}
             >
               {tab}

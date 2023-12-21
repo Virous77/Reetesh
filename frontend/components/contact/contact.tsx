@@ -7,7 +7,8 @@ import { SubmitButton } from "./button";
 import { useState } from "react";
 import messageSent from "../../public/message.svg";
 import Social from "../social/social";
-import Footer from "./footer";
+
+import NextImage from "next/image";
 
 const initialState = {
   name: "",
@@ -37,6 +38,7 @@ const Contact = () => {
             alt="Message sent"
             height={150}
             width={150}
+            as={NextImage}
           />
           <p className=" text-[14px]">
             {" "}
