@@ -1,7 +1,6 @@
 "use client";
 
 import useHash from "@/hooks/use-hash";
-import { useRouter } from "next/navigation";
 import {
   createContext,
   useState,
@@ -15,7 +14,9 @@ import {
 } from "react";
 
 export type TState = {
-  authModal: "string" | undefined;
+  authModal: string | undefined;
+  activeSection: string | undefined;
+  active: string | undefined;
 };
 
 type ContextType = {
@@ -47,10 +48,11 @@ export const AppContextProvider = ({
 }) => {
   const [state, setState] = useState<TState>({
     authModal: undefined,
+    activeSection: undefined,
+    active: undefined,
   });
 
   const hash = useHash();
-  const router = useRouter();
 
   const aboutScroll = useRef<HTMLDivElement | null>(null);
   const projectScroll = useRef<HTMLDivElement | null>(null);
@@ -103,8 +105,6 @@ export const AppContextProvider = ({
   useEffect(() => {
     if (hash) {
       executeScroll(hash);
-    } else {
-      executeScroll("about");
     }
   }, [hash]);
 
@@ -116,7 +116,10 @@ export const AppContextProvider = ({
           const triggerElementName =
             triggerElement.getAttribute("data-section");
           if (entry.isIntersecting) {
-            router.replace(`/#${triggerElementName}`);
+            setState((prev) => ({
+              ...prev,
+              activeSection: prev.active ? prev.active : triggerElementName,
+            }));
           }
         });
       };
@@ -134,7 +137,7 @@ export const AppContextProvider = ({
         observer.disconnect();
       };
     }
-  }, [projectScroll, aboutScroll, contactScroll, experienceScroll, router]);
+  }, [aboutScroll, projectScroll, contactScroll, experienceScroll]);
 
   return (
     <AppContext.Provider
