@@ -3,6 +3,7 @@
 import { Card, CardBody, CardHeader, Code, Image } from "@nextui-org/react";
 import backgroundImage from "../../public/back.jpeg";
 import { ExternalLink } from "lucide-react";
+import NextImage from "next/image";
 
 const Experience = () => {
   const skills = [
@@ -37,7 +38,7 @@ const Experience = () => {
               >
                 <Code
                   color="default"
-                  className=" bg-transparent text-tiny mt-0 ml-0 pl-0 flex items-center gap-2 text-default-400"
+                  className=" bg-transparent text-tiny mt-0 ml-0 pl-0 flex items-center gap-2 text-default-600"
                 >
                   Inara Consultancy Services <ExternalLink size={17} />
                 </Code>
@@ -70,6 +71,9 @@ const Experience = () => {
           alt="Card background"
           className="z-0 w-full h-full object-cover dark:block hidden"
           src={backgroundImage.src}
+          as={NextImage}
+          height={100}
+          width={100}
         />
       </Card>
     </div>

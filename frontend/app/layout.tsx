@@ -8,6 +8,16 @@ import "highlight.js/styles/shades-of-purple.css";
 import { commonMetaData } from "@/utils/utils";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Viewport } from "next";
+
+export const viewport: Viewport = {
+  themeColor: "black",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  maximumScale: 1,
+  userScalable: false,
+};
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -34,10 +44,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <meta
-          name="viewport"
-          content="width=device-width initial-scale=1 viewport-fit=cover maximum-scale=1 user-scalable=no"
-        />
         <meta
           name="google-site-verification"
           content="3tZVGdTelf7aq7SWKaQ9uX5W3tWH8GQjhhSHiAM1PcA"

@@ -1,6 +1,7 @@
 import { Card, CardBody, CardHeader, Image } from "@nextui-org/react";
 import { MoveRight } from "lucide-react";
 import Link from "next/link";
+import NextImage from "next/image";
 
 type TBlog = {
   blogs: BlogPost[];
@@ -24,6 +25,11 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
                 alt={blog.title}
                 isBlurred
                 className=" w-full md:h-[250px]"
+                as={NextImage}
+                height={0}
+                width={0}
+                sizes="100vw"
+                style={{ width: "100%", height: "250px" }}
               />
 
               <div className=" flex items-center gap-3 mt-3">
