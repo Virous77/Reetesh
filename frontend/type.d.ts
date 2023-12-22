@@ -6,4 +6,5 @@ type BlogPost = {
   authorImage: string;
   blogImage: string;
   about: string;
+  tags: string[];
 };

@@ -8,7 +8,9 @@ type TExperienceRender = {
   experienceComp: ReactNode;
 };
 
-const FakeRender: React.FC<TExperienceRender> = ({ experienceComp }) => {
+const ProjectSimulateRender: React.FC<TExperienceRender> = ({
+  experienceComp,
+}) => {
   const { projectScroll } = useAppContext();
   return (
     <div className=" hidden md:block">
@@ -19,4 +21,4 @@ const FakeRender: React.FC<TExperienceRender> = ({ experienceComp }) => {
   );
 };
 
-export default FakeRender;
+export default ProjectSimulateRender;

@@ -16,6 +16,7 @@ const common = (matterResult: matter.GrayMatterFile<string>) => {
     authorImage: matterResult.data.authorImage,
     blogImage: matterResult.data.blogImage,
     about: matterResult.data.about,
+    tags: matterResult.data.tags,
   };
 };
 

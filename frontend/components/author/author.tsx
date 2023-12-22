@@ -17,8 +17,8 @@ const Author = () => {
           Experienced Full-Stack Engineer
         </p>
         <p className=" mt-8 w-[95%] md:w-[85%]">
-          I specialize in constructing outstanding and user-friendly digital
-          experiences for the web as a full-stack engineer
+          I specialize in creating exceptional and user-friendly digital
+          experiences for the web.
         </p>
       </div>
 

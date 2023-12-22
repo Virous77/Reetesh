@@ -7,6 +7,7 @@ export async function generateMetadata() {
     desc: "Discover my projects on this personal website. I'm a full-stack developer passionate about crafting innovative solutions",
     image: "https://avatars.githubusercontent.com/u/101452588?v=4",
     url: "/projects",
+    keywords: ["projects", "experience", "work"],
   });
   return {
     ...metaData,

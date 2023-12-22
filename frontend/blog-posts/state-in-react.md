@@ -5,6 +5,17 @@ author: "Reetesh Kumar"
 authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
 blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1703089201/1_hYSKyofnqThnPIsYRfnUUQ_texaef.png"
 about: "Managing state in React apps is one of the most important and challenging tasks. In this article, we will learn about state management in React apps."
+tags:
+  [
+    "react",
+    "react-query",
+    "redux",
+    "swr",
+    "context api",
+    "zustand",
+    "state",
+    "blog",
+  ]
 ---
 
 ## What is state in React?

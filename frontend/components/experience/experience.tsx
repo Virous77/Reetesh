@@ -1,7 +1,7 @@
 "use server";
 
 import { Card, CardBody, CardHeader, Code, Image } from "@nextui-org/react";
-import backgroundImage from "../../public/back.jpeg";
+import backgroundImage from "../../public/back2.webp";
 import { ExternalLink } from "lucide-react";
 import NextImage from "next/image";
 

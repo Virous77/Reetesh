@@ -11,7 +11,7 @@ const ThemeSwitcher = () => {
   const [mounted, setMounted] = useState(false);
   const pathName = usePathname();
 
-  const { Component, slots, getInputProps } = useSwitch();
+  const { Component, slots } = useSwitch();
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -25,9 +25,6 @@ const ThemeSwitcher = () => {
       } md:fixed md:right-8 md:top-6 z-[101]`}
     >
       <Component>
-        <VisuallyHidden>
-          <input {...getInputProps()} />
-        </VisuallyHidden>
         <div
           className={slots.wrapper({
             class: [

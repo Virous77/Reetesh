@@ -8,16 +8,6 @@ import "highlight.js/styles/shades-of-purple.css";
 import { commonMetaData } from "@/utils/utils";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Viewport } from "next";
-
-export const viewport: Viewport = {
-  themeColor: "black",
-  width: "device-width",
-  initialScale: 1,
-  viewportFit: "cover",
-  maximumScale: 1,
-  userScalable: false,
-};
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -30,6 +20,17 @@ export async function generateMetadata() {
     desc: "A passionate full-stack developer with a strong proficiency in a versatile set of technologies. Having extensively worked with React, Next.js, Node.js, Express, MongoDB, TypeScript, GraphQL, REST API, Docker, Kubernetes, Solidity, and Anchor, I bring a wealth of experience to the table",
     image: "https://avatars.githubusercontent.com/u/101452588?v=4",
     url: "/",
+    keywords: [
+      "Reetesh",
+      "Reetesh Kumar",
+      "full-stack developer",
+      "developer",
+      "software engineer",
+      "software developer",
+      "portfolio",
+      "react",
+      "",
+    ],
   });
   return {
     ...metaData,
@@ -65,6 +66,7 @@ export default function RootLayout({
           sizes="16x16"
           href="/favicon-16x16.png"
         />
+        <link rel="preconnect" href="https://res.cloudinary.com" />
       </head>
       <body className={`${poppins.className} bg-white dark:bg-black`}>
         <NextUIProviderComp>

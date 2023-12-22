@@ -1,17 +1,29 @@
-import Author from "@/components/author/author";
-import AboutRender from "@/components/about/about-render";
-import About from "@/components/about/about";
-import ContactRender from "@/components/contact/contact-render";
-import Contact from "@/components/contact/contact";
-import ExperienceRender from "@/components/experience/experience-render";
-import Experience from "@/components/experience/experience";
-import Footer from "@/components/contact/footer";
-import ProjectRender from "@/components/projects/project-render";
+import dynamic from "next/dynamic";
+
+const Author = dynamic(() => import("@/components/author/author"));
+const AboutRender = dynamic(() => import("@/components/about/about-render"));
+const About = dynamic(() => import("@/components/about/about"));
+const ContactRender = dynamic(
+  () => import("@/components/contact/contact-render")
+);
+const Contact = dynamic(() => import("@/components/contact/contact"));
+const ExperienceRender = dynamic(
+  () => import("@/components/experience/experience-render")
+);
+const Experience = dynamic(() => import("@/components/experience/experience"));
+const Footer = dynamic(() => import("@/components/contact/footer"));
+const ProjectRender = dynamic(
+  () => import("@/components/projects/project-render")
+);
 import { TProject, TQueryData } from "@/types/type";
 import { getServerData } from "@/api/server-api";
-import ProjectList from "@/components/projects/project-list";
-import FakeRender from "@/components/fake/fake-render";
-import Fake from "@/components/fake/fake";
+const ProjectList = dynamic(() => import("@/components/projects/project-list"));
+const ProjectSimulateRender = dynamic(
+  () => import("@/components/project-simulate/project-simulate-render")
+);
+const ProjectSimulate = dynamic(
+  () => import("@/components/project-simulate/project-simulate")
+);
 
 type TResponse = TQueryData & {
   data: TProject[];
@@ -29,7 +41,7 @@ const Home = async () => {
       <section className="body md:h-full md:overflow-scroll md:pt-[70px]  md:pb-8 flex flex-col md:gap-[100px]">
         <AboutRender aboutComp={<About />} />
         <ExperienceRender experienceComp={<Experience />} />
-        <FakeRender experienceComp={<Fake />} />
+        <ProjectSimulateRender experienceComp={<ProjectSimulate />} />
         <ProjectRender
           projectComp={
             <ProjectList projects={projects.data?.slice(0, 5)} isActive />
