@@ -19,6 +19,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
     desc: blog.about,
     image: blog.blogImage,
     url: `/blog/${makeTitle(blog.title)}`,
+    keywords: blog.tags,
   });
   return {
     ...metaData,

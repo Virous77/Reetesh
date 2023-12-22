@@ -14,6 +14,7 @@ const Social: React.FC<TSocial> = ({ styles }) => {
           key={idx}
           className=" text-foreground hover:text-accent transition-colors duration-200"
           referrerPolicy="no-referrer"
+          aria-label={social.title}
         >
           {<social.name size={25} />}
         </a>

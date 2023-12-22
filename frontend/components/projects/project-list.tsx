@@ -20,9 +20,11 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
         <Card key={project._id} className=" m-1  hover:bg-default-100 h-fit">
           <CardBody>
             <div>
-              <h3 className=" text-[18px] text-success">{project.title}</h3>
+              <h3 className=" text-[18px] text-success mb-1">
+                {project.title}
+              </h3>
               {project?.develop && (
-                <span className="flex items-center gap-2 text-default-400 mb-1 text-tiny uppercase font-bold">
+                <span className="flex items-center gap-2 text-default-600 mb-1 text-tiny uppercase font-bold">
                   <CalendarDays size={17} />
                   {project.develop}
                 </span>
@@ -60,7 +62,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
               <div className=" flex items-center gap-5 mt-4 justify-center">
                 <a
                   href={project.projectLink}
-                  className=" text-primary text-[13px] flex items-center gap-2"
+                  className=" text-success text-[13px] flex items-center gap-2 opacity-100"
                   target="_blank"
                   referrerPolicy="no-referrer"
                 >
@@ -69,7 +71,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
 
                 <a
                   href={project.codeLink}
-                  className=" text-primary text-[13px] flex items-center gap-2"
+                  className=" text-success text-[13px] flex items-center gap-2"
                   target="_blank"
                   referrerPolicy="no-referrer"
                 >

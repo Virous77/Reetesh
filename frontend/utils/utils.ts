@@ -5,14 +5,17 @@ export const socials = [
   {
     name: Github,
     url: "https://github.com/Virous77",
+    title: "Github",
   },
   {
     name: Twitter,
     url: "https://twitter.com/imbitcoinb",
+    title: "Twitter",
   },
   {
     name: Linkedin,
     url: "https://www.linkedin.com/public-profile/settings?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_self_edit_contact-info%3BlLFnKZvySiCcK4N0OkM3%2FQ%3D%3D",
+    title: "Linkedin",
   },
 ];
 
@@ -52,7 +55,7 @@ export const commonMetaData = ({
   desc: string;
   image: string;
   url: string;
-  keywords?: string[];
+  keywords: string[];
 }) => {
   return {
     metadataBase: new URL("https://reetesh.vercel.app"),
@@ -89,10 +92,7 @@ export const commonMetaData = ({
       ],
     },
     assets: image,
-    keywords: keywords || [
-      "Reetesh Kumar",
-      "Reetesh",
-      "reetesh",
+    keywords: [
       "nextjs",
       "react",
       "typescript",
@@ -106,6 +106,7 @@ export const commonMetaData = ({
       "docker",
       "github",
       "git",
+      ...keywords,
     ],
   };
 };

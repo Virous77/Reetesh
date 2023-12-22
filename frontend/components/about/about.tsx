@@ -4,10 +4,10 @@ import React from "react";
 
 const About = () => {
   return (
-    <React.Fragment>
+    <div className=" flex flex-col gap-3">
       <p className="  leading-[1.65] tracking-wide text-default-500 ">
         My journey in the field of software development commenced in{" "}
-        <span className=" text-default-900 font-[500]">2020</span>, and from the
+        <span className=" text-default-900 font-[500]">2021</span>, and from the
         very first day, I found an unwavering passion for coding. The allure of
         <span className=" text-default-900 font-[500]"> Javascript</span>{" "}
         captured my interest, and I embarked on a journey of continuous
@@ -47,7 +47,7 @@ const About = () => {
         and expertise to make meaningful contributions to the ever-evolving
         landscape of software development.
       </p>
-    </React.Fragment>
+    </div>
   );
 };
 
