@@ -44,7 +44,7 @@ export const ProjectValidate = async (req, res, next) => {
       projectLink: joi.string().trim().required(),
       desc: joi.string().trim().required(),
       images: joi.string().trim().required(),
-      weight: joi.number().required(),
+      weight: joi.string().required(),
       develop: joi.string().trim().required(),
       tags: joi.array().items(joi.string()),
     })
