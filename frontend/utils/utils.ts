@@ -14,7 +14,7 @@ export const socials = [
   },
   {
     name: Linkedin,
-    url: "https://www.linkedin.com/public-profile/settings?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_self_edit_contact-info%3BlLFnKZvySiCcK4N0OkM3%2FQ%3D%3D",
+    url: "https://www.linkedin.com/in/reetesh-kumar-a1b952178/",
     title: "Linkedin",
   },
 ];
@@ -58,13 +58,13 @@ export const commonMetaData = ({
   keywords: string[];
 }) => {
   return {
-    metadataBase: new URL("https://reetesh.vercel.app"),
+    metadataBase: new URL("https://reetesh.in"),
     title: name,
     description: desc,
     authors: [
       {
         name: "Reetesh Kumar",
-        url: "https://reetesh.vercel.app/",
+        url: "https://reetesh.in/",
       },
     ],
     twitter: {
@@ -74,14 +74,14 @@ export const commonMetaData = ({
     },
     robots: "index, follow",
     alternates: {
-      canonical: `https://reetesh.vercel.app${url}`,
+      canonical: `https://reetesh.in${url}`,
       languages: {
         "en-US": "/",
       },
     },
     openGraph: {
       type: "website",
-      url: `https://reetesh.vercel.app${url}`,
+      url: `https://reetesh.in${url}`,
       title: name,
       description: desc,
       siteName: "Reetesh Kumar",
