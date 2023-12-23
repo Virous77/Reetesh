@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://reetesh.vercel.app
+Host: https://reetesh.in
 
 # Sitemaps
-Sitemap: https://reetesh.vercel.app/sitemap.xml
+Sitemap: https://reetesh.in/sitemap.xml
