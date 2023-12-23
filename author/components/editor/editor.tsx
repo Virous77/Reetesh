@@ -2,13 +2,18 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
+import { Button, Input } from "@nextui-org/react";
 
 export default function EditorComp() {
   const [mounted, setMounted] = useState(false);
+  const [content, setContent] = useState({
+    desc: "",
+  });
+
   const editorRef = useRef<any>(null);
   const log = () => {
     if (editorRef.current) {
-      console.log(editorRef.current.getContent());
+      setContent((prev) => ({ ...prev, desc: editorRef.current.getContent() }));
     }
   };
 
@@ -20,11 +25,10 @@ export default function EditorComp() {
   return (
     <>
       <Editor
-        apiKey="your-api-key"
+        apiKey={process.env.NEXT_PUBLIC_EDITOR_KEY!}
         onInit={(evt, editor) => (editorRef.current = editor)}
-        initialValue="<p>This is the initial content of the editor.</p>"
         init={{
-          height: 500,
+          height: 300,
           menubar: false,
           plugins: [
             "advlist",
@@ -55,7 +59,27 @@ export default function EditorComp() {
             "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
         }}
       />
-      <button onClick={log}>Log editor content</button>
+      <div className=" flex items-center gap-3">
+        <Button
+          color="success"
+          variant="faded"
+          className="rounded w-full"
+          onClick={log}
+        >
+          Log Editor Content
+        </Button>
+        <Button
+          onClick={() => setContent((prev) => ({ ...prev, desc: "" }))}
+          type="button"
+          color="danger"
+          variant="shadow"
+          className=" rounded w-full"
+        >
+          Hide Content
+        </Button>
+      </div>
+
+      {content.desc && <Input value={content.desc} name="desc" type="text" />}
     </>
   );
 }

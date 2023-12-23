@@ -1,5 +1,7 @@
+import Project from "@/components/projects/project";
+
 const ProjectPage = () => {
-  return <div>ProjectPage</div>;
+  return <Project />;
 };
 
 export default ProjectPage;
