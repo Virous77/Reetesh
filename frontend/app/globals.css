@@ -15,12 +15,23 @@ body {
   grid-template-columns: 2fr 1fr;
 }
 
+pre {
+  background: transparent !important;
+  width: 350px !important;
+}
+
 @media (max-width: 768px) {
   .l-template {
     grid-template-columns: 1fr;
   }
 }
 
-pre {
-  background: transparent !important;
+@media (min-width: 768px) {
+  pre {
+    width: 100% !important;
+  }
+}
+
+.hljs {
+  background-color: transparent !important;
 }

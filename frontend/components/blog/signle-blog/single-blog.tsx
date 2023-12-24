@@ -43,7 +43,7 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog }) => {
           <h1 className=" text-[22px] md:text-[28px] -mb-1 text-center mt-8 leading-snug">
             {blog.title}
           </h1>
-          <p className=" text-small text-default-500 mt-[6px] flex items-center justify-center gap-2">
+          <p className=" text-small text-default-500 mt-[12px] flex items-center justify-center gap-2">
             <CalendarDays size={20} /> {blog.date}
           </p>
         </div>
