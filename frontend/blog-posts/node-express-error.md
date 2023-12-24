@@ -51,7 +51,7 @@ It's allows you to implement a comprehensive error logging system that can be us
 
 It separates the concerns of error processing from the core logic of routes and controllers. This promotes a cleaner code structure and makes it easier to focus on the business logic in each route.
 
-can include security-related measures, such as not exposing sensitive information in error messages sent to clients. This helps prevent information disclosure attacks.
+It can include security-related measures, such as not exposing sensitive information in error messages sent to clients. This helps prevent information disclosure attacks.
 
 ## Implementing Centralized Error Handling in Express
 

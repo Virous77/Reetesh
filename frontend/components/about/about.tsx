@@ -35,7 +35,7 @@ const About = () => {
         technologies such as{" "}
         <span className=" text-default-900 font-[500]">
           Typescript, Next.js, React, Node.js, Express, MongoDB, Solidity, Rust,
-          Docker, and anchor.
+          Docker, and Anchor.
         </span>{" "}
         This diverse tech stack has not only broadened my skill set but has also
         enabled me to contribute effectively to the development and enhancement
