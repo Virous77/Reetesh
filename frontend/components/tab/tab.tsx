@@ -23,15 +23,7 @@ const Tab = () => {
               setState((prev) => ({
                 ...prev,
                 activeSection: tab.toLowerCase(),
-                active: tab.toLowerCase(),
               }));
-
-              setTimeout(() => {
-                setState((prev) => ({
-                  ...prev,
-                  active: undefined,
-                }));
-              }, 1000);
             }}
           >
             {activeSection === tab.toLowerCase() ? (

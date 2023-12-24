@@ -1,9 +1,7 @@
 "use server";
 
-import { Card, CardBody, CardHeader, Code, Image } from "@nextui-org/react";
-import backgroundImage from "../../public/back2.webp";
+import { Card, CardBody, Code } from "@nextui-org/react";
 import { ExternalLink } from "lucide-react";
-import NextImage from "next/image";
 
 const Experience = () => {
   const skills = [
@@ -20,8 +18,8 @@ const Experience = () => {
   ];
   return (
     <div>
-      <Card className="col-span-12 sm:col-span-4 h-[430px] md:h-[360px] bg-transparent shadow-none hover:bg-default-50 cursor-pointer">
-        <CardBody className="z-[10] absolute ">
+      <Card className=" mx-1 shadow dark:bg-[#040426] bg-transparent cursor-pointer">
+        <CardBody>
           <div className="flex items-start gap-5">
             <p className="text-tiny uppercase font-bold mt-[6px] whitespace-nowrap">
               Feb 2023 - Present
@@ -66,15 +64,6 @@ const Experience = () => {
             ))}
           </div>
         </CardBody>
-        <Image
-          removeWrapper
-          alt="Card background"
-          className="z-0 w-full h-full object-cover dark:block hidden"
-          src={backgroundImage.src}
-          as={NextImage}
-          height={100}
-          width={100}
-        />
       </Card>
     </div>
   );

@@ -10,13 +10,11 @@ import {
   useRef,
   LegacyRef,
   useEffect,
-  MutableRefObject,
 } from "react";
 
 export type TState = {
   authModal: string | undefined;
   activeSection: string | undefined;
-  active: string | undefined;
 };
 
 type ContextType = {
@@ -49,7 +47,6 @@ export const AppContextProvider = ({
   const [state, setState] = useState<TState>({
     authModal: undefined,
     activeSection: undefined,
-    active: undefined,
   });
 
   const hash = useHash();
@@ -91,53 +88,12 @@ export const AppContextProvider = ({
     }
   };
 
-  const commonObserverCallback = (
-    ref: MutableRefObject<HTMLDivElement | null>,
-    name: string,
-    observer: IntersectionObserver
-  ) => {
-    if (ref.current) {
-      observer.observe(ref.current);
-      ref.current.setAttribute("data-section", name);
-    }
-  };
-
   useEffect(() => {
     if (hash) {
       executeScroll(hash);
+      setState((prev) => ({ ...prev, activeSection: hash }));
     }
   }, [hash]);
-
-  useEffect(() => {
-    if (window.innerWidth > 768) {
-      const observerCallback = (entries: any) => {
-        entries.forEach((entry: any) => {
-          const triggerElement = entry.target;
-          const triggerElementName =
-            triggerElement.getAttribute("data-section");
-          if (entry.isIntersecting) {
-            setState((prev) => ({
-              ...prev,
-              activeSection: prev.active ? prev.active : triggerElementName,
-            }));
-          }
-        });
-      };
-
-      const observer = new IntersectionObserver(observerCallback, {
-        threshold: 1,
-      });
-
-      commonObserverCallback(aboutScroll, "about", observer);
-      commonObserverCallback(projectScroll, "projects", observer);
-      commonObserverCallback(experienceScroll, "experience", observer);
-      commonObserverCallback(contactScroll, "contact", observer);
-
-      return () => {
-        observer.disconnect();
-      };
-    }
-  }, [aboutScroll, projectScroll, contactScroll, experienceScroll]);
 
   return (
     <AppContext.Provider
