@@ -1,4 +1,4 @@
-import { Card, CardBody,  Image } from "@nextui-org/react";
+import { Card, CardBody, Image } from "@nextui-org/react";
 import { MoveRight } from "lucide-react";
 import Link from "next/link";
 import NextImage from "next/image";
@@ -39,7 +39,9 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
                 <span className=" h-[2px] w-full bg-default-100"></span>
               </div>
 
-              <h1 className=" my-5 text-[20px] ">{blog.title}</h1>
+              <h1 className=" my-5 text-[20px] leading-[1.3] truncate">
+                {blog.title}
+              </h1>
               <p className=" -mt-2 text-small text-default-500 tracking-wider">
                 {blog.about}
               </p>

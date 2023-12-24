@@ -1,0 +1,115 @@
+---
+title: "Centralizing Error Handling in Node.js Express Applications"
+date: "Dec 24 2023"
+author: "Reetesh Kumar"
+authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
+blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1703399699/WhatsApp_Image_2023-12-24_at_12.01.13_PM_1_zvs0fs.avif"
+about: "Error handling is a critical aspect of building robust and reliable Node.js Express applications. In this article, we will learn about error handling in Node.js Express applications."
+tags:
+  [
+    "node.js",
+    "nodejs",
+    "express",
+    "express.js",
+    "expressjs",
+    "error",
+    "backend",
+    "javascript",
+    "typescript",
+    "application",
+    "blog",
+    "knowledge",
+    "middleware",
+    "rest",
+    "api",
+    "rest-api",
+    "restapi",
+  ]
+---
+
+Error handling is a critical aspect of building robust and reliable [Node.js](https://nodejs.org/en) , [Express](https://expressjs.com/) applications. Centralizing error handling not only makes your code cleaner and more maintainable but also provides several benefits in terms of consistency and ease of debugging.
+
+## Benefits of Centralized Error Handling
+
+### 1. Consistency Across Routes
+
+Centralized error handling ensures consistency in how errors are handled across different parts of your application. Developers don't have to implement error handling logic in every route or middleware individually.
+
+This also makes it easier to update error handling logic in the future. For example, if you want to change the format of error responses, you can do so in a single place.
+
+### 2. Code Maintainability
+
+By consolidating error-handling logic in one place, it becomes easier to manage and maintain. Updates or changes to the error-handling strategy can be made in a single location, reducing the chance of overlooking a particular route or middleware.
+
+### 3. Ease of Debugging
+
+It easier to debug errors, Since all errors are handled in a single place, you can easily add logging or debugging statements to the error-handling logic.
+
+It's allows you to implement a comprehensive error logging system that can be used to track and debug errors in your application. You can log errors to an external service or store them in a database for later analysis. This is crucial for identifying and addressing issues in production.
+
+### 4. Separation of Concerns
+
+It separates the concerns of error processing from the core logic of routes and controllers. This promotes a cleaner code structure and makes it easier to focus on the business logic in each route.
+
+can include security-related measures, such as not exposing sensitive information in error messages sent to clients. This helps prevent information disclosure attacks.
+
+## Implementing Centralized Error Handling in Express
+
+### 1. Setting Up Middleware
+
+By placing this middleware at the end of your middleware chain(index.js), it will catch any unhandled errors or our custom error which we throw and provide a consistent response to clients.
+
+```js
+app.use((err, req, res, next) => {
+  const errorStatus = err.status || 500;
+  const errorMessage = err.message || "Something went wrong, Try again!";
+
+  return res.status(errorStatus).json({
+    status: errorStatus,
+    message: errorMessage,
+    stack: err.stack,
+    success: false,
+  });
+});
+```
+
+### 2. Creating a Utility Function for Errors
+
+You can create a utility function to create errors with a default status code and message. This function can be used to create errors in our controllers.
+
+```js
+export const createError = ({
+  status = 500,
+  message = "Internal Server Error",
+}) => {
+  const err = new Error();
+  err.status = status;
+  err.message = message;
+
+  return err;
+};
+```
+
+### 3. Using the Utility Function in Controllers
+
+You can use the utility function to create errors in our controllers. This will ensure that all errors are created in a consistent manner.
+
+```js
+app.get("/login", (req, res, next) => {
+  try {
+    const userFound = false;
+
+    if (!userFound) {
+      throw createError({ status: 404, message: "User not found" });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+```
+
+### Conclusion
+
+Centralizing error handling in Node.js Express applications streamlines development, promotes consistency, and simplifies maintenance. By implementing a centralized approach, developers can easily manage errors, ensure uniformity across routes, and enhance the overall robustness of their applications.
+
+That's it for this article. I hope you found it useful. If you have any questions or feedback, please share me on Twitter.
