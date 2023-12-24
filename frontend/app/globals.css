@@ -17,7 +17,7 @@ body {
 
 pre {
   background: transparent !important;
-  width: 350px !important;
+  width: 100% !important;
 }
 
 @media (max-width: 768px) {
@@ -26,12 +26,48 @@ pre {
   }
 }
 
-@media (min-width: 768px) {
+@media (max-width: 640px) {
   pre {
-    width: 100% !important;
+    width: 580px !important;
   }
 }
 
-.hljs {
+@media (max-width: 610px) {
+  pre {
+    width: 520px !important;
+  }
+}
+
+@media (max-width: 550px) {
+  pre {
+    width: 480px !important;
+  }
+}
+
+@media (max-width: 510px) {
+  pre {
+    width: 430px !important;
+  }
+}
+
+@media (max-width: 460px) {
+  pre {
+    width: 370px !important;
+  }
+}
+
+@media (max-width: 400px) {
+  pre {
+    width: 340px !important;
+  }
+}
+
+@media (max-width: 370px) {
+  pre {
+    width: 300px !important;
+  }
+}
+
+.dark .hljs {
   background-color: transparent !important;
 }

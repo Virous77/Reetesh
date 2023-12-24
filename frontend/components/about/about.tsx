@@ -31,11 +31,11 @@ const About = () => {
           {" "}
           Full-Stack Developer.
         </span>{" "}
-        . In this role, I have been actively engaged in utilizing cutting-edge
+        In this role, I have been actively engaged in utilizing cutting-edge
         technologies such as{" "}
         <span className=" text-default-900 font-[500]">
           Typescript, Next.js, React, Node.js, Express, MongoDB, Solidity, Rust,
-          Docker, and Tailwind CSS.
+          Docker, and anchor.
         </span>{" "}
         This diverse tech stack has not only broadened my skill set but has also
         enabled me to contribute effectively to the development and enhancement

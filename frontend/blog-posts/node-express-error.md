@@ -3,7 +3,7 @@ title: "Centralizing Error Handling in Node.js Express Applications"
 date: "Dec 24 2023"
 author: "Reetesh Kumar"
 authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
-blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1703399699/WhatsApp_Image_2023-12-24_at_12.01.13_PM_1_zvs0fs.avif"
+blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1703418748/WhatsApp_Image_2023-12-24_at_12.01.13_PM_1_1_1_unsdpy.png"
 about: "Error handling is a critical aspect of building robust and reliable Node.js Express applications. In this article, we will learn about error handling in Node.js Express applications."
 tags:
   [
