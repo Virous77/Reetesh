@@ -100,7 +100,7 @@ app.get("/login", (req, res, next) => {
     const userFound = false;
 
     if (!userFound) {
-      throw createError({ status: 404, message: "User not found" });
+      return next(createError({ status: 404, message: "User not found" }));
     }
   } catch (error) {
     next(error);
