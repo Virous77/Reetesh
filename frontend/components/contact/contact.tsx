@@ -49,7 +49,7 @@ const Contact = () => {
         <>
           <div className="flex items-center justify-center mb-4">
             <Chip
-              startContent={<Mail size={23} />}
+              startContent={<Mail size={20} />}
               variant="faded"
               color="success"
               className=" cursor-pointer hover:bg-success hover:text-foreground text-[18px]"

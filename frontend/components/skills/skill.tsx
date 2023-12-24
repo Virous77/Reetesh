@@ -47,7 +47,7 @@ const Skill: React.FC<TSkills> = ({ skills }) => {
       </section>
 
       <section className=" mt-6 p-4 items-center  flex justify-center">
-        <ul className=" flex flex-wrap items-center gap-5">
+        <ul className=" flex flex-wrap items-center gap-5 place-content-center">
           {skills.map((skill) => (
             <li key={skill._id}>
               <Tooltip content={skill.name}>

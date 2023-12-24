@@ -46,8 +46,7 @@ const Sidebar = () => {
         <CardBody className="px-3 py-0 text-small text-default-400">
           <p>
             My Blog where i write about my journey as a Full-Stack developer. I
-            love writing about my journey as a developer and sharing my
-            knowledge with others.
+            love writing about my journey and sharing my knowledge with others.
           </p>
         </CardBody>
       </Card>

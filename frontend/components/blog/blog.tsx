@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Image } from "@nextui-org/react";
+import { Card, CardBody,  Image } from "@nextui-org/react";
 import { MoveRight } from "lucide-react";
 import Link from "next/link";
 import NextImage from "next/image";

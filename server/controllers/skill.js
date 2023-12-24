@@ -11,8 +11,8 @@ export const createSkill = handleCallback(async (req, res) => {
   });
 });
 
-export const getSkills = handleCallback(async (req, res, next) => {
-  const allSkill = await Skill.find();
+export const getSkills = handleCallback(async (req, res) => {
+  const allSkill = await Skill.find().sort({ level: -1 });
   sendResponse({
     message: "Skills fetched successfully",
     status: true,
