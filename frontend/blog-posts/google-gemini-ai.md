@@ -1,0 +1,179 @@
+---
+title: "Integrating Google Gemini to Node.js Application"
+date: "Dec 25 2023"
+author: "Reetesh Kumar"
+authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
+blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1703484040/google-ai-image_esiipb.png"
+about: "Google Gemini is a powerful and multifaceted AI model developed by Google AI. This article will help you to integrate Google Gemini to your Node.js application. "
+tags:
+  [
+    "google-gemini",
+    "google-ai",
+    "ai",
+    "nodejs",
+    "javascript",
+    "machine-learning",
+    "google-gemini-nodejs",
+    "chatbot",
+    "chatgpt",
+    "gpt",
+    "chat",
+    "chat ai",
+    "google ai",
+    "google gemini ai",
+    "google gemini nodejs",
+    "node js",
+    "node",
+  ]
+---
+
+## What is Google Gemini?
+
+Google Gemini is a powerful and multifaceted AI model developed by Google AI. Gemini doesn't just handle text; it can understand and operate across various formats like code, audio, images, and video. This opens up exciting possibilities for your Node.js projects.
+
+This article will help you to integrate Google Gemini to your Node.js application. We will be using the [Google Gemini SDK](https://www.npmjs.com/package/@google/generative-ai).
+
+## Prerequisites
+
+- Node.js installed on your machine
+- A Google AI Platform account for generating an API key
+
+> _Note:_
+
+1. Node.js version 18+ is required.
+2. To use `import` in node.js you need to add `"type": "module"` in your `package.json` file.
+
+## Getting Started
+
+Let's start by creating a new Node.js project. Open your terminal and run the following command:
+
+```bash
+mkdir google-gemini-nodejs
+cd google-gemini-nodejs
+npm init -y
+```
+
+Next, install the Google Gemini SDK and dotenv package:
+
+```bash
+npm install @google/generative-ai dotenv
+```
+
+## Creating a Google AI Platform Account
+
+To use the Google Gemini SDK, you need API Key. You can create a new API by visiting the [Google AI Platform](https://makersuite.google.com/app/apikey) website.
+
+To create a new API key, click on the **Get API Key** button. once you get the API key, save it in a `.env` file in the root of your project.
+
+```bash
+API_KEY=YOUR_API_KEY
+```
+
+## Setting up the Google Gemini SDK
+
+Now that we have the API key, let's set up the Google Gemini SDK. Create a new file called `index.js` in the root of your project and add the following code:
+
+### Google Gemini Pro Model
+
+```js
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import dotenv from "dotenv";
+dotenv.config();
+
+const gemini_api_key = process.env.API_KEY;
+const googleAI = new GoogleGenerativeAI(gemini_api_key);
+const geminiConfig = {
+  temperature: 0.9,
+  topP: 1,
+  topK: 1,
+  maxOutputTokens: 4096,
+};
+
+const geminiModel = googleAI.getGenerativeModel({
+  model: "gemini-pro",
+  geminiConfig,
+});
+
+const generate = async () => {
+  try {
+    const prompt = "Tell me about google.";
+    const result = await geminiModel.generateContent(prompt);
+    const response = result.response;
+    console.log(response.text());
+  } catch (error) {
+    console.log("response error", error);
+  }
+};
+
+generate();
+```
+
+In the above code we used Google Gemini Pro model which can excels at handling natural language tasks like text generation, translation, and multi-turn text and code chat. This makes it perfect for building intelligent systems that interact with users in natural language.
+
+### Google Gemini Vision Model
+
+```js
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import fs from "fs/promises";
+import dotenv from "dotenv";
+dotenv.config();
+
+const gemini_api_key = process.env.API_KEY;
+const googleAI = new GoogleGenerativeAI(gemini_api_key);
+const geminiConfig = {
+  temperature: 0.4,
+  topP: 1,
+  topK: 32,
+  maxOutputTokens: 4096,
+};
+
+const geminiModel = googleAI.getGenerativeModel({
+  model: "gemini-pro-vision",
+  geminiConfig,
+});
+
+const generate = async () => {
+  try {
+    // Read image file
+    const filePath = "some-image.jpeg";
+    const imageFile = await fs.readFile(filePath);
+    const imageBase64 = imageFile.toString("base64");
+
+    const promptConfig = [
+      { text: "Can you tell me about this image whats happening there?" },
+      {
+        inlineData: {
+          mimeType: "image/jpeg",
+          data: imageBase64,
+        },
+      },
+    ];
+
+    const result = await geminiModel.generateContent({
+      contents: [{ role: "user", parts: promptConfig }],
+    });
+    const response = await result.response;
+    console.log(response.text());
+  } catch (error) {
+    console.log(" response error", error);
+  }
+};
+
+generate();
+```
+
+In the above code we used Google Gemini Vision model which can categorize entire images based on their content and generate captions for images. This makes it perfect for building intelligent systems that interact with users in natural language.
+
+## Running the Application
+
+To run the application, open your terminal and run the following command:
+
+```bash
+node index.js
+```
+
+## Conclusion
+
+In this article, we learned how to integrate Google Gemini to Node.js application. We also learned how to use Google Gemini Pro and Vision model to generate text and image captions. You can find the complete source code on [GitHub](https://github.com/Virous77/google-ai).
+
+That's it for this article. I hope you found it useful. If you have any questions or feedback, please share me on Twitter.
