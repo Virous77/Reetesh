@@ -16,7 +16,7 @@ const poppins = Poppins({
 
 export async function generateMetadata() {
   const metaData = commonMetaData({
-    name: "Reetesh | Full-Stack Developer",
+    name: "",
     desc: "A passionate full-stack developer with a strong proficiency in a versatile set of technologies. Having extensively worked with React, Next.js, Node.js, Express, MongoDB, TypeScript, GraphQL, REST API, Docker, Kubernetes, Solidity, and Anchor, I bring a wealth of experience to the table",
     image: "https://avatars.githubusercontent.com/u/101452588?v=4",
     url: "/",
