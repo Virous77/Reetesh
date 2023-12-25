@@ -11,9 +11,9 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
   const createSlug = (title: string) =>
     title.toLowerCase().split(" ").join("-");
   return (
-    <section className="h-fit md:h-full overflow-scroll body p-2 md:p-0 relative">
+    <section className="h-fit md:h-full lg:overflow-scroll body p-2 md:p-0 relative">
       <h1 className=" my-5 text-[25px]">From My Blogs</h1>
-      <ul className=" grid grid-cols-1 lg:grid-cols-2 items-start gap-4 ">
+      <ul className=" grid grid-cols-1 lg:grid-cols-2 items-start gap-4 pb-3">
         {blogs.map((blog) => (
           <Card
             key={blog.id}
@@ -24,12 +24,15 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
                 src={blog.blogImage}
                 alt={blog.title}
                 isBlurred
-                className=" w-full md:h-[250px]"
                 as={NextImage}
                 height={0}
+                className=" w-full md:h-[250px]"
                 width={0}
                 sizes="100vw"
-                style={{ width: "100%", height: "250px" }}
+                style={{ width: "100%", height: "100%" }}
+                classNames={{
+                  wrapper: "!max-w-full",
+                }}
               />
 
               <div className=" flex items-center gap-3 mt-3">

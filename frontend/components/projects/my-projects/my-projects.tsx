@@ -7,7 +7,7 @@ type TMyProjects = {
 
 const MyProjects: React.FC<TMyProjects> = ({ projects }) => {
   return (
-    <section className=" h-fit md:h-full overflow-y-scroll body">
+    <section className=" h-fit md:h-full lg:overflow-y-scroll body">
       <div className=" flex items-center flex-col mt-10">
         <h2 className="text-[25px] tracking-widest text-center p-2 md:p-0">
           My Projects
@@ -20,7 +20,7 @@ const MyProjects: React.FC<TMyProjects> = ({ projects }) => {
         </p>
       </div>
       <div className=" md:mt-20">
-        <ul className=" flex flex-wrap gap-3">
+        <ul className=" flex flex-wrap gap-3 pb-3">
           <ProjectList projects={projects} isActive={false} />
         </ul>
       </div>

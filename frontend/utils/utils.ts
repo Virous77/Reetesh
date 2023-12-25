@@ -59,7 +59,9 @@ export const commonMetaData = ({
 }) => {
   return {
     metadataBase: new URL("https://reetesh.in"),
-    title: name,
+    title: name
+      ? `${name} | Reetesh Kumar`
+      : "Reetesh Kumar | Full-Stack Developer",
     description: desc,
     authors: [
       {

@@ -1,12 +1,11 @@
 "use server";
 
 import dynamic from "next/dynamic";
-
 import Author from "@/components/common/author";
 import Social from "@/components/social/social";
 import parse from "html-react-parser";
 import Footer from "@/components/contact/footer";
-import { CalendarDays, Home } from "lucide-react";
+import { CalendarDays, Newspaper } from "lucide-react";
 import Link from "next/link";
 
 const HtmlContent = dynamic(() => import("./html-content"));
@@ -22,8 +21,8 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog }) => {
         <Author />
 
         <div className=" flex items-center gap-3">
-          <Link href="/">
-            <Home />
+          <Link href="/blogs">
+            <Newspaper />
           </Link>
           <Social styles="" />
         </div>
@@ -34,8 +33,8 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog }) => {
             <Author />
 
             <div className=" flex items-center gap-3">
-              <Link href="/">
-                <Home />
+              <Link href="/blogs">
+                <Newspaper />
               </Link>
               <Social styles="" />
             </div>
