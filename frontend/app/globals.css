@@ -20,6 +20,14 @@ pre {
   width: 100% !important;
 }
 
+blockquote {
+  background-color: rgb(237, 235, 235) !important;
+}
+
+.dark blockquote {
+  background-color: rgb(34, 34, 34) !important;
+}
+
 @media (max-width: 768px) {
   .l-template {
     grid-template-columns: 1fr;

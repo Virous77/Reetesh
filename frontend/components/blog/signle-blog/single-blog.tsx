@@ -40,7 +40,7 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog }) => {
               <Social styles="" />
             </div>
           </div>
-          <h1 className=" text-[22px] md:text-[28px] -mb-1 text-center mt-8 leading-snug">
+          <h1 className=" text-[26px] font-bold md:text-[32px] -mb-1 text-center mt-8 leading-snug">
             {blog.title}
           </h1>
           <p className=" text-small text-default-500 mt-[12px] flex items-center justify-center gap-2">

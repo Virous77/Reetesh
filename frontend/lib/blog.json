@@ -1,4 +1,5 @@
 {
   "state-management-in-react-apps": "state-in-react",
-  "centralizing-error-handling-in-node.js-express-applications": "node-express-error"
+  "centralizing-error-handling-in-node.js-express-applications": "node-express-error",
+  "integrating-google-gemini-to-node.js-application": "google-gemini-ai"
 }
