@@ -8,6 +8,7 @@ import "highlight.js/styles/shades-of-purple.css";
 import { commonMetaData } from "@/utils/utils";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Script from "next/script";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -68,6 +69,16 @@ export default function RootLayout({
         />
         <link rel="preconnect" href="https://res.cloudinary.com" />
       </head>
+      <Script src="https://www.googletagmanager.com/gtag/js?id=G-XY0Y1HDGMT" />
+      <Script id="google-analytics">
+        {`
+            window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-XY0Y1HDGMT');
+        `}
+      </Script>
       <body className={`${poppins.className} bg-white dark:bg-black`}>
         <NextUIProviderComp>
           <ThemeProviderComp>
