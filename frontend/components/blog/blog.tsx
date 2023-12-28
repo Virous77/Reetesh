@@ -26,7 +26,7 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
                 isBlurred
                 as={NextImage}
                 height={0}
-                className=" w-full md:h-[250px]"
+                className=" w-full min-h-[250px] max-h-[250px]"
                 width={0}
                 sizes="100vw"
                 style={{ width: "100%", height: "100%" }}
