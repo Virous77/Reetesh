@@ -2,19 +2,20 @@
 
 import axios from "axios";
 import { z } from "zod";
+import { hashData } from "@/utils/utils";
 
 const base_url = process.env.NEXT_PUBLIC_SERVER_URL;
 
 const schema = z.object({
   email: z.string().email(),
-  name: z.string().min(2),
+  userName: z.string().min(2),
   message: z.string().min(10),
 });
 
 export const contactActions = async (formData: FormData) => {
   const validatedFields = schema.safeParse({
     email: formData.get("email"),
-    name: formData.get("name"),
+    userName: formData.get("name"),
     message: formData.get("message"),
   });
 
@@ -24,7 +25,7 @@ export const contactActions = async (formData: FormData) => {
       .flat();
 
     return {
-      name: error.includes("name") ? "Please enter a valid Name" : "",
+      name: error.includes("userName") ? "Please enter a valid Name" : "",
       email: error.includes("email") ? "Please enter a valid Email" : "",
       message: error.includes("message") ? "Please enter a valid Message" : "",
       status: "error",
@@ -32,9 +33,16 @@ export const contactActions = async (formData: FormData) => {
   }
 
   try {
+    const hashKey = hashData();
     const { data } = await axios.post(
       `${base_url}/send-email`,
-      validatedFields.data
+      validatedFields.data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${hashKey}`,
+        },
+      }
     );
 
     if (data) {
@@ -46,6 +54,7 @@ export const contactActions = async (formData: FormData) => {
       };
     }
   } catch (error) {
+    console.log(error);
     return {
       status: "failed",
       name: "",

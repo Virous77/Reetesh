@@ -42,7 +42,7 @@ const Contact = () => {
           />
           <p className=" text-[14px]">
             {" "}
-            Thank you contacting me will response back soon. 🥳{" "}
+            Thank you for reaching out, will response back soon. 🥳{" "}
           </p>
         </div>
       ) : (

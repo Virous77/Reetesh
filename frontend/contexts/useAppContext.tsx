@@ -95,6 +95,14 @@ export const AppContextProvider = ({
     }
   }, [hash]);
 
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").then(() => {
+        console.log("registered");
+      });
+    }
+  }, []);
+
   return (
     <AppContext.Provider
       value={{
