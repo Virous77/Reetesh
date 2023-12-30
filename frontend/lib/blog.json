@@ -2,5 +2,6 @@
   "state-management-in-react-apps": "state-in-react",
   "centralizing-error-handling-in-node.js-express-applications": "node-express-error",
   "integrating-google-gemini-to-node.js-application": "google-gemini-ai",
-  "creating-rest-api-on-bun-with-elysiajs": "bun-elysia"
+  "creating-rest-api-on-bun-with-elysiajs": "bun-elysia",
+  "push-notification-in-react-and-next.js-app-using-node.js": "push-notification"
 }
