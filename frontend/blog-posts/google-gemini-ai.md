@@ -38,7 +38,7 @@ This article will help you to integrate Google Gemini to your Node.js applicatio
 - Node.js installed on your machine
 - A Google AI Platform account for generating an API key
 
-> _Note:_
+> Note:
 
 1. Node.js version 18+ is required.
 2. To use `import` in node.js you need to add `"type": "module"` in your `package.json` file.

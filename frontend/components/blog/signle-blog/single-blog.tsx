@@ -48,7 +48,7 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog }) => {
         </div>
 
         <div className="md:pl-[60px] mt-6 w-full flex items-center justify-center">
-          <div className="  prose  prose-base md:prose-lg prose-neutral dark:prose-invert prose-a:text-blue-600 hover:prose-a:text-blue-500 prose-img:rounded-lg">
+          <div className="prose prose-base prose-neutral dark:prose-invert prose-a:whitespace-nowrap prose-a:underline prose-a:underline-offset-4 prose-a:text-default hover:prose-a:text-defaultMax prose-img:rounded-lg prose-headings:font-cal prose-blockquote:font-light">
             <HtmlContent>{parse(blog.contentHtml)}</HtmlContent>
           </div>
         </div>
