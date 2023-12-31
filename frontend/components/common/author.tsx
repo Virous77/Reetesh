@@ -1,24 +1,25 @@
-import { Avatar } from "@nextui-org/react";
 import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const Author = () => {
   return (
     <div className="flex gap-5">
-      <Link href="/">
-        <Avatar
-          isBordered
-          radius="full"
-          size="md"
-          src="https://avatars.githubusercontent.com/u/101452588?v=4"
-        />
+      <Link href="/" aria-label="home">
+        <Avatar>
+          <AvatarImage
+            src="https://avatars.githubusercontent.com/u/101452588?v=4"
+            alt="Reetesh Kumar"
+          />
+          <AvatarFallback>RK</AvatarFallback>
+        </Avatar>
       </Link>
       <div className="flex flex-col gap-1 items-start justify-center">
-        <h4 className="text-small font-semibold leading-none text-default-600">
+        <span className="text-[16px] font-semibold leading-none">
           Reetesh Kumar
-        </h4>
-        <h5 className="text-tiny tracking-tight text-default-400">
+        </span>
+        <span className="text-[13px] tracking-tight text-default block">
           @iMBitcoinB
-        </h5>
+        </span>
       </div>
     </div>
   );

@@ -1,16 +1,14 @@
 "use client";
 
-import { Chip, Image, Input, Textarea } from "@nextui-org/react";
 import { Mail } from "lucide-react";
-import { contactActions } from "./actions";
-import { SubmitButton } from "./button";
 import { useState } from "react";
 import messageSent from "../../public/message.svg";
 import Social from "../social/social";
+import Image from "next/image";
+import ContactForm from "./contact-form";
+import { Card } from "../ui/card";
 
-import NextImage from "next/image";
-
-const initialState = {
+export const initialState = {
   name: "",
   email: "",
   message: "",
@@ -20,79 +18,43 @@ const initialState = {
 const Contact = () => {
   const [formState, setFormState] = useState(initialState);
 
-  const handleFormActon = async (e: FormData) => {
-    const data = await contactActions(e);
-    setFormState(data!);
-  };
-
-  if (formState.status === "failed") {
-    alert("Problem in sending email, please try again later");
-  }
-
   return (
-    <div className=" mb-8 md:mb-0 md:h-[85vh] relative">
-      {formState?.status === "success" ? (
-        <div className=" flex items-center justify-center flex-col gap-2">
+    <div className=" mb-8 md:mb-0 md:h-[85vh] relative ">
+      {formState.status === "success" ? (
+        <Card
+          className=" flex items-center justify-center flex-col gap-2 bg-transparent px-2 py-4 h-[350px]"
+          data-testid="success"
+        >
           <Image
             src={messageSent.src}
             alt="Message sent"
             height={150}
             width={150}
-            as={NextImage}
           />
           <p className=" text-[14px]">
             {" "}
             Thank you for reaching out, will response back soon. 🥳{" "}
           </p>
-        </div>
+        </Card>
       ) : (
         <>
-          <div className="flex items-center justify-center mb-4">
-            <Chip
-              startContent={<Mail size={20} />}
-              variant="faded"
-              color="success"
-              className=" cursor-pointer hover:bg-success hover:text-foreground text-[18px]"
-            >
+          <div
+            className="flex items-center justify-center mb-4"
+            data-testid="initial"
+          >
+            <div className=" cursor-pointer text-[18px] flex items-center gap-1 bg-muted px-3 py-1 text-default hover:text-defaultMax rounded-[30px]">
               <a
                 href="mailto:rajreetesh7@gmail.com"
                 target="_blank"
                 referrerPolicy="no-referrer"
+                data-testid="mail"
               >
                 Mail
               </a>
-            </Chip>
+              <Mail size={20} />
+            </div>
           </div>
-
-          <form action={handleFormActon} className=" flex flex-col gap-4">
-            <Input
-              type="text"
-              variant="bordered"
-              label="Name"
-              name="name"
-              isInvalid={formState!?.name.trim().length > 0}
-              errorMessage={formState?.name}
-              onFocus={() => setFormState((prev) => ({ ...prev, name: "" }))}
-            />
-            <Input
-              type="email"
-              variant="bordered"
-              label="Email"
-              name="email"
-              isInvalid={formState!?.email.trim().length > 0}
-              errorMessage={formState?.email}
-              onFocus={() => setFormState((prev) => ({ ...prev, email: "" }))}
-            />
-            <Textarea
-              label="Your Message"
-              variant="bordered"
-              name="message"
-              isInvalid={formState!?.message.trim().length > 0}
-              errorMessage={formState?.message}
-              onFocus={() => setFormState((prev) => ({ ...prev, message: "" }))}
-            />
-            <SubmitButton />
-          </form>
+          <ContactForm formState={formState} setFormState={setFormState} />
         </>
       )}
 

@@ -25,20 +25,26 @@ const CommonTab: React.FC<TCommonTab> = ({ links, type = true }) => {
     >
       <ul className=" flex flex-col gap-3">
         {links.map((link, idx) => (
-          <Link href={link.path} key={idx} className=" flex items-center gap-2">
-            {link.icon ? (
-              <span>{link.icon}</span>
-            ) : (
-              <span className="block h-[1px] opacity-50 bg-foreground w-10"></span>
-            )}
-            <span
-              className={`${
-                link.icon ? "opacity-100" : "opacity-50"
-              } hover:opacity-100`}
+          <li key={idx}>
+            <Link
+              href={link.path}
+              className=" flex items-center gap-2"
+              aria-label={link.name}
             >
-              {link.name}
-            </span>
-          </Link>
+              {link.icon ? (
+                <span>{link.icon}</span>
+              ) : (
+                <span className="block h-[1px] opacity-50 bg-foreground w-10"></span>
+              )}
+              <span
+                className={`${
+                  link.icon ? "opacity-100" : "opacity-50"
+                } hover:opacity-100`}
+              >
+                {link.name}
+              </span>
+            </Link>
+          </li>
         ))}
       </ul>
 

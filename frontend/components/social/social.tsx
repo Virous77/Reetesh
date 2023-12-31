@@ -12,7 +12,7 @@ const Social: React.FC<TSocial> = ({ styles }) => {
           href={social.url}
           target="_blank"
           key={idx}
-          className=" text-foreground hover:text-accent transition-colors duration-200"
+          className="text-default hover:text-defaultMax transition-colors duration-200"
           referrerPolicy="no-referrer"
           aria-label={social.title}
         >
