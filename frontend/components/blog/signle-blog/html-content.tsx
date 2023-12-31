@@ -12,7 +12,7 @@ type THtmlContent = {
 
 const HtmlContent: React.FC<THtmlContent> = ({ children }) => {
   useEffect(() => {
-    hljs.initHighlighting();
+    hljs.highlightAll();
   }, []);
   return <>{children}</>;
 };

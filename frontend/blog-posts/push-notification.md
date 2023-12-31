@@ -227,7 +227,7 @@ We are subscribing to push notification in the `useEffect` hook. We are using th
 node server.js
 ```
 
-now open Postman and send a post request to `http://localhost:4000/send-notification` route. You will receive the push notification in your browser.
+now open Postman and send a post request to [http://localhost:4000/send-notification]() route. You will receive the push notification in your browser.
 
 ## Conclusion
 

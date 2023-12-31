@@ -89,7 +89,7 @@ blockquote {
 }
 
 .dark blockquote {
-  background-color: rgb(34, 34, 34) !important;
+  background-color: rgb(22, 22, 22) !important;
 }
 
 @media (max-width: 768px) {
@@ -142,4 +142,31 @@ blockquote {
 
 .dark .hljs {
   background-color: transparent !important;
+}
+
+blockquote p::before,
+blockquote p::after {
+  content: none !important;
+}
+
+code::before,
+code::after {
+  content: none !important;
+}
+
+p code,
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code,
+li code {
+  padding: 2px 8px !important;
+  border-radius: 5px !important;
+  text-decoration: none !important;
+  border: 0 solid rgb(66, 66, 66) !important;
+  white-space: nowrap !important;
+  border-width: 0.2px !important;
+  font-weight: 100 !important;
 }
