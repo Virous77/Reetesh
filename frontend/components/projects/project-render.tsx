@@ -1,5 +1,6 @@
 "use client";
 
+import { useAppContext } from "@/contexts/useAppContext";
 import Header from "../common/header";
 import React from "react";
 
@@ -8,7 +9,13 @@ type TProjects = {
 };
 
 const ProjectRender: React.FC<TProjects> = ({ projectComp }) => {
-  return <Header name="Project">{projectComp}</Header>;
+  const { projectScroll } = useAppContext();
+
+  return (
+    <Header name="Project" scroll={projectScroll}>
+      {projectComp}
+    </Header>
+  );
 };
 
 export default ProjectRender;

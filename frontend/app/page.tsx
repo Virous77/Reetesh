@@ -18,12 +18,6 @@ const ProjectRender = dynamic(
 import { TProject, TQueryData } from "@/types/type";
 import { getServerData } from "@/api/server-api";
 const ProjectList = dynamic(() => import("@/components/projects/project-list"));
-const ProjectSimulateRender = dynamic(
-  () => import("@/components/project-simulate/project-simulate-render")
-);
-const ProjectSimulate = dynamic(
-  () => import("@/components/project-simulate/project-simulate")
-);
 
 type TResponse = TQueryData & {
   data: TProject[];
@@ -41,7 +35,6 @@ const Home = async () => {
       <section className="body md:h-full md:overflow-scroll md:pt-[70px]  md:pb-8 flex flex-col md:gap-[100px]">
         <AboutRender aboutComp={<About />} />
         <ExperienceRender experienceComp={<Experience />} />
-        <ProjectSimulateRender experienceComp={<ProjectSimulate />} />
         <ProjectRender
           projectComp={
             <ProjectList projects={projects.data?.slice(0, 5)} isActive />

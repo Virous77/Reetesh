@@ -1,7 +1,7 @@
 "use server";
 
-import { Card, CardBody, Code } from "@nextui-org/react";
 import { ExternalLink } from "lucide-react";
+import { Card, CardContent } from "../ui/card";
 
 const Experience = () => {
   const skills = [
@@ -17,55 +17,48 @@ const Experience = () => {
     "Anchor",
   ];
   return (
-    <div>
-      <Card className=" mx-1 shadow dark:bg-[#040426] bg-transparent cursor-pointer">
-        <CardBody>
-          <div className="flex items-start gap-5">
-            <p className="text-tiny uppercase font-bold mt-[6px] whitespace-nowrap">
-              Feb 2023 - Present
-            </p>
-            <div>
-              <h2 className="font-medium text-large">
-                Junior Software Engineer
-              </h2>
-
-              <a
-                href="https://www.inaraconsultancy.com/"
-                referrerPolicy="no-referrer"
-                target="_blank"
-              >
-                <Code
-                  color="default"
-                  className=" bg-transparent text-tiny mt-0 ml-0 pl-0 flex items-center gap-2 text-default-600"
-                >
-                  Inara Consultancy Services <ExternalLink size={17} />
-                </Code>
-              </a>
-            </div>
-          </div>
-          <p className=" text-[14px] mt-3 leading-[1.5] text-default-600 mb-4">
-            I have been a valued member of Inara Consultancy Services,
-            contributing significantly to the development of diverse projects.
-            My role involves utilizing cutting-edge technologies and build
-            highly scalable web apps. I have actively contributed to the
-            creation of multiple decentralized applications (DApps) and web
-            applications focusing on finance. Additionally, I&apos;ve played a
-            key role in projects related to non-fungible tokens (NFTs) on both
-            the Solana and Ethereum blockchains.
+    <Card className="shadow dark:bg-[#040426] bg-transparent cursor-pointer border-none rounded-[10px] md:mx-1">
+      <CardContent className=" p-3">
+        <div className="flex items-start gap-5">
+          <p className="text-[14px] uppercase font-bold mt-[6px] whitespace-nowrap text-default">
+            Feb 2023 - Present
           </p>
-          <div className=" mt-2 flex flex-wrap gap-2 ">
-            {skills.map((tag) => (
-              <span
-                key={tag}
-                className=" px-2 py-1 bg-default-50 text-[12px] rounded-md"
-              >
-                {tag}
+          <div>
+            <h2 className="font-medium">Junior Software Engineer</h2>
+
+            <a
+              href="https://www.inaraconsultancy.com/"
+              referrerPolicy="no-referrer"
+              target="_blank"
+            >
+              <span className="text-[13px] flex items-center gap-2 text-default pl-1 hover:text-defaultMax whitespace-nowrap">
+                Inara Consultancy Services <ExternalLink size={17} />
               </span>
-            ))}
+            </a>
           </div>
-        </CardBody>
-      </Card>
-    </div>
+        </div>
+        <p className=" text-[15px] mt-3 leading-[1.5] text-default mb-4">
+          I have been a valued member of Inara Consultancy Services,
+          contributing significantly to the development of diverse projects. My
+          role involves utilizing cutting-edge technologies and build highly
+          scalable web apps. I have actively contributed to the creation of
+          multiple decentralized applications (DApps) and web applications
+          focusing on finance. Additionally, I&apos;ve played a key role in
+          projects related to non-fungible tokens (NFTs) on both the Solana and
+          Ethereum blockchains.
+        </p>
+        <div className=" mt-2 flex flex-wrap gap-2 ">
+          {skills.map((tag) => (
+            <span
+              key={tag}
+              className=" px-2 py-1 bg-muted text-[12px] rounded-md"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

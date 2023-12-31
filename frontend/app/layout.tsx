@@ -1,6 +1,5 @@
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import NextUIProviderComp from "@/lib/nextui-provider";
 import ThemeProviderComp from "@/lib/theme-provider";
 import { AppContextProvider } from "@/contexts/useAppContext";
 import ThemeSwitcher from "@/components/theme/theme-switcher";
@@ -80,16 +79,14 @@ export default function RootLayout({
         `}
       </Script>
       <body className={`${poppins.className} bg-white dark:bg-black`}>
-        <NextUIProviderComp>
-          <ThemeProviderComp>
-            <AppContextProvider>
-              {children}
-              <Analytics />
-              <SpeedInsights />
-              <ThemeSwitcher />
-            </AppContextProvider>
-          </ThemeProviderComp>
-        </NextUIProviderComp>
+        <ThemeProviderComp attribute="class" defaultTheme="dark">
+          <AppContextProvider>
+            {children}
+            <Analytics />
+            <SpeedInsights />
+            <ThemeSwitcher />
+          </AppContextProvider>
+        </ThemeProviderComp>
       </body>
     </html>
   );

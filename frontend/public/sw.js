@@ -1,4 +1,4 @@
-let DYNAMIC_CACHE_NAME = "reetesh-v2";
+let DYNAMIC_CACHE_NAME = "reetesh-v3";
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
@@ -22,18 +22,6 @@ self.addEventListener("fetch", function (event) {
         return (
           response ||
           fetch(event.request).then((fetchResponse) => {
-            const responseData = fetchResponse.clone();
-            responseData.text().then((textData) => {
-              if (
-                textData.includes(
-                  `{"status":"success","name":"","email":"","message":`
-                )
-              ) {
-                caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
-                  return cache.delete("/");
-                });
-              }
-            });
             if (fetchResponse.status === 200) {
               return caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
                 cache.put(event.request.url, fetchResponse.clone());

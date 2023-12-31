@@ -21,7 +21,7 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog }) => {
         <Author />
 
         <div className=" flex items-center gap-3">
-          <Link href="/blogs">
+          <Link href="/blogs" aria-label="blogs">
             <Newspaper />
           </Link>
           <Social styles="" />
@@ -42,7 +42,7 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog }) => {
           <h1 className=" text-[26px] font-bold md:text-[32px] -mb-1 text-center mt-8 leading-snug">
             {blog.title}
           </h1>
-          <p className=" text-small text-default-500 mt-[12px] flex items-center justify-center gap-2">
+          <p className=" text-small text-default mt-[12px] flex items-center justify-center gap-2">
             <CalendarDays size={20} /> {blog.date}
           </p>
         </div>
@@ -59,7 +59,7 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog }) => {
             href="https://twitter.com/imbitcoinb"
             target="_blank"
             referrerPolicy="no-referrer"
-            className=" text-primary-500 underline hover:text-primary-800"
+            className=" text-primary underline underline-offset-4 "
           >
             Just reach me out here 😇
           </a>
