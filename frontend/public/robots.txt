@@ -1,9 +1,0 @@
-# *
-User-agent: *
-Allow: /
-
-# Host
-Host: https://reetesh.in
-
-# Sitemaps
-Sitemap: https://reetesh.in/sitemap.xml
