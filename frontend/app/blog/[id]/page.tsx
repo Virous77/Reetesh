@@ -1,25 +1,25 @@
+import { allPosts } from "@/.contentlayer/generated";
 import SingleBlog from "@/components/blog/signle-blog/single-blog";
-import { getAllBlogPosts, getBlog } from "@/lib/post";
 import { commonMetaData } from "@/utils/utils";
+import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
-  const posts = await getAllBlogPosts();
+  const posts = allPosts;
 
   return posts.map((post) => ({
-    id: post.id,
+    id: post.slugAsParams,
   }));
 }
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
-  const blog = await getBlog(params.id);
+  const blog = allPosts.find((post) => post.slugAsParams === params.id);
 
-  const makeTitle = (title: string) => title.replace(/\s+/g, "-").toLowerCase();
   const metaData = commonMetaData({
-    name: blog.title,
-    desc: blog.about,
-    image: blog.blogImage,
-    url: `/blog/${makeTitle(blog.title)}`,
-    keywords: blog.tags,
+    name: blog?.title || "Not Found | Reetesh Kumar",
+    desc: blog?.about || "This blog is not found.",
+    image: blog?.blogImage || "",
+    url: `/blog/${blog?.slugAsParams}`,
+    keywords: blog?.tags || [],
   });
   return {
     ...metaData,
@@ -31,7 +31,10 @@ const SingleBlogPage = async ({
 }: {
   params: { id: string };
 }) => {
-  const blog = await getBlog(id);
+  const blog = allPosts.find((post) => post.slugAsParams === id);
+
+  if (!blog) return notFound();
+
   return <SingleBlog blog={blog} />;
 };
 

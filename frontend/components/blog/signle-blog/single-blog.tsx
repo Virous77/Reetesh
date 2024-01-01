@@ -1,17 +1,16 @@
 "use server";
 
-import dynamic from "next/dynamic";
 import Author from "@/components/common/author";
 import Social from "@/components/social/social";
-import parse from "html-react-parser";
 import Footer from "@/components/contact/footer";
 import { CalendarDays, Newspaper } from "lucide-react";
 import Link from "next/link";
-
-const HtmlContent = dynamic(() => import("./html-content"));
+import { Post } from "@/.contentlayer/generated";
+import { Mdx } from "./mdx";
+import { formateDate } from "@/utils/utils";
 
 type TSingleBlog = {
-  blog: BlogPost & { contentHtml: string };
+  blog: Post;
 };
 
 const SingleBlog: React.FC<TSingleBlog> = ({ blog }) => {
@@ -27,8 +26,8 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog }) => {
           <Social styles="" />
         </div>
       </div>
-      <div className="w-[90%] md:w-[1000px] m-auto">
-        <div className=" w-[95%] md:w-[70%] m-auto mb-8 mt-4">
+      <div style={{ maxWidth: "750px", margin: "auto" }}>
+        <div className="w-full mb-8 mt-4">
           <div className="hidden md:flex items-center justify-between mb-3">
             <Author />
 
@@ -39,18 +38,16 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog }) => {
               <Social styles="" />
             </div>
           </div>
-          <h1 className=" text-[26px] font-bold md:text-[32px] -mb-1 text-center mt-8 leading-snug">
+          <h1 className=" text-[26px] font-bold md:text-[32px] -mb-1 text-center mt-8 leading-snug w-[90%] m-auto">
             {blog.title}
           </h1>
           <p className=" text-small text-default mt-[12px] flex items-center justify-center gap-2">
-            <CalendarDays size={20} /> {blog.date}
+            <CalendarDays size={20} /> {formateDate(blog.date)}
           </p>
         </div>
 
-        <div className="md:pl-[60px] mt-6 w-full flex items-center justify-center">
-          <div className="prose prose-base prose-neutral dark:prose-invert prose-a:whitespace-nowrap prose-a:underline prose-a:underline-offset-4 prose-a:text-default hover:prose-a:text-defaultMax prose-img:rounded-lg prose-headings:font-cal prose-blockquote:font-light">
-            <HtmlContent>{parse(blog.contentHtml)}</HtmlContent>
-          </div>
+        <div className="box-fit mt-6 prose prose-base prose-neutral dark:prose-invert prose-a:whitespace-nowrap prose-a:underline prose-a:underline-offset-4 prose-a:text-default hover:prose-a:text-defaultMax prose-img:rounded-lg prose-headings:font-cal prose-blockquote:font-light">
+          <Mdx code={blog.body.code} />
         </div>
 
         <p className="pb-7 flex flex-col md:flex-row items-center gap-2 justify-center mt-6">
