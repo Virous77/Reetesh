@@ -1,54 +1,49 @@
-import Article from "../model/article.js";
+import blogViews from "../model/blog-views.js";
 import { handleCallback, sendResponse } from "../utils/function.js";
 
-export const createBlog = handleCallback(async (req, res) => {
-  await Article.create(req.body);
-  sendResponse({
-    message: "Article created successfully",
-    status: true,
-    code: 201,
-    res,
-  });
-});
+export const addViews = handleCallback(async (req, res) => {
+  const { blogId, newView } = req.body;
+  const findBlog = await blogViews.findOne({ blogId });
 
-export const getBlogs = handleCallback(async (req, res) => {
-  const articles = await Article.find();
-  sendResponse({
-    message: "Articles fetched successfully",
-    status: true,
-    code: 200,
-    res,
-    data: articles,
-  });
-});
+  if (findBlog) {
+    const findUser = findBlog.viewsId.find((item) => item === newView);
+    if (findUser) {
+      return sendResponse({
+        message: "User already viewed this blog",
+        status: true,
+        code: 200,
+        res,
+        data: findBlog.viewsId.length,
+      });
+    }
 
-export const getBlog = handleCallback(async (req, res) => {
-  const article = await Article.findOne({ slug: req.params.id });
-  sendResponse({
-    message: "Article fetched successfully",
-    status: true,
-    code: 200,
-    res,
-    data: article,
-  });
-});
+    const { viewsId } = findBlog;
+    const newViews = [...viewsId, newView];
+    const updateViews = await blogViews.findOneAndUpdate(
+      { blogId },
+      { viewsId: newViews },
+      { new: true }
+    );
 
-export const deleteBlog = handleCallback(async (req, res) => {
-  await Article.findByIdAndDelete(req.params.id);
-  sendResponse({
-    message: "Article deleted successfully",
-    status: true,
-    code: 200,
-    res,
-  });
-});
+    return sendResponse({
+      message: "Views fetched successfully",
+      status: true,
+      code: 200,
+      res,
+      data: updateViews.viewsId.length,
+    });
+  } else {
+    const createView = await blogViews.create({
+      blogId,
+      viewsId: [newView],
+    });
 
-export const updateBlog = handleCallback(async (req, res) => {
-  await Article.findByIdAndUpdate(req.params.id, req.body);
-  sendResponse({
-    message: "Article updated successfully",
-    status: true,
-    code: 200,
-    res,
-  });
+    return sendResponse({
+      message: "Views fetched successfully",
+      status: true,
+      code: 201,
+      res,
+      data: createView.viewsId.length,
+    });
+  }
 });
