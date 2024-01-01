@@ -1,6 +1,7 @@
 "use client";
 
 import useHash from "@/hooks/use-hash";
+import { generateUUID } from "@/utils/utils";
 import {
   createContext,
   useState,
@@ -101,6 +102,13 @@ export const AppContextProvider = ({
         console.log("registered");
       });
     }
+
+    const setUserTempId = () => {
+      if (!localStorage.getItem("tempId")) {
+        localStorage.setItem("tempId", JSON.stringify(generateUUID()));
+      }
+    };
+    setUserTempId();
   }, []);
 
   return (
