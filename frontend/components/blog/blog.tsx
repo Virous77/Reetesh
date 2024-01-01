@@ -2,20 +2,20 @@ import { MoveRight } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent } from "../ui/card";
 import Image from "next/image";
+import { Post } from "@/.contentlayer/generated";
+import { formateDate } from "@/utils/utils";
 
 type TBlog = {
-  blogs: BlogPost[];
+  blogs: Post[];
 };
 
 const Blog: React.FC<TBlog> = ({ blogs }) => {
-  const createSlug = (title: string) =>
-    title.toLowerCase().split(" ").join("-");
   return (
     <section className="h-fit md:h-full lg:overflow-scroll body p-2 md:p-0 relative">
       <h1 className=" my-5 text-[25px]">From My Blogs</h1>
       <ul className=" grid grid-cols-1 lg:grid-cols-2 items-start gap-4 pb-3">
         {blogs.map((blog) => (
-          <li key={blog.id}>
+          <li key={blog._id}>
             <Card className=" bg-transparent hover:bg-popover w-full">
               <CardContent className="p-3">
                 <Image
@@ -29,7 +29,7 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
 
                 <div className=" flex items-center gap-3 mt-3">
                   <span className=" whitespace-nowrap text-[13px]">
-                    {blog.date}
+                    {formateDate(blog.date)}
                   </span>
                   <span className=" h-[2px] w-full bg-default"></span>
                 </div>
@@ -43,7 +43,7 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
 
                 <div className=" flex items-center gap-3 mt-3">
                   <span className=" h-[2px] w-full bg-default"></span>
-                  <Link href={`/blog/${createSlug(blog.title)}`}>
+                  <Link href={`/blog/${blog.slugAsParams}`}>
                     <span className=" whitespace-nowrap text-[13px] font-bold flex items-center gap-2 cursor-pointer hover:underline hover:underline-offset-4">
                       Read Full Blog <MoveRight />
                     </span>

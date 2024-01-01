@@ -92,60 +92,18 @@ blockquote {
   background-color: rgb(22, 22, 22) !important;
 }
 
+pre {
+  background-color: rgb(22, 22, 22) !important;
+}
+
 @media (max-width: 768px) {
   .l-template {
     grid-template-columns: 1fr;
   }
 }
 
-@media (max-width: 640px) {
-  pre {
-    width: 580px !important;
-  }
-}
-
-@media (max-width: 610px) {
-  pre {
-    width: 520px !important;
-  }
-}
-
-@media (max-width: 550px) {
-  pre {
-    width: 480px !important;
-  }
-}
-
-@media (max-width: 510px) {
-  pre {
-    width: 430px !important;
-  }
-}
-
-@media (max-width: 460px) {
-  pre {
-    width: 370px !important;
-  }
-}
-
-@media (max-width: 400px) {
-  pre {
-    width: 340px !important;
-  }
-}
-
-@media (max-width: 370px) {
-  pre {
-    width: 300px !important;
-  }
-}
-
-.dark .hljs {
-  background-color: transparent !important;
-}
-
-blockquote p::before,
-blockquote p::after {
+blockquote::before,
+blockquote::after {
   content: none !important;
 }
 
@@ -169,4 +127,16 @@ li code {
   white-space: nowrap !important;
   border-width: 0.2px !important;
   font-weight: 100 !important;
+  font-size: 0.8rem !important;
+}
+
+.box-fit {
+  max-width: 100% !important;
+}
+
+@media (max-width: 768px) {
+  .box-fit {
+    max-width: 95% !important;
+    margin: auto;
+  }
 }

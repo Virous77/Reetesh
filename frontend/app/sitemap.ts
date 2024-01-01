@@ -1,7 +1,7 @@
-import { getAllBlogPosts } from "@/lib/post";
+import { allPosts } from "@/.contentlayer/generated";
 
 export default async function sitemap() {
-  const blogs = await getAllBlogPosts();
+  const blogs = allPosts;
   const URL = "https://reetesh.in";
 
   const restUrls = [
@@ -31,11 +31,9 @@ export default async function sitemap() {
     },
   ];
 
-  const allBlogs = blogs.map(({ title, date }) => {
-    const makeTile = (title: string) =>
-      title.replace(/\s+/g, "-").toLowerCase();
+  const allBlogs = blogs.map(({ slugAsParams, date }) => {
     return {
-      url: `${URL}/blog/${makeTile(title)}`,
+      url: `${URL}/blog/${slugAsParams}`,
       lastModified: new Date(date),
       priority: 0.64,
       changeFrequency: "daily",
