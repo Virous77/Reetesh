@@ -3,11 +3,11 @@
 import Author from "@/components/common/author";
 import Social from "@/components/social/social";
 import Footer from "@/components/contact/footer";
-import { CalendarDays, Newspaper } from "lucide-react";
+import { Newspaper } from "lucide-react";
 import Link from "next/link";
 import { Post } from "@/.contentlayer/generated";
 import { Mdx } from "./mdx";
-import { formateDate } from "@/utils/utils";
+import Views from "./views";
 
 type TSingleBlog = {
   blog: Post;
@@ -41,9 +41,7 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog }) => {
           <h1 className=" text-[26px] font-bold md:text-[32px] -mb-1 text-center mt-8 leading-snug w-[90%] m-auto">
             {blog.title}
           </h1>
-          <p className=" text-small text-default mt-[12px] flex items-center justify-center gap-2">
-            <CalendarDays size={20} /> {formateDate(blog.date)}
-          </p>
+          <Views date={blog.date} slug={blog.slugAsParams} />
         </div>
 
         <div className="box-fit mt-6 prose prose-base prose-neutral dark:prose-invert prose-a:whitespace-nowrap prose-a:underline prose-a:underline-offset-4 prose-a:text-default hover:prose-a:text-defaultMax prose-img:rounded-lg prose-headings:font-cal prose-blockquote:font-light">

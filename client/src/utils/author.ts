@@ -7,31 +7,6 @@ export const author = {
   about: "Full Stack Developer",
 };
 
-export const month = [
-  "Jan",
-  "Feb",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-
-export const formattedDate = (date: Date) => {
-  return new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-  }).format(date);
-};
-
 export const hashData = () => {
   const secretKey = import.meta.env.VITE_MASTER_KEY;
 

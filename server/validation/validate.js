@@ -12,19 +12,6 @@ export const common = async ({ req, res, next, schema }) => {
   }
 };
 
-export const ArticleValidate = async (req, res, next) => {
-  const schema = joi
-    .object({
-      title: joi.string().trim().required(),
-      description: joi.string().trim().required(),
-      slug: joi.string().trim().required(),
-      sanitizedHTML: joi.string().trim().required(),
-      image: joi.string().trim().required(),
-    })
-    .options({ stripUnknown: true });
-  return common({ req, res, next, schema });
-};
-
 export const EmailValidate = async (req, res, next) => {
   const schema = joi
     .object({
