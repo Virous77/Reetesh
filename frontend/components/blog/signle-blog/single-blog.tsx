@@ -26,8 +26,8 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog }) => {
           <Social styles="" />
         </div>
       </div>
-      <>
-        <div className=" box-fit mb-8 mt-4">
+      <div style={{ maxWidth: "750px", margin: "auto" }}>
+        <div className="w-full mb-8 mt-4">
           <div className="hidden md:flex items-center justify-between mb-3">
             <Author />
 
@@ -46,10 +46,8 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog }) => {
           </p>
         </div>
 
-        <div className="mt-6 w-full flex items-center justify-center">
-          <div className="blog-size prose prose-base prose-neutral dark:prose-invert prose-a:whitespace-nowrap prose-a:underline prose-a:underline-offset-4 prose-a:text-default hover:prose-a:text-defaultMax prose-img:rounded-lg prose-headings:font-cal prose-blockquote:font-light">
-            <Mdx code={blog.body.code} />
-          </div>
+        <div className="box-fit mt-6 prose prose-base prose-neutral dark:prose-invert prose-a:whitespace-nowrap prose-a:underline prose-a:underline-offset-4 prose-a:text-default hover:prose-a:text-defaultMax prose-img:rounded-lg prose-headings:font-cal prose-blockquote:font-light">
+          <Mdx code={blog.body.code} />
         </div>
 
         <p className="pb-7 flex flex-col md:flex-row items-center gap-2 justify-center mt-6">
@@ -65,7 +63,7 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog }) => {
         </p>
 
         <Footer />
-      </>
+      </div>
     </section>
   );
 };
