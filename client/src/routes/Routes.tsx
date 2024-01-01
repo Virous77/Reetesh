@@ -5,8 +5,6 @@ import {
   WorkPage,
   SkillsPage,
   ContactPage,
-  BlogPage,
-  BlogDetailsPage,
 } from "../pages/index";
 
 const Router = () => {
@@ -18,8 +16,6 @@ const Router = () => {
         <Route path="/work" element={<WorkPage />} />
         <Route path="/skills" element={<SkillsPage />} />
         <Route path="/contact" element={<ContactPage />} />
-        <Route path="/blogs" element={<BlogPage />} />
-        <Route path="/blog/:slug" element={<BlogDetailsPage />} />
       </Routes>
     </>
   );

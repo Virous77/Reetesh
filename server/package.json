@@ -23,8 +23,7 @@
     "joi": "^17.11.0",
     "mongoose": "^7.0.3",
     "morgan": "^1.10.0",
-    "nodemailer": "^6.9.1",
-    "slugify": "^1.6.6"
+    "nodemailer": "^6.9.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
