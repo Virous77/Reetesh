@@ -1,6 +1,11 @@
 "use client";
 
-import { formateDate, getLocalData, hashData } from "@/utils/utils";
+import {
+  formateDate,
+  generateUUID,
+  getLocalData,
+  hashData,
+} from "@/utils/utils";
 import { CalendarDays, Eye } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -13,10 +18,15 @@ const Views = ({ date, slug }: { date: string; slug: string }) => {
     const fetchData = async () => {
       try {
         const id = getLocalData("tempId");
+        let tempId: string | null = null;
+        if (!id) {
+          tempId = generateUUID();
+          localStorage.setItem("tempId", JSON.stringify(tempId.toString()));
+        }
         const hashKey = hashData();
         const res = await axios.post(
           `${baseUrl}/views`,
-          { blogId: slug, newView: id },
+          { blogId: slug, newView: id || tempId },
           {
             headers: {
               "Content-Type": "application/json",
