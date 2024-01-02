@@ -74,17 +74,17 @@ export default function RootLayout({
           href="/favicon-16x16.png"
         />
         <link rel="preconnect" href="https://res.cloudinary.com" />
-      </head>
-      <Script src="https://www.googletagmanager.com/gtag/js?id=G-XY0Y1HDGMT" />
-      <Script id="google-analytics">
-        {`
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-XY0Y1HDGMT" />
+        <Script id="google-analytics">
+          {`
             window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'G-XY0Y1HDGMT');
         `}
-      </Script>
+        </Script>
+      </head>
       <body className={`${poppins.className} bg-white dark:bg-black`}>
         <ThemeProviderComp attribute="class" defaultTheme="dark">
           <AppContextProvider>
