@@ -74,8 +74,11 @@ export default function RootLayout({
           href="/favicon-16x16.png"
         />
         <link rel="preconnect" href="https://res.cloudinary.com" />
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-XY0Y1HDGMT" />
-        <Script id="google-analytics">
+        <Script
+          strategy="beforeInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-XY0Y1HDGMT"
+        />
+        <Script strategy="beforeInteractive" id="google-analytics">
           {`
             window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
