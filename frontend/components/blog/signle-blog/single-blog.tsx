@@ -8,6 +8,7 @@ import Link from "next/link";
 import { Post } from "@/.contentlayer/generated";
 import { Mdx } from "./mdx";
 import Views from "./views";
+import Comment from "./comment/comment";
 
 type TSingleBlog = {
   blog: Post;
@@ -48,7 +49,9 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog }) => {
           <Mdx code={blog.body.code} />
         </div>
 
-        <p className="pb-7 flex flex-col md:flex-row items-center gap-2 justify-center mt-6">
+        <Comment />
+
+        <p className="pb-7 flex flex-col md:flex-row items-center gap-2 justify-center">
           Got any questions about this article?
           <a
             href="https://twitter.com/imbitcoinb"
