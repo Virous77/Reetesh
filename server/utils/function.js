@@ -16,11 +16,10 @@ export const createError = ({ status, message }) => {
   return err;
 };
 
-export const sendResponse = ({ code, data, payment, message, status, res }) => {
+export const sendResponse = ({ code, data, message, status, res }) => {
   res.status(code).json({
     data: data ? data : null,
     message,
     status,
-    payment,
   });
 };

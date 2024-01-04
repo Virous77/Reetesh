@@ -2,21 +2,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact | New Email</title>
+    <title>Comment | New Email</title>
     <style>
       * { box-sizing: border-box; margin: 0; padding: 0; } body { font-family:
       Arial, sans-serif; margin: 0; padding: 0; background-color: #f2f2f2; }
       .container { max-width: 600px; margin: 0 auto; background-color: #ffffff;
       padding: 20px; border-radius: 5px; box-shadow: 0px 2px 10px rgba(0, 0, 0,
-      0.1); background-color: #000; margin-top: 1rem; } p { text-align: center;
-      font-size: 18px; margin-top: 0; margin-bottom: 20px; color: #ffffff; }
+      0.1); background-color: #white; margin-top: 1rem; } p { text-align:
+      center; font-size: 18px; margin-top: 0; margin-bottom: 20px; color: black;
+      }
     </style>
   </head>
   <body>
     <div class="container">
-      <p>Greetings from, {{userName}}</p>
-      <p>{{message}}</p>
-      <p>You can reply back me on my mail:- {{email}}</p>
+      <p>New Comment received for blog {{blogId}}</p>
+      <p>{{comment}}</p>
+      <p>Visit to check it out:- {{url}}</p>
     </div>
   </body>
 </html>

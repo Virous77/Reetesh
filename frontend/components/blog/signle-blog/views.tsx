@@ -10,7 +10,7 @@ import { CalendarDays, Eye } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+export const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 const Views = ({ date, slug }: { date: string; slug: string }) => {
   const [views, setViews] = useState(0);
