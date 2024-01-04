@@ -140,3 +140,7 @@ li code {
     margin: auto;
   }
 }
+
+.grid-cols-custom {
+  grid-template-columns: 45px 1fr;
+}

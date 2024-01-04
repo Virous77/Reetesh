@@ -2,13 +2,19 @@
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import action from "./action";
+import axios from "axios";
+import { baseUrl } from "../views";
+import { getLocalData, hashData } from "@/utils/utils";
+import { usePathname } from "next/navigation";
 
 const CommentForm = () => {
   const [pending, setPending] = useState(false);
+  const pathName = usePathname();
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const comment = formData.get("comment");
@@ -17,12 +23,24 @@ const CommentForm = () => {
     setPending(true);
 
     try {
-      console.log(comment);
-      e.currentTarget.reset();
+      const hashKey = hashData();
+      const blogId = pathName.split("/")[2];
+      const id = getLocalData("tempId");
+      const packet = {
+        comment,
+        blogId,
+        userId: id,
+      };
+      await axios.post(`${baseUrl}/comment`, packet, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${hashKey}`,
+        },
+      });
+      inputRef!.current!.value = "";
       action();
       setPending(false);
     } catch (error) {
-      console.log(error);
       setPending(false);
       alert("Failed to send comment");
     }
@@ -35,6 +53,7 @@ const CommentForm = () => {
         required={true}
         className=" py-6"
         name="comment"
+        ref={inputRef}
       />
       <Button disabled={pending} type="submit" className=" py-6 px-[30px]">
         {pending ? "Sending..." : "Send"}

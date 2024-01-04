@@ -49,20 +49,7 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog }) => {
           <Mdx code={blog.body.code} />
         </div>
 
-        <Comment />
-
-        <p className="pb-7 flex flex-col md:flex-row items-center gap-2 justify-center">
-          Got any questions about this article?
-          <a
-            href="https://twitter.com/imbitcoinb"
-            target="_blank"
-            referrerPolicy="no-referrer"
-            className=" text-primary underline underline-offset-4 "
-          >
-            Just reach me out here 😇
-          </a>
-        </p>
-
+        <Comment slug={blog.slugAsParams} />
         <Footer />
       </div>
     </section>

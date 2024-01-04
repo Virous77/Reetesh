@@ -1,4 +1,4 @@
-let DYNAMIC_CACHE_NAME = "reetesh-v1.6.0";
+let DYNAMIC_CACHE_NAME = "reetesh-v1.6.1";
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
@@ -15,26 +15,32 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", function (event) {
-  event.respondWith(
-    caches
-      .match(event.request)
-      .then((response) => {
-        return (
-          response ||
-          fetch(event.request).then((fetchResponse) => {
-            if (fetchResponse.status === 200) {
-              return caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
-                cache.put(event.request.url, fetchResponse.clone());
+  const excludedUrls = ["/blog/"];
+
+  if (excludedUrls.some((url) => event.request.url.includes(url))) {
+    event.respondWith(fetch(event.request));
+  } else {
+    event.respondWith(
+      caches
+        .match(event.request)
+        .then((response) => {
+          return (
+            response ||
+            fetch(event.request).then((fetchResponse) => {
+              if (fetchResponse.status === 200) {
+                return caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
+                  cache.put(event.request.url, fetchResponse.clone());
+                  return fetchResponse;
+                });
+              } else {
                 return fetchResponse;
-              });
-            } else {
-              return fetchResponse;
-            }
-          })
-        );
-      })
-      .catch((error) => {
-        console.error("Error fetching:", error);
-      })
-  );
+              }
+            })
+          );
+        })
+        .catch((error) => {
+          console.error("Error fetching:", error);
+        })
+    );
+  }
 });

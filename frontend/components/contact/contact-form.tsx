@@ -71,9 +71,11 @@ const ContactForm: React.FC<TProps> = ({ formState, setFormState }) => {
       if (data.status) {
         setFormState((prev) => ({ ...prev, status: "success" }));
       } else {
+        setFormState((prev) => ({ ...prev, status: "idle" }));
         alert("Problem in sending email, please try again later");
       }
     } catch (error) {
+      setFormState((prev) => ({ ...prev, status: "idle" }));
       alert("Problem in sending email, please try again later");
     }
   };
@@ -89,13 +91,13 @@ const ContactForm: React.FC<TProps> = ({ formState, setFormState }) => {
     <>
       <form
         className=" flex flex-col gap-4 m-1"
-        data-testid="form"
         onSubmit={(e) => e.preventDefault()}
       >
         <fieldset>
           <Label htmlFor="name" className=" block">
             Name
             <Input
+              data-testid="name"
               type="text"
               name="name"
               onChange={handleChange}
@@ -113,6 +115,7 @@ const ContactForm: React.FC<TProps> = ({ formState, setFormState }) => {
           <Label htmlFor="email" className=" block">
             Email
             <Input
+              data-testid="email"
               type="email"
               name="email"
               onChange={handleChange}
@@ -130,6 +133,7 @@ const ContactForm: React.FC<TProps> = ({ formState, setFormState }) => {
           <Label htmlFor="message" className=" block">
             Message
             <Textarea
+              data-testid="message"
               name="message"
               onChange={handleChange}
               className=" max-h-[150px] min-h-[50px] text-[16px] mt-2 font-normal"
@@ -144,10 +148,9 @@ const ContactForm: React.FC<TProps> = ({ formState, setFormState }) => {
 
         <Button
           type="button"
-          aria-disabled={formState.status === "loading"}
           variant={formState.status === "loading" ? "outline" : "default"}
           className=" rounded"
-          disabled={formState.status === "loading"}
+          disabled={formState.status === "loading" || formState.name === ""}
           onClick={handleFormSubmit}
         >
           {formState.status === "loading" ? "Sending.." : "Send"}

@@ -1,49 +1,32 @@
 import { formateDate } from "@/utils/utils";
-import { getServerData } from "@/api/server-api";
+import { TComments } from "./comment";
 
-const CommentList = async () => {
-  const data = await getServerData({ endpoint: "/projects", tag: "comments" });
-
-  console.log(data);
-
-  const comments = [
-    {
-      id: 1,
-      name: "28",
-      message: "This is a comment",
-      date: "2021-10-10",
-    },
-    {
-      id: 2,
-      name: "cE",
-      message: "We are testing this comment",
-      date: "2022-08-17",
-    },
-    {
-      id: 3,
-      name: "rr",
-      message: "We are leaning new things",
-      date: "2023-08-27",
-    },
-  ];
+const CommentList = async ({ data }: { data: TComments }) => {
+  if (!data.status || data.data.length === 0)
+    return <p className=" pt-4 text-center pb-2">No comments yet</p>;
 
   return (
     <div className=" mt-3">
-      {comments.map((comment) => (
-        <div key={comment.id} className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-            <span className="text-[20px] text-heading font-bold">
-              {comment.name}
-            </span>
+      <div className=" max-h-[700px] overflow-scroll">
+        {data.data.map((comment) => (
+          <div
+            key={comment._id}
+            className="grid grid-cols-custom items-start gap-3 mb-4"
+          >
+            <div className="w-[40px] h-[40px]  rounded-full bg-gray-200 flex items-center justify-center">
+              <span className="text-[18px] text-heading font-bold">
+                {comment.userId.slice(0, 2)}
+              </span>
+            </div>
+            <div>
+              <p className="">{comment.comment}</p>
+              <p className="text-[12px] text-default">
+                {formateDate(comment.createdAt)}
+              </p>
+            </div>
           </div>
-          <div>
-            <p className="">{comment.message}</p>
-            <p className="text-[12px] text-default">
-              {formateDate(comment.date)}
-            </p>
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
