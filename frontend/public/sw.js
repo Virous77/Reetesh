@@ -1,4 +1,4 @@
-let DYNAMIC_CACHE_NAME = "reetesh-v1.6.2";
+let DYNAMIC_CACHE_NAME = "reetesh-v1.6.3";
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
