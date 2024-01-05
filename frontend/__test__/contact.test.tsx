@@ -1,48 +1,86 @@
 import Contact from "@/components/contact/contact";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import ContactForm from "@/components/contact/contact-form";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
-jest.mock("react-dom", () => ({
-  ...jest.requireActual("react-dom"),
-  useFormStatus: jest.fn(() => ({
-    pending: true,
-  })),
-}));
+const setFormState = jest.fn();
+const formState = {
+  name: "",
+  email: "",
+  message: "",
+  status: "idle",
+};
+
+const validateState = {
+  name: "cool",
+  email: "cool",
+  message: "tests",
+  status: "idle",
+};
 
 describe("Contact component", () => {
-  it("should render contact component", async () => {
+  it("it should render contact form component", async () => {
+    render(<ContactForm formState={formState} setFormState={setFormState} />);
+
+    const button = screen.getByRole("button", {
+      name: "Send",
+    });
+    expect(button).toHaveTextContent("Send");
+    expect(button).toBeDisabled();
+  });
+
+  it("it should validate form fields", async () => {
+    render(
+      <ContactForm formState={validateState} setFormState={setFormState} />
+    );
+    const button = screen.getByRole("button", {
+      name: "Send",
+    });
+
+    const nameField = screen.getByTestId("name");
+    const emailField = screen.getByTestId("email");
+    const messageField = screen.getByTestId("message");
+    await userEvent.type(nameField, "Raj");
+    await userEvent.type(emailField, "testgmail.com");
+    await userEvent.type(messageField, "Hello World");
+    expect(button).toBeEnabled();
+    expect(nameField).toHaveValue("Raj");
+    expect(messageField).toHaveValue("Hello World");
+    await userEvent.click(button);
+    expect(screen.getByText("Invalid email")).toBeInTheDocument();
+  });
+
+  it("it should submit form", async () => {
+    render(
+      <ContactForm
+        formState={{
+          name: "Raj",
+          email: "test2@gmail.com",
+          message: "test message",
+          status: "success",
+        }}
+        setFormState={setFormState}
+      />
+    );
+    const nameField = screen.getByTestId("name");
+    const emailField = screen.getByTestId("email");
+    const messageField = screen.getByTestId("message");
+    const button = screen.getByRole("button", {
+      name: "Send",
+    });
+
+    await userEvent.type(nameField, "Raj");
+    await userEvent.type(emailField, "test@gmail.com");
+    await userEvent.type(messageField, "Hello World");
+
+    await userEvent.click(button);
+    expect(setFormState).toHaveBeenCalled();
+  });
+
+  it("it should render contact component", async () => {
     render(<Contact />);
 
-    const contact = screen.getByRole("button");
-    expect(contact).toHaveTextContent("Send");
-
-    const mail = screen.getByTestId("mail");
-    expect(mail).toHaveTextContent("Mail");
-
-    const nameField = screen.getByLabelText("Name");
-    const emailField = screen.getByLabelText("Email");
-    const messageField = screen.getByLabelText("Your Message");
-
-    // Assert that the current component is no longer in the document
-    const currentComponent = screen.queryByTestId("initial");
-    expect(currentComponent).toBeInTheDocument();
-
-    fireEvent.click(contact);
-
-    waitFor(() => {
-      contact.textContent === "Sending..";
-    });
-
-    fireEvent.change(nameField, { target: { value: "Rajreetesh" } });
-    fireEvent.change(emailField, { target: { value: "test12@gmail.com" } });
-    fireEvent.change(messageField, { target: { value: "Hello World" } });
-
-    waitFor(() => {
-      const successComponent = screen.getByTestId("success");
-      expect(successComponent).toBeInTheDocument();
-
-      // Assert that the current component is no longer in the document
-      const currentComponent = screen.getByTestId("initial");
-      expect(currentComponent).not.toBeInTheDocument();
-    });
+    const initial = screen.getByTestId("initial");
+    expect(initial).toBeInTheDocument();
   });
 });
