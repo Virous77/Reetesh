@@ -6,6 +6,7 @@ import Navigation from "./navigation";
 
 const Tab = () => {
   const {
+    executeScroll,
     state: { activeSection },
     setState,
   } = useAppContext();
@@ -20,6 +21,7 @@ const Tab = () => {
               href={`/#${tab.toLowerCase()}`}
               className="text-[16px] leading-[1.1] flex items-center gap-3 cursor-pointer"
               onClick={() => {
+                executeScroll(tab.toLowerCase());
                 setState((prev) => ({
                   ...prev,
                   activeSection: tab.toLowerCase(),

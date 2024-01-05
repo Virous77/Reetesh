@@ -94,14 +94,6 @@ export const AppContextProvider = ({
       executeScroll(hash);
       setState((prev) => ({ ...prev, activeSection: hash }));
     }
-  }, [hash]);
-
-  useEffect(() => {
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/sw.js").then(() => {
-        console.log("registered");
-      });
-    }
 
     const setUserTempId = () => {
       if (!localStorage.getItem("tempId")) {
@@ -109,7 +101,7 @@ export const AppContextProvider = ({
       }
     };
     setUserTempId();
-  }, []);
+  }, [hash]);
 
   return (
     <AppContext.Provider
