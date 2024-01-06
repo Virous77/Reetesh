@@ -101,6 +101,12 @@ export const AppContextProvider = ({
       }
     };
     setUserTempId();
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").then(() => {
+        console.log("registered");
+      });
+    }
   }, [hash]);
 
   return (
