@@ -36,7 +36,7 @@ export default async function sitemap() {
       url: `${URL}/blog/${slugAsParams}`,
       lastModified: new Date(date),
       priority: 0.64,
-      changeFrequency: "daily",
+      changeFrequency: "weekly",
     };
   });
 
