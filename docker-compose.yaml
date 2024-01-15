@@ -1,0 +1,50 @@
+version: "3.8"
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    env_file:
+      - "./server/.env"
+    volumes:
+      - ./server:/app
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    env_file:
+      - "./client/.env"
+    volumes:
+      - ./client:/app
+    depends_on:
+      - server
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - "./frontend/.env"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - server
+  author:
+    build:
+      context: ./author
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    env_file:
+      - "./author/.env"
+    volumes:
+      - ./author:/app
+    depends_on:
+      - server

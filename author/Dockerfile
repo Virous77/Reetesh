@@ -1,13 +1,14 @@
 FROM node:18-alpine
-
 WORKDIR /app
 
-COPY package.json /app
+COPY  yarn.lock /app
 
 RUN yarn
 
 COPY . /app
 
-EXPOSE 4000
+ENV NODE_ENV=development
+
+EXPOSE 3001
 
 CMD [ "yarn", "run", "dev" ]
