@@ -24,7 +24,7 @@ const Sidebar = () => {
     <section className=" p-4 md:p-0 md:pt-12 ">
       <AuthorCard
         message="I write about my journey as a Full-Stack developer. I
-          love writing about my journey and sharing my knowledge with others."
+          love writing what i have learned and sharing my knowledge with others."
       />
       <CommonTab links={Links} type={false} />
     </section>
