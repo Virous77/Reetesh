@@ -5,11 +5,8 @@ import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import axios from "axios";
 import { Label } from "../ui/label";
-import { hashData } from "@/utils/utils";
 import { initialState } from "./contact";
 import { useState } from "react";
-
-const base_url = process.env.NEXT_PUBLIC_SERVER_URL;
 
 type TProps = {
   formState: typeof initialState;
@@ -53,22 +50,12 @@ const ContactForm: React.FC<TProps> = ({ formState, setFormState }) => {
       }
 
       setFormState((prev) => ({ ...prev, status: "loading" }));
-      const hashKey = hashData();
-      const { data } = await axios.post(
-        `${base_url}/send-email`,
-        {
-          userName: formState.name,
-          email: formState.email,
-          message: formState.message,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${hashKey}`,
-          },
-        }
-      );
-      if (data.status) {
+      const { data } = await axios.post(`/api/send`, {
+        userName: formState.name,
+        email: formState.email,
+        message: formState.message,
+      });
+      if (!data.error) {
         setFormState((prev) => ({ ...prev, status: "success" }));
       } else {
         setFormState((prev) => ({ ...prev, status: "idle" }));
