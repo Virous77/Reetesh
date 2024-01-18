@@ -22,20 +22,6 @@ services:
       - ./client:/app
     depends_on:
       - server
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    env_file:
-      - "./frontend/.env"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-      - /app/.next
-    depends_on:
-      - server
   author:
     build:
       context: ./author
