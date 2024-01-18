@@ -19,7 +19,7 @@ const Tab = () => {
           <li key={tab}>
             <Link
               href={`/#${tab.toLowerCase()}`}
-              className="text-[16px] leading-[1.1] flex items-center gap-3 cursor-pointer"
+              className="text-[16px] leading-[1.1] flex items-center gap-3 cursor-pointer w-fit"
               onClick={() => {
                 executeScroll(tab.toLowerCase());
                 setState((prev) => ({

@@ -41,11 +41,10 @@ const Experience = () => {
           I have been a valued member of Inara Consultancy Services,
           contributing significantly to the development of diverse projects. My
           role involves utilizing cutting-edge technologies and build highly
-          scalable web apps. I have actively contributed to the creation of
-          multiple decentralized applications (DApps) and web applications
-          focusing on finance. Additionally, I&apos;ve played a key role in
-          projects related to non-fungible tokens (NFTs) on both the Solana and
-          Ethereum blockchains.
+          scalable web apps. I have actively contributed to the multiple
+          decentralized applications (DApps) and web applications focusing on
+          finance. Additionally, I&apos;ve played a key role in building Dapps
+          on both the Solana and Ethereum blockchains.
         </p>
         <div className=" mt-2 flex flex-wrap gap-2 ">
           {skills.map((tag) => (
