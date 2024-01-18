@@ -31,7 +31,7 @@ const Contact = () => {
             height={150}
             width={150}
           />
-          <p className=" text-[14px]">
+          <p className=" text-[14px] text-center">
             {" "}
             Thank you for reaching out, will response back soon. 🥳{" "}
           </p>
