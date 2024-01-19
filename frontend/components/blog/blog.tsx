@@ -16,7 +16,7 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
       <ul className=" grid grid-cols-1 lg:grid-cols-2 items-start gap-4 pb-3">
         {blogs.map((blog) => (
           <li key={blog._id}>
-            <Card className=" bg-transparent hover:bg-popover w-full">
+            <Card className=" bg-transparent hover:bg-popover w-full border-none">
               <CardContent className="p-3">
                 <Image
                   src={blog.blogImage}
@@ -37,7 +37,7 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
                 <h1 className=" my-5 text-[20px] leading-[1.3] truncate">
                   {blog.title}
                 </h1>
-                <p className=" -mt-2 text-[14px] text-default tracking-wider">
+                <p className=" -mt-2 text-[14px] text-muted-foreground tracking-wider">
                   {blog.about}
                 </p>
 

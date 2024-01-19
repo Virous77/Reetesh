@@ -5,15 +5,15 @@ const Navigation = () => {
   return (
     <div className=" flex items-center gap-7 mt-5">
       <Link href="/blogs">
-        <div className="flex items-center gap-2 cursor-pointer text-[13px] text-default hover:text-defaultMax">
+        <span className="flex items-center gap-2 cursor-pointer text-[13px] text-default hover:text-defaultMax font-mono">
           <FileText size={17} /> Blogs
-        </div>
+        </span>
       </Link>
 
       <Link href="/skills">
-        <div className=" flex items-center gap-2 cursor-pointer text-[13px] text-default hover:text-defaultMax ">
+        <span className=" flex items-center gap-2 cursor-pointer text-[13px] text-default hover:text-defaultMax font-mono">
           <Target size={17} /> Skills
-        </div>
+        </span>
       </Link>
     </div>
   );

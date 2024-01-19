@@ -19,5 +19,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <React.Fragment>{children}</React.Fragment>;
+  return (
+    <main className="dark:bg-gradient-to-r from-[#000000] to-[#0e161e] h-full md:h-screen pt-12">
+      {children}
+    </main>
+  );
 }

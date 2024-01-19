@@ -17,10 +17,13 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
   return (
     <div className="flex flex-col gap-2">
       {projects?.map((project) => (
-        <Card key={project._id} className="m-1 h-fit border shadow-lg">
+        <Card
+          key={project._id}
+          className="m-1 h-fit border dark:border-none dark:shadow-none shadow-lg dark:bg-gradient-to-r from-[#0c0e11] to-[#171d24]"
+        >
           <CardContent className="p-3">
             <>
-              <h3 className=" text-[18px] text-heading mb-1">
+              <h3 className=" md:text-[18px] text-base text-heading mb-1 font-mono">
                 {project.title}
               </h3>
               {project?.develop && (
@@ -36,8 +39,8 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
               <Image
                 src={project.images}
                 alt={project.title}
-                height={0}
-                width={0}
+                height={100}
+                width={100}
                 sizes="100vw"
                 style={{ width: "100%", height: "auto" }}
                 className=" rounded"
