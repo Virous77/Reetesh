@@ -17,10 +17,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
   return (
     <div className="flex flex-col gap-2">
       {projects?.map((project) => (
-        <Card
-          key={project._id}
-          className="bg-pretty shadow  m-1 hover:bg-muted h-fit border-none"
-        >
+        <Card key={project._id} className="m-1 h-fit border shadow-lg">
           <CardContent className="p-3">
             <>
               <h3 className=" text-[18px] text-heading mb-1">

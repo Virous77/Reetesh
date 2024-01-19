@@ -25,6 +25,7 @@
     "clsx": "^2.1.0",
     "contentlayer": "^0.3.4",
     "crypto-js": "^4.2.0",
+    "daisyui": "^4.6.0",
     "html-react-parser": "5.0.11",
     "lucide-react": "0.303.0",
     "next": "14.0.4",

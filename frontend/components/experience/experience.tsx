@@ -17,8 +17,8 @@ const Experience = () => {
     "Anchor",
   ];
   return (
-    <Card className="shadow dark:bg-[#040426] bg-transparent cursor-pointer border-none rounded-[10px] md:mx-1">
-      <CardContent className=" p-3">
+    <Card className="shadow dark:bg-[#040426] bg-transparent cursor-pointer rounded-[10px] md:mx-1 mockup-window border dark:border-none">
+      <CardContent className=" p-3 pt-1">
         <div className="flex items-start gap-5">
           <p className="text-[14px] uppercase font-bold mt-[6px] whitespace-nowrap text-default">
             Feb 2023 - Present
@@ -37,7 +37,7 @@ const Experience = () => {
             </a>
           </div>
         </div>
-        <p className=" text-[15px] mt-3 leading-[1.5] text-default mb-4">
+        <p className=" text-[15px] mt-3 leading-[1.5] mb-4 text-muted-foreground">
           I have been a valued member of Inara Consultancy Services,
           contributing significantly to the development of diverse projects. My
           role involves utilizing cutting-edge technologies and build highly
@@ -50,7 +50,7 @@ const Experience = () => {
           {skills.map((tag) => (
             <span
               key={tag}
-              className=" px-2 py-1 bg-muted text-[12px] rounded-md"
+              className=" px-2 py-1 bg-muted dark:bg-transparent dark:border dark:font-bold text-[12px] rounded-md"
             >
               {tag}
             </span>
