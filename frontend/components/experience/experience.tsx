@@ -17,7 +17,7 @@ const Experience = () => {
     "Anchor",
   ];
   return (
-    <Card className="shadow dark:bg-[#040426] bg-transparent cursor-pointer rounded-[10px] md:mx-1 mockup-window border dark:border-none">
+    <Card className="shadow dark:bg-gradient-to-r from-[#0f1821] to-[#000000] bg-transparent cursor-pointer rounded-[10px] md:mx-1 mockup-window border dark:border-none">
       <CardContent className=" p-3 pt-1">
         <div className="flex items-start gap-5">
           <p className="text-[14px] uppercase font-bold mt-[6px] whitespace-nowrap text-default">

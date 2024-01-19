@@ -16,10 +16,10 @@ type TSkills = {
 
 const Skill: React.FC<TSkills> = ({ skills }) => {
   return (
-    <main className=" pb-8 md:pb-0 h-fit relative ">
-      <section className="  md:w-[60%] p-4 md:p-0  m-auto flex items-center justify-center mt-12 relative">
+    <main className=" pb-8 md:pb-0">
+      <section className="md:w-[60%] p-4 md:p-0  m-auto flex items-center justify-center">
         <div className=" relative">
-          <h2 className=" text-[25px] tracking-widest text-center sticky top-0 w-full dark:bg-black/60 bg-white/60 backdrop-blur z-10 p-2 md:p-0 ">
+          <h2 className=" text-[25px] tracking-widest text-center  ">
             My Skills
           </h2>
 

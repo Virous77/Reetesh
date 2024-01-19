@@ -34,7 +34,7 @@ const Tab = () => {
                 <span className="block h-[1px] opacity-50 bg-foreground w-10"></span>
               )}
               <span
-                className={`${
+                className={`font-mono ${
                   activeSection === tab.toLowerCase()
                     ? "opacity-100"
                     : "opacity-70"
