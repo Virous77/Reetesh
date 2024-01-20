@@ -1,0 +1,311 @@
+---
+title: "Dockerize your Fullstack app for development"
+date: "Jan 20 2024"
+author: "Reetesh Kumar"
+authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
+blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1705732091/docker_1_oliznb.png"
+about: "Dockerize your NodeJs(Express) and NextJs(React) application for development using docker and docker-compose. This will make the development process very easy and fast."
+tags:
+  [
+    "how to dockerize nextjs app",
+    "how to dockerize react app",
+    "how to dockerize nodejs app",
+    "how to dockerize fullstack app",
+    "dockerize fullstack app",
+    "create docker image for nextjs app",
+    "create docker image for react app",
+    "create docker image for nodejs app",
+    "vite docker image for development",
+  ]
+---
+
+Dockerization is the process of converting your application into a container image. This container image can then be used to run your application in any environment without having to worry about the dependencies and environment setup.
+
+Its a good practice to dockerize your application for development as well as production. since it makes the deployment process very easy and fast.
+
+#### Prerequisites
+
+- [Docker](https://www.docker.com/) installed on your machine
+- [NodeJS](https://nodejs.org/en) installed on your machine
+
+## Backend
+
+We will use express server for our backend. Create a folder called `backend` and run the following commands inside it.
+
+```bash
+cd backend
+npm init -y
+
+npm install express mongoose cors dotenv
+npm install nodemon --save-dev
+```
+
+To use `import` syntax and `nodemon` we need to add some configuration to our `package.json` file.
+
+```json
+{
+  // ...
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon server.js"
+  }
+  // ...
+}
+```
+
+Create a file called `server.js` and add the following code to it.
+
+```js
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import dotenv from "dotenv";
+dotenv.config();
+
+const app = express();
+
+// Middlewares
+app.use(express.json());
+app.use(cors());
+
+// mongoose schema
+const UserSchema = mongoose.Schema({
+  name: String,
+  email: String,
+  password: String,
+});
+
+const User = mongoose.model("User", UserSchema);
+
+// Routes
+app.get("/", (req, res) => {
+  res.send("Hello from backend");
+});
+
+app.post("/user", async (req, res) => {
+  const { name, email, password } = req.body;
+
+  const user = new User({
+    name,
+    email,
+    password,
+  });
+
+  try {
+    await user.save();
+    res.status(201).json(user);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+app.get("/user", async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+});
+
+const PORT = process.env.PORT || 4000;
+
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() =>
+    app.listen(PORT, () => console.log(`Server running on port: ${PORT}`))
+  )
+  .catch((error) => console.log(error.message));
+```
+
+Create a file called `.env` and add the following code to it.
+
+```bash
+PORT=4000
+MONGO_URI=mongodb://mongo:27017/dockerize-backend
+```
+
+Since we are done with our backend server set up, we can now dockerize it.
+
+Create a file called `Dockerfile` and add the following code to it.
+
+```dockerfile
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY package.json /app
+
+RUN npm install
+
+COPY . /app
+
+EXPOSE 4000
+
+CMD ["npm", "start"]
+```
+
+## Frontend
+
+We will create a NextJs application for our frontend. Create a folder called `frontend` and run the following commands inside it.
+
+```bash
+cd frontend
+npx create-next-app@latest
+```
+
+Create a file called `.env` and add the following code to it.
+
+```bash
+NEXT_PUBLIC_API_URL=http://backend:4000
+```
+
+To get the data from our backend server we can remove the code from `app/page.tsx` and add the following code to it.
+
+```tsx
+const Page = async () => {
+  const fetchIt = async () => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/user`, {
+      cache: "no-cache",
+    });
+    const data = await response.json();
+    console.log(data);
+  };
+
+  fetchIt();
+
+  return <div>Page cool</div>;
+};
+
+export default Page;
+```
+
+Create a file called `Dockerfile` and add the following code to it.
+
+```dockerfile
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm i
+
+COPY . /app
+
+ENV NODE_ENV=development
+
+EXPOSE 3000
+
+CMD [ "npm", "run", "dev" ]
+```
+
+### Setting up docker-compose
+
+Docker compose is a tool for defining and running multi-container Docker applications. With Compose, you use a YAML file to configure your application's services.
+
+It will be very useful for us to run our backend, frontend and database server in a single command.
+
+Create a file called `docker-compose.yml` in your project root folder and add the following code to it.
+
+```yml
+version: "3.8"
+services:
+  mongo:
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    restart: always
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    env_file:
+      - "./backend/.env"
+    volumes:
+      - ./backend:/app
+      - ./backend/node_modules:/app/node_modules
+    depends_on:
+      - mongo
+    restart: always
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - "./frontend/.env"
+    volumes:
+      - ./frontend:/app
+      - ./frontend/node_modules:/app/node_modules
+    depends_on:
+      - backend
+    restart: always
+    stdin_open: true
+    tty: true
+```
+
+#### Running the application
+
+To run the application we need to run the following command in our project root folder.
+
+```bash
+docker-compose up
+```
+
+This will start our backend, frontend and database server in a single command.
+
+you can visit `http://localhost:3000` to see your frontend application running and `http://localhost:4000` to see your backend application running.
+
+You can use `postman` to add some data to our database. or even better you can use the following command to add some data to our database.
+
+```bash
+curl --location --request POST 'http://localhost:4000/user' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "name": "Reetesh Kumar",
+    "email": "test@15gmail.com",
+    "password": "123456"
+}'
+```
+
+#### Understanding the `Dockerfile` configuration
+
+- `FROM node:18-alpine` - This will use the node version 18 and alpine linux as the base image.
+- `WORKDIR /app` - This will set the working directory to `/app`.
+- `COPY package*.json ./` - This will copy the `package.json` and `package-lock.json` file to the working directory.
+- `RUN npm i` - This will install all the dependencies.
+- `COPY . /app` - This will copy all the files to the working directory.
+- `ENV NODE_ENV=development` - This will set the environment variable `NODE_ENV` to `development`.
+- `EXPOSE 3000` - This will expose the port `3000`.
+- `CMD [ "npm", "run", "dev" ]` - This will run the command `npm run dev` when the container is started.
+
+#### Understanding the `docker-compose.yml` configuration
+
+- `version: "3.8"` - This will set the version of docker-compose.
+- `services` - This will define all the services that we want to run.
+- `backend` - This will define the backend service.
+- `build` - This will build the backend service.
+- `context: ./backend` - This will set the context to `./backend` folder.
+- `dockerfile: Dockerfile` - This will use the `Dockerfile` file to build the image.
+- `ports` - This will expose the port `4000` of the container to the port `4000` of the host machine.
+- `env_file` - This will use the `.env` file to set the environment variables.
+- `volumes` - This will mount the `./backend` folder to `/app` folder inside the container.
+- `depends_on` - This will make sure that the `mongo` service is started before the `backend` service.
+- `restart: always` - This will restart the container if it crashes.
+
+> Note: Volumes are way to reflect the changes made in the host machine to the container. So if you make any changes to the `./backend/server.js` folder it will be reflected in the container.
+
+> Note: When we use `docker-compose` it creates a network for all the services and the services can communicate with each other using the service name. So in our case the frontend service can communicate with the backend service using the service name `backend`.
+
+### Conclusion
+
+Docker is a very powerful tool and it can be used to make the development and deployment process very easy and fast. It also makes the application more secure and scalable.
+
+We can collaborate with other developers very easily since we don't have to worry about the environment setup. We can just share the `docker-compose.yml` file and everyone can run the application in a single command.
+
+I hope you found this article helpful. You can find all the code on [Github](https://github.com/Virous77/dockerize-fullstack-app/tree/main). If you have any questions or suggestions feel free to comment below will try to answer them as soon as possible.
