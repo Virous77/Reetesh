@@ -273,7 +273,7 @@ curl --location --request POST 'http://localhost:4000/user' \
 }'
 ```
 
-#### Understanding the `Dockerfile` configuration
+#### Understanding the Dockerfile configuration
 
 - `FROM node:18-alpine` - This will use the node version 18 and alpine linux as the base image.
 - `WORKDIR /app` - This will set the working directory to `/app`.
@@ -284,7 +284,7 @@ curl --location --request POST 'http://localhost:4000/user' \
 - `EXPOSE 3000` - This will expose the port `3000`.
 - `CMD [ "npm", "run", "dev" ]` - This will run the command `npm run dev` when the container is started.
 
-#### Understanding the `docker-compose.yml` configuration
+#### Understanding the docker-compose.yml configuration
 
 - `version: "3.8"` - This will set the version of docker-compose.
 - `services` - This will define all the services that we want to run.
