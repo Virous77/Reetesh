@@ -8,8 +8,6 @@ type GetProps = {
   url?: string;
 };
 
-export const runtime = "edge";
-
 const base_url = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export const getServerData = async ({ endpoint, tag, url }: GetProps) => {
