@@ -4,39 +4,29 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRef, useState } from "react";
 import action from "./action";
-import axios from "axios";
-import { baseUrl } from "../views";
 import { getLocalData, hashData } from "@/utils/utils";
 import { usePathname } from "next/navigation";
+import { trpc } from "@/trpc-client/client";
 
 const CommentForm = () => {
   const [pending, setPending] = useState(false);
   const pathName = usePathname();
   const inputRef = useRef<HTMLInputElement>(null);
+  const { mutateAsync } = trpc.blogs.createComment.useMutation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const comment = formData.get("comment");
+    const comment = formData.get("comment")?.toString();
 
     if (!comment) return alert("Please enter a comment");
     setPending(true);
 
     try {
-      const hashKey = hashData();
+      // const hashKey = hashData();
       const blogId = pathName.split("/")[2];
-      const id = getLocalData("tempId");
-      const packet = {
-        comment,
-        blogId,
-        userId: id,
-      };
-      await axios.post(`${baseUrl}/comment`, packet, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${hashKey}`,
-        },
-      });
+      const id: string = getLocalData("tempId");
+      await mutateAsync({ comment, blogId, userId: id });
       inputRef!.current!.value = "";
       action();
       setPending(false);

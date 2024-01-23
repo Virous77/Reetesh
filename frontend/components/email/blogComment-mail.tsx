@@ -13,14 +13,13 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 
-type WelcomeEmailProps = {
-  username: string;
-  message: string;
-  email: string;
+type CommentEmailProps = {
+  comment: string;
+  blogId: string;
 };
 
-const Email = ({ username, message, email }: WelcomeEmailProps) => {
-  const previewText = `New message from ${username}!`;
+const CommentEmail = ({ comment, blogId }: CommentEmailProps) => {
+  const previewText = `New comment received on Blog!`;
 
   return (
     <Html>
@@ -41,14 +40,9 @@ const Email = ({ username, message, email }: WelcomeEmailProps) => {
             <Heading className="text-2xl font-normal text-center p-0 my-8 mx-0">
               {previewText}
             </Heading>
-            <Text className="text-sm">Hello Reetesh,</Text>
-            <Text className="text-sm mt-2 mb-2">Email: {email}</Text>
-            <Text className="text-sm">{message}</Text>
-            <Text className="text-sm">
-              Cheers,
-              <br />
-              {username}
-            </Text>
+
+            <Text className=" text-[18px] font-bold mt-2">{blogId}</Text>
+            <Text className="text-sm">{comment}</Text>
             <Link href="https://reetesh.in">Reetesh.in</Link>
           </Container>
         </Body>
@@ -57,4 +51,4 @@ const Email = ({ username, message, email }: WelcomeEmailProps) => {
   );
 };
 
-export default Email;
+export default CommentEmail;
