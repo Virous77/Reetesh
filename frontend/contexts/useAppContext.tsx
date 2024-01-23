@@ -104,7 +104,7 @@ export const AppContextProvider = ({
 
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/sw.js").then(() => {
-        console.log("registered");
+        console.log("Hello Welcome to my Portfolio!");
       });
     }
   }, [hash]);

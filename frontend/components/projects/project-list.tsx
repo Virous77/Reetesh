@@ -1,12 +1,12 @@
 "use server";
 
-import { TProject } from "@/types/type";
 import { CalendarDays, Code, Link2, MoveRight } from "lucide-react";
 import parse from "html-react-parser";
 import Link from "next/link";
 import React from "react";
 import { Card, CardContent } from "../ui/card";
 import Image from "next/image";
+import { TProject } from "@/models/projects";
 
 type TProjects = {
   projects: TProject[];

@@ -1,4 +1,4 @@
-import { TProject } from "@/types/type";
+import { TProject } from "@/models/projects";
 import ProjectList from "../project-list";
 
 type TMyProjects = {

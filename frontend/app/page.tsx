@@ -15,19 +15,11 @@ const Footer = dynamic(() => import("@/components/contact/footer"));
 const ProjectRender = dynamic(
   () => import("@/components/projects/project-render")
 );
-import { TProject, TQueryData } from "@/types/type";
-import { getServerData } from "@/api/server-api";
 const ProjectList = dynamic(() => import("@/components/projects/project-list"));
-
-type TResponse = TQueryData & {
-  data: TProject[];
-};
+import { serverClient } from "@/trpc-client/server";
 
 const Home = async () => {
-  const projects: TResponse = await getServerData({
-    endpoint: "/projects",
-    tag: "projects",
-  });
+  const projects = await serverClient.projects.getProjects();
 
   return (
     <main className="md:grid items-start grid-cols-2 gap-5 md:max-w-[1050px] px-4 sm:max-w-full m-auto h-screen md:overflow-hidden relative">
@@ -36,9 +28,7 @@ const Home = async () => {
         <AboutRender aboutComp={<About />} />
         <ExperienceRender experienceComp={<Experience />} />
         <ProjectRender
-          projectComp={
-            <ProjectList projects={projects.data?.slice(0, 5)} isActive />
-          }
+          projectComp={<ProjectList projects={projects.slice(0, 5)} isActive />}
         />
         <ContactRender contactComp={<Contact />} />
         <Footer />

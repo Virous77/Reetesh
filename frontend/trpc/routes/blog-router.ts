@@ -24,7 +24,7 @@ export const blogRouter = router({
       if (!validate.success) {
         throw new Error(validate.error.message);
       }
-      return schema;
+      return validate.data;
     })
     .mutation(async ({ input }) => {
       await dbConnect();
@@ -35,6 +35,7 @@ export const blogRouter = router({
     }),
   addViews: publicProcedure
     .input((v) => {
+      console.log(v);
       const schema = z.object({
         blogId: z.string(),
         viewsId: z.string(),
@@ -44,27 +45,25 @@ export const blogRouter = router({
       if (!validate.success) {
         throw new Error(validate.error.message);
       }
-      return schema;
+      return validate.data;
     })
     .mutation(async ({ input }) => {
       await dbConnect();
       const findBlog: TBlogViews | null = await blogViews.findOne({
-        blogId: input._input.blogId,
+        blogId: input.blogId,
       });
 
       if (findBlog) {
-        const findUser = findBlog.viewsId.find(
-          (id) => id === input._input.viewsId
-        );
+        const findUser = findBlog.viewsId.find((id) => id === input.viewsId);
 
         if (findUser) {
           return findBlog;
         }
 
         const { viewsId } = findBlog;
-        const newViews = [...viewsId, input._input.viewsId];
+        const newViews = [...viewsId, input.viewsId];
         const updateViews: TBlogViews | null = await blogViews.findOneAndUpdate(
-          { blogId: input._input.blogId },
+          { blogId: input.blogId },
           { viewsId: newViews },
           { new: true }
         );
@@ -72,8 +71,8 @@ export const blogRouter = router({
         return updateViews;
       } else {
         const createBlog: TBlogViews = await blogViews.create({
-          blogId: input._input.blogId,
-          viewsId: [input._input.viewsId],
+          blogId: input.blogId,
+          viewsId: [input.viewsId],
         });
         return createBlog;
       }
