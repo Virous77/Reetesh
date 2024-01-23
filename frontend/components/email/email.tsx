@@ -13,6 +13,12 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 
+type WelcomeEmailProps = {
+  username: string;
+  message: string;
+  email: string;
+};
+
 const Email = ({ username, message, email }: WelcomeEmailProps) => {
   const previewText = `New message from ${username}!`;
 
@@ -50,11 +56,5 @@ const Email = ({ username, message, email }: WelcomeEmailProps) => {
     </Html>
   );
 };
-
-interface WelcomeEmailProps {
-  username: string;
-  message: string;
-  email: string;
-}
 
 export default Email;

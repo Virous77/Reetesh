@@ -111,12 +111,14 @@ export default function RootLayout({
           ></iframe>
         </noscript>
         <ThemeProviderComp attribute="class" defaultTheme="dark">
-          <AppContextProvider>
-            <Provider>{children}</Provider>
-            <Analytics />
-            <SpeedInsights />
-            <ThemeSwitcher />
-          </AppContextProvider>
+          <Provider>
+            <AppContextProvider>
+              {children}
+              <Analytics />
+              <SpeedInsights />
+              <ThemeSwitcher />
+            </AppContextProvider>
+          </Provider>
         </ThemeProviderComp>
       </body>
     </html>

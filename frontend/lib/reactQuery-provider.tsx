@@ -4,7 +4,7 @@ import React, { ReactNode, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import superjson from "superjson";
-import { trpc } from "../trpc-client/client";
+import { trpc } from "@/trpc-client/client";
 
 const url = `${process.env.NEXT_PUBLIC_API_URL}/api/trpc`;
 
