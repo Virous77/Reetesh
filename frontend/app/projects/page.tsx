@@ -2,6 +2,7 @@ import { getServerData } from "@/api/server-api";
 import MyProjects from "@/components/projects/my-projects/my-projects";
 import Sidebar from "@/components/projects/my-projects/sidebar";
 import { TProject, TQueryData } from "@/types/type";
+import { serverClient } from "@/trpc-client/server";
 
 type TResponse = TQueryData & {
   data: TProject[];
