@@ -1,4 +1,3 @@
-import { TSkill } from "@/types/type";
 import Social from "../social/social";
 import { Home } from "lucide-react";
 import Link from "next/link";
@@ -9,6 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
+import { TSkill } from "@/models/skills";
 
 type TSkills = {
   skills: TSkill[];
