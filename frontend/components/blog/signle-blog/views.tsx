@@ -8,14 +8,11 @@ import {
 } from "@/utils/utils";
 import { CalendarDays, Eye } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { trpc } from "@/trpc-client/client";
-
-export const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 const Views = ({ date, slug }: { date: string; slug: string }) => {
   const [views, setViews] = useState(0);
-  const { data } = trpc.createUser.useMutation();
+  const { mutateAsync } = trpc.blogs.addViews.useMutation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,24 +23,14 @@ const Views = ({ date, slug }: { date: string; slug: string }) => {
           tempId = generateUUID();
           localStorage.setItem("tempId", JSON.stringify(tempId.toString()));
         }
-        const hashKey = hashData();
-        // const blog = await mutateAsync({ blogId: slug, viewsId: id || tempId });
-        // console.log(blog);
-        const res = await axios.post(
-          `${baseUrl}/views`,
-          { blogId: slug, newView: id || tempId },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${hashKey}`,
-            },
-          }
-        );
-        setViews(res.data.data);
+        // const hashKey = hashData();
+        const blog =
+          (await mutateAsync({ blogId: slug, viewsId: id || tempId })) || 0;
+        setViews(blog);
       } catch (error) {}
     };
     fetchData();
-  }, [slug]);
+  }, [slug, mutateAsync]);
 
   return (
     <div className=" flex items-center gap-4 mt-[12px] justify-center">

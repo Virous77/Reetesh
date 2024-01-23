@@ -1,14 +1,14 @@
+import { TBlog } from "@/models/blog-comments";
 import { formateDate } from "@/utils/utils";
-import { TComments } from "./comment";
 
-const CommentList = async ({ data }: { data: TComments }) => {
-  if (!data.status || data.data.length === 0)
+const CommentList = async ({ data }: { data: TBlog[] }) => {
+  if (data.length === 0)
     return <p className=" pt-4 text-center pb-2">No comments yet</p>;
 
   return (
     <div className=" mt-3">
       <div className=" max-h-[700px] overflow-scroll">
-        {data.data.map((comment) => (
+        {data.map((comment) => (
           <div
             key={comment._id}
             className="grid grid-cols-custom items-start gap-3 mb-4"

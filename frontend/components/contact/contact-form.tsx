@@ -3,10 +3,10 @@
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
-import axios from "axios";
 import { Label } from "../ui/label";
 import { initialState } from "./contact";
 import { useState } from "react";
+import { trpc } from "@/trpc-client/client";
 
 type TProps = {
   formState: typeof initialState;
@@ -21,6 +21,7 @@ const initialErrorState = {
 
 const ContactForm: React.FC<TProps> = ({ formState, setFormState }) => {
   const [error, setError] = useState(initialErrorState);
+  const { mutateAsync } = trpc.mail.sendContactMail.useMutation();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -50,12 +51,13 @@ const ContactForm: React.FC<TProps> = ({ formState, setFormState }) => {
       }
 
       setFormState((prev) => ({ ...prev, status: "loading" }));
-      const { data } = await axios.post(`/api/send`, {
-        userName: formState.name,
-        email: formState.email,
+      const response = await mutateAsync({
         message: formState.message,
+        email: formState.email,
+        userName: formState.name,
       });
-      if (!data.error) {
+
+      if (response.status) {
         setFormState((prev) => ({ ...prev, status: "success" }));
       } else {
         setFormState((prev) => ({ ...prev, status: "idle" }));
