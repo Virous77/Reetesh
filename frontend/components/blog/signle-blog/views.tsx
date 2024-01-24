@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  formateDate,
-  generateUUID,
-  getLocalData,
-  hashData,
-} from "@/utils/utils";
+import { formateDate, generateUUID, getLocalData } from "@/utils/utils";
 import { CalendarDays, Eye } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { trpc } from "@/trpc-client/client";
@@ -23,7 +18,6 @@ const Views = ({ date, slug }: { date: string; slug: string }) => {
           tempId = generateUUID();
           localStorage.setItem("tempId", JSON.stringify(tempId.toString()));
         }
-        // const hashKey = hashData();
         const blog =
           (await mutateAsync({ blogId: slug, viewsId: id || tempId })) || 0;
         setViews(blog);

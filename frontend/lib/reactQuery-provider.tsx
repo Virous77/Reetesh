@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import superjson from "superjson";
 import { trpc } from "@/trpc-client/client";
+import { hashData } from "@/utils/utils";
 
 const url = `${process.env.NEXT_PUBLIC_API_URL}/api/trpc`;
 
@@ -25,6 +26,11 @@ export const Provider = ({ children }: { children: ReactNode }) => {
     links: [
       httpBatchLink({
         url: url,
+        headers: () => {
+          return {
+            Authorization: `Bearer ${hashData()}`,
+          };
+        },
       }),
     ],
   });

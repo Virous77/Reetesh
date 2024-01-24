@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRef, useState } from "react";
 import action from "./action";
-import { getLocalData, hashData } from "@/utils/utils";
+import { getLocalData } from "@/utils/utils";
 import { usePathname } from "next/navigation";
 import { trpc } from "@/trpc-client/client";
 
@@ -23,7 +23,6 @@ const CommentForm = () => {
     setPending(true);
 
     try {
-      // const hashKey = hashData();
       const blogId = pathName.split("/")[2];
       const id: string = getLocalData("tempId");
       await mutateAsync({ comment, blogId, userId: id });
