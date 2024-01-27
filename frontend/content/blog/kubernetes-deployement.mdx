@@ -1,0 +1,413 @@
+---
+title: "Configuring Full-Stack Apps for Kubernetes Deployment"
+date: "Jan 27 2024"
+author: "Reetesh Kumar"
+authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
+blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1706351508/kubernetes_yfwfyf.jpg"
+about: "Deploy you Next.js, Node.js, and MongoDB application to Kubernetes. Kubernetes is a container orchestration tool that helps you to deploy your application to the cloud."
+tags:
+  [
+    "deploy your app to kubernetes",
+    "how to deploy full stack to kubernetes",
+    "deploy next.js to kubernetes",
+    "deploy node.js to kubernetes",
+    "setup configuration for kubernetes",
+    "deploy mongodb to  kubernetes",
+    "deploy fullstack app to kubernetes",
+  ]
+---
+
+## What is Kubernetes?
+
+Kubernetes is a container orchestration tool that helps you to deploy your application to the cloud. It is an open-source platform that was developed by Google. It is a portable, extensible, and open-source platform for managing containerized workloads and services, that facilitates both declarative configuration and automation. It has a large, rapidly growing ecosystem. Kubernetes services, support, and tools are widely available.
+
+**The advantages of Kubernetes are as follows :**
+
+- **Portable** :- Kubernetes is portable, which means that you can deploy it on any cloud platform, likes of AWS, Azure, GCP, etc.
+
+- **Extensible** :- Kubernetes is extensible, which means that you can add more features to it.
+
+- **Self-healing** :- Kubernetes is self-healing, which means that if any of your containers fails, then Kubernetes will restart it.
+
+- **Automated rollouts and rollbacks** :- Kubernetes supports automated rollouts and rollbacks, which means that if you want to deploy a new version of your application, then Kubernetes will first deploy it on a small number of containers, and if it works fine, then it will deploy it on all the containers. If it doesn't work fine, then it will rollback to the previous version.
+
+- **Horizontal scaling** :- Kubernetes supports horizontal scaling, which means that if your application is getting more traffic, then Kubernetes will automatically scale it horizontally by adding more containers.
+
+- **Service discovery and load balancing** :- Kubernetes supports service discovery and load balancing, which means that if you have multiple containers of your application, then Kubernetes will automatically load balance the traffic between them.
+
+There are many other advantages of Kubernetes, but these are the main ones. and in this article, we will learn how to deploy a Next.js, Node.js, and MongoDB application to Kubernetes.
+
+#### Prerequisites
+
+- Setup Project your locally from [here](https://github.com/Virous77/dockerize-fullstack-app/tree/main)
+- Docker installed on your machine
+- Minikube installed on your machine
+
+## Setting up Minikube
+
+[Minikube](https://minikube.sigs.k8s.io/docs/) is a tool that makes it easy to run Kubernetes locally. Minikube runs a single-node Kubernetes cluster inside a Virtual Machine (VM) on your laptop for users looking to try out Kubernetes or develop with it day-to-day.
+
+#### Installing Minikube
+
+**MacOS**
+
+```bash
+brew install minikube
+```
+
+**Windows**
+
+```bash
+winget install minikube
+```
+
+**Linux**
+
+```bash
+# x86-64
+
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
+
+# ARM64
+
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-arm64
+sudo install minikube-linux-arm64 /usr/local/bin/minikube
+```
+
+#### Minikube Commands
+
+> Note: We will use Docker as driver for Minikube as it is the most stable one and easy to start. so make sure your Docker is running.
+
+```bash
+# start
+minikube start
+
+# stop
+minikube stop
+
+# dashboard
+minikube dashboard
+
+```
+
+For more information on Minikube, you can visit [here](https://minikube.sigs.k8s.io/docs/start/). here you can find more information on how to install Minikube on different platforms.
+
+## Installing Kubectl
+
+Kubectl is a command-line tool that is used to deploy and manage applications on Kubernetes. It is used to deploy applications, inspect and manage cluster resources, and view logs.
+
+Vist [here](https://kubernetes.io/docs/tasks/tools/) to install Kubectl on different platforms.
+
+After installing Kubectl, Make sure you have started your Minikube.
+
+```bash
+kubectl get pods
+```
+
+If you get the following output, then it means that you have successfully installed Kubectl.
+
+```bash
+# No resources found in default namespace.
+```
+
+## Setting up our App configuration
+
+> Note: We are using same app which we have dockerized in our pervious article for development.
+
+#### Creating a Dockerfile for Frontend
+
+> Note: Rename the existing Dockerfile to Dockerfile.dev
+
+Create a new file called Dockerfile in the frontend directory and add the following code to it.
+
+```docker
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm i
+
+COPY . /app
+
+# we have just added this line to build our app
+RUN npm run build
+
+EXPOSE 3000
+
+CMD [ "npm", "start" ]
+```
+
+**Updating our ENV variables**
+
+```bash
+
+# For frontend
+
+NEXT_PUBLIC_SERVER_URL=http://backend-app-service:4000
+
+# For backend
+
+PORT=4000
+MONGO_URI=mongodb://mongo-service:27017/dockerize-backend
+```
+
+I will explain later why we have changed the URL since our app is running on localhost.
+
+### Building Docker Images
+
+> Note: Make sure you are in the root directory of the project.
+
+```bash
+
+# For frontend
+
+docker build -t full-frontend .
+
+# For backend
+
+docker build -t full-backend .
+```
+
+### Creating YAML files for Kubernetes
+
+> Note: Make sure you are in the root directory of the project. out of frontend and backend directory.
+
+#### YAML file for Deployment
+
+Create a new file called `Deployment.yaml` and add the following code to it.
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend-app
+          image: full-frontend:latest
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: frontend-app-config
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend-app
+          image: full-backend:latest
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: backend-app-config
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+        - name: mongo
+          image: mongo
+```
+
+explanation:
+
+- `apiVersion`: It is the version of the Kubernetes API that we are using.
+- `kind`: Kubernetes need know which type of resource that we are creating. so in our case, we are creating a deployment.
+- `metadata`: It is the metadata of our deployment.
+- `spec` : It is the specification of our deployment. It contains the number of replicas, selector, and template. The number of replicas is the number of pods that we want to create. The selector is used to select the pods that we want to create. The template is used to create the pods. It contains the labels and containers. The labels are used to select the pods. The containers are used to create the containers. It contains the name of the container, image, and environment variables.
+
+#### YAML file for Service
+
+Create a new file called `Service.yaml` and add the following code to it.
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-app-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-app-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 4000
+      targetPort: 4000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-service
+spec:
+  type: ClusterIP
+  selector:
+    app: mongo
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+```
+
+As you can see, we have created three services. The type of the first two services is LoadBalancer, and the type of the third service is ClusterIP. The type LoadBalancer is used to expose our app to the outside world, and the type ClusterIP is used to expose our app to the inside world.
+
+Thats why we have changed the URL in our ENV variables. since kubernetes will create a DNS for our services. so we can access our app by using the service name.
+
+#### YAML file for ConfigMap
+
+Create a new file called `ConfigMap.yaml` and add the following code to it.
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-app-config
+data:
+  NEXT_PUBLIC_SERVER_URL: http://backend-app-service:4000
+  DEBUG: "true"
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-app-config
+data:
+  MONGO_URI: mongodb://mongo-service:27017/dockerize-backend
+  PORT: "4000"
+  DEBUG: "true"
+```
+
+### Adding our images to Minikube
+
+> Note : Make sure you have started your Minikube.
+
+```bash
+# For frontend
+
+minikube image load full-frontend:latest
+
+# For backend
+
+minikube image load full-backend:latest
+```
+
+You can check your images by running the following command.
+
+```bash
+minikube image list
+
+# or
+
+eval $(minikube docker-env)
+docker images
+```
+
+### Starting our app
+
+Make sure you are in the root directory of the project.
+
+```bash
+kubectl apply -f .
+
+# or
+
+kubectl apply -f Deployment.yaml -f Service.yaml -f ConfigMap.yaml
+```
+
+It will start our app. You can check the status of your pods by running the following command.
+
+```bash
+
+# For pods
+kubectl get pods
+
+# For services
+kubectl get services
+```
+
+### Accessing our app
+
+Minikube provides a command to access our app. since we have added the type as LoadBalancer in our service, so we can access our app by running the following command in two different terminals tab.
+
+```bash
+minikube service frontend-app-service
+minikube service backend-app-service
+```
+
+It will open our app in the browser. Else you can open your app on provided IP from `minikube` after running `minikube server ...` command.
+
+#### Access Kubernetes Dashboard
+
+```bash
+minikube dashboard
+```
+
+There you can see all the pods, services, and deployments. and you can also see the logs of your pods.
+
+#### Shutting down our app
+
+```bash
+kubectl delete -f .
+
+# or
+
+kubectl delete -f Deployment.yaml -f Service.yaml -f ConfigMap.yaml
+```
+
+> Note : You can rebuild you images if you do changes in app with same name and load to minikube and then apply the changes.
+
+### Conclusion
+
+Kubernetes make it easy to deploy our app to the cloud. It is a very powerful tool. There is a lot more to learn about Kubernetes. I will share new article where we will learn how to presist our data in Kubernetes and using `nginx` as reverse proxy.
+
+I hope you liked this article. You can find the source code [here](https://github.com/Virous77/dockerize-fullstack-app/tree/kubernetes-setup), checkout to `kubernetes-setup` branch. If you have any questions, then please let me know in the comments.
