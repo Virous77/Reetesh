@@ -1,0 +1,5 @@
+node_modules
+.next
+.contentlayer
+__test__
+.swc
