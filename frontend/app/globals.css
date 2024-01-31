@@ -84,16 +84,23 @@ pre {
   width: 100% !important;
 }
 
-blockquote {
-  background-color: rgb(237, 235, 235) !important;
+.b-set p:nth-child(2) {
+  line-height: 1.45;
+  margin-top: 2rem;
+  margin-bottom: -0.75rem;
 }
 
-.dark blockquote {
-  background-color: rgb(22, 22, 22) !important;
+.b-set p:nth-child(1) {
+  line-height: 1.3;
+  margin-top: -0.75rem;
 }
 
-pre {
-  background-color: rgb(22, 22, 22) !important;
+.b-set {
+  padding: 10px;
+  padding-left: 20px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  border: 1px solid hsl(var(--border));
 }
 
 @media (max-width: 768px) {

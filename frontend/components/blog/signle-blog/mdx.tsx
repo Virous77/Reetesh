@@ -4,6 +4,7 @@ import { useMDXComponent } from "next-contentlayer/hooks";
 
 import { cn } from "@/lib/utils";
 import { Pre } from "@/lib/pre";
+import { Note } from "@/lib/note";
 
 const components = {
   h1: ({ className, ...props }: any) => (
@@ -73,23 +74,15 @@ const components = {
     />
   ),
   ul: ({ className, ...props }: any) => (
-    <ul className={cn("my-6 ml-6 list-disc", className)} {...props} />
+    <ul className={cn("my-6 ml-2 list-disc", className)} {...props} />
   ),
   ol: ({ className, ...props }: any) => (
-    <ol className={cn("my-6 ml-6 list-decimal", className)} {...props} />
+    <ol className={cn("my-6 ml-2 list-decimal", className)} {...props} />
   ),
   li: ({ className, ...props }: any) => (
     <li className={cn("mt-2", className)} {...props} />
   ),
-  blockquote: ({ className, ...props }: any) => (
-    <blockquote
-      className={cn(
-        "mt-6 border-l-2 pl-6 italic [&>*]:text-muted-foreground",
-        className
-      )}
-      {...props}
-    />
-  ),
+  blockquote: Note,
   img: ({
     className,
     alt,

@@ -1,6 +1,8 @@
 "use client";
 import { useRef, useState } from "react";
 import { Copy, CopyCheck } from "lucide-react";
+import { Icon, icons } from "./icons";
+
 export const Pre = ({ children, ...props }: any) => {
   const preRef = useRef<HTMLPreElement>(null);
   const [copied, setCopied] = useState(false);
@@ -16,12 +18,16 @@ export const Pre = ({ children, ...props }: any) => {
   };
 
   return (
-    <div className="pre">
+    <div className="pre border rounded">
       <div
-        className="flex items-center justify-between w-full bg-muted py-1 px-3 rounded pb-3"
-        style={{ marginBottom: "-2rem" }}
+        className="flex items-center justify-between w-full py-1 px-3  pb-3"
+        style={{
+          marginTop: "5px",
+          borderBottom: "1px solid hsl(var(--border))",
+        }}
       >
-        <span className="text-primary text-[14px] capitalize font-mono">
+        <span className="text-primary text-[14px] capitalize font-mono flex items-center gap-2">
+          <Icon name={props["data-language"]?.toLowerCase()} />
           {props["data-language"]}
         </span>
 
