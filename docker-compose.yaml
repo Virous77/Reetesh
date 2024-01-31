@@ -34,3 +34,12 @@ services:
       - ./author:/app
     depends_on:
       - server
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: frontend
+    ports:
+      - "3000:3000"
+    env_file:
+      - "./frontend/.env"
