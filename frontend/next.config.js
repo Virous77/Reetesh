@@ -17,6 +17,7 @@ const nextConfig = {
       },
     ],
   },
+  // output: "standalone",
 };
 
 module.exports = withContentlayer(nextConfig);
