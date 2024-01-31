@@ -37,9 +37,12 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     image: frontend
     ports:
       - "3000:3000"
     env_file:
       - "./frontend/.env"
+    volumes:
+      - /app/node_modules
+      - ./frontend:/app

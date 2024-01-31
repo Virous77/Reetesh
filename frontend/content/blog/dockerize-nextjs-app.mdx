@@ -298,9 +298,9 @@ curl --location --request POST 'http://localhost:4000/user' \
 - `depends_on` - This will make sure that the `mongo` service is started before the `backend` service.
 - `restart: always` - This will restart the container if it crashes.
 
-> Note: Volumes are way to reflect the changes made in the host machine to the container. So if you make any changes to the `./backend/server.js` folder it will be reflected in the container.
+> Volumes are way to reflect the changes made in the host machine to the container. So if you make any changes to the `./backend/server.js` folder it will be reflected in the container.
 
-> Note: When we use `docker-compose` it creates a network for all the services and the services can communicate with each other using the service name. So in our case the frontend service can communicate with the backend service using the service name `backend`.
+> When we use `docker-compose` it creates a network for all the services and the services can communicate with each other using the service name. So in our case the frontend service can communicate with the backend service using the service name `backend`.
 
 ### Conclusion
 
