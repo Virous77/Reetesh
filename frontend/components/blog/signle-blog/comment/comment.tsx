@@ -2,7 +2,7 @@ import CommentForm from "./comment-form";
 import CommentList from "./comment-list";
 import { serverClient } from "@/trpc-client/server";
 
-const Comment = async ({ slug }: { slug: string }) => {
+export const Comment = async ({ slug }: { slug: string }) => {
   const data = await serverClient.blogs.getComments({ id: slug });
 
   return (

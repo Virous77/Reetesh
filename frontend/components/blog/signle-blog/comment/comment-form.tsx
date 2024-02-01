@@ -27,7 +27,7 @@ const CommentForm = () => {
       const id: string = getLocalData("tempId");
       await mutateAsync({ comment, blogId, userId: id });
       inputRef!.current!.value = "";
-      action();
+      action(blogId);
       setPending(false);
     } catch (error) {
       setPending(false);
