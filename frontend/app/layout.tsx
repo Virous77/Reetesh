@@ -27,17 +27,7 @@ export async function generateMetadata() {
       "developer",
       "software engineer",
       "software developer",
-      "portfolio",
-      "react",
-      "next.js",
-      "node.js",
-      "express",
-      "mongodb",
-      "typescript",
-      "graphql",
-      "rest api",
-      "docker",
-      "kubernetes",
+      "web developer",
     ],
   });
   return {
@@ -69,7 +59,6 @@ export default function RootLayout({
           name="google-site-verification"
           content="ymnya5tVzcP4bwvG455V0AZC282mwI4Iy3mnS3uBTD0"
         />
-        <meta name="google-adsense-account" content="ca-pub-1899033125345775" />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
@@ -101,12 +90,6 @@ export default function RootLayout({
   gtag('config', 'G-XY0Y1HDGMT');
         `}
         </Script>
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1899033125345775"
-          crossOrigin="anonymous"
-          strategy="beforeInteractive"
-        ></Script>
       </head>
       <body className={`${poppins.className} bg-white dark:bg-black`}>
         <noscript>
