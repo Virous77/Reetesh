@@ -1,4 +1,4 @@
-import { MoveRight } from "lucide-react";
+import { Home, LibrarySquare, MoveRight } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent } from "../ui/card";
 import Image from "next/image";
@@ -12,7 +12,22 @@ type TBlog = {
 const Blog: React.FC<TBlog> = ({ blogs }) => {
   return (
     <section className="h-fit md:h-full lg:overflow-scroll body p-2 md:p-0 relative">
-      <h1 className=" my-5 text-[25px]">From My Blogs</h1>
+      <div className="sticky top-0 md:static p-1 bg-background pl-2   flex items-center justify-between">
+        <h1 className=" my-2 md:my-5 text-[18px] md:text-[25px]  ">
+          From My Blogs
+        </h1>
+
+        <div className="pr-2  md:hidden flex items-center gap-4">
+          <Link href="/projects">
+            <LibrarySquare size={22} />
+          </Link>
+
+          <Link href="/">
+            <Home size={22} />
+          </Link>
+        </div>
+      </div>
+
       <ul className=" grid grid-cols-1 lg:grid-cols-2 items-start gap-4 pb-3">
         {blogs.map((blog) => (
           <li key={blog._id}>

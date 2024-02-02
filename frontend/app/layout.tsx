@@ -4,7 +4,6 @@ import ThemeProviderComp from "@/lib/theme-provider";
 import { AppContextProvider } from "@/contexts/useAppContext";
 import ThemeSwitcher from "@/components/theme/theme-switcher";
 import { commonMetaData } from "@/utils/utils";
-import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
 import { Provider } from "@/lib/reactQuery-provider";
@@ -104,7 +103,6 @@ export default function RootLayout({
           <Provider>
             <AppContextProvider>
               {children}
-              <Analytics />
               <SpeedInsights />
               <ThemeSwitcher />
             </AppContextProvider>
