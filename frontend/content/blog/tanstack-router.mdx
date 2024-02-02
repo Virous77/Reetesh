@@ -1,0 +1,207 @@
+---
+title: "Tanstack Router with React Vite app and React Query"
+date: "Feb 03 2024"
+author: "Reetesh Kumar"
+authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
+blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1706907190/router_reqfor.jpg"
+about: "Tanstack router is a fully type-safe React router with built-in data fetching. We will see how to use it with React Vite app and React Query"
+tags: []
+---
+
+[Tanstack router](https://tanstack.com/router/latest/docs/framework/react/overview) is a fully type-safe React router with built-in data fetching. It cache data until we invalidate it, also the search params APIs is too good since we get full type-safe and schema validation.
+
+#### Some of the features of Tanstack Router are:
+
+- Fully type-safe
+- Built-in data fetching
+- Search Param Validation
+- Error Boundaries
+- Auto-completed Paths
+- Parallel Route Loaders
+
+Tanstack router built in data fetching hoist the data fetching and avoids waterfall since it has built in loader API. It helps to make navigation between pages more fast and smoother.
+
+Tanstack router Search Params API so good with schemas validation, full type-safe which make to easy to store data in URL and use it in the application.
+
+### Setting up the React Vite app
+
+First, we need to create a new React [Vite](https://vitejs.dev/) app. We can use the following command to create a new React Vite app.
+
+```bash
+yarn create vite
+
+#or
+
+npm create vite@latest
+```
+
+After creating the app, we need to install the Tanstack router and React Query.
+
+```bash
+yarn add @tanstack/react-query @tanstack/react-router @tanstack/router-vite-plugin @tanstack/react-query-devtools @tanstack/router-devtools axios
+```
+
+### Setting up the Tanstack Router
+
+We need to add our Tanstack router vite plugin to the `vite.config.js` file. It helps to auto generate the routes and make the routes type-safe.
+
+```typescript
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { TanStackRouterVite } from "@tanstack/router-vite-plugin";
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react(), TanStackRouterVite()],
+});
+```
+
+Now since we have configured vite we can delete the `App.tsx` file and removed the code from `main.tsx` file and add the following code.
+
+```typescript
+// /src/main.tsx
+
+import ReactDOM from "react-dom/client";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { routeTree } from "./routeTree.gen";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
+
+const router = createRouter({
+  routeTree,
+  context: {
+    queryClient,
+  },
+  defaultPreload: "intent",
+  defaultPreloadStaleTime: 0,
+});
+
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
+
+const rootElement = document.getElementById("root")!;
+
+if (!rootElement.innerHTML) {
+  const root = ReactDOM.createRoot(rootElement);
+  root.render(
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
+}
+```
+
+Here we have created a new router and query client and provided it to the `RouterProvider` and `QueryClientProvider` respectively.
+
+we have declare a module to make it fully type-safe across the application. since we are going to use `react-query` with `tanstack-router` we have configure it to `react-router`.
+
+### Creating the routes
+
+we have to create a folder called `routes` within `src` directory and create a file called `__root.tsx` and add the following code.
+
+```typescript
+// /src/routes/__root.tsx
+
+import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
+import { TanStackRouterDevtools } from "@tanstack/router-devtools";
+import { QueryClient } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+export const Route = createRootRouteWithContext<{
+  queryClient: QueryClient;
+}>()({
+  component: RootComponent,
+});
+
+function RootComponent() {
+  return (
+    <>
+      <Outlet />
+      <ReactQueryDevtools buttonPosition="top-right" />
+      <TanStackRouterDevtools position="bottom-right" />
+    </>
+  );
+}
+```
+
+We have created a root route and added the `ReactQueryDevtools` and `TanStackRouterDevtools` to the root component.
+
+Root component is a component that will be rendered on every route and with `<Outlet/>` we can render the child routes.
+
+Now this is pretty much it, we have configured the Tanstack router with React Vite app and React Query. We can now create the routes and fetch the data using `react-query` and use it in the application.
+
+### Creating the routes
+
+We can create a new file called `index.tsx` within the `routes` folder and add the following code.
+
+```typescript
+// /src/routes/index.tsx
+
+import { createFileRoute } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/")({
+  component: Home,
+});
+
+function Home() {
+  return (
+    <div>
+      <h3>Welcome Home!</h3>
+    </div>
+  );
+}
+```
+
+Tanstack router gives us good power to create routes with `createFileRoute` within component and it will be auto generated in the routes.
+
+### Fetching the data using Loader API and React Query
+
+To Fetch the data we can use the router loader API and since we have configured the `react-query` we can get the query client from the context and use it to fetch the data.
+
+```typescript
+const fetchPosts = async () => {
+  return axios
+    .get("https://jsonplaceholder.typicode.com/posts")
+    .then((r) => r.data.slice(0, 10));
+};
+
+const postsQueryOptions = queryOptions({
+  queryKey: ["posts"],
+  queryFn: () => fetchPosts(),
+});
+export const Route = createFileRoute("/")({
+  loader: ({ context: { queryClient } }) =>
+    queryClient.ensureQueryData(postsQueryOptions),
+  component: Home,
+});
+```
+
+Here as you can see how simple it is to fetch the data with loader API and use it in the component.
+
+To use the data in the component we can use the API which is provided by `tanstack-router`.
+
+```typescript
+function Home() {
+  const posts = Route.useLoaderData();
+
+  return <div>Home</div>;
+}
+```
+
+The `useLoaderData` is a hook provided by `tanstack-router` to use the data fetched in the loader API.
+
+There are many more features of `tanstack-router` and `react-query` which we can use in the application and make the application more faster and smoother.
+
+I recommend to use `tanstack-router` with `react-query` to make the app more type-safe and easy to fetch data and use it in the application.
+
+### Conclusion
+
+Tanstack router makes its too easy to create routes and fetch data with built-in data fetching and `react-query` makes it too easy to fetch data and use it in the application.
+
+I have added the code to the [Github](https://github.com/Virous77/blog-projects/tree/main/tanstack-router) and you can check it out. I have added more code where you can check how we can create deep nested routes and dynamic routes.
+
+I hope you like the article and if you have any questions or suggestions feel free to ask in the comments below.
