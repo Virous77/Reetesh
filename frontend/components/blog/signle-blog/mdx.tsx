@@ -5,6 +5,7 @@ import { useMDXComponent } from "next-contentlayer/hooks";
 import { cn } from "@/lib/utils";
 import { Pre } from "@/lib/pre";
 import { Note } from "@/lib/note";
+import { A } from "@/lib/a";
 
 const components = {
   h1: ({ className, ...props }: any) => (
@@ -61,12 +62,7 @@ const components = {
       {...props}
     />
   ),
-  a: ({ className, ...props }: any) => (
-    <a
-      className={cn("font-medium underline underline-offset-4", className)}
-      {...props}
-    />
-  ),
+  a: A,
   p: ({ className, ...props }: any) => (
     <p
       className={cn("leading-7 [&:not(:first-child)]:mt-6", className)}
