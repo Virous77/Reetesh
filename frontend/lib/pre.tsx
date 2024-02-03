@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import { Copy, CopyCheck } from "lucide-react";
-import { Icon, icons } from "./icons";
+import { Icon } from "./icons";
 
 export const Pre = ({ children, ...props }: any) => {
   const preRef = useRef<HTMLPreElement>(null);
