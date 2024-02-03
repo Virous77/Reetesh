@@ -14,7 +14,7 @@ export default async function sitemap() {
     {
       url: `${URL}/blogs`,
       lastModified: new Date(),
-      priority: 0.8,
+      priority: 0.9,
       changeFrequency: "daily",
     },
     {
@@ -35,7 +35,7 @@ export default async function sitemap() {
     return {
       url: `${URL}/blog/${slugAsParams}`,
       lastModified: new Date(date),
-      priority: 0.64,
+      priority: 0.75,
       changeFrequency: "weekly",
     };
   });
