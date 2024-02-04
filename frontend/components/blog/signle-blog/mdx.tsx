@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { Pre } from "@/lib/pre";
 import { Note } from "@/lib/note";
 import { A } from "@/lib/a";
+import { Video } from "@/lib/video";
 
 const components = {
   h1: ({ className, ...props }: any) => (
@@ -129,6 +130,7 @@ const components = {
   ),
   Image,
   pre: Pre,
+  Video,
 };
 
 interface MdxProps {
