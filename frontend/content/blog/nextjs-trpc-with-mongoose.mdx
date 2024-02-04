@@ -1,0 +1,397 @@
+---
+title: "tRPC with Next.Js 14 and MongoDB setup"
+date: "Feb 04 2024"
+author: "Reetesh Kumar"
+authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
+blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1707028360/tRPC_me33p7.jpg"
+about: "tRPC makes end to end type-safe APIs easy to build and consume. We will see how to setup tRPC with next.js 14 and mongoDB."
+tags:
+  [
+    "How  to setup tRPC with next.js 14",
+    "How to setup tRPC using mongoDB with next.js 14",
+    "next.js 14 with tRPC and mongoDB",
+    "mongoDB with tRPC and next.js 14",
+    "nextjs app router with tRPC and mongoDB",
+  ]
+---
+
+[tRPC](https://trpc.io/) allows to build easily & consume fully type-safe APIs without schemas or code generation. It is a framework for building end-to-end type-safe APIs with TypeScript.
+
+With the demand of type-safe APIs, tRPC is a great choice to build and consume APIs. It's make writing endpoints type-safe which use in both the front and backend of your app. Type errors with your API contracts will be caught at build time, reducing the surface for bugs in your application at runtime
+
+#### What is some of the benefits of using tRPC?
+
+- Full static typesafety & autocompletion on the client, for inputs, outputs, and errors.
+- Snappy DX - No code generation, run-time bloat, or build pipeline.
+- Framework agnostic so we can use it with any framework like Next.js, Express, etc.
+- Request batching - Requests made at the same time can be automatically combined into one.
+
+#### Setting up our project
+
+we will be using the latest version of next.js 14 to create a new app. We can use the following command to create a new next.js app with `app router`.
+
+```bash
+npx create-next-app@latest
+```
+
+We will be using [MongoDB](https://www.mongodb.com/) as our database and tRPC to create our API endpoints. We will be using [Mongoose](https://mongoosejs.com/) as our ODM for MongoDB.
+
+```bash
+npm install mongoose @trpc/client @trpc/server zod @trpc/next @tanstack/react-query@4.18.0 @trpc/react-query superjson
+```
+
+### Setting up Mongoose
+
+We will create a new folder `db` in the root of our project. This folder will contain the setup for our MongoDB connection.
+
+```ts
+// db/mongoose.ts
+
+import mongoose from "mongoose";
+declare global {
+  var mongoose: any;
+}
+
+const MONGODB_URI = process.env.MONGODB_URI!;
+
+if (!MONGODB_URI) {
+  throw new Error(
+    "Please define the MONGODB_URI environment variable inside .env.local"
+  );
+}
+
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
+async function dbConnect() {
+  if (cached.conn) {
+    return cached.conn;
+  }
+  if (!cached.promise) {
+    const opts = {
+      bufferCommands: false,
+    };
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+      return mongoose;
+    });
+  }
+  try {
+    cached.conn = await cached.promise;
+  } catch (e) {
+    cached.promise = null;
+    throw e;
+  }
+
+  return cached.conn;
+}
+
+export default dbConnect;
+```
+
+This is a simple setup for our MongoDB connection. We are using `mongoose.connect` to connect to our MongoDB database. NextJs advised to use `global` to maintain a global connection to the database. since we don't want to create a new connection for every re-render of our app.
+
+We can now create a new folder `models` in the root of our project. This folder will contain the models for our MongoDB database.
+
+```ts
+// models/user-model.ts
+
+import mongoose from "mongoose";
+
+export interface User {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface MongoUser extends User, mongoose.Document {}
+
+export type TUser = User & {
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+const UserSchema = new mongoose.Schema<User>({
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+});
+
+export default mongoose.models.User || mongoose.model<User>("User", UserSchema);
+```
+
+### Setting up tRPC
+
+Create a new folder `trpc-server` in the root of our project. This file will contain the tRPC setup for our app.
+
+```ts
+// trpc-server/index.ts
+
+import { initTRPC } from "@trpc/server";
+import superjson from "superjson";
+
+import { createContext } from "./context";
+
+const t = initTRPC.context<typeof createContext>().create({
+  transformer: superjson,
+});
+
+export const createCallerFactory = t.createCallerFactory;
+export const router = t.router;
+export const publicProcedure = t.procedure;
+```
+
+we initialized the tRPC server and here we are using `superjson` as our transformer for json serialization.
+
+Next, we will create a new file `context.ts` in the same folder.
+
+```ts
+// trpc-server/context.ts
+
+export const createContext = async () => {
+  // const session = await auth()
+
+  return {
+    // session,
+  };
+};
+```
+
+now we need to define our API endpoints. We will create a new file `router.ts` in the same folder.
+
+```ts
+// trpc-server/router.ts
+
+import { router, publicProcedure } from "./index";
+import { z } from "zod";
+import userModel, { TUser } from "@/models/user-model";
+import dbConnect from "@/db/mongoose";
+
+export const appRouter = router({
+  createUser: publicProcedure
+    .input((v) => {
+      const schema = z.object({
+        name: z.string(),
+        email: z.string().email(),
+        password: z.string(),
+      });
+      const result = schema.safeParse(v);
+      if (!result.success) {
+        throw result.error;
+      }
+      return result.data;
+    })
+    .mutation(async (params) => {
+      await dbConnect();
+      const user: TUser = await userModel.create({
+        ...params.input,
+      });
+
+      return {
+        user,
+      };
+    }),
+
+  getUser: publicProcedure.query(async () => {
+    await dbConnect();
+    const users: TUser[] = await userModel.aggregate([
+      {
+        $project: {
+          name: 1,
+          email: 1,
+          _id: {
+            $toString: "$_id",
+          },
+        },
+      },
+    ]);
+    return users;
+  }),
+});
+
+export type AppRouter = typeof appRouter;
+```
+
+we have defined two endpoints `createUser` and `getUser`. We are using `zod` for input validation and `mongoose` for interacting with our MongoDB database.
+
+### Setting up tRPC with Next.js
+
+Create a new folder `trpc-client` in the root of our project. This folder will contain the setup for our tRPC client.
+
+```ts
+// trpc-client/client.ts
+
+import { AppRouter } from "@/trpc-server/router";
+import { createTRPCReact } from "@trpc/react-query";
+
+export const trpc = createTRPCReact<AppRouter>({});
+```
+
+We have setup our tRPC client using `@trpc/react-query`. since we will be using `react-query` for our data fetching and mutations for our client components.
+
+To fetch data or do mutations in our server we have to create new file called `server-client.ts` in the same folder.
+
+```ts
+// trpc-client/server-client.ts
+
+import { createCallerFactory } from "@/trpc-server";
+import { createContext } from "@/trpc-server/context";
+import { appRouter } from "@/trpc-server/router";
+
+const createCaller = createCallerFactory(appRouter);
+
+export const serverClient = createCaller(createContext());
+```
+
+With the above setup, we can now use `serverClient` to fetch data or do mutations in our server.
+
+### Exposing tRPC endpoints to the client
+
+We have to expose our tRPC endpoints to the client. We will create a new folder inside of `app` directory called `api`. This folder will contain the setup for our tRPC endpoints.
+
+```ts
+// app/api/trpc/[trpc]/route.ts
+
+import { createContext } from "@/trpc-server/context";
+import { appRouter } from "@/trpc-server/router";
+import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
+
+const handler = (req: Request) =>
+  fetchRequestHandler({
+    endpoint: "/api/trpc",
+    req,
+    router: appRouter,
+    createContext: async () => await createContext(),
+  });
+
+export { handler as GET, handler as POST };
+```
+
+We have setup our tRPC endpoints using `@trpc/server/adapters/fetch`. This will allow us to use `fetch` to make requests to our tRPC server.
+
+### Wrapping our app with tRPC provider using React Query
+
+We will create a folder `lib` in the root of our project. This folder will contain the setup for our tRPC provider.
+
+```tsx
+// lib/reactQuery-provider.tsx
+
+"use client";
+
+import React, { ReactNode, useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { httpBatchLink } from "@trpc/client";
+import superjson from "superjson";
+import { trpc } from "@/trpc-client/client";
+
+const url = "http://localhost:3000/api/trpc";
+
+export const Provider = ({ children }: { children: ReactNode }) => {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: false,
+          },
+        },
+      })
+  );
+
+  const trpcClient = trpc.createClient({
+    transformer: superjson,
+    links: [
+      httpBatchLink({
+        url: url,
+      }),
+    ],
+  });
+
+  return (
+    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </trpc.Provider>
+  );
+};
+```
+
+we can now wrap the root of your app with the `Provider` component to use tRPC with [React Query](https://tanstack.com/query/latest).
+
+```tsx
+// app/layout.tsx
+
+import { Provider } from "@/lib/reactQuery-provider";
+
+<html lang="en" suppressHydrationWarning>
+  <body className={inter.className}>
+    <Provider>{children}</Provider>
+  </body>
+</html>;
+```
+
+### Using tRPC endpoints in our components
+
+we can use the `getUser` endpoint in our components to fetch data from our server.
+
+```tsx
+// app/page.tsx
+
+import { serverClient } from "@/trpc-client/server-client";
+
+const Page = async () => {
+  const user = await serverClient.getUser();
+
+  console.log(user);
+
+  return <div>hELLO tRPC</div>;
+};
+
+export default Page;
+```
+
+to create new user we can use the `createUser` endpoint in our client component.
+
+```tsx
+// component/createUser.tsx
+
+"use client";
+import { trpc } from "@/trpc-client/client";
+
+const CreateUser = () => {
+  const { data, mutate } = trpc.createUser.useMutation();
+
+  console.log(data);
+
+  return (
+    <button
+      onClick={() =>
+        mutate({ name: "test", email: "test12@gmail.com", password: "123456" })
+      }
+    >
+      Create User
+    </button>
+  );
+};
+
+export default CreateUser;
+```
+
+With the above setup, we have successfully setup tRPC with Next.js 14 and MongoDB. We can now use tRPC to create and consume type-safe APIs in our app.
+
+### Conclusion
+
+tRPC is a great choice to build and consume APIs. It's make writing endpoints type-safe which use in both the front and backend of your app. Type errors with your API contracts will be caught at build time, reducing the surface for bugs in your application at runtime.
+
+To get the full code of this setup, you can check out the [GitHub](https://github.com/Virous77/t3-starter/tree/with-mongoose). I hope you find this article helpful. If you have any questions or feedback, feel free to comment below.
