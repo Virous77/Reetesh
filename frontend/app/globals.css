@@ -68,6 +68,8 @@
 
 body {
   scroll-behavior: smooth;
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
 }
 
 .body::-webkit-scrollbar {

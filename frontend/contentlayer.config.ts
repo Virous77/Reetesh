@@ -5,7 +5,6 @@ import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import { visit } from "unist-util-visit";
 
-/** @type {import('contentlayer/source-files').ComputedFields} */
 const computedFields: any = {
   slug: {
     type: "string",
@@ -66,7 +65,7 @@ export default makeSource({
 
             if (codeEl.tagName !== "code") return;
 
-            node.taw = codeEl.children?.[0].value;
+            node.taw = codeEl?.children?.[0]?.value;
           }
         });
       },

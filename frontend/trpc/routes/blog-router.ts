@@ -83,7 +83,7 @@ export const blogRouter = router({
           { new: true }
         );
 
-        return updateViews?.viewsId.length;
+        return updateViews?.viewsId?.length;
       } else {
         const createBlog: TBlogViews = await blogViews.create({
           blogId: input.blogId,
