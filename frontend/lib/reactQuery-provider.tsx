@@ -7,7 +7,7 @@ import superjson from "superjson";
 import { trpc } from "@/trpc-client/client";
 import { hashData } from "@/utils/utils";
 
-const url = `${process.env.NEXT_PUBLIC_API_URL}/api/trpc`;
+const url = `/api/trpc`;
 
 export const Provider = ({ children }: { children: ReactNode }) => {
   const [queryClient] = useState(
