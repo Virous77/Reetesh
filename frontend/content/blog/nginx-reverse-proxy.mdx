@@ -1,0 +1,385 @@
+---
+title: "Nginx as reverse proxy for Kubernetes services"
+date: "Feb 10 2024"
+author: "Reetesh Kumar"
+authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
+blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1707503152/Frame_1_y8gwjl.png"
+about: " Nginx is a popular open-source web server and reverse proxy server. We can use Nginx as a reverse proxy for Kubernetes services."
+tags: []
+---
+
+Nginx is a popular open-source web server and reverse proxy server. Nginx is used by many high-traffic websites and is known for its high performance and low resource usage. We can use Nginx as a reverse proxy for Kubernetes services.
+
+Although Kubernetes provides us **Ingress** to expose services to the outside world, Where we can use Ingress Controller to route traffic to the appropriate services. There are many Ingress Controllers available like [Nginx](https://www.nginx.com/), [Traefik](https://traefik.io/traefik/), and many more but these two are the most popular ones.
+
+For our this simple application and for learning purposes, we will use Nginx as standalone reverse proxy server.
+
+#### Prerequisites
+
+- Just clone this [repository](https://github.com/Virous77/dockerize-fullstack-app/tree/kubernetes-setup) and switch to the `kubernetes-setup` branch.
+
+> you can read [this](https://reetesh.in/blog/configuring-full-stack-apps-for-kubernetes-deployment) blog for more details about the repository and how to run the application in the local environment.
+
+### Creating Nginx Docker Image
+
+We will create a Docker image for Nginx with a custom configuration file. We will use this image to deploy Nginx as a reverse proxy for our application.
+
+First create a new directory called `nginx` in the root of the project. Inside the `nginx` directory, create a file called `default.conf` with the following content:
+
+```conf
+upstream client{
+    server  frontend-app-service:3000;
+}
+
+upstream backend{
+    server backend-app-service:4000;
+}
+
+server{
+    listen 80;
+    server_name localhost;
+
+    location / {
+        proxy_pass http://client;
+    }
+
+    location /api {
+
+        rewrite /api/(.*) /$1 break;
+        proxy_pass http://backend;
+    }
+}
+```
+
+In the above configuration file, we have defined two upstream servers: `client` and `backend`. The `client` server is used to proxy requests to the frontend application, and the `backend` server is used to proxy requests to the backend application. We have also defined a server block that listens on port 80 and proxies requests to the `client` and `backend` servers based on the URL path.
+
+Next, create a file called `Dockerfile` in the `nginx` directory with the following content:
+
+```dockerfile
+FROM nginx
+
+COPY ./default.conf /etc/nginx/conf.d/default.conf
+```
+
+In the `Dockerfile`, we have used the `nginx` base image and copied the `default.conf` file to the `/etc/nginx/conf.d` directory in the image.
+`/etc/nginx/conf.d` is the directory where Nginx looks for configuration files.
+
+### Configuring Deployment and Service
+
+We have already created a deployment and service for our application in the previous blog. We will use the same deployment and service for need to add a few more things.
+
+##### Deployment
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend-app
+          image: full-frontend:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend-app
+          image: full-backend:latest
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: backend-app-config
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      volumes:
+        - name: mongo-persistent-storage
+          persistentVolumeClaim:
+            claimName: mongo-pvc
+      containers:
+        - name: mongo
+          image: mongo
+          volumeMounts:
+            - mountPath: "/data/db"
+              name: mongo-persistent-storage
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: full-nginx
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+```
+
+As you can see, we have added a new deployment for Nginx. We have used the `full-nginx` image for the Nginx deployment. I have also added the `resources` section to limit the memory and CPU usage for the all deployments.
+
+We are also using `PVC` for the mongo deployment to store the data in the persistent volume. You can read more about PVC [here](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
+
+##### Service
+
+For service We just have to add a new service for the Nginx deployment and since we are using the NGINX as a reverse proxy for the **frontend** and **backend** services, We don't need to expose them to the outside world. So we will use the `ClusterIP` type instead of `LoadBalancer` so that they are only accessible within the cluster.
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+```
+
+##### ConfigMap
+
+We have already created a ConfigMap for the backend and frontend application but since we gonna build a new image for frontend which will be production-ready, we need to update the ConfigMap.
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-app-config
+data:
+  MONGO_URI: mongodb://mongo-service:27017/dockerize-backend
+  PORT: "4000"
+  DEBUG: "true"
+```
+
+We just removed the config for frontend app since we are not using it anymore as environment variables for the frontend app will be passed at build time.
+
+##### PVC
+
+We need to create a PVC for the mongo deployment to store the data in the persistent volume. PVC is used to request storage resources from the cluster. We can use PVC to request a specific amount of storage and access mode for the persistent volume.
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-pvc
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+```
+
+With the above changes, we have updated the deployment, service, and configMap for our application. Now we can deploy the application to the Kubernetes cluster.
+
+But before that we need to update the `Dockerfile` for the frontend application to build the production-ready image.
+
+```dockerfile
+FROM node:18-alpine AS base
+
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
+
+WORKDIR /app
+
+COPY package.json  ./
+RUN yarn
+
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN npm run build
+
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
+
+COPY --from=builder /app/public ./public
+
+
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+
+USER nextjs
+
+EXPOSE 3000
+
+CMD ["node", "server.js"]
+```
+
+### Building the Docker Images
+
+We need to build the Docker images for the frontend, backend, and Nginx applications. We can use the following commands to build the images.
+
+Since if your following the previous blog, you know that we are using `minikube` to run the kubernetes cluster locally. So we need to use the `minikube` docker environment to build the images.
+
+You can read the previous blog to know more about the `minikube` and how to use and configure it.
+
+> You need to add `output: "standalone"` in the `next.config.js` file to build the image since in our image we are using the `server.js` file to run the application.
+
+```bash
+# move to mini kube docker environment
+
+eval $(minikube docker-env)
+```
+
+Then we can build the images using the following commands:
+
+```bash
+# build the frontend image
+cd frontend
+docker build -t full-frontend .
+
+# build the backend image
+cd backend
+docker build -t full-backend .
+
+# build the nginx image
+cd nginx
+docker build -t full-nginx .
+```
+
+### Deploying the Application
+
+We have built all the required Docker images and kubernetes configuration files. Now we can deploy the application to the Kubernetes cluster.
+
+We can use the following commands to deploy the application, services, and PVC to the Kubernetes cluster.
+
+Make sure you are in the `kubernetes-setup` branch and in the root of the project.
+
+```bash
+kubectl apply -f .
+```
+
+The above command will apply all the configuration files in the current directory to the Kubernetes cluster. It will create the deployments, services, and PVC for the application.
+
+### Accessing the Application
+
+Once the application is deployed, we can access it using the `minikube` IP address and the port number of the Nginx service.
+
+```bash
+minikube service nginx-service
+```
+
+The above command will open the application in the default web browser. Where you can see the application running.
+
+### Testing the Application
+
+As you will see that application is empty so for that you can take pull from the `nginx-proxy` branch of the repository where I have added the all the required files and configurations to run the application in the kubernetes cluster, Which we have discussed in this blog.
+
+You can rebuild the images and deploy the application to the kubernetes cluster using the same commands.
+
+### Next.Js RSC data revalidate issue
+
+Once you took pull and add the new user you will see that the new user is not showing up in the list. This is because of the Next.js need know which proxy is being used to fetch the data.
+
+and since we are using the Nginx as a reverse proxy, and the app is running in the kubernetes cluster and we are using the `minikube` to run the cluster locally we have to configure the `next.config.js` file to tell the Next.js to use the correct proxy.
+
+For that you need to add your current URL which is being used to access the application in the `next.config.js` file.
+
+```js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: "standalone",
+  experimental: {
+    serverActions: {
+      allowedOrigins: ["127.0.0.1:49215"],
+    },
+  },
+};
+export default nextConfig;
+```
+
+You can add your URL in place of the current URL in the `allowedOrigins` array.
+
+Once you have added the URL, you can rebuild the frontend image and deploy the application to the kubernetes cluster using the same commands.
+
+### Conclusion
+
+Nginx is a good tool to use as a reverse proxy for Kubernetes services. It provides a simple and efficient way to route traffic to the appropriate services. We also learn how we build the production-ready image for the frontend application and how to configure the Next.js to use the correct proxy.
+
+You can also take pull from the `nginx-proxy` branch of the repository to see the complete code and configurations
+
+I hope you find this blog helpful and if you have any questions or suggestions, feel free to leave a comment below.
+.
