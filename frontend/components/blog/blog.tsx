@@ -43,7 +43,7 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
                 />
 
                 <div className=" flex items-center gap-3 mt-3">
-                  <span className=" whitespace-nowrap text-[13px]">
+                  <span className=" whitespace-nowrap text-[13px] font-mono">
                     {formateDate(blog.date)}
                   </span>
                   <span className=" h-[2px] w-full bg-default"></span>

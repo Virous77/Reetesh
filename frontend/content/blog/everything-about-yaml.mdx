@@ -1,0 +1,116 @@
+---
+title: "Everything about YAML You need to Know"
+date: "Feb 11 2024"
+author: "Reetesh Kumar"
+authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
+blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1707590626/yaml2_yonyg8.png"
+about: "YAML is a human-readable data serialization standard which can be used in conjunction with all programming languages and is often used to write configuration files."
+tags:
+  [
+    "What is yaml file",
+    "How to write yaml file",
+    "configuration files using yaml",
+  ]
+---
+
+YAML is a human-readable data serialization standard which can be used in conjunction with all programming languages and is often used to write configuration files. YAML stands for "YAML Ain't Markup Language" or "Yet Another Markup Language".
+
+You know that YAML is a superset of JSON, which means that any valid JSON file is also a valid YAML file. But the opposite is not true, as YAML is more expressive than JSON.
+
+YAML heavily used in devops tools like Kubernetes, Docker, and many more. It is easy to read and write thats why it is widely used in configuration files.
+
+When i started learning YAML, i found it very interesting and easy to learn. So, i thought to write a blog on it since it is widely used in devops tools.
+
+#### Strings and Numbers
+
+Strings can be numbers, or special characters or text. Strings can be written with or without quotes. If you want to write a string with special characters or numbers, then you should use quotes.
+
+Numbers can be written with or without quotes. If you want to write a number with quotes, then it will be considered as a string.
+
+```yaml
+name: "Reetesh Kumar" # String
+age: 25 # Number
+isStudent: true # Boolean
+user: null # Null
+```
+
+> You can use `>` to write a multiline String and Booleans are case-insensitive.
+
+```yaml
+description: >
+  YAML is cool.
+  It is easy to learn.
+```
+
+#### Lists (Arrays)
+
+Lists are nothing but an array of items. Lists are represented by a sequence of items. Each item in the list starts with a hyphen (-) followed by a space.
+
+```yaml
+fruits:
+  - Apple
+  - Banana
+  - Orange
+```
+
+#### Maps (Objects)
+
+Maps are same as objects in JSON. Maps are represented by key-value pairs.
+
+```yaml
+person:
+  name: Reetesh Kumar
+  age: 25
+  isStudent: true
+```
+
+#### Nested Data Structures
+
+You can also nest lists and maps inside each other. This is one of the most powerful features of YAML. It is too flexible to nest data structures.
+
+```yaml
+person:
+  hobbies:
+    - Reading
+    - Writing
+    - Coding
+  address:
+    country: India
+```
+
+#### Comments
+
+You can write comments in YAML using the `#` symbol. Comments are ignored by the YAML parser.
+
+```yaml
+# This is a comment
+name: Reetesh Kumar # This is also a comment
+```
+
+#### Environment Variables
+
+You can also use environment variables in YAML using the `${}` syntax. You can use environment variables in the value of a key.
+
+```yaml
+name: ${NAME}
+age: ${AGE}
+```
+
+#### Anchors and Aliases
+
+We can use anchors and aliases to reuse the same data in multiple places. You can use `&` to define an anchor and `*` to define an alias.
+
+```yaml
+person: &person
+  name: Reetesh Kumar
+  age: 25
+
+person1: *person
+person2: *person
+```
+
+### Conclusion
+
+YAML makes life easier when it comes to writing configuration files. Since when we work with devops tools, like Docker, Kubernetes we write a lot of configuration files in YAML. But it is not limited to devops tools.
+
+Hope you enjoyed reading this blog. If you have any questions or feedback, feel free to comment below.
