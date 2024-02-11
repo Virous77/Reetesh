@@ -58,6 +58,7 @@ export default function RootLayout({
           name="google-site-verification"
           content="ymnya5tVzcP4bwvG455V0AZC282mwI4Iy3mnS3uBTD0"
         />
+        <meta name="googlebot" content="index, follow" />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
