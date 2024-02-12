@@ -2,7 +2,7 @@
 
 import Author from "@/components/common/author";
 import Social from "@/components/social/social";
-import Footer from "@/components/contact/footer";
+import Footer from "@/components/common/footer";
 import { Newspaper } from "lucide-react";
 import Link from "next/link";
 import { Post } from "@/.contentlayer/generated";
