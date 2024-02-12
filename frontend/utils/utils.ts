@@ -19,16 +19,6 @@ export const socials = [
   },
 ];
 
-export const localAppError = {
-  data: {
-    message: "Something went wrong,Try again later",
-    status: 400,
-    success: false,
-    stack: "",
-    data: null,
-  },
-};
-
 export const hashData = () => {
   const secretKey = process.env.NEXT_PUBLIC_MASTER_KEY;
 

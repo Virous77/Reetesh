@@ -29,7 +29,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "public/sw.js",
     "contentlayer.config.ts",
     ".contentlayer/generated"
   ],
