@@ -1,5 +1,5 @@
 import { TProject } from "@/models/projects";
-import ProjectList from "../project-list";
+import ProjectList from "./project-list";
 import Link from "next/link";
 import { Home } from "lucide-react";
 

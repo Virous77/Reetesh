@@ -21,7 +21,7 @@ const Sidebar = () => {
     },
   ];
   return (
-    <section className=" p-4 md:p-0 md:pt-12 ">
+    <section className="md:pt-12 ">
       <AuthorCard message="My Projects Page, a curated showcase of the diverse array of applications I've crafted on my coding journey. Each project reflects not only technical proficiency but also a passion for building." />
       <CommonTab links={Links} type={false} />
     </section>

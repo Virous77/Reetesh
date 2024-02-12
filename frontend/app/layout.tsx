@@ -1,7 +1,6 @@
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import ThemeProviderComp from "@/lib/theme-provider";
-import { AppContextProvider } from "@/contexts/useAppContext";
 import ThemeSwitcher from "@/components/theme/theme-switcher";
 import { commonMetaData } from "@/utils/utils";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -102,11 +101,9 @@ export default function RootLayout({
         </noscript>
         <ThemeProviderComp attribute="class" defaultTheme="dark">
           <Provider>
-            <AppContextProvider>
-              {children}
-              <SpeedInsights />
-              <ThemeSwitcher />
-            </AppContextProvider>
+            {children}
+            <SpeedInsights />
+            <ThemeSwitcher />
           </Provider>
         </ThemeProviderComp>
       </body>
