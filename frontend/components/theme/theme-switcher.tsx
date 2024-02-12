@@ -26,7 +26,11 @@ const ThemeSwitcher = () => {
         className="w-8 h-8 flex items-center justify-center bg-default-100 hover:bg-default-200 cursor-pointer"
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       >
-        {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+        {theme === "dark" ? (
+          <Sun size={20} data-testid="sun" />
+        ) : (
+          <Moon size={20} data-testid="moon" />
+        )}
       </div>
     </div>
   );
