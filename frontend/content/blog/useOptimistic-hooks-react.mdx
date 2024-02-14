@@ -1,0 +1,185 @@
+---
+title: "React useOptimistic and useTransition hooks Explained"
+date: "Feb 14 2024"
+author: "Reetesh Kumar"
+authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
+blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1707845212/hook_f5fqe7.png"
+about: " The useOptimistic and useTransition hooks are two new hooks thats going to be game changer in React. These hooks are designed to help to improve user experience by allowing to perform optimistic updates and transitions."
+tags:
+  [
+    "how to use useOptimistic hook in react",
+    "useTransition hook in react",
+    "useOptimistic hook in react",
+    "what is useOptimistic hook in react",
+    "what is useTransition hook in react",
+    "how to use useOptimistic hook in nextjs",
+    "how to use useTransition hook in nextjs",
+  ]
+---
+
+The `useOptimistic` and `useTransition` hooks are two new hooks thats currently in React’s canary but we can use in Next.Js. These hooks are designed to help to improve user experience by allowing to perform optimistic updates and transitions.
+
+I'm pretty excited about these hooks and I think they are going to be a game changer since now we don't have to rely on third party libraries to achieve this. It's built into React itself, and good thing is that it's very easy to use.
+
+### Whats is Optimistic Update?
+
+Optimistic updates are a way to make the UI feel faster by updating the UI before the server responds. This is a common pattern in modern web applications, and it can be a great way to improve the user experience.
+
+Building a good user experience is all about making the app feel fast and responsive. Optimistic updates are a great way to do that, and they can be a powerful tool for improving the user experience.
+
+### Setting up a new Next.js Project
+
+You can setup a new `Next.js` project by running the following command.
+
+```bash
+npx create-next-app@latest
+```
+
+Since I have already cover how you can setup Next.Js with `MongoDB` or `PostgreSQL` in my previous blog post, I will not cover that here. You can check out my previous [blog post](https://reetesh.in/blog/trpc-with-next.js-14-and-mongodb-setup) and once setup you can continue with this blog post.
+
+We are creating a Todo app where we will use `useOptimistic` and `useTransition` hooks.
+
+#### useOptimistic
+
+Lets start with `useOptimistic` hook. We will fetch the initial Todos data from the server and show it on UI.
+
+We will use the RSC (React Server Components) to fetch the data from the server. You can use any other server lib to fetch the data from the server.
+
+```tsx
+// app/page.tsx
+
+import { getTodos } from "example-lib"; // replace with you server lib to fetch data
+import Todos from "@/components/todos";
+
+const HomePage = async () => {
+  const { todos } = await getTodos();
+
+  return (
+    <section>
+      <div>
+        <h1>Todos</h1>
+        <Todos todos={todos} />
+      </div>
+    </section>
+  );
+};
+
+export default HomePage;
+```
+
+Here we are fetching the todos from the server and passing it to the `Todos` component.
+
+Now lets create the `Todos` component where we will create a new todo and show the list of todos.
+
+```tsx
+// components/todos.tsx
+
+"use client";
+
+import { useOptimistic } from "react";
+import { createTodo } from "example-lib"; // replace with you server action to create todo
+import TodoItem from "@/components/todo-item";
+
+const Todos = ({ todos }) => {
+  const [optimisticTodos, addNewTodo] = useOptimistic(
+    todos,
+    (state, newTodo) => {
+      return [...state, newTodo];
+    }
+  );
+
+  const action = (data: FormData) => {
+    const title = data.get("title");
+    const newTodo = {
+      id: math.random(),
+      title,
+      isCompleted: false,
+      //... other fields
+    };
+
+    //  we are using the useOptimistic hook
+    // to add the new todo to the list before sending it to the server
+    addNewTodo(newTodo);
+    await createTodo(title);
+  };
+
+  return (
+    <div>
+      <form action={action}>
+        <input type="text" name="title" />
+        <button type="submit">Add Todo</button>
+      </form>
+
+      <ul>
+        {optimisticTodos?.map((todo) => (
+          <TodoItem key={todo.id} todo={todo} />
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default Todos;
+```
+
+Here we are using the `useOptimistic` hook to add the new todo to the list before sending it to the server. This will make the UI feel faster and responsive.
+
+Since here we are using Next.Js `server action` on action after adding todo to `DB` we can use `revalidateTag` or `revalidatePath` to revalidate the data on the server and update the UI.
+
+So after revalidating the data on the server, Next.js will fetch the latest data.
+
+#### useTransition
+
+useTransition hooks helps useOptimistic hooks to use in client components when we are using click events. Right now we have to wrap the useOptimistic setter function with a `useTransition` setter function.
+
+useTransition hook giver a setter function and a boolean value to check if the transition is in progress.
+
+```tsx
+// components/todo-item.tsx
+
+"use client";
+
+import { useOptimistic, useTransition } from "react";
+import { updateTodo } from "example-lib"; // replace with you server action to update todo
+
+const TodoItem = ({ todo }) => {
+  const [isPending, startTransition] = useTransition();
+  const [optimisticTodo, updateTodo] = useOptimistic(
+    todo,
+    (todo, { isCompleted }) => {
+      return { ...todo, isCompleted };
+    }
+  );
+
+  const handleUpdate = (isCompleted: boolean) => {
+    updateTodo({ isCompleted });
+    await updateTodo(optimisticTodo.id, isCompleted);
+  };
+
+  return (
+    <li>
+      <button
+        onClick={() =>
+          startTransition(() => handleUpdate(!optimisticTodo.isCompleted))
+        }
+        disabled={isPending}
+      >
+        {optimisticTodo.isCompleted ? "Uncheck" : "Check"}
+      </button>
+      <label>{optimisticTodo.title}</label>
+    </li>
+  );
+};
+
+export default TodoItem;
+```
+
+Here we are using the `useTransition` hook to wrap the `handleUpdate` function. and again we are using the `useOptimistic` hook to update the todo before sending it to the server. Later server action will take over and where we will add to `DB` and revalidate cache.
+
+There are many other use cases where we can use these hooks to make the UI feel faster and responsive. This is just a simple example to get you started.
+
+### Conclusion
+
+The `useOptimistic` and `useTransition` hooks are a great way to make the UI feel faster and responsive. Going forward I think these hooks are going to be a default way to handle optimistic updates and transitions in React. React always tries to make the developer experience better and these hooks are a great example of that.
+
+I hope you found this blog post helpful. If you have any questions or comments, feel free to leave them below. Thanks for reading!
