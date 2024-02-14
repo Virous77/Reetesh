@@ -130,7 +130,7 @@ So after revalidating the data on the server, Next.js will fetch the latest data
 
 #### useTransition
 
-useTransition hooks helps useOptimistic hooks to use in client components when we are using click events. Right now we have to wrap the useOptimistic setter function with a `useTransition` setter function.
+useTransition hooks helps useOptimistic hooks to use in client components when we are using click events. Right now we have to wrap the useOptimistic setter function with a `useTransition` setter function. It is advised to use useTransition hooks when we are using outiside of transition or action otherwise Next.Js will give a warning.
 
 useTransition hook giver a setter function and a boolean value to check if the transition is in progress.
 
