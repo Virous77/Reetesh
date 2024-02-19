@@ -1,0 +1,226 @@
+---
+title: "Web3 Wallets connection using WalletConnect in Next.js"
+date: "Feb 19 2024"
+author: "Reetesh Kumar"
+authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
+blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1708271565/walletconnect_p28rex.png"
+about: "WalletConnect allows to connect mobile wallet to different decentralized applications and other wallets. This allows to interact with dapps and sign transactions securely from wallet."
+tags:
+  [
+    "how to use walletconnect in next.js",
+    "metamask connection in next.js using walletconnect",
+    "how to setup walletconnect in next.js",
+    "walletconnect in next.js",
+  ]
+---
+
+WalletConnect is an open-source protocol that facilitates communication between decentralized applications (dApps) and mobile wallets. It enables users to securely connect their wallets to dApps using QR code scanning or deep linking, allowing to interact with decentralized applications directly from their mobile devices or web extensions wallets.
+
+WalletConnect provides a secure connection between DApps and wallets using end-to-end encryption by pairing mobile wallets with desktop DApps. The protocol allows users to interact with any DApp from their mobile device, making it easier to use DApps on the go.
+
+> Before we start make sure you have created account on [WalletConnect](https://cloud.walletconnect.com/app) and have your API key.
+
+### Setting up in Next.js Project
+
+First we need to initialize our Next.js project. If you don't have Next.js installed, you can install it using the following command
+
+```bash
+npx create-next-app@latest
+```
+
+Once you have initialized your project, you can install the WalletConnect package using the following command
+
+```bash
+npm install wagmi viem @web3modal/wagmi @tanstack/react-query
+```
+
+We are using `wagmi` which makes intreacting with `Ethereum` chains easy with good support of `React-query` and `WalletConnect`. Wagmi provides multiple hooks to interact with Ethereum blockchain.
+
+Web3Modal with wagmi is a simple and flexible solution for DApp developers to add a variety of wallet providers to their applications. It is a single library that provides a consistent user experience for connecting to a wallet and accessing the Ethereum blockchain.
+
+### Web3Modal Configuration
+
+We need to configure Web3Modal first for that we need to create a file `config.ts`. I'm creating under `lib` folder.
+
+```ts
+// lib/config.ts
+
+import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
+import { cookieStorage, createStorage } from "wagmi";
+import { sepolia } from "wagmi/chains";
+
+export const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
+
+if (!projectId) throw new Error("Project ID is not defined");
+
+const metadata = {
+  name: "Web3Modal Example",
+  description: "Web3Modal Example",
+  url: "https://web3modal.com",
+  icons: ["https://avatars.githubusercontent.com/u/37784886"],
+};
+
+export const config = defaultWagmiConfig({
+  chains: [sepolia],
+  projectId,
+  metadata,
+  ssr: true,
+  storage: createStorage({
+    storage: cookieStorage,
+  }),
+});
+```
+
+Here we are using `seploia` which is a testnet chain for Ethereum. You can use any other chain as per your requirement. wagmi has support for multiple chains. We are also using `cookieStorage` to store the wallet connection details.
+
+Now we need to create a provider for our application. We will create a file `wagmi-provider.tsx` under `lib` folder.
+
+```tsx
+// lib/wagmi-provider.tsx
+
+"use client";
+
+import React, { ReactNode } from "react";
+import { createWeb3Modal } from "@web3modal/wagmi/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { State, WagmiProvider } from "wagmi";
+import { config, projectId } from "./config";
+
+if (!projectId) throw new Error("Project ID is not defined");
+
+createWeb3Modal({
+  wagmiConfig: config,
+  projectId,
+  enableAnalytics: true, // Optional
+});
+
+export const WagmiProviderComp = ({
+  children,
+  initialState,
+}: {
+  children: ReactNode;
+  initialState?: State;
+}) => {
+  const [queryClient] = React.useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: false, // configure as per your needs
+          },
+        },
+      })
+  );
+
+  return (
+    <WagmiProvider config={config} initialState={initialState}>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </WagmiProvider>
+  );
+};
+export default WagmiProviderComp;
+```
+
+Since we know already Wagmi uses `React-query` so we are using `QueryClientProvider` to provide the query client to the application. we are also using `WagmiProvider` to provide the wagmi configuration to the application.
+
+Now we need wrap our application with `WagmiProviderComp` in `app/layout.tsx` file.
+
+```tsx
+// app/layout.tsx
+
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import WagmiProviderComp from "@/lib/wagmi/wagmi-provider";
+import { headers } from "next/headers";
+import { cookieToInitialState } from "wagmi";
+import { config } from "@/lib/wagmi/config";
+
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: "Next.js App",
+  description: "Next.js App",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const initialState = cookieToInitialState(config, headers().get("cookie"));
+
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        <WagmiProviderComp initialState={initialState}>
+          {children}
+        </WagmiProviderComp>
+      </body>
+    </html>
+  );
+}
+```
+
+We are using `cookieToInitialState` to get the initial state of the wallet connection. With this we are done with the configuration of wagmi and Web3Modal. Now we can use the wallet connection in our application.
+
+### Web3Modal Usage
+
+We can create a Component to connect the wallet using Web3Modal. We will create a file `wallet-modal.tsx` under `lib` folder.
+
+```tsx
+// lib/wallet-modal.tsx
+
+"use client";
+
+import { useWeb3Modal } from "@web3modal/wagmi/react";
+
+export default function ConnectButton() {
+  const { open } = useWeb3Modal();
+
+  return <button onClick={() => open()}>Connect Wallet</button>;
+}
+```
+
+Well thats it, we have created a button to connect the wallet and it will open the wallet modal to connect the wallet.
+
+### Next.js related Configuration
+
+Since Next.js use `ssr` by default we need to make some configuration in our `next.config.js` file.
+
+```js
+// Path: next.config.js
+const nextConfig = {
+  webpack: (config) => {
+    config.externals.push("pino-pretty", "lokijs", "encoding");
+    return config;
+  },
+};
+```
+
+### Reading Smart Contract Data using Wagmi
+
+Now that we have connected the wallet, we can use wagmi to interact with the smart contract. Wagmi has good support for reading and writing the smart contract data. We can use `useContractRead` hook to read the smart contract data.
+
+You can read more about Wagmi [here](https://wagmi.sh/react/getting-started).
+
+```ts
+import { useContractRead } from "wagmi";
+import { USDTAbi } from "../abi/USDTAbi";
+
+const USDTAddress = "0x...";
+
+function App() {
+  const result = useReadContract({
+    abi: USDTAbi,
+    address: USDTAddress,
+    functionName: "totalSupply",
+  });
+}
+```
+
+### Conclusion
+
+Wagmi and Web3Modal makes it easy to connect the wallet and interact with the smart contract. Since as a developer we don't have to worry about the wallet connection and can focus on the application logic. Wagmi provides a good support for Ethereum and other chains. It also provides a good support for React-query which makes it easy to interact with the blockchain.
+
+I hope you find this article helpful. If you have any questions or suggestions, feel free to comment below. You can get the complete code from [Github](https://github.com/Virous77/charity-dapp/tree/main/lib/wagmi).
