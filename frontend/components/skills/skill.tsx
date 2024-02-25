@@ -1,14 +1,14 @@
-import Social from "../social/social";
-import { Home } from "lucide-react";
-import Link from "next/link";
-import Image from "next/image";
+import Social from '../social/social';
+import { Home } from 'lucide-react';
+import Link from 'next/link';
+import Image from 'next/image';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../ui/tooltip";
-import { TSkill } from "@/models/skills";
+} from '../ui/tooltip';
+import { TSkill } from '@/models/skills';
 
 type TSkills = {
   skills: TSkill[];
@@ -17,14 +17,14 @@ type TSkills = {
 const Skill: React.FC<TSkills> = ({ skills }) => {
   return (
     <main className=" pb-8 md:pb-0">
-      <section className="md:w-[60%] p-4 md:p-0  m-auto flex items-center justify-center">
+      <section className="m-auto flex items-center  justify-center p-4 md:w-[60%] md:p-0">
         <div className=" relative">
-          <h2 className=" text-[25px] tracking-widest text-center  ">
+          <h2 className=" text-center text-[25px] tracking-widest  ">
             My Skills
           </h2>
 
-          <div className=" flex flex-col gap-3 items-center mt-10">
-            <p className=" text-center text-default tracking-wider">
+          <div className=" mt-10 flex flex-col items-center gap-3">
+            <p className=" text-center tracking-wider text-default">
               I am a seasoned developer with a strong proficiency in a versatile
               set of technologies. Having extensively worked with React,
               Next.js, Node.js, Express, MongoDB, TypeScript, GraphQL, REST API,
@@ -32,7 +32,7 @@ const Skill: React.FC<TSkills> = ({ skills }) => {
               experience to the table.
             </p>
 
-            <p className=" text-center text-default tracking-wider">
+            <p className=" text-center tracking-wider text-default">
               My commitment to innovation extends to the realm of React,
               Next.js, Node.js, TypeScript and GraphQL, where I&apos;ve
               leveraged these technologies to enhance project efficiency and
@@ -41,7 +41,7 @@ const Skill: React.FC<TSkills> = ({ skills }) => {
               application deployment and orchestration.
             </p>
 
-            <p className=" text-center text-default tracking-wider">
+            <p className=" text-center tracking-wider text-default">
               Delving into blockchain technologies, I&apos;ve worked extensively
               with Solidity and Anchor, contributing to the development of
               decentralized applications (DApps) and exploring the frontier of
@@ -51,8 +51,8 @@ const Skill: React.FC<TSkills> = ({ skills }) => {
         </div>
       </section>
 
-      <section className=" mt-6 p-4 items-center  flex justify-center">
-        <ul className=" flex flex-wrap items-center gap-5 place-content-center">
+      <section className=" mt-6 flex items-center  justify-center p-4">
+        <ul className=" flex flex-wrap place-content-center items-center gap-5">
           {skills.map((skill) => (
             <li key={skill._id}>
               <TooltipProvider>
@@ -63,7 +63,7 @@ const Skill: React.FC<TSkills> = ({ skills }) => {
                       alt={skill.name}
                       width={40}
                       height={40}
-                      className=" rounded-full cursor-pointer"
+                      className=" cursor-pointer rounded-full"
                     />
                   </TooltipTrigger>
                   <TooltipContent>{skill.name}</TooltipContent>
@@ -74,7 +74,7 @@ const Skill: React.FC<TSkills> = ({ skills }) => {
         </ul>
       </section>
 
-      <section className=" flex justify-center flex-col gap-5  items-center">
+      <section className=" flex flex-col items-center justify-center  gap-5">
         <Social styles=" mt-6 justify-center" />
         <Link href="/" aria-label="home">
           <Home className=" text-primary" />

@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 type THeader = {
   children: ReactNode;
@@ -6,7 +6,7 @@ type THeader = {
 
 const Header: React.FC<THeader> = ({ children }) => {
   return (
-    <div className="flex flex-col gap-4 md:scroll-my-20 mt-[50px] md:mt-0">
+    <div className="mt-[50px] flex flex-col gap-4 md:mt-0 md:scroll-my-20">
       <div>{children}</div>
     </div>
   );

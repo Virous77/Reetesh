@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 interface IProject {
   title: string;
@@ -60,4 +60,4 @@ const ProjectSchema = new mongoose.Schema<MongoProject>(
 );
 
 export default mongoose.models.Project ||
-  mongoose.model<MongoProject>("Project", ProjectSchema);
+  mongoose.model<MongoProject>('Project', ProjectSchema);

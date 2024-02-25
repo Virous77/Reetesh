@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 interface IBlogComment {
   blogId: string;
@@ -35,4 +35,4 @@ const BlogCommentSchema = new mongoose.Schema<MongoBlogComment>(
 );
 
 export default mongoose.models.BlogComment ||
-  mongoose.model<MongoBlogComment>("BlogComment", BlogCommentSchema);
+  mongoose.model<MongoBlogComment>('BlogComment', BlogCommentSchema);

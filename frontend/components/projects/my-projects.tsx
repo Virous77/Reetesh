@@ -1,7 +1,7 @@
-import { TProject } from "@/models/projects";
-import ProjectList from "./project-list";
-import Link from "next/link";
-import { Home } from "lucide-react";
+import { TProject } from '@/models/projects';
+import ProjectList from './project-list';
+import Link from 'next/link';
+import { Home } from 'lucide-react';
 
 type TMyProjects = {
   projects: TProject[];
@@ -9,17 +9,17 @@ type TMyProjects = {
 
 const MyProjects: React.FC<TMyProjects> = ({ projects }) => {
   return (
-    <section className=" h-fit md:h-full lg:overflow-y-scroll body">
-      <div className=" flex items-center flex-col mt-10">
-        <div className="fixed md:static bg-background md:bg-transparent z-10 top-0 left-0 w-full p-1 flex items-center justify-between md:text-center md:block">
-          <h2 className="text-[18px] md:text-[25px] tracking-widest text-center p-2 md:p-0">
+    <section className=" body h-fit md:h-full lg:overflow-y-scroll">
+      <div className=" mt-10 flex flex-col items-center">
+        <div className="fixed left-0 top-0 z-10 flex w-full items-center justify-between bg-background p-1 md:static md:block md:bg-transparent md:text-center">
+          <h2 className="p-2 text-center text-[18px] tracking-widest md:p-0 md:text-[25px]">
             My Projects
           </h2>
-          <Link href="/" className="block md:hidden pr-12 -mb-1">
+          <Link href="/" className="-mb-1 block pr-12 md:hidden">
             <Home size={21} />
           </Link>
         </div>
-        <p className=" w-[95%] md:w-[60%] text-center mt-2 text-[15px] text-default mb-10">
+        <p className=" mb-10 mt-2 w-[95%] text-center text-[15px] text-default md:w-[60%]">
           Welcome to my Projects Page, a curated showcase of the diverse array
           of applications I&apos;ve crafted on my coding journey. Each project
           reflects not only technical proficiency but also a passion for

@@ -1,6 +1,6 @@
 const About = () => {
   return (
-    <div className="flex flex-col gap-4 md:scroll-my-20 mt-[50px] md:mt-0">
+    <div className="mt-[50px] flex flex-col gap-4 md:mt-0 md:scroll-my-20">
       <div className=" flex flex-col gap-3">
         <p>
           I&apos;m Reetesh Kumar, a Full Stack Developer turning caffeine into

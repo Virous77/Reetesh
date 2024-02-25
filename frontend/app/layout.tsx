@@ -1,31 +1,31 @@
-import { Poppins } from "next/font/google";
-import "./globals.css";
-import ThemeProviderComp from "@/lib/theme-provider";
-import ThemeSwitcher from "@/components/theme/theme-switcher";
-import { commonMetaData } from "@/utils/utils";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import Script from "next/script";
-import { Provider } from "@/lib/reactQuery-provider";
+import { Poppins } from 'next/font/google';
+import './globals.css';
+import ThemeProviderComp from '@/lib/theme-provider';
+import ThemeSwitcher from '@/components/theme/theme-switcher';
+import { commonMetaData } from '@/utils/utils';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import Script from 'next/script';
+import { Provider } from '@/lib/reactQuery-provider';
 
 const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
 });
 
 export async function generateMetadata() {
   const metaData = commonMetaData({
-    name: "",
-    desc: "A passionate full-stack developer with a strong proficiency in a versatile set of technologies. Having extensively worked with React, Next.js, Node.js, Express, MongoDB, TypeScript, GraphQL, REST API, Docker, Kubernetes, Solidity, and Anchor, I bring a wealth of experience to the table",
-    image: "https://avatars.githubusercontent.com/u/101452588?v=4",
-    url: "/",
+    name: '',
+    desc: 'A passionate full-stack developer with a strong proficiency in a versatile set of technologies. Having extensively worked with React, Next.js, Node.js, Express, MongoDB, TypeScript, GraphQL, REST API, Docker, Kubernetes, Solidity, and Anchor, I bring a wealth of experience to the table',
+    image: 'https://avatars.githubusercontent.com/u/101452588?v=4',
+    url: '/',
     keywords: [
-      "Reetesh",
-      "Reetesh Kumar",
-      "full-stack developer",
-      "developer",
-      "software engineer",
-      "software developer",
-      "web developer",
+      'Reetesh',
+      'Reetesh Kumar',
+      'full-stack developer',
+      'developer',
+      'software engineer',
+      'software developer',
+      'web developer',
     ],
   });
   return {
@@ -96,7 +96,7 @@ export default function RootLayout({
             src="https://www.googletagmanager.com/ns.html?id=GTM-PPW7TBMX"
             height="0"
             width="0"
-            style={{ display: "none", visibility: "hidden" }}
+            style={{ display: 'none', visibility: 'hidden' }}
           ></iframe>
         </noscript>
         <ThemeProviderComp attribute="class" defaultTheme="dark">

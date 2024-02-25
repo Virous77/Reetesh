@@ -1,7 +1,7 @@
-"use client";
-import { useRef, useState } from "react";
-import { Copy, CopyCheck } from "lucide-react";
-import { Icon } from "./icons";
+'use client';
+import { useRef, useState } from 'react';
+import { Copy, CopyCheck } from 'lucide-react';
+import { Icon } from './icons';
 
 export const Pre = ({ children, ...props }: any) => {
   const preRef = useRef<HTMLPreElement>(null);
@@ -18,17 +18,17 @@ export const Pre = ({ children, ...props }: any) => {
   };
 
   return (
-    <div className="pre border rounded">
+    <div className="pre rounded border">
       <div
-        className="flex items-center justify-between w-full py-1 px-3  pb-3"
+        className="flex w-full items-center justify-between px-3 py-1  pb-3"
         style={{
-          marginTop: "5px",
-          borderBottom: "1px solid hsl(var(--border))",
+          marginTop: '5px',
+          borderBottom: '1px solid hsl(var(--border))',
         }}
       >
-        <span className="text-primary text-[14px] capitalize font-mono flex items-center gap-2">
-          <Icon name={props["data-language"]?.toLowerCase()} />
-          {props["data-language"]}
+        <span className="flex items-center gap-2 font-mono text-[14px] capitalize text-primary">
+          <Icon name={props['data-language']?.toLowerCase()} />
+          {props['data-language']}
         </span>
 
         <button

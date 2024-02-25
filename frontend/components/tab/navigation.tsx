@@ -1,17 +1,17 @@
-import { FileText, Target } from "lucide-react";
-import Link from "next/link";
+import { FileText, Target } from 'lucide-react';
+import Link from 'next/link';
 
 const Navigation = () => {
   return (
-    <div className=" flex items-center gap-7 mt-5">
+    <div className=" mt-5 flex items-center gap-7">
       <Link href="/blogs">
-        <span className="flex items-center gap-2 cursor-pointer text-[13px] text-default hover:text-defaultMax font-mono">
+        <span className="flex cursor-pointer items-center gap-2 font-mono text-[13px] text-default hover:text-defaultMax">
           <FileText size={17} /> Blogs
         </span>
       </Link>
 
       <Link href="/skills">
-        <span className=" flex items-center gap-2 cursor-pointer text-[13px] text-default hover:text-defaultMax font-mono">
+        <span className=" flex cursor-pointer items-center gap-2 font-mono text-[13px] text-default hover:text-defaultMax">
           <Target size={17} /> Skills
         </span>
       </Link>

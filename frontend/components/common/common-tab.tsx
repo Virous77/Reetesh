@@ -1,6 +1,6 @@
-import Link from "next/link";
-import Social from "../social/social";
-import { ReactNode } from "react";
+import Link from 'next/link';
+import Social from '../social/social';
+import { ReactNode } from 'react';
 
 type TLink = {
   name: string;
@@ -15,13 +15,13 @@ type TCommonTab = {
 
 const CommonTab: React.FC<TCommonTab> = ({ links, type = true }) => {
   const style = type
-    ? "mt-8 md:absolute left-0 bottom-12 z-10"
-    : "mt-8 md:absolute left-0 -bottom-10 z-10";
+    ? 'mt-8 md:absolute left-0 bottom-12 z-10'
+    : 'mt-8 md:absolute left-0 -bottom-10 z-10';
   return (
     <aside
       className={`px-[40px] md:px-0 ${
-        type ? "md:h-[50vh] items-center" : "md:mt-6 pb-4"
-      }  flex relative flex-col md:flex-row `}
+        type ? 'items-center md:h-[50vh]' : 'pb-4 md:mt-6'
+      }  relative flex flex-col md:flex-row `}
     >
       <ul className=" flex flex-col gap-3">
         {links.map((link, idx) => (
@@ -34,11 +34,11 @@ const CommonTab: React.FC<TCommonTab> = ({ links, type = true }) => {
               {link.icon ? (
                 <span>{link.icon}</span>
               ) : (
-                <span className="block h-[1px] opacity-50 bg-foreground w-10"></span>
+                <span className="block h-[1px] w-10 bg-foreground opacity-50"></span>
               )}
               <span
                 className={`${
-                  link.icon ? "opacity-100" : "opacity-50"
+                  link.icon ? 'opacity-100' : 'opacity-50'
                 } hover:opacity-100`}
               >
                 {link.name}

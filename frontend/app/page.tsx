@@ -1,15 +1,15 @@
-import dynamic from "next/dynamic";
+import dynamic from 'next/dynamic';
 
-const Author = dynamic(() => import("@/components/author/author"));
-const About = dynamic(() => import("@/components/about/about"));
-const Footer = dynamic(() => import("@/components/common/footer"));
-const Recent = dynamic(() => import("@/components/recent/recent"));
+const Author = dynamic(() => import('@/components/author/author'));
+const About = dynamic(() => import('@/components/about/about'));
+const Footer = dynamic(() => import('@/components/common/footer'));
+const Recent = dynamic(() => import('@/components/recent/recent'));
 
 const Home = () => {
   return (
-    <main className="md:grid items-start grid-cols-2 gap-5 md:max-w-[1050px] px-4 sm:max-w-full m-auto h-screen md:overflow-hidden relative">
+    <main className="relative m-auto h-screen grid-cols-2 items-start gap-5 px-4 sm:max-w-full md:grid md:max-w-[1050px] md:overflow-hidden">
       <Author />
-      <section className="body md:h-full md:pt-[70px]  md:pb-8 flex flex-col md:gap-[60px]">
+      <section className="body flex flex-col  md:h-full md:gap-[60px] md:pb-8 md:pt-[70px]">
         <About />
         <Recent />
         <Footer />

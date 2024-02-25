@@ -1,6 +1,6 @@
-import dbConnect from "@/db/mongoose";
-import { publicProcedure, router } from "..";
-import skills, { TSkill } from "@/models/skills";
+import dbConnect from '@/db/mongoose';
+import { publicProcedure, router } from '..';
+import skills, { TSkill } from '@/models/skills';
 
 export const skillRouter = router({
   getSkills: publicProcedure.query(async () => {

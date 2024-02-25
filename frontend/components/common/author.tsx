@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import Link from 'next/link';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 
 const Author = () => {
   return (
@@ -13,11 +13,11 @@ const Author = () => {
           <AvatarFallback>RK</AvatarFallback>
         </Avatar>
       </Link>
-      <div className="flex flex-col gap-1 items-start justify-center">
+      <div className="flex flex-col items-start justify-center gap-1">
         <span className="text-[16px] font-semibold leading-none">
           Reetesh Kumar
         </span>
-        <span className="text-[13px] tracking-tight text-default block">
+        <span className="block text-[13px] tracking-tight text-default">
           @iMBitcoinB
         </span>
       </div>

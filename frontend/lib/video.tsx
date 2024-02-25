@@ -1,7 +1,7 @@
 export const Video = ({ src }: { src: string }) => {
   return (
     <video
-      className="w-full h-[300px] md:h-[400px] mt-8 md:mt-12"
+      className="mt-8 h-[300px] w-full md:mt-12 md:h-[400px]"
       autoPlay
       loop
       muted

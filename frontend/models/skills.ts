@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 interface ISkill {
   name: string;
@@ -40,4 +40,4 @@ const SkillSchema = new mongoose.Schema<MongoSkill>(
 );
 
 export default mongoose.models.Skill ||
-  mongoose.model<MongoSkill>("Skill", SkillSchema);
+  mongoose.model<MongoSkill>('Skill', SkillSchema);

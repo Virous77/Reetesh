@@ -1,9 +1,9 @@
-import dbConnect from "@/db/mongoose";
-import { publicProcedure, router } from "..";
-import z from "zod";
-import blogComments, { TBlog } from "@/models/blog-comments";
-import blogViews, { TBlogViews } from "@/models/blog-views";
-import { commentMail } from "./mail-router";
+import dbConnect from '@/db/mongoose';
+import { publicProcedure, router } from '..';
+import z from 'zod';
+import blogComments, { TBlog } from '@/models/blog-comments';
+import blogViews, { TBlogViews } from '@/models/blog-views';
+import { commentMail } from './mail-router';
 
 export const blogRouter = router({
   getComments: publicProcedure

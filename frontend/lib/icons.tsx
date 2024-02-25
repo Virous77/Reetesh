@@ -1,15 +1,15 @@
-import { cn } from "./utils";
+import { cn } from './utils';
 
 type IconName =
-  | "typescript"
-  | "javascript"
-  | "json"
-  | "docker"
-  | "bash"
-  | "yaml"
-  | "solidity"
-  | "js"
-  | "ts";
+  | 'typescript'
+  | 'javascript'
+  | 'json'
+  | 'docker'
+  | 'bash'
+  | 'yaml'
+  | 'solidity'
+  | 'js'
+  | 'ts';
 type IconType = {
   [key: string]: {
     path: JSX.Element;
@@ -248,12 +248,12 @@ export const Icon = ({
   className?: string;
 }) => {
   return (
-    <div className=" !w-4 !h-4">
+    <div className=" !h-4 !w-4">
       <svg
         viewBox="0 0 128 128"
-        className={cn("rounded-[3px]", className)}
+        className={cn('rounded-[3px]', className)}
         fill="#6d6d6d"
-        style={{ width: "15px", height: "15px" }}
+        style={{ width: '15px', height: '15px' }}
       >
         {icons[name].path}
       </svg>

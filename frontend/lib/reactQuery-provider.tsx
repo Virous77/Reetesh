@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import React, { ReactNode, useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { httpBatchLink } from "@trpc/client";
-import superjson from "superjson";
-import { trpc } from "@/trpc-client/client";
-import { hashData } from "@/utils/utils";
+import React, { ReactNode, useState } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { httpBatchLink } from '@trpc/client';
+import superjson from 'superjson';
+import { trpc } from '@/trpc-client/client';
+import { hashData } from '@/utils/utils';
 
 const url = `/api/trpc`;
 

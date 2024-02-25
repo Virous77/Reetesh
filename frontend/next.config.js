@@ -1,4 +1,4 @@
-const { withContentlayer } = require("next-contentlayer");
+const { withContentlayer } = require('next-contentlayer');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -6,14 +6,14 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "res.cloudinary.com",
-        port: "",
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        port: '',
       },
       {
-        protocol: "https",
-        hostname: "avatars.githubusercontent.com",
-        port: "",
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+        port: '',
       },
     ],
   },
