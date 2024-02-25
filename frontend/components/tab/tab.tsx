@@ -1,8 +1,8 @@
-import Link from "next/link";
-import Navigation from "./navigation";
+import Link from 'next/link';
+import Navigation from './navigation';
 
 const Tab = () => {
-  const tabs = ["Projects"];
+  const tabs = ['Projects'];
 
   return (
     <div className=" mt-[50px] md:mt-[80px]">
@@ -11,9 +11,9 @@ const Tab = () => {
           <li key={tab}>
             <Link
               href={`/${tab.toLowerCase()}`}
-              className="text-[16px] leading-[1.1] flex items-center gap-3 cursor-pointer w-fit"
+              className="flex w-fit cursor-pointer items-center gap-3 text-[16px] leading-[1.1]"
             >
-              <span className="block h-[1px] opacity-50 bg-foreground w-10"></span>
+              <span className="block h-[1px] w-10 bg-foreground opacity-50"></span>
               <span className="font-mono">{tab}</span>
             </Link>
           </li>

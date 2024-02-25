@@ -1,22 +1,22 @@
-import CommonTab from "../common/common-tab";
-import { Locate } from "lucide-react";
-import AuthorCard from "../common/author-card";
+import CommonTab from '../common/common-tab';
+import { Locate } from 'lucide-react';
+import AuthorCard from '../common/author-card';
 
 const Sidebar = () => {
   const Links = [
     {
-      name: "My Blogs",
-      path: "/blogs",
+      name: 'My Blogs',
+      path: '/blogs',
       icon: <Locate />,
     },
     {
-      name: "Home",
-      path: "/",
+      name: 'Home',
+      path: '/',
       icon: null,
     },
     {
-      name: "Projects",
-      path: "/projects",
+      name: 'Projects',
+      path: '/projects',
       icon: null,
     },
   ];

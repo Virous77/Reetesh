@@ -1,21 +1,21 @@
-import nextJest from "next/jest.js";
+import nextJest from 'next/jest.js';
 
 const createJestConfig = nextJest({
-  dir: "./",
+  dir: './',
 });
 
 const config = {
   verbose: true,
   clearMocks: true,
   collectCoverage: true,
-  coverageDirectory: "coverage",
-  coverageProvider: "v8",
+  coverageDirectory: 'coverage',
+  coverageProvider: 'v8',
   moduleNameMapper: {
-    "^@/components/(.*)$": "<rootDir>/components/$1",
+    '^@/components/(.*)$': '<rootDir>/components/$1',
   },
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
-  testEnvironment: "jest-environment-jsdom",
-  preset: "ts-jest",
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  testEnvironment: 'jest-environment-jsdom',
+  preset: 'ts-jest',
 };
 
 export default createJestConfig(config);

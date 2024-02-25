@@ -1,12 +1,12 @@
-"use server";
+'use server';
 
-import { CalendarDays, Code, Link2, MoveRight } from "lucide-react";
-import parse from "html-react-parser";
-import Link from "next/link";
-import React from "react";
-import { Card, CardContent } from "../ui/card";
-import Image from "next/image";
-import { TProject } from "@/models/projects";
+import { CalendarDays, Code, Link2, MoveRight } from 'lucide-react';
+import parse from 'html-react-parser';
+import Link from 'next/link';
+import React from 'react';
+import { Card, CardContent } from '../ui/card';
+import Image from 'next/image';
+import { TProject } from '@/models/projects';
 
 type TProjects = {
   projects: TProject[];
@@ -19,20 +19,20 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
       {projects?.map((project) => (
         <Card
           key={project._id}
-          className="m-1 h-fit border dark:border-none dark:shadow-none shadow-lg dark:bg-gradient-to-r from-[#0c0e11] to-[#171d24]"
+          className="m-1 h-fit border from-[#0c0e11] to-[#171d24] shadow-lg dark:border-none dark:bg-gradient-to-r dark:shadow-none"
         >
           <CardContent className="p-3">
             <>
-              <h3 className=" md:text-[18px] text-base text-heading mb-1 font-mono">
+              <h3 className=" mb-1 font-mono text-base text-heading md:text-[18px]">
                 {project.title}
               </h3>
               {project?.develop && (
-                <span className="flex items-center gap-2 text-default mb-1 text-[13px] uppercase font-bold">
+                <span className="mb-1 flex items-center gap-2 text-[13px] font-bold uppercase text-default">
                   <CalendarDays size={17} />
                   {project.develop}
                 </span>
               )}
-              <span className="text-[14px] leading-5 whitespace-pre-wrap block mt-4 mb-3 text-default">
+              <span className="mb-3 mt-4 block whitespace-pre-wrap text-[14px] leading-5 text-default">
                 {parse(project.desc)}
               </span>
 
@@ -42,7 +42,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
                 height={100}
                 width={100}
                 sizes="100vw"
-                style={{ width: "100%", height: "auto" }}
+                style={{ width: '100%', height: 'auto' }}
                 className=" rounded"
               />
 
@@ -50,17 +50,17 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
                 {project.tags?.map((tag) => (
                   <span
                     key={tag}
-                    className=" px-2 py-1 bg-muted text-[12px] rounded-md capitalize"
+                    className=" rounded-md bg-muted px-2 py-1 text-[12px] capitalize"
                   >
                     {tag}
                   </span>
                 ))}
               </div>
 
-              <div className=" flex items-center gap-5 mt-4 justify-center">
+              <div className=" mt-4 flex items-center justify-center gap-5">
                 <a
                   href={project.projectLink}
-                  className="text-[13px] flex items-center gap-2 text-default hover:text-defaultMax font-bold underline underline-offset-4"
+                  className="flex items-center gap-2 text-[13px] font-bold text-default underline underline-offset-4 hover:text-defaultMax"
                   target="_blank"
                   referrerPolicy="no-referrer"
                 >
@@ -69,7 +69,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
 
                 <a
                   href={project.codeLink}
-                  className="text-[13px] flex items-center gap-2 text-default hover:text-defaultMax font-bold underline underline-offset-4"
+                  className="flex items-center gap-2 text-[13px] font-bold text-default underline underline-offset-4 hover:text-defaultMax"
                   target="_blank"
                   referrerPolicy="no-referrer"
                 >
@@ -82,7 +82,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
       ))}
       {isActive && (
         <Link
-          className=" cursor-pointer text-[14px] text-primary flex items-center gap-2"
+          className=" flex cursor-pointer items-center gap-2 text-[14px] text-primary"
           href="/projects"
         >
           Visit all Projects <MoveRight size={19} />

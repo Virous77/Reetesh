@@ -1,9 +1,9 @@
-import { TBlog } from "@/models/blog-comments";
-import { formateDate } from "@/utils/utils";
+import { TBlog } from '@/models/blog-comments';
+import { formateDate } from '@/utils/utils';
 
 const CommentList = async ({ data }: { data: TBlog[] }) => {
   if (data.length === 0)
-    return <p className=" pt-4 text-center pb-2">No comments yet</p>;
+    return <p className=" pb-2 pt-4 text-center">No comments yet</p>;
 
   return (
     <div className=" mt-3">
@@ -11,10 +11,10 @@ const CommentList = async ({ data }: { data: TBlog[] }) => {
         {data.map((comment) => (
           <div
             key={comment._id}
-            className="grid grid-cols-custom items-start gap-3 mb-4"
+            className="grid-cols-custom mb-4 grid items-start gap-3"
           >
-            <div className="w-[40px] h-[40px]  rounded-full bg-gray-200 flex items-center justify-center">
-              <span className="text-[18px] text-heading font-bold">
+            <div className="flex h-[40px]  w-[40px] items-center justify-center rounded-full bg-gray-200">
+              <span className="text-[18px] font-bold text-heading">
                 {comment.userId.slice(0, 2)}
               </span>
             </div>

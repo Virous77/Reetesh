@@ -1,7 +1,7 @@
-import { router } from "./index";
-import { skillRouter } from "./routes/skill-router";
-import { projectRouter } from "./routes/project-router";
-import { blogRouter } from "./routes/blog-router";
+import { router } from './index';
+import { skillRouter } from './routes/skill-router';
+import { projectRouter } from './routes/project-router';
+import { blogRouter } from './routes/blog-router';
 
 export const appRouter = router({
   skills: skillRouter,

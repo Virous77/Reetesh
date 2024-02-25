@@ -1,21 +1,21 @@
-import { Github, Linkedin, Twitter } from "lucide-react";
-import CryptoJS from "crypto-js";
+import { Github, Linkedin, Twitter } from 'lucide-react';
+import CryptoJS from 'crypto-js';
 
 export const socials = [
   {
     name: Github,
-    url: "https://github.com/Virous77",
-    title: "Github",
+    url: 'https://github.com/Virous77',
+    title: 'Github',
   },
   {
     name: Twitter,
-    url: "https://twitter.com/imbitcoinb",
-    title: "Twitter",
+    url: 'https://twitter.com/imbitcoinb',
+    title: 'Twitter',
   },
   {
     name: Linkedin,
-    url: "https://www.linkedin.com/in/reetesh-kumar-a1b952178/",
-    title: "Linkedin",
+    url: 'https://www.linkedin.com/in/reetesh-kumar-a1b952178/',
+    title: 'Linkedin',
   },
 ];
 
@@ -48,35 +48,35 @@ export const commonMetaData = ({
   keywords: string[];
 }) => {
   return {
-    metadataBase: new URL("https://reetesh.in"),
+    metadataBase: new URL('https://reetesh.in'),
     title: name
       ? `${name} | Reetesh Kumar`
-      : "Reetesh Kumar | Full-Stack Developer",
+      : 'Reetesh Kumar | Full-Stack Developer',
     description: desc,
     authors: [
       {
-        name: "Reetesh Kumar",
-        url: "https://reetesh.in/",
+        name: 'Reetesh Kumar',
+        url: 'https://reetesh.in/',
       },
     ],
     twitter: {
-      card: "summary_large_image",
-      creator: "@imbitcoinb",
+      card: 'summary_large_image',
+      creator: '@imbitcoinb',
       images: image,
     },
-    robots: "index, follow",
+    robots: 'index, follow',
     alternates: {
       canonical: `https://reetesh.in${url}`,
       languages: {
-        "en-US": "/",
+        'en-US': '/',
       },
     },
     openGraph: {
-      type: "website",
+      type: 'website',
       url: `https://reetesh.in${url}`,
       title: name,
       description: desc,
-      siteName: "Reetesh Kumar",
+      siteName: 'Reetesh Kumar',
       images: [
         {
           url: image,
@@ -85,23 +85,23 @@ export const commonMetaData = ({
     },
     assets: image,
     keywords: [
-      "nextjs",
-      "react",
-      "typescript",
-      "tailwindcss",
-      "express",
-      "nodejs",
-      "mongodb",
-      "mysql",
-      "javascript",
-      "docker",
-      "github",
-      "Reetesh Kumar",
-      "kubernetes",
-      "solidity developer",
-      "Reetesh kumar blog",
-      "Full Stack Developer",
-      "Web Developer",
+      'nextjs',
+      'react',
+      'typescript',
+      'tailwindcss',
+      'express',
+      'nodejs',
+      'mongodb',
+      'mysql',
+      'javascript',
+      'docker',
+      'github',
+      'Reetesh Kumar',
+      'kubernetes',
+      'solidity developer',
+      'Reetesh kumar blog',
+      'Full Stack Developer',
+      'Web Developer',
       ...keywords,
     ],
   };
@@ -110,7 +110,7 @@ export const commonMetaData = ({
 export const formateDate = (date: string) => {
   const newDate = new Date(date);
 
-  const month = newDate.toLocaleString("default", { month: "short" });
+  const month = newDate.toLocaleString('default', { month: 'short' });
   const day = newDate.getDate();
   const year = newDate.getFullYear();
 
@@ -118,9 +118,9 @@ export const formateDate = (date: string) => {
 };
 
 export const generateUUID = () => {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     const r = (Math.random() * 16) | 0;
-    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
 };

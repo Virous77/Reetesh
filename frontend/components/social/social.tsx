@@ -1,4 +1,4 @@
-import { socials } from "@/utils/utils";
+import { socials } from '@/utils/utils';
 
 type TSocial = {
   styles: string;
@@ -12,7 +12,7 @@ const Social: React.FC<TSocial> = ({ styles }) => {
           href={social.url}
           target="_blank"
           key={idx}
-          className="text-default hover:text-defaultMax transition-colors duration-200"
+          className="text-default transition-colors duration-200 hover:text-defaultMax"
           referrerPolicy="no-referrer"
           aria-label={social.title}
         >

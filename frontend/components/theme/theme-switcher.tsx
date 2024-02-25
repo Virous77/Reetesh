@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
-import { Moon, Sun } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
+import { Moon, Sun } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 const ThemeSwitcher = () => {
   const { theme, setTheme } = useTheme();
@@ -18,15 +18,15 @@ const ThemeSwitcher = () => {
 
   return (
     <div
-      className={`flex flex-col gap-2  fixed right-3 ${
-        pathName.includes("/blog") ? "bottom-5" : "top-3"
-      } md:fixed md:right-8 md:top-6 z-[101]`}
+      className={`fixed right-3 flex  flex-col gap-2 ${
+        pathName.includes('/blog') ? 'bottom-5' : 'top-3'
+      } z-[101] md:fixed md:right-8 md:top-6`}
     >
       <div
-        className="w-8 h-8 flex items-center justify-center bg-default-100 hover:bg-default-200 cursor-pointer"
-        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        className="bg-default-100 hover:bg-default-200 flex h-8 w-8 cursor-pointer items-center justify-center"
+        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
       >
-        {theme === "dark" ? (
+        {theme === 'dark' ? (
           <Sun size={20} data-testid="sun" />
         ) : (
           <Moon size={20} data-testid="moon" />

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useRef, useState } from "react";
-import action from "./action";
-import { getLocalData } from "@/utils/utils";
-import { usePathname } from "next/navigation";
-import { trpc } from "@/trpc-client/client";
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { useRef, useState } from 'react';
+import action from './action';
+import { getLocalData } from '@/utils/utils';
+import { usePathname } from 'next/navigation';
+import { trpc } from '@/trpc-client/client';
 
 const CommentForm = () => {
   const [pending, setPending] = useState(false);
@@ -17,21 +17,21 @@ const CommentForm = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const comment = formData.get("comment")?.toString();
+    const comment = formData.get('comment')?.toString();
 
-    if (!comment) return alert("Please enter a comment");
+    if (!comment) return alert('Please enter a comment');
     setPending(true);
 
     try {
-      const blogId = pathName.split("/")[2];
-      const id: string = getLocalData("tempId");
+      const blogId = pathName.split('/')[2];
+      const id: string = getLocalData('tempId');
       await mutateAsync({ comment, blogId, userId: id });
-      inputRef!.current!.value = "";
+      inputRef!.current!.value = '';
       action(blogId);
       setPending(false);
     } catch (error) {
       setPending(false);
-      alert("Failed to send comment");
+      alert('Failed to send comment');
     }
   };
   return (
@@ -44,8 +44,8 @@ const CommentForm = () => {
         name="comment"
         ref={inputRef}
       />
-      <Button disabled={pending} type="submit" className=" py-6 px-[30px]">
-        {pending ? "Sending..." : "Send"}
+      <Button disabled={pending} type="submit" className=" px-[30px] py-6">
+        {pending ? 'Sending...' : 'Send'}
       </Button>
     </form>
   );
