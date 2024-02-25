@@ -50,7 +50,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
                 {project.tags?.map((tag) => (
                   <span
                     key={tag}
-                    className=" px-2 py-1 bg-muted text-[12px] rounded-md"
+                    className=" px-2 py-1 bg-muted text-[12px] rounded-md capitalize"
                   >
                     {tag}
                   </span>
