@@ -82,8 +82,19 @@ body {
 }
 
 pre {
-  background: transparent !important;
+  background-color: #292929 !important;
   width: 100% !important;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+}
+
+.dark pre {
+  background-color: transparent !important;
+  width: 100% !important;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
 }
 
 .b-set p:nth-child(2) {
