@@ -12,7 +12,17 @@ const computedFields: any = {
   },
   slugAsParams: {
     type: 'string',
-    resolve: (doc: any) => doc.title.toLowerCase().replace(/ /g, '-'),
+    resolve: (doc: any) => {
+      if (
+        doc.title.includes(
+          'Docker - The Complete Guide to Build and Deploy your Application'
+        )
+      ) {
+        return 'docker-the-complete-guide-to-build-and-deploy-your-application';
+      } else {
+        return doc.title.toLowerCase().replace(/ /g, '-');
+      }
+    },
   },
 };
 
