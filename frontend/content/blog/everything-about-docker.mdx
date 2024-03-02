@@ -283,6 +283,22 @@ volumes:
 
 - **depends_on**: This is the section where we define the dependencies of the services. In this case, we are saying that the `node-app` service depends on the `mongodb` service.
 
+Now we can run the multi-container application using the following command.
+
+```bash
+# This command will build the image and run the container in a single command
+docker-compose up
+
+# Run in the background
+docker-compose up -d
+
+# Stop the containers
+docker-compose down
+
+# Build the image
+docker-compose build
+```
+
 There are many other things that we can do with **docker-compose** like `networking`, `secrets`, `healthcheck` and many more. You can check the official documentation of the docker-compose to know more about it.
 
 But we gonna learn about the **Networking** since it's very important and we gonna use it a lot in our development and production environment.
