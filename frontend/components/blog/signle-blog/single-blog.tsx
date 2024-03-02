@@ -9,6 +9,7 @@ import { Post } from '@/.contentlayer/generated';
 import { Mdx } from './mdx';
 import Views from './views';
 import Comment from './comment/comment';
+import ReadMore from './read-more';
 
 type TSingleBlog = {
   blog: Post;
@@ -49,6 +50,7 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog }) => {
           <Mdx code={blog.body.code} />
         </div>
 
+        <ReadMore slug={blog.slugAsParams} />
         <Comment slug={blog.slugAsParams} />
         <Footer />
       </div>
