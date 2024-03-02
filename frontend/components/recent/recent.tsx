@@ -21,7 +21,7 @@ const Recent = async () => {
             {posts.map((post) => (
               <li key={post.slug} className=" underline underline-offset-4">
                 <Link
-                  href={`/blog${post.slug}`}
+                  href={`/blog/${post.slugAsParams}`}
                   className=" flex items-center gap-2 opacity-90 hover:opacity-100 "
                 >
                   {post.title}
