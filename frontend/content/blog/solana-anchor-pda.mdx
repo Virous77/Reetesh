@@ -1,0 +1,135 @@
+---
+title: 'Dynamically Program Address (PDA) in Solana using Anchor'
+date: 'Mar 06 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1709659408/solana_w1z3ks.png'
+about: ' Program Derived Address (PDA) in solana development is a way to create a new account with a unique address based on the program and the seeds provided. PDAs are not public keys and therefore do not have an associated private key.'
+tags:
+  [
+    'how to create PDA in solana',
+    'how to create PDA in solana using anchor',
+    'how program derived address works in solana',
+    'pda in solana',
+  ]
+---
+
+Program Derived Address (PDA) in solana development is a way to create a new account with a unique address based on the program and the seeds provided. PDAs are not public keys and therefore do not have an associated private key. This makes them useful for creating accounts that are only accessible by a specific program.
+
+PDA typically owned by a program itself, and this help to sign transactions on behalf of the account. This is useful for creating accounts that are only accessible by a specific program. Also help to structure the data in a way that is easy to access and modify. This help to create hashmap-like structures on-chain using PDAs.
+
+### How PDA are created in Anchor?
+
+Anchor makes it easy to write Solana programs in Rust. It provides a set of tools and libraries that make it easy to write, deploy, and interact with Solana programs.
+
+PDAs are derived using a list of optional seeds, a bump seed, and a programId. Anchor provides a way to create PDAs using the `#[account]` attribute. The `#[account]` attribute is used to create a new account with a unique address based on the program and the seeds provided.
+
+Here is the example code to create PDA in Anchor.
+
+```rust
+use anchor_lang::prelude::*;
+
+declare_id!("Your program id");
+
+#[constant]
+pub const USER_TAG: &[u8] = b"EXAMPLE_STATE";
+
+#[account]
+#[derive(Default)]
+pub struct UserProfile {
+    pub authority: Pubkey,
+    pub data: u64,
+}
+
+
+#[program]
+mod voting {
+    use super::*;
+
+    pub fn initialize_user(ctx: Context<InitializeUser>) -> Result<()> {
+        let user_profile = &mut ctx.accounts.user_profile;
+        user_profile.authority = ctx.accounts.authority.key();
+        user_profile.data = 0;
+
+        Ok(())
+    }
+
+#[derive(Accounts)]
+#[instruction()]
+pub struct InitializeUser<'info> {
+    #[account(mut)]
+    pub authority: Signer<'info>,
+
+    #[account(
+        init,
+        seeds = [USER_TAG, authority.key().as_ref()],
+        bump,
+        payer = authority,
+        space = 8 + std::mem::size_of::<UserProfile>(),
+    )]
+    pub user_profile: Box<Account<'info, UserProfile>>,
+    pub system_program: Program<'info, System>,
+}
+```
+
+As you can see in the above code, we are using the `anchor_lang` library to create a new account with a unique address based on the program and the seeds provided. The `seeds` parameter is used to create a new account with a unique address based on the program and the seeds provided. The `bump` parameter is used to create a new account with a unique address based on the program and the seeds provided.
+
+Since we want unique user profiles for each user, we use the `authority` key as a seed and the `USER_TAG` as a seed to create a new account with a unique address based on the program and the seeds provided. Now with this approach a new account with a unique address based on the program and the seeds provided will be created. and user can't create multiple accounts with the same seed, as the PDA will be always same for the same seed.
+
+Now you will be thinking how i can create multiple PDA accounts 🤔? What if you have to store transaction history of the user, you must need a way to create multiple PDAs.
+
+### How to create multiple PDAs?
+
+The approach is pretty simple and straight forward. as we did in the above example, we can use the same approach to create multiple PDAs. But here we have to use a different seed for each PDA.
+
+```rust
+
+#[constant]
+pub const TRANSACTION_TAG: &[u8] = b"TRANSACTION_STATE";
+
+
+#[derive(Accounts)]
+#[instruction(transaction_id: u64)]
+pub struct AddTransaction<'info> {
+    #[account(
+        mut,
+        seeds = [USER_TAG, authority.key().as_ref()],
+        bump,
+        has_one = authority,
+    )]
+    pub user_profile: Box<Account<'info, UserProfile>>,
+
+    #[account(
+        init,
+        seeds = [TRANSACTION_TAG, authority.key().as_ref(), &transaction_id.last_ref.to_le_bytes()],
+        bump,
+        payer = authority,
+        space = std::mem::size_of::<TransactionState>() + 20,
+    )]
+    pub transaction_state : Box<Account<'info, TransactionState>>,
+
+    #[account(mut)]
+    pub authority: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+
+// Add transaction
+  pub fn add_transaction(ctx: Context<AddTransaction>, transaction_id: u64, ) -> Result<()> {
+        let transaction_state = &mut ctx.accounts.transaction_state;
+        // do something with transaction state
+        Ok(())
+    }
+```
+
+`transaction.last_ref.to_le_bytes()` is here always should be unique for each transaction. This will help to create a new account with a unique address based on the program and the seeds provided. This will help to create multiple PDAs for each transaction.
+
+Rest of the code as you can see is same as we did in the previous example. Here we are just validating user and creating a new account with a unique address based on the program and the seeds provided.
+
+> Since we are taking `transaction_id` as a parameter, It should be unique for each new transactions **(EG: 1,2,3...)**. And we must need to keep it first in parameter list rest of the parameters can be in any order after the `transaction_id`.
+
+### Conclusion
+
+PDA is a powerful concept in Solana development. It simplify the way we create a store data on-chain. Querying PDAs account data also fast and easy. Anchor makes it easy to create PDAs in Solana. It provides a set of tools and libraries that make it easy to write, deploy, and interact with Solana programs.
+
+I hope this article will help you to understand how to create PDAs in Solana using Anchor. If you have any questions or suggestions, feel free to comment below.
