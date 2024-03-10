@@ -6,6 +6,7 @@ import { commonMetaData } from '@/utils/utils';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Script from 'next/script';
 import { Provider } from '@/lib/reactQuery-provider';
+import { Analytics } from '@vercel/analytics/react';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -102,6 +103,7 @@ export default function RootLayout({
         <ThemeProviderComp attribute="class" defaultTheme="dark">
           <Provider>
             {children}
+            <Analytics debug={false} />
             <SpeedInsights />
             <ThemeSwitcher />
           </Provider>
