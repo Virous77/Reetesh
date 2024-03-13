@@ -1,0 +1,136 @@
+---
+title: 'React Cache Function Explained'
+date: 'Mar 13 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1710263222/cahe_dd8sxw.png'
+about: 'React Cache Function lets you cache the result of a data fetch or computation. We can only use cache function in React Server Components'
+tags:
+  [
+    'How to use React Cache Function',
+    'What is React Cache Function and how to use it',
+    'How to use React cache function in next.js',
+    'what is the use of React Cache Function',
+  ]
+---
+
+React Cache Function which is right now in canary version, but going to introduce in React 19 mostly likely. It's help to cache the result of a data fetch or computation. But right now we can only use cache function in React Server Components. Since next.js already support React Server Components, so we can use it in next.js.
+
+Unlike React Query, React Cache Function is not a library, it's a built-in feature of React. It's a low-level API that allows you to cache the result of a data fetch or computation. It's not a replacement for React Query as It's only work with React Server Components.
+
+It's also very different from other React `useMemo` or `useCallback` hooks. It's not a hook, it's a function that you can call from anywhere in your component. It's also not a replacement for `useMemo` or `useCallback` hooks.
+
+### Key Features of React Cache Function
+
+- `cache` only can use with React Server Components.
+- React will invalidate the cache for all memoized functions for each server request.
+- It can cache all type of data, like if here `cache(fn)` in `fn` return error, then it will cache the error as well.
+
+### Usage of Cache Function
+
+```jsx
+import { getPost } from '@/api/api';
+import { cache } from 'react';
+
+const getSinglePost = cache(getPost);
+
+const HomePage = async () => {
+  const post = await getSinglePost(1);
+
+  return (
+    <div>
+      <h1>{post.title}</h1>
+      <p>{post.body}</p>
+    </div>
+  );
+};
+
+export default HomePage;
+```
+
+In the above example, we are using `cache` function to cache the result of `getPost` function. So, when we call `getSinglePost` function, it will return the cached result if it's already cached.
+
+### How to efficiently use Cache Function
+
+There are few things that you should keep in mind while using cache function. Always consider to keep `cache function` in a separate file, so that you can import it anywhere and use same cache all over the places.
+
+```jsx
+/// This is wrong way to use cache function
+
+const HomePage = async () => {
+  const getSinglePost = cache(getPost);
+  const post = await getSinglePost(1);
+
+  return (
+    <div>
+      <h1>{post.title}</h1>
+      <p>{post.body}</p>
+    </div>
+  );
+};
+
+export default HomePage;
+
+
+/// This is the right way to use cache function
+
+// /post.js
+import {cache} from 'react';
+import { getPost } from "@/api/api";
+
+export default cache(getPost);
+```
+
+In the above example, we are using `cache` function in a separate file, so that we can import it anywhere and use so the all places will use the same cache.
+
+### Preload data with Cache Function
+
+The best part of cache function is that you can preload the data as well. You can use `cache` function to preload the data. This is helpful when you want to preload the data before the component is rendered.
+
+For example we want only fetch user posts when user data fetched, so we can use `cache` function to preload the user posts.
+
+```jsx
+import { cache } from 'react';
+import { getUserPosts, getUser } from '@/api/api';
+
+const User = async ({ id }) => {
+  // Preload the user posts
+  getUserPosts(id);
+  const user = await getUser(id);
+
+  return (
+    <div>
+      <h1>{user.name}</h1>
+      <p>{user.email}</p>
+      <Posts userId={id} />
+    </div>
+  );
+};
+
+const Posts = async ({ userId }) => {
+  const posts = await getUserPosts(userId);
+
+  return (
+    <div>
+      {posts.map((post) => (
+        <div key={post.id}>
+          <h1>{post.title}</h1>
+          <p>{post.body}</p>
+        </div>
+      ))}
+    </div>
+  );
+};
+```
+
+In the above example, we are using `cache` function to preload the user posts. So, when the `User` component is rendered, the user posts will be already fetched.
+
+This help to improve the performance of the application, as the user posts will be already fetched before the component is rendered.
+
+> Calling a memoized function outside of a component will not use the cache. The cache is only used when the memoized function is called inside a component.
+
+### Conclusion
+
+`cache` function is useful when we want to memoize work that can be shared across React Server Components. So that we can improve the performance of the application by caching the result or we can preload the data before the component is rendered.
+
+I hope you find this article helpful. If you have any question, feel free to ask in the comment section below. Happy coding!
