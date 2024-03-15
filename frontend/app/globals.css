@@ -154,6 +154,10 @@ li code {
   max-width: 100% !important;
 }
 
+.language-jsx {
+  background-color: transparent !important;
+}
+
 @media (max-width: 768px) {
   .box-fit {
     max-width: 95% !important;
@@ -163,4 +167,14 @@ li code {
 
 .grid-cols-custom {
   grid-template-columns: 45px 1fr;
+}
+
+.just-way {
+  padding-left: 0px !important;
+  margin-left: 0px !important;
+}
+
+.just-way pre {
+  margin: 5px !important;
+  padding: 0px !important;
 }

@@ -54,6 +54,8 @@ In the above example, we are using `cache` function to cache the result of `getP
 
 There are few things that you should keep in mind while using cache function. Always consider to keep `cache function` in a separate file, so that you can import it anywhere and use same cache all over the places.
 
+> Keeping `cache` in seperate file only needed if you want to use the same cache all over the places. It recommended to keep it in a separate file, so that you get good performance improvement over cache hit.
+
 ```jsx
 /// This is wrong way to use cache function
 
@@ -82,6 +84,8 @@ export default cache(getPost);
 ```
 
 In the above example, we are using `cache` function in a separate file, so that we can import it anywhere and use so the all places will use the same cache.
+
+<Advertise title="Nginx as Reverse Proxy for Kubernetes Services" />
 
 ### Preload data with Cache Function
 

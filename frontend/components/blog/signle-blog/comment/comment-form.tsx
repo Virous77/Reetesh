@@ -1,17 +1,17 @@
 'use client';
 
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useRef, useState } from 'react';
 import action from './action';
 import { getLocalData } from '@/utils/utils';
 import { usePathname } from 'next/navigation';
 import { trpc } from '@/trpc-client/client';
+import { Textarea } from '@/components/ui/textarea';
 
 const CommentForm = () => {
   const [pending, setPending] = useState(false);
   const pathName = usePathname();
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const { mutateAsync } = trpc.blogs.createComment.useMutation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -35,16 +35,23 @@ const CommentForm = () => {
     }
   };
   return (
-    <form onSubmit={handleSubmit} className=" flex items-center gap-2">
-      <Input
+    <form
+      onSubmit={handleSubmit}
+      className=" flex flex-col items-center gap-2 md:flex-row"
+    >
+      <Textarea
         placeholder="Your Comment"
         aria-label="comment"
         required={true}
-        className=" py-6"
+        className=" max-h-[150px] min-h-[70px] py-6"
         name="comment"
         ref={inputRef}
       />
-      <Button disabled={pending} type="submit" className=" px-[30px] py-6">
+      <Button
+        disabled={pending}
+        type="submit"
+        className=" w-full px-[30px] py-6 md:w-auto"
+      >
         {pending ? 'Sending...' : 'Send'}
       </Button>
     </form>
