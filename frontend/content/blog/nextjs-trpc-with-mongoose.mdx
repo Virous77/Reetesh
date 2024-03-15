@@ -1,17 +1,17 @@
 ---
-title: "tRPC with Next.Js 14 and MongoDB setup"
-date: "Feb 04 2024"
-author: "Reetesh Kumar"
-authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
-blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1707028360/tRPC_me33p7.jpg"
-about: "tRPC makes end to end type-safe APIs easy to build and consume. We will see how to setup tRPC with next.js 14 and mongoDB."
+title: 'tRPC with Next.Js 14 and MongoDB setup'
+date: 'Feb 04 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1707028360/tRPC_me33p7.jpg'
+about: 'tRPC makes end to end type-safe APIs easy to build and consume. We will see how to setup tRPC with next.js 14 and mongoDB.'
 tags:
   [
-    "How  to setup tRPC with next.js 14",
-    "How to setup tRPC using mongoDB with next.js 14",
-    "next.js 14 with tRPC and mongoDB",
-    "mongoDB with tRPC and next.js 14",
-    "nextjs app router with tRPC and mongoDB",
+    'How  to setup tRPC with next.js 14',
+    'How to setup tRPC using mongoDB with next.js 14',
+    'next.js 14 with tRPC and mongoDB',
+    'mongoDB with tRPC and next.js 14',
+    'nextjs app router with tRPC and mongoDB',
   ]
 ---
 
@@ -40,6 +40,8 @@ We will be using [MongoDB](https://www.mongodb.com/) as our database and tRPC to
 npm install mongoose @trpc/client @trpc/server zod @trpc/next @tanstack/react-query@4.18.0 @trpc/react-query superjson
 ```
 
+<Advertise title="Server Action in Client and Server Component in Next.Js Explained" />
+
 ### Setting up Mongoose
 
 We will create a new folder `db` in the root of our project. This folder will contain the setup for our MongoDB connection.
@@ -47,7 +49,7 @@ We will create a new folder `db` in the root of our project. This folder will co
 ```ts
 // db/mongoose.ts
 
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 declare global {
   var mongoose: any;
 }
@@ -56,7 +58,7 @@ const MONGODB_URI = process.env.MONGODB_URI!;
 
 if (!MONGODB_URI) {
   throw new Error(
-    "Please define the MONGODB_URI environment variable inside .env.local"
+    'Please define the MONGODB_URI environment variable inside .env.local'
   );
 }
 
@@ -98,7 +100,7 @@ We can now create a new folder `models` in the root of our project. This folder 
 ```ts
 // models/user-model.ts
 
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 export interface User {
   name: string;
@@ -129,7 +131,7 @@ const UserSchema = new mongoose.Schema<User>({
   },
 });
 
-export default mongoose.models.User || mongoose.model<User>("User", UserSchema);
+export default mongoose.models.User || mongoose.model<User>('User', UserSchema);
 ```
 
 ### Setting up tRPC
@@ -139,10 +141,10 @@ Create a new folder `trpc-server` in the root of our project. This file will con
 ```ts
 // trpc-server/index.ts
 
-import { initTRPC } from "@trpc/server";
-import superjson from "superjson";
+import { initTRPC } from '@trpc/server';
+import superjson from 'superjson';
 
-import { createContext } from "./context";
+import { createContext } from './context';
 
 const t = initTRPC.context<typeof createContext>().create({
   transformer: superjson,
@@ -174,10 +176,10 @@ now we need to define our API endpoints. We will create a new file `router.ts` i
 ```ts
 // trpc-server/router.ts
 
-import { router, publicProcedure } from "./index";
-import { z } from "zod";
-import userModel, { TUser } from "@/models/user-model";
-import dbConnect from "@/db/mongoose";
+import { router, publicProcedure } from './index';
+import { z } from 'zod';
+import userModel, { TUser } from '@/models/user-model';
+import dbConnect from '@/db/mongoose';
 
 export const appRouter = router({
   createUser: publicProcedure
@@ -212,7 +214,7 @@ export const appRouter = router({
           name: 1,
           email: 1,
           _id: {
-            $toString: "$_id",
+            $toString: '$_id',
           },
         },
       },
@@ -233,8 +235,8 @@ Create a new folder `trpc-client` in the root of our project. This folder will c
 ```ts
 // trpc-client/client.ts
 
-import { AppRouter } from "@/trpc-server/router";
-import { createTRPCReact } from "@trpc/react-query";
+import { AppRouter } from '@/trpc-server/router';
+import { createTRPCReact } from '@trpc/react-query';
 
 export const trpc = createTRPCReact<AppRouter>({});
 ```
@@ -246,9 +248,9 @@ To fetch data or do mutations in our server we have to create new file called `s
 ```ts
 // trpc-client/server-client.ts
 
-import { createCallerFactory } from "@/trpc-server";
-import { createContext } from "@/trpc-server/context";
-import { appRouter } from "@/trpc-server/router";
+import { createCallerFactory } from '@/trpc-server';
+import { createContext } from '@/trpc-server/context';
+import { appRouter } from '@/trpc-server/router';
 
 const createCaller = createCallerFactory(appRouter);
 
@@ -264,13 +266,13 @@ We have to expose our tRPC endpoints to the client. We will create a new folder 
 ```ts
 // app/api/trpc/[trpc]/route.ts
 
-import { createContext } from "@/trpc-server/context";
-import { appRouter } from "@/trpc-server/router";
-import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
+import { createContext } from '@/trpc-server/context';
+import { appRouter } from '@/trpc-server/router';
+import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
 
 const handler = (req: Request) =>
   fetchRequestHandler({
-    endpoint: "/api/trpc",
+    endpoint: '/api/trpc',
     req,
     router: appRouter,
     createContext: async () => await createContext(),
@@ -288,15 +290,15 @@ We will create a folder `lib` in the root of our project. This folder will conta
 ```tsx
 // lib/reactQuery-provider.tsx
 
-"use client";
+'use client';
 
-import React, { ReactNode, useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { httpBatchLink } from "@trpc/client";
-import superjson from "superjson";
-import { trpc } from "@/trpc-client/client";
+import React, { ReactNode, useState } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { httpBatchLink } from '@trpc/client';
+import superjson from 'superjson';
+import { trpc } from '@/trpc-client/client';
 
-const url = "http://localhost:3000/api/trpc";
+const url = 'http://localhost:3000/api/trpc';
 
 export const Provider = ({ children }: { children: ReactNode }) => {
   const [queryClient] = useState(
@@ -332,7 +334,7 @@ we can now wrap the root of your app with the `Provider` component to use tRPC w
 ```tsx
 // app/layout.tsx
 
-import { Provider } from "@/lib/reactQuery-provider";
+import { Provider } from '@/lib/reactQuery-provider';
 
 <html lang="en" suppressHydrationWarning>
   <body className={inter.className}>
@@ -348,7 +350,7 @@ we can use the `getUser` endpoint in our components to fetch data from our serve
 ```tsx
 // app/page.tsx
 
-import { serverClient } from "@/trpc-client/server-client";
+import { serverClient } from '@/trpc-client/server-client';
 
 const Page = async () => {
   const user = await serverClient.getUser();
@@ -366,8 +368,8 @@ to create new user we can use the `createUser` endpoint in our client component.
 ```tsx
 // component/createUser.tsx
 
-"use client";
-import { trpc } from "@/trpc-client/client";
+'use client';
+import { trpc } from '@/trpc-client/client';
 
 const CreateUser = () => {
   const { data, mutate } = trpc.createUser.useMutation();
@@ -377,7 +379,7 @@ const CreateUser = () => {
   return (
     <button
       onClick={() =>
-        mutate({ name: "test", email: "test12@gmail.com", password: "123456" })
+        mutate({ name: 'test', email: 'test12@gmail.com', password: '123456' })
       }
     >
       Create User

@@ -1,16 +1,16 @@
 ---
-title: "Next.Js authentication using Lucia and MongoDB"
-date: "Feb 15 2024"
-author: "Reetesh Kumar"
-authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
-blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1707938173/auth_woppvn.png"
-about: "Lucia is an auth library for server that abstracts away the complexity of handling sessions. Fully typed and strong support of database out of the box with built in adapters for ORM"
+title: 'Next.Js authentication using Lucia and MongoDB'
+date: 'Feb 15 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1707938173/auth_woppvn.png'
+about: 'Lucia is an auth library for server that abstracts away the complexity of handling sessions. Fully typed and strong support of database out of the box with built in adapters for ORM'
 tags:
   [
-    "how to use lucia with next.js",
-    "lucia setup with next.js",
-    "lucia auth using mongodb in next.js app",
-    "next.js authentication using lucia and mongodb",
+    'how to use lucia with next.js',
+    'lucia setup with next.js',
+    'lucia auth using mongodb in next.js app',
+    'next.js authentication using lucia and mongodb',
   ]
 ---
 
@@ -41,7 +41,7 @@ Next, we need to configure MongoDB. You can do this by creating a new file calle
 ```ts
 //db/mongoose.ts
 
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 declare global {
   var mongoose: any;
 }
@@ -50,7 +50,7 @@ const MONGODB_URI = process.env.MONGODB_URI!;
 
 if (!MONGODB_URI) {
   throw new Error(
-    "Please define the MONGODB_URI environment variable inside .env.local"
+    'Please define the MONGODB_URI environment variable inside .env.local'
   );
 }
 
@@ -92,8 +92,8 @@ Next we need to create Model for the User and Session. You can do this by creati
 ```ts
 //models/user.ts
 
-import mongoose from "mongoose";
-import { MongodbAdapter } from "@lucia-auth/adapter-mongodb";
+import mongoose from 'mongoose';
+import { MongodbAdapter } from '@lucia-auth/adapter-mongodb';
 
 interface User {
   password: string;
@@ -112,7 +112,7 @@ const UserSchema = new mongoose.Schema<User>({
   //. . . other fields
 });
 
-export default mongoose.models.User || mongoose.model<User>("User", UserSchema);
+export default mongoose.models.User || mongoose.model<User>('User', UserSchema);
 
 //models/session.ts
 
@@ -133,18 +133,20 @@ export const SessionSchema = new mongoose.Schema<Session>({
 });
 
 export default mongoose.models.Session ||
-  mongoose.model<Session>("Session", SessionSchema);
+  mongoose.model<Session>('Session', SessionSchema);
 
 // adapter for lucia
 export const adapter = new MongodbAdapter(
-  mongoose.connection.collection("sessions"),
-  mongoose.connection.collection("users")
+  mongoose.connection.collection('sessions'),
+  mongoose.connection.collection('users')
 );
 ```
 
 We just configured the User and Session model and created an adapter for Lucia. The adapter will be used to store the session data in the MongoDB database.
 
 Since Lucia give us full control over how we wanna store the session data and user data. You can configure it according to your need.
+
+<Advertise title="Creating Rest API on BUN with ElysiaJS" />
 
 ### Lucia instance setup
 
@@ -153,16 +155,16 @@ Next, we need to create a new file called `auth.ts` and add the following code
 ```ts
 //lib.auth.ts
 
-import { Lucia } from "lucia";
-import { cookies } from "next/headers";
-import { cache } from "react";
-import type { Session, User } from "lucia";
-import { adapter } from "@/models/auth-mode";
+import { Lucia } from 'lucia';
+import { cookies } from 'next/headers';
+import { cache } from 'react';
+import type { Session, User } from 'lucia';
+import { adapter } from '@/models/auth-mode';
 
 export const lucia = new Lucia(adapter, {
   sessionCookie: {
     attributes: {
-      secure: process.env.NODE_ENV === "production",
+      secure: process.env.NODE_ENV === 'production',
     },
   },
   getUserAttributes: (attributes: any) => {
@@ -207,7 +209,7 @@ export const validateRequest = cache(
   }
 );
 
-declare module "lucia" {
+declare module 'lucia' {
   interface Register {
     Lucia: typeof lucia;
   }
@@ -223,25 +225,25 @@ And thats pretty much it. We have successfully setup Lucia and now we are ready 
 We can use server action to register the user. You can do this by creating a new page `/app/register/page.tsx`.
 
 ```tsx
-import { Argon2id } from "oslo/password";
-import { cookies } from "next/headers";
-import { lucia, validateRequest } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import userModel from "@/models/user-model";
-import dbConnect from "@/db/mongoose";
+import { Argon2id } from 'oslo/password';
+import { cookies } from 'next/headers';
+import { lucia, validateRequest } from '@/lib/auth';
+import { redirect } from 'next/navigation';
+import userModel from '@/models/user-model';
+import dbConnect from '@/db/mongoose';
 
 export default async function Page() {
   const { user } = await validateRequest();
   if (user) {
-    return redirect("/");
+    return redirect('/');
   }
   return <Form action={signup}>// your form fields</Form>;
 }
 
 async function signup(_: any, formData: FormData) {
-  "use server";
-  const username = formData.get("username");
-  const password = formData.get("password");
+  'use server';
+  const username = formData.get('username');
+  const password = formData.get('password');
 
   const hashedPassword = await new Argon2id().hash(password);
 
@@ -260,12 +262,12 @@ async function signup(_: any, formData: FormData) {
       sessionCookie.attributes
     );
   } catch (e) {
-    console.log("error", e);
+    console.log('error', e);
     return {
-      error: "An unknown error occurred",
+      error: 'An unknown error occurred',
     };
   }
-  return redirect("/");
+  return redirect('/');
 }
 ```
 
@@ -280,27 +282,27 @@ We can use server action to login the user. You can do this by creating a new pa
 ```tsx
 //app/login/page.tsx
 
-import dbConnect from "@/db/mongoose";
-import userModel from "@/models/user-model";
-import { redirect } from "next/navigation";
-import { lucia, validateRequest } from "@/lib/auth";
-import { Argon2id } from "oslo/password";
-import { cookies } from "next/headers";
+import dbConnect from '@/db/mongoose';
+import userModel from '@/models/user-model';
+import { redirect } from 'next/navigation';
+import { lucia, validateRequest } from '@/lib/auth';
+import { Argon2id } from 'oslo/password';
+import { cookies } from 'next/headers';
 
 export default function LoginPage() {
   const { user } = await validateRequest();
   if (user) {
-    return redirect("/");
+    return redirect('/');
   }
 
   return <Form action={login}>// your form fields</Form>;
 }
 
 async function login(_: any, formData: FormData) {
-  "use server";
+  'use server';
 
-  const username = formData.get("username");
-  const password = formData.get("password");
+  const username = formData.get('username');
+  const password = formData.get('password');
 
   // you can use zod or any other library to validate the formData
 
@@ -319,7 +321,7 @@ async function login(_: any, formData: FormData) {
     sessionCookie.value,
     sessionCookie.attributes
   );
-  return redirect("/");
+  return redirect('/');
 }
 ```
 
@@ -332,9 +334,9 @@ You can handle the login action according to your need and use any library to va
 We can use server action to logout the user. and lucia has made it simple.
 
 ```tsx
-import { lucia, validateRequest } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
+import { lucia, validateRequest } from '@/lib/auth';
+import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
 
 export default async function Logout() {
   return (
@@ -345,11 +347,11 @@ export default async function Logout() {
 }
 
 async function logout(): Promise<ActionResult> {
-  "use server";
+  'use server';
   const { session } = await validateRequest();
   if (!session) {
     return {
-      error: "Unauthorized",
+      error: 'Unauthorized',
     };
   }
 
@@ -361,7 +363,7 @@ async function logout(): Promise<ActionResult> {
     sessionCookie.value,
     sessionCookie.attributes
   );
-  return redirect("/login");
+  return redirect('/login');
 }
 ```
 
@@ -377,10 +379,10 @@ Right now we are protecting the routes using lucia `validateRequest` function. B
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    serverComponentsExternalPackages: ["oslo"],
+    serverComponentsExternalPackages: ['oslo'],
   },
   webpack: (config) => {
-    config.externals.push("@node-rs/argon2", "@node-rs/bcrypt");
+    config.externals.push('@node-rs/argon2', '@node-rs/bcrypt');
     return config;
   },
 };

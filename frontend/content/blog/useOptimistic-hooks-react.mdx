@@ -1,19 +1,19 @@
 ---
-title: "React useOptimistic and useTransition hooks Explained"
-date: "Feb 14 2024"
-author: "Reetesh Kumar"
-authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
-blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1707845212/hook_f5fqe7.png"
-about: " The useOptimistic and useTransition hooks are two new hooks thats going to be game changer in React. These hooks are designed to help to improve user experience by allowing to perform optimistic updates and transitions."
+title: 'React useOptimistic and useTransition hooks Explained'
+date: 'Feb 14 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1707845212/hook_f5fqe7.png'
+about: ' The useOptimistic and useTransition hooks are two new hooks thats going to be game changer in React. These hooks are designed to help to improve user experience by allowing to perform optimistic updates and transitions.'
 tags:
   [
-    "how to use useOptimistic hook in react",
-    "useTransition hook in react",
-    "useOptimistic hook in react",
-    "what is useOptimistic hook in react",
-    "what is useTransition hook in react",
-    "how to use useOptimistic hook in nextjs",
-    "how to use useTransition hook in nextjs",
+    'how to use useOptimistic hook in react',
+    'useTransition hook in react',
+    'useOptimistic hook in react',
+    'what is useOptimistic hook in react',
+    'what is useTransition hook in react',
+    'how to use useOptimistic hook in nextjs',
+    'how to use useTransition hook in nextjs',
   ]
 ---
 
@@ -48,8 +48,8 @@ We will use the RSC (React Server Components) to fetch the data from the server.
 ```tsx
 // app/page.tsx
 
-import { getTodos } from "example-lib"; // replace with you server lib to fetch data
-import Todos from "@/components/todos";
+import { getTodos } from 'example-lib'; // replace with you server lib to fetch data
+import Todos from '@/components/todos';
 
 const HomePage = async () => {
   const { todos } = await getTodos();
@@ -67,6 +67,8 @@ const HomePage = async () => {
 export default HomePage;
 ```
 
+<Advertise title="Best SEO Practices for Next.js Apps" />
+
 Here we are fetching the todos from the server and passing it to the `Todos` component.
 
 Now lets create the `Todos` component where we will create a new todo and show the list of todos.
@@ -74,11 +76,11 @@ Now lets create the `Todos` component where we will create a new todo and show t
 ```tsx
 // components/todos.tsx
 
-"use client";
+'use client';
 
-import { useOptimistic } from "react";
-import { createTodo } from "example-lib"; // replace with you server action to create todo
-import TodoItem from "@/components/todo-item";
+import { useOptimistic } from 'react';
+import { createTodo } from 'example-lib'; // replace with you server action to create todo
+import TodoItem from '@/components/todo-item';
 
 const Todos = ({ todos }) => {
   const [optimisticTodos, addNewTodo] = useOptimistic(
@@ -89,7 +91,7 @@ const Todos = ({ todos }) => {
   );
 
   const action = (data: FormData) => {
-    const title = data.get("title");
+    const title = data.get('title');
     const newTodo = {
       id: math.random(),
       title,
@@ -111,9 +113,7 @@ const Todos = ({ todos }) => {
       </form>
 
       <ul>
-        {optimisticTodos?.map((todo) => (
-          <TodoItem key={todo.id} todo={todo} />
-        ))}
+        {optimisticTodos?.map((todo) => <TodoItem key={todo.id} todo={todo} />)}
       </ul>
     </div>
   );
@@ -137,10 +137,10 @@ useTransition hook giver a setter function and a boolean value to check if the t
 ```tsx
 // components/todo-item.tsx
 
-"use client";
+'use client';
 
-import { useOptimistic, useTransition } from "react";
-import { updateTodo } from "example-lib"; // replace with you server action to update todo
+import { useOptimistic, useTransition } from 'react';
+import { updateTodo } from 'example-lib'; // replace with you server action to update todo
 
 const TodoItem = ({ todo }) => {
   const [isPending, startTransition] = useTransition();
@@ -164,7 +164,7 @@ const TodoItem = ({ todo }) => {
         }
         disabled={isPending}
       >
-        {optimisticTodo.isCompleted ? "Uncheck" : "Check"}
+        {optimisticTodo.isCompleted ? 'Uncheck' : 'Check'}
       </button>
       <label>{optimisticTodo.title}</label>
     </li>
