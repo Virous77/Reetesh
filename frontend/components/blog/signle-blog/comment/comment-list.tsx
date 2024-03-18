@@ -1,6 +1,7 @@
 import { TBlog } from '@/models/blog-comments';
 import { formateDate } from '@/utils/utils';
 import CommentMarkdown from './comment-markdown';
+import Like from './like';
 
 const CommentList = async ({ data }: { data: TBlog[] }) => {
   if (data.length === 0)
@@ -23,9 +24,18 @@ const CommentList = async ({ data }: { data: TBlog[] }) => {
               <div className="just-way box-fit prose-headings:font-cal prose prose-base prose-neutral  dark:prose-invert prose-a:whitespace-nowrap prose-a:text-default prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-defaultMax prose-blockquote:font-light prose-img:rounded-lg">
                 <CommentMarkdown comment={comment.comment} />
               </div>
-              <p className=" text-[12px] text-default">
-                {formateDate(comment.createdAt)}
-              </p>
+
+              <div className=" mt-2 flex  flex-col">
+                <Like
+                  id={comment._id.toString()}
+                  like={comment.like}
+                  dislike={comment.dislike}
+                  blogId={comment.blogId}
+                />
+                <p className=" text-[12px] text-default">
+                  {formateDate(comment.createdAt)}
+                </p>
+              </div>
             </div>
           </div>
         ))}

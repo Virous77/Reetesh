@@ -92,6 +92,70 @@ export const blogRouter = router({
         return createBlog.viewsId.length;
       }
     }),
+  addLike: publicProcedure
+    .input((v) => {
+      const schema = z.object({
+        commentId: z.string(),
+        userId: z.string(),
+        type: z.enum(['like', 'dislike']),
+      });
+
+      const validate = schema.safeParse(v);
+      if (!validate.success) {
+        throw new Error(validate.error.message);
+      }
+      return validate.data;
+    })
+    .mutation(async ({ input }) => {
+      await dbConnect();
+      const findComment: TBlog | null = await blogComments.findById(
+        input.commentId
+      );
+      if (!findComment) {
+        throw new Error('Comment not found');
+      }
+      const findLikeUser = findComment.like.find((id) => id === input.userId);
+      const findDislikeUser = findComment.dislike.find(
+        (id) => id === input.userId
+      );
+      if (findLikeUser || findDislikeUser) {
+        await blogComments.findByIdAndUpdate(input.commentId, {
+          [input.type === 'like' ? 'dislike' : 'like']: findComment[
+            input.type as 'like' | 'dislike'
+          ].filter((id) => id !== input.userId),
+        });
+      }
+
+      if (input.type === 'like' && findLikeUser) {
+        await blogComments.findByIdAndUpdate(input.commentId, {
+          like: findComment.like.filter((id) => id !== input.userId),
+        });
+
+        return {
+          message: 'Liked removed successfully',
+        };
+      }
+
+      if (input.type === 'dislike' && findDislikeUser) {
+        await blogComments.findByIdAndUpdate(input.commentId, {
+          dislike: findComment.dislike.filter((id) => id !== input.userId),
+        });
+
+        return {
+          message: 'Disliked removed successfully',
+        };
+      }
+
+      await blogComments.findByIdAndUpdate(input.commentId, {
+        [input.type]: [
+          ...findComment[input.type as 'like' | 'dislike'],
+          input.userId,
+        ],
+      });
+      return {
+        message: `${input.type}d successfully`,
+      };
+    }),
 });
 
 export type BlogRouter = typeof blogRouter;

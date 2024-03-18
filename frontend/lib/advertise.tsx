@@ -30,6 +30,7 @@ const Advertise: React.FC<TAdvertise> = ({ title }) => {
           <Link
             className=" inline-block w-full text-center"
             href={`/blog/${slugAsParams}`}
+            aria-label={`Read full post ${title}`}
           >
             Read Full Post
           </Link>
