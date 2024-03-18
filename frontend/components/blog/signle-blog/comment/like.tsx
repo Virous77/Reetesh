@@ -3,7 +3,7 @@
 import { trpc } from '@/trpc-client/client';
 import { generateUUID, getLocalData } from '@/utils/utils';
 import { ThumbsDown, ThumbsUp } from 'lucide-react';
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import action from './action';
 
 type TLike = {
@@ -15,7 +15,7 @@ type TLike = {
 
 const Like: React.FC<TLike> = ({ id, like, dislike, blogId }) => {
   const { mutateAsync } = trpc.blogs.addLike.useMutation();
-  const userId = getLocalData('tempId');
+  const [userId, setUserId] = React.useState<string | null>(null);
 
   const handleLike = async (type: 'like' | 'dislike') => {
     try {
@@ -35,11 +35,16 @@ const Like: React.FC<TLike> = ({ id, like, dislike, blogId }) => {
     }
   };
 
+  useLayoutEffect(() => {
+    const userId = getLocalData('tempId');
+    setUserId(userId);
+  }, []);
+
   return (
     <div className=" -ml-1 flex items-center gap-2">
       <div className=" flex items-center">
         <span
-          className={`flex h-[30px] w-[30px] items-center justify-center rounded-full hover:bg-accent ${like?.includes(userId) ? 'text-heading' : ''} `}
+          className={`flex h-[30px] w-[30px] items-center justify-center rounded-full hover:bg-accent ${like?.includes(userId || '') ? 'text-heading' : ''} `}
           onClick={() => handleLike('like')}
         >
           <ThumbsUp size={18} cursor="pointer" />
@@ -49,7 +54,9 @@ const Like: React.FC<TLike> = ({ id, like, dislike, blogId }) => {
 
       <div className=" flex items-center">
         <span
-          className={`flex h-[30px] w-[30px] items-center justify-center rounded-full hover:bg-accent ${dislike?.includes(userId) ? 'text-heading' : ''} `}
+          className={`flex h-[30px] w-[30px] items-center justify-center rounded-full hover:bg-accent ${
+            dislike?.includes(userId || '') ? 'text-heading' : ''
+          } `}
           onClick={() => handleLike('dislike')}
         >
           <ThumbsDown size={18} cursor="pointer" />
