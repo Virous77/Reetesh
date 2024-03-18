@@ -8,6 +8,8 @@ import { Note } from '@/lib/note';
 import { A } from '@/lib/a';
 import { Video } from '@/lib/video';
 import Advertise from '@/lib/advertise';
+import Tabs from '@/lib/Tabs';
+import Section from '@/lib/section';
 
 const components = {
   h1: ({ className, ...props }: any) => (
@@ -133,6 +135,8 @@ const components = {
   pre: Pre,
   Video,
   Advertise,
+  Tabs,
+  Section,
 };
 
 interface MdxProps {

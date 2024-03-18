@@ -178,3 +178,7 @@ li code {
   margin: 5px !important;
   padding: 0px !important;
 }
+
+.figure figure {
+  margin: 0 !important;
+}

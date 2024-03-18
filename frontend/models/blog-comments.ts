@@ -4,6 +4,8 @@ interface IBlogComment {
   blogId: string;
   comment: string;
   userId: string;
+  like: string[];
+  dislike: string[];
 }
 
 interface MongoBlogComment extends IBlogComment, mongoose.Document {}
@@ -27,6 +29,14 @@ const BlogCommentSchema = new mongoose.Schema<MongoBlogComment>(
     userId: {
       type: String,
       required: true,
+    },
+    like: {
+      type: [String],
+      default: [],
+    },
+    dislike: {
+      type: [String],
+      default: [],
     },
   },
   {
