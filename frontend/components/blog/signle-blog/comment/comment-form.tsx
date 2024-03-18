@@ -43,7 +43,7 @@ const CommentForm = () => {
         placeholder="Your Comment"
         aria-label="comment"
         required={true}
-        className=" max-h-[150px] min-h-[70px] py-6"
+        className=" max-h-[150px] min-h-[70px] py-6 text-base"
         name="comment"
         ref={inputRef}
       />
