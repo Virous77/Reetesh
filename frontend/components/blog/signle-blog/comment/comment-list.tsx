@@ -12,7 +12,7 @@ const CommentList = async ({ data }: { data: TBlog[] }) => {
       <div className=" max-h-[700px] overflow-scroll">
         {data.map((comment) => (
           <div
-            key={comment._id}
+            key={comment._id.toString()}
             className="grid-cols-custom mb-4 grid items-start gap-3"
           >
             <div className="flex h-[40px]  w-[40px] items-center justify-center rounded-full bg-gray-200">
@@ -31,6 +31,7 @@ const CommentList = async ({ data }: { data: TBlog[] }) => {
                   like={comment.like}
                   dislike={comment.dislike}
                   blogId={comment.blogId}
+                  blogUserId={comment.userId}
                 />
                 <p className=" text-[12px] text-default">
                   {formateDate(comment.createdAt)}

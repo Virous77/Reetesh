@@ -156,6 +156,35 @@ export const blogRouter = router({
         message: `${input.type}d successfully`,
       };
     }),
+  deleteComment: publicProcedure
+    .input((v) => {
+      const schema = z.object({
+        commentId: z.string(),
+        userId: z.string(),
+      });
+
+      const validate = schema.safeParse(v);
+      if (!validate.success) {
+        throw new Error(validate.error.message);
+      }
+      return validate.data;
+    })
+    .mutation(async ({ input }) => {
+      await dbConnect();
+      const findComment: TBlog | null = await blogComments.findById(
+        input.commentId
+      );
+      if (!findComment) {
+        throw new Error('Comment not found');
+      }
+      if (findComment.userId !== input.userId) {
+        throw new Error('You are not authorized to delete this comment');
+      }
+      await blogComments.findByIdAndDelete(input.commentId);
+      return {
+        message: 'Comment deleted successfully',
+      };
+    }),
 });
 
 export type BlogRouter = typeof blogRouter;
