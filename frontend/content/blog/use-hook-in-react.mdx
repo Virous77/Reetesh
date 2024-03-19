@@ -4,17 +4,21 @@ date: 'Mar 10 2024'
 author: 'Reetesh Kumar'
 authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
 blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1710040742/usehook_qewbtb.png'
-about: ' React Hook, use can be called within loops and conditional statements like if. Like other React Hooks, the function that calls use must be a Component or Hook.'
+about: ' React new use hook can be called within loops and conditional statements like if. Like other React Hooks, the function that calls use must be a Component or Hook.'
 tags:
   [
     'how to use useHook in React',
     'ways to use useHook in React',
     'what is use case for use hook in React',
     'how easy to use useHook in React',
+    'new use hook in React',
+    'use hook in React',
+    'use hook in React 19',
+    'use hook in React 19 version',
   ]
 ---
 
-`use` hook is a new hook which is going to introduce in React 19 version. It is a very useful to work with **Context** and **Promises**.
+**use** new React hook which is going to introduce in React 19 version. It is a very useful to work with **Context** and **Promises**.
 
 The main difference between `use` hook and other hooks is that `use` hook can be called within loops and conditional statements like `if`. But the core concept of `use` hook is same as other hooks as we can use only only in **function** component or **custom** hook.
 
@@ -171,9 +175,9 @@ import { use } from 'react';
 
 const ContextExample = () => {
   const [active, setActive] = useState(false);
-  const { state, setState } = use(AppContext);
 
   if (active) {
+    const { state, setState } = use(AppContext);
     return (
       <div>
         <h1>{state}</h1>
@@ -199,8 +203,8 @@ We are here simply using `use` hook within conditional statement to render diffe
 
 ### Conclusion
 
-`use` hook is going to play vital role as RSC(React Server Components) is going to introduce in React 19. while Next.JS latest version we had already seen how simplified the data fetching has been with server components.
+**use** hook is going to play vital role as RSC(React Server Components) is going to introduce in React 19. while Next.JS latest version we had already seen how simplified the data fetching has been with server components.
 
-Also the flexibity of `use` hook make it more dynamic. It's going to be very useful to work with context and promise. You can find the full source code of this article [here](https://github.com/Virous77/blog-projects/tree/main/use-hook).
+Also the flexibity of **use** hook make it more dynamic. It's going to be very useful to work with context and promise. You can find the full source code of this article [here](https://github.com/Virous77/blog-projects/tree/main/use-hook).
 
 I hope you find this article useful. If you have any question or suggestion feel free to comment below. I appreciate your feedback.
