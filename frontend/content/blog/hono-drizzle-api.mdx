@@ -1,0 +1,407 @@
+---
+title: 'Neon DB with Drizzle and Hono in Next.JS'
+date: 'Mar 22 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1710780434/neon-hono-drizzle_umfpg3.png'
+about: ' Hono is lightweight, small, simple, and ultrafast web framework for the Edges. Hono makes easy to create  Rest API in Next.js app. While Drizzle is Typescript ORM which support edges network out of the box. '
+tags:
+  [
+    'how to use hono in next.js',
+    'how to use drizzle in next.js',
+    'how to create rest api in next.js using hono',
+    'what is hono',
+    'drizzle and hono in next.js',
+    'rest api in next.js using hono',
+    'neon database with hono and drizzle',
+    'neon nextjs example',
+    'neon database with hono and drizzle',
+    'neon db and hono',
+    'neon db and drizzle',
+  ]
+---
+
+Hono is lightweight, small, simple, and ultrafast web framework for the Edges. As we are going to use Next.Js in this article hono makes it's too easy to create REST API and has vast majority of built in api which speed up the development. While Drizzle ORM is a headless TypeScript ORM which is also lightweight and support edges network out of the box.
+
+### Why Hono?
+
+- **Runtime** :- Hono supports Cloudflare Workers, Fastly Compute, Deno, Bun, AWS Lambda, or Node.js. The same code runs on all platforms. With rise of edge computing, Hono is the perfect choice for the future.
+- **Performance** :- Hono router is ultrafast. It's use Web Standard APIs and has zero dependencies.
+- **Easy to use** :- Hono is simple and easy to use as there is many built-in middleware, third-party middleware, and helpers.
+
+### Why Drizzle over other ORM?
+
+- **SQL-Like** :- Drizzle is a traditional SQL query builder that lets you compose SQL queries with JavaScript/TypeScript functions.
+- **TypeScript** :- Drizzle is written in TypeScript and has first-class support for TypeScript. Its type-safe and has auto-completion.
+- **Serverless** :- Drizzle is designed to work with serverless environments like AWS Lambda, Cloudflare Workers or Vercel Edge Functions.
+
+### How to use Hono in Next.js?
+
+I'm assuming you have already setup Next.js app and ready to deep dive into the Hono and Drizzle. If not you can follow the [official documentation](https://nextjs.org/docs/getting-started/installation) to setup Next.js app.
+
+Now before we start we need to install few packages. We need to install few packages for hono and drizzle to work.
+
+```bash
+npm install hono drizzle-orm drizzle-kit dotenv @hono/zod-validator @neondatabase/serverless
+```
+
+I'm using `dotenv` for environment variables and `@hono/zod-validator` middleware for validation. You can skip these if you don't need them.
+
+I'm using `@neondatabase/serverless` for database. You can use any database you want. Neon is a fully managed serverless Postgres database with modern developer features such as autoscaling, branching, bottomless storage, and more. To use NeonDatabase, you need to create project on [NeonDatabase](https://neon.tech/) and get the connection string.
+
+#### Setting up Hono
+
+We need to setup our routes for hono. which will handle all the requests and response.
+
+```ts
+// /app/api/[[...route]]/routes.ts
+
+import { Hono } from 'hono';
+import { handle } from 'hono/vercel';
+export const runtime = 'edge';
+
+const app = new Hono().basePath('/api');
+
+app.get('/todo', async (c) => {
+  return c.text('Hello World');
+});
+
+export const GET = handle(app);
+export const POST = handle(app);
+export const PUT = handle(app);
+export const DELETE = handle(app);
+```
+
+This is all we need to setup hono to get started. As you can see the routes are very simple and easy to understand same as **express.js** if you have used it.
+
+We just imported `handle` from `hono/vercel` which will handle the request and response for edge environment. we also mentioned `runtime` as `edge` in the routes file which help **Vercel** to understand that this is edge function.
+
+<Advertise title="Integrating Google Gemini to Node.js Application" />
+
+#### Setting up Drizzle
+
+Drizzle is very easy to setup. We need to crete few files and we are good to go. You can create a folder `db` in your root directory and create a file `drizzle .ts` in it.
+
+<Tabs items={["Drizzle", "Schema"]} >
+   <Section slot="drizzle">
+    ```ts
+    // /db/drizzle.ts
+
+    import { neon } from '@neondatabase/serverless';
+    import { drizzle } from 'drizzle-orm/neon-http';
+
+    const sql = neon(process.env.NEON_DATABASE_URL!);
+    const db = drizzle(sql);
+
+    export default db;
+    ```
+
+  </Section>
+
+     <Section slot="schema">
+    ```ts
+    // /db/schema.ts
+
+    import { sql } from 'drizzle-orm';
+    import { text, boolean, pgTable, timestamp } from 'drizzle-orm/pg-core';
+
+    export const todo = pgTable('todo', {
+      id: text('id').primaryKey().notNull().unique(),
+      text: text('text').notNull(),
+      done: boolean('done').default(false).notNull(),
+      created_at: timestamp('created_at').default(sql`now()`),
+      updated_at: timestamp('updated_at').default(sql`now()`),
+    });
+    ```
+
+  </Section>
+</Tabs>
+
+As you can see here we are using `@neondatabase/serverless` for database and `drizzle-orm/neon-http` for drizzle to work with NeonDatabase.
+
+We also created a schema file which will have all the tables and columns. Here we have created a table `todo` with columns `id`, `text`, `done`, `created_at` and `updated_at`.
+
+Now we need to create `drizzle.config.ts` file in root directory. where we will mention the path of schema and driver and database credentials.
+
+```ts
+// /drizzle.config.ts
+
+import 'dotenv/config';
+import type { Config } from 'drizzle-kit';
+
+export default {
+  schema: './db/schema.ts',
+  out: './drizzle',
+  driver: 'pg',
+  dbCredentials: {
+    connectionString: process.env.NEON_DATABASE_URL!,
+  },
+} satisfies Config;
+```
+
+Now Push your schema changes directly to the database without generating any migrations files using drizzle kit.
+
+```bash
+npx drizzle-kit push:pg
+```
+
+With this we are done with the setup of hono and drizzle. Now we can focus on creating our rest api.
+
+#### Creating CRUD APIs for Todo
+
+Coming from `express.js` background, hono gives same feel and easy to use with some additional features. Which makes it more powerful. Let's create a simple rest api for todo.
+
+We need to install `zod` for validation and `uuid` for generating unique id.
+
+```bash
+npm install zod uuid
+```
+
+Since we have already created a route file for hono, we can add our `CRUD` apis code there.
+
+<Tabs items={['Get todo', 'Add todo', 'Edit todo', 'Delete todo', 'Complete Code']}>
+  
+    <Section slot="Get todo">
+    ```ts 
+    app.get("/todo", async (c) => {
+      try {
+        const data = await db.select().from(todo).orderBy(desc(todo.created_at));
+        return c.json({ data, message: "Todos fetched successfully" });
+      } catch (error) {
+        return c.json({ message: "An error occurred", data: null }, 400);
+      }
+    });
+    ```
+  </Section>
+
+  <Section slot="Add todo">
+    ```ts
+    const todoSchema = z.object({
+      todo: z.string().min(1, { message: 'Todo text is required' }),
+    });
+    
+    app.post(
+      '/todo',
+      zValidator('form', todoSchema, (result, c) => {
+        if (!result.success) {
+          return c.json({ message: result.error.errors[0].message }, 400);
+        }
+      }),
+      async (c) => {
+        try {
+          const { todo: text } = c.req.valid('form');
+          await db.insert(todo).values({
+            id: uuidv4(),
+            text: text,
+          });
+          return c.json({ message: 'Todo created successfully' });
+        } catch (error) {
+          return c.json({ message: 'An error occurred' }, 400);
+        }
+      }
+    );
+    ```
+  </Section>
+
+   <Section slot="Edit todo">
+    ```ts
+    const todoSchema = z.object({
+      todo: z.string().min(1, { message: 'Todo text is required' }),
+    });
+
+    app.put(
+      "/todo/:id",
+      zValidator("form", todoSchema, (result, c) => {
+        if (!result.success) {
+          return c.json({ message: result.error.errors[0].message }, 400);
+        }
+      }),
+      async (c) => {
+        try {
+          const id = c.req.param("id");
+          const { todo: text } = c.req.valid("form");
+          await db.update(todo).set({ text }).where(eq(todo.id, id));
+          return c.json({ message: "Todo updated successfully" });
+        } catch (error) {
+          return c.json({ message: "An error occurred" }, 400);
+        }
+      },
+    );
+    ```
+
+  </Section>
+
+   <Section slot="Delete todo">
+    ```ts 
+    app.delete("/todo/:id", async (c) => {
+      try {
+        const id = c.req.param("id");
+        await db.delete(todo).where(eq(todo.id, id));
+        return c.json({ message: "Todo deleted successfully" });
+      } catch (error) {
+        return c.json({ message: "An error occurred" }, 400);
+      }
+    });
+    ```
+  </Section>
+
+  <Section slot="Complete Code">
+  ```ts
+// /app/api/[[...route]]/routes.ts
+ 
+    import { Hono } from 'hono';
+    import { handle } from 'hono/vercel';
+    import db from '@/db/drizzle';
+    import { todo } from '@/db/schema';
+    import { desc, eq } from 'drizzle-orm';
+    import { zValidator } from '@hono/zod-validator';
+    import z from 'zod';
+    import { v4 as uuidv4 } from 'uuid';
+    
+    export const runtime = 'edge';
+    
+    const app = new Hono().basePath('/api');
+    
+    app.get('/todo', async (c) => {
+      try {
+        const data = await db.select().from(todo).orderBy(desc(todo.created_at));
+        return c.json({ data });
+      } catch (error) {
+        return c.json({ message: 'An error occurred' }, 400);
+      }
+    });
+    
+    const todoSchema = z.object({
+      todo: z.string().min(1, { message: 'Todo text is required' }),
+    });
+    
+    app.post(
+      '/todo',
+      zValidator('form', todoSchema, (result, c) => {
+        if (!result.success) {
+          return c.json({ message: result.error.errors[0].message }, 400);
+        }
+      }),
+      async (c) => {
+        try {
+          const { todo: text } = c.req.valid('form');
+          await db.insert(todo).values({
+            id: uuidv4(),
+            text: text,
+          });
+          return c.json({ message: 'Todo created successfully' });
+        } catch (error) {
+          return c.json({ message: 'An error occurred' }, 400);
+        }
+      }
+    );
+    
+    app.put(
+      '/todo/:id',
+      zValidator('form', todoSchema, (result, c) => {
+        if (!result.success) {
+          return c.json({ message: result.error.errors[0].message }, 400);
+        }
+      }),
+      async (c) => {
+        try {
+          const id = c.req.param('id');
+          const { todo: text } = c.req.valid('form');
+          await db.update(todo).set({ text }).where(eq(todo.id, id));
+          return c.json({ message: 'Todo updated successfully' });
+        } catch (error) {
+          return c.json({ message: 'An error occurred' }, 400);
+        }
+      }
+    );
+    
+    app.delete('/todo/:id', async (c) => {
+      try {
+        const id = c.req.param('id');
+        await db.delete(todo).where(eq(todo.id, id));
+        return c.json({ message: 'Todo deleted successfully' });
+      } catch (error) {
+        return c.json({ message: 'An error occurred' }, 400);
+      }
+    });
+    
+    export const GET = handle(app);
+    export const POST = handle(app);
+    export const PUT = handle(app);
+    export const DELETE = handle(app);
+  ```
+  </Section>
+</Tabs>
+
+Above code is self explanatory. We have created a simple rest api for todo. We are using `zod` for validation and `uuid` for generating unique id. We are using `drizzle` for database operations.
+
+There are some additional features in hono like `c.req.valid("form")` which will validate the request body and `c.req.param("id")` which will get the id from the url.
+
+We are using `zValidator` for validation which will validate the request body and if it's not valid it will return the error message.
+
+### Hono RPC example in Next.JS
+
+Hono `rpc` feature is too powerful which enable developers to write backend api and use it in client with fully type-safe and auto-completion. The best part is since HONO use web standard APIs, it's support all the environment.
+
+We just have to export our routes types and use it in client. Let's update our `routes.ts` file code for that. I'm just sharing here the query part of code you can find the full code in the [GitHub Repository](https://github.com/Virous77/hono-drizzle).
+
+```ts
+// /app/api/[[...route]]/routes.ts
+import { Hono } from 'hono';
+import { handle } from 'hono/vercel';
+import db from '@/db/drizzle';
+import { todo } from '@/db/schema';
+import { desc } from 'drizzle-orm';
+
+export const runtime = 'edge';
+
+const app = new Hono().basePath('/api');
+
+const getRoute = app.get('/todo', async (c) => {
+  try {
+    const data = await db.select().from(todo).orderBy(desc(todo.created_at));
+    return c.json({ data, message: 'Todos fetched successfully' });
+  } catch (error) {
+    return c.json({ message: 'An error occurred', data: null }, 400);
+  }
+});
+
+export const GET = handle(app);
+export type TTodoHonoGet = typeof getRoute;
+```
+
+Here as you can the code is same we added `export type TTodoHonoGet = typeof getRoute;` which will export the type of `getRoute` which we can use in client.
+
+Hono provides `hc` a built in api to call the rpc from client. It's took types of the route and return the response.
+
+```tsx
+// /app/page.tsx
+
+import { hc } from 'hono/client';
+import { TTodoHonoGet } from '@/app/api/[[...route]]/route';
+
+const client = hc<TTodoHonoGet>('http://localhost:3000');
+
+const HomePage = async () => {
+  const res = await client.api.todo.$get();
+  const { data: todos, message } = await res.json();
+
+  return (
+    <main>
+      <h1>{JSON.stringify(todos)}</h1>
+    </main>
+  );
+};
+```
+
+This is all we need to do to call the rpc from client. We have to use `hc` and pass the type of route and url of the server. As here I'm using React Server Component so I'm able to call the rpc directly in the component. But you can fecth in `useEffect` or any other way you want.
+
+> You can found all the code in the [GitHub Repository](https://github.com/Virous77/hono-drizzle). Here i have completed the client side code also.
+
+### Conclusion
+
+Hono makes creating Rest API fun in Next.js and Drizzle makes it more powerful with it's ORM. We can create Rest API in few lines of code and with the power of TypeScript and Drizzle we can make it more powerful and type-safe.
+
+With rise of edge computing, Hono is the perfect choice for the future. It's ultrafast and has zero dependencies. Drizzle is designed to work with serverless environments like AWS Lambda, Cloudflare Workers or Vercel Edge Functions.
+
+I hope you find this article helpful. If you have any questions or suggestions, feel free to ask in the comments below. Happy Coding! 🚀.
