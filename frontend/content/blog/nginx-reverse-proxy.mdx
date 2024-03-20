@@ -1,19 +1,20 @@
 ---
-title: "Nginx as Reverse Proxy for Kubernetes Services"
-date: "Feb 10 2024"
-author: "Reetesh Kumar"
-authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
-blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1707503152/Frame_1_y8gwjl.png"
-about: "Nginx is a popular open-source web server and reverse proxy server. We can use Nginx as a reverse proxy for Kubernetes services."
+title: 'Nginx as Reverse Proxy for Kubernetes Services'
+date: 'Feb 10 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1707503152/Frame_1_y8gwjl.png'
+about: 'Nginx is a popular open-source web server and reverse proxy server. We can use Nginx as a reverse proxy for Kubernetes services.'
 tags:
   [
-    "how to use nginx as reverse proxy for kubernetes services",
-    "nginx as reverse proxy for kubernetes services",
-    "kubernetes services with nginx",
-    "kubernetes service configuration with nginx",
-    "kubernetes service with nginx",
-    "kubernetes service with nginx reverse proxy",
+    'how to use nginx as reverse proxy for kubernetes services',
+    'nginx as reverse proxy for kubernetes services',
+    'kubernetes services with nginx',
+    'kubernetes service configuration with nginx',
+    'kubernetes service with nginx',
+    'kubernetes service with nginx reverse proxy',
   ]
+related: "cloud"
 ---
 
 Nginx is a popular open-source web server and reverse proxy server. Nginx is used by many high-traffic websites and is known for its high performance and low resource usage. We can use Nginx as a reverse proxy for Kubernetes services.
@@ -99,11 +100,11 @@ spec:
           imagePullPolicy: IfNotPresent
           resources:
             requests:
-              memory: "64Mi"
-              cpu: "250m"
+              memory: '64Mi'
+              cpu: '250m'
             limits:
-              memory: "128Mi"
-              cpu: "500m"
+              memory: '128Mi'
+              cpu: '500m'
 
 ---
 apiVersion: apps/v1
@@ -129,11 +130,11 @@ spec:
                 name: backend-app-config
           resources:
             requests:
-              memory: "64Mi"
-              cpu: "250m"
+              memory: '64Mi'
+              cpu: '250m'
             limits:
-              memory: "128Mi"
-              cpu: "500m"
+              memory: '128Mi'
+              cpu: '500m'
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -157,15 +158,15 @@ spec:
         - name: mongo
           image: mongo
           volumeMounts:
-            - mountPath: "/data/db"
+            - mountPath: '/data/db'
               name: mongo-persistent-storage
           resources:
             requests:
-              memory: "64Mi"
-              cpu: "250m"
+              memory: '64Mi'
+              cpu: '250m'
             limits:
-              memory: "128Mi"
-              cpu: "500m"
+              memory: '128Mi'
+              cpu: '500m'
 
 ---
 apiVersion: apps/v1
@@ -188,11 +189,11 @@ spec:
           imagePullPolicy: IfNotPresent
           resources:
             requests:
-              memory: "64Mi"
-              cpu: "250m"
+              memory: '64Mi'
+              cpu: '250m'
             limits:
-              memory: "128Mi"
-              cpu: "500m"
+              memory: '128Mi'
+              cpu: '500m'
 ```
 
 As you can see, we have added a new deployment for Nginx. We have used the `full-nginx` image for the Nginx deployment. I have also added the `resources` section to limit the memory and CPU usage for the all deployments.
@@ -229,8 +230,8 @@ metadata:
   name: backend-app-config
 data:
   MONGO_URI: mongodb://mongo-service:27017/dockerize-backend
-  PORT: "4000"
-  DEBUG: "true"
+  PORT: '4000'
+  DEBUG: 'true'
 ```
 
 We just removed the config for frontend app since we are not using it anymore as environment variables for the frontend app will be passed at build time.
@@ -369,10 +370,10 @@ For that you need to add your current URL which is being used to access the appl
 ```js
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "standalone",
+  output: 'standalone',
   experimental: {
     serverActions: {
-      allowedOrigins: ["127.0.0.1:49215"],
+      allowedOrigins: ['127.0.0.1:49215'],
     },
   },
 };

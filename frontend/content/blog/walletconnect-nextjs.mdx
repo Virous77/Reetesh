@@ -1,17 +1,18 @@
 ---
-title: "Web3 Wallets connection using WalletConnect in Next.js"
-date: "Feb 19 2024"
-author: "Reetesh Kumar"
-authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
-blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1708271565/walletconnect_p28rex.png"
-about: "WalletConnect allows to connect mobile wallet to different decentralized applications and other wallets. This allows to interact with dapps and sign transactions securely from wallet."
+title: 'Web3 Wallets connection using WalletConnect in Next.js'
+date: 'Feb 19 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1708271565/walletconnect_p28rex.png'
+about: 'WalletConnect allows to connect mobile wallet to different decentralized applications and other wallets. This allows to interact with dapps and sign transactions securely from wallet.'
 tags:
   [
-    "how to use walletconnect in next.js",
-    "metamask connection in next.js using walletconnect",
-    "how to setup walletconnect in next.js",
-    "walletconnect in next.js",
+    'how to use walletconnect in next.js',
+    'metamask connection in next.js using walletconnect',
+    'how to setup walletconnect in next.js',
+    'walletconnect in next.js',
   ]
+related: 'web3'
 ---
 
 WalletConnect is an open-source protocol that facilitates communication between decentralized applications (dApps) and mobile wallets. It enables users to securely connect their wallets to dApps using QR code scanning or deep linking, allowing to interact with decentralized applications directly from their mobile devices or web extensions wallets.
@@ -45,19 +46,19 @@ We need to configure Web3Modal first for that we need to create a file `config.t
 ```ts
 // lib/config.ts
 
-import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
-import { cookieStorage, createStorage } from "wagmi";
-import { sepolia } from "wagmi/chains";
+import { defaultWagmiConfig } from '@web3modal/wagmi/react/config';
+import { cookieStorage, createStorage } from 'wagmi';
+import { sepolia } from 'wagmi/chains';
 
 export const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
 
-if (!projectId) throw new Error("Project ID is not defined");
+if (!projectId) throw new Error('Project ID is not defined');
 
 const metadata = {
-  name: "Web3Modal Example",
-  description: "Web3Modal Example",
-  url: "https://web3modal.com",
-  icons: ["https://avatars.githubusercontent.com/u/37784886"],
+  name: 'Web3Modal Example',
+  description: 'Web3Modal Example',
+  url: 'https://web3modal.com',
+  icons: ['https://avatars.githubusercontent.com/u/37784886'],
 };
 
 export const config = defaultWagmiConfig({
@@ -78,15 +79,15 @@ Now we need to create a provider for our application. We will create a file `wag
 ```tsx
 // lib/wagmi-provider.tsx
 
-"use client";
+'use client';
 
-import React, { ReactNode } from "react";
-import { createWeb3Modal } from "@web3modal/wagmi/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { State, WagmiProvider } from "wagmi";
-import { config, projectId } from "./config";
+import React, { ReactNode } from 'react';
+import { createWeb3Modal } from '@web3modal/wagmi/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { State, WagmiProvider } from 'wagmi';
+import { config, projectId } from './config';
 
-if (!projectId) throw new Error("Project ID is not defined");
+if (!projectId) throw new Error('Project ID is not defined');
 
 createWeb3Modal({
   wagmiConfig: config,
@@ -128,19 +129,19 @@ Now we need wrap our application with `WagmiProviderComp` in `app/layout.tsx` fi
 ```tsx
 // app/layout.tsx
 
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import WagmiProviderComp from "@/lib/wagmi/wagmi-provider";
-import { headers } from "next/headers";
-import { cookieToInitialState } from "wagmi";
-import { config } from "@/lib/wagmi/config";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import WagmiProviderComp from '@/lib/wagmi/wagmi-provider';
+import { headers } from 'next/headers';
+import { cookieToInitialState } from 'wagmi';
+import { config } from '@/lib/wagmi/config';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "Next.js App",
-  description: "Next.js App",
+  title: 'Next.js App',
+  description: 'Next.js App',
 };
 
 export default function RootLayout({
@@ -148,7 +149,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const initialState = cookieToInitialState(config, headers().get("cookie"));
+  const initialState = cookieToInitialState(config, headers().get('cookie'));
 
   return (
     <html lang="en">
@@ -171,9 +172,9 @@ We can create a Component to connect the wallet using Web3Modal. We will create 
 ```tsx
 // lib/wallet-modal.tsx
 
-"use client";
+'use client';
 
-import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { useWeb3Modal } from '@web3modal/wagmi/react';
 
 export default function ConnectButton() {
   const { open } = useWeb3Modal();
@@ -192,7 +193,7 @@ Since Next.js use `ssr` by default we need to make some configuration in our `ne
 // Path: next.config.js
 const nextConfig = {
   webpack: (config) => {
-    config.externals.push("pino-pretty", "lokijs", "encoding");
+    config.externals.push('pino-pretty', 'lokijs', 'encoding');
     return config;
   },
 };
@@ -205,16 +206,16 @@ Now that we have connected the wallet, we can use wagmi to interact with the sma
 You can read more about Wagmi [here](https://wagmi.sh/react/getting-started).
 
 ```ts
-import { useContractRead } from "wagmi";
-import { USDTAbi } from "../abi/USDTAbi";
+import { useContractRead } from 'wagmi';
+import { USDTAbi } from '../abi/USDTAbi';
 
-const USDTAddress = "0x...";
+const USDTAddress = '0x...';
 
 function App() {
   const result = useReadContract({
     abi: USDTAbi,
     address: USDTAddress,
-    functionName: "totalSupply",
+    functionName: 'totalSupply',
   });
 }
 ```

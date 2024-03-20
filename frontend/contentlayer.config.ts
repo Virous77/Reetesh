@@ -58,6 +58,10 @@ export const Post = defineDocumentType(() => ({
       type: 'list',
       of: { type: 'string' },
     },
+    related: {
+      type: 'string',
+      required: true,
+    },
   },
   computedFields,
 }));

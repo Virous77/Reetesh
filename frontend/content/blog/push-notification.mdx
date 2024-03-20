@@ -1,23 +1,24 @@
 ---
-title: "Push Notification in React and Next.js app using Node.js"
-date: "Dec 30 2023"
-author: "Reetesh Kumar"
-authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
-blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1703924994/Untitled_design_1_qtnwgq.png"
-about: "Push notification is a great way to keep your users engaged with your app. We will learn how to implement push notification in React and Next.js app using Node.js and web-push library."
+title: 'Push Notification in React and Next.js app using Node.js'
+date: 'Dec 30 2023'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1703924994/Untitled_design_1_qtnwgq.png'
+about: 'Push notification is a great way to keep your users engaged with your app. We will learn how to implement push notification in React and Next.js app using Node.js and web-push library.'
 tags:
   [
-    "push-notification in react using nodejs",
-    "web-push library for push notification",
-    "push notification in react",
-    "push notification in nextjs",
-    "push notification in nodejs",
-    "notification in web app",
-    "web push notification",
-    "service worker for push notification",
-    "service worker in react",
-    "service worker in nextjs",
+    'push-notification in react using nodejs',
+    'web-push library for push notification',
+    'push notification in react',
+    'push notification in nextjs',
+    'push notification in nodejs',
+    'notification in web app',
+    'web push notification',
+    'service worker for push notification',
+    'service worker in react',
+    'service worker in nextjs',
   ]
+related: 'common'
 ---
 
 Push notification is a great way to keep your users engaged with your app. Server can send push notifications to the client even when the client is not active.
@@ -43,7 +44,7 @@ In order to register a service worker, we need to create a file called `sw.js` i
 ```js
 // public/sw.js
 
-self.addEventListener("push", (event) => {
+self.addEventListener('push', (event) => {
   const data = event.data.json();
   const title = data.title;
   const body = data.body;
@@ -52,7 +53,7 @@ self.addEventListener("push", (event) => {
 
   const notificationOptions = {
     body: body,
-    tag: "unique-tag", // Use a unique tag to prevent duplicate notifications
+    tag: 'unique-tag', // Use a unique tag to prevent duplicate notifications
     icon: icon,
     data: {
       url: url, // Replace with the desired URL for redirecting user to the desired page
@@ -74,14 +75,14 @@ We need to register the service worker in our React and Next.js app. We will use
 // src/index.js -> React
 
 useEffect(() => {
-  if ("serviceWorker" in navigator) {
+  if ('serviceWorker' in navigator) {
     navigator.serviceWorker
-      .register("/sw.js")
+      .register('/sw.js')
       .then((registration) => {
-        console.log("Registration successful");
+        console.log('Registration successful');
       })
       .catch((error) => {
-        console.log("Service worker registration failed");
+        console.log('Service worker registration failed');
       });
   }
 }, []);
@@ -180,20 +181,20 @@ We need to subscribe to push notification in order to receive the push notificat
 // We modified the useEffect hook to subscribe to push notification
 
 useEffect(() => {
-  if ("serviceWorker" in navigator) {
+  if ('serviceWorker' in navigator) {
     const handleServiceWorker = async () => {
-      const register = await navigator.serviceWorker.register("/sw.js");
+      const register = await navigator.serviceWorker.register('/sw.js');
 
       const subscription = await register.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: "VAPID_PUBLIC_KEY",
+        applicationServerKey: 'VAPID_PUBLIC_KEY',
       });
 
-      const res = await fetch("http://localhost:4000/subscribe", {
-        method: "POST",
+      const res = await fetch('http://localhost:4000/subscribe', {
+        method: 'POST',
         body: JSON.stringify(subscription),
         headers: {
-          "content-type": "application/json",
+          'content-type': 'application/json',
         },
       });
 
