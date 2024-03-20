@@ -10,6 +10,8 @@ import { Video } from '@/lib/video';
 import Advertise from '@/lib/advertise';
 import Tabs from '@/lib/Tabs';
 import Section from '@/lib/section';
+import Callout from '@/lib/callout';
+import Table from '@/lib/table';
 
 const components = {
   h1: ({ className, ...props }: any) => (
@@ -137,6 +139,8 @@ const components = {
   Advertise,
   Tabs,
   Section,
+  Callout,
+  Table,
 };
 
 interface MdxProps {
