@@ -1,22 +1,23 @@
 ---
-title: "Dockerize your Fullstack app for development"
-date: "Jan 20 2024"
-author: "Reetesh Kumar"
-authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
-blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1705732091/docker_1_oliznb.png"
-about: "Dockerize your NodeJs(Express) and NextJs(React) application for development using docker and docker-compose. This will make the development process very easy and fast."
+title: 'Dockerize your Fullstack app for development'
+date: 'Jan 20 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1705732091/docker_1_oliznb.png'
+about: 'Dockerize your NodeJs(Express) and NextJs(React) application for development using docker and docker-compose. This will make the development process very easy and fast.'
 tags:
   [
-    "how to dockerize nextjs app",
-    "how to dockerize react app",
-    "how to dockerize nodejs app",
-    "how to dockerize fullstack app",
-    "dockerize fullstack app",
-    "create docker image for nextjs app",
-    "create docker image for react app",
-    "create docker image for nodejs app",
-    "vite docker image for development",
+    'how to dockerize nextjs app',
+    'how to dockerize react app',
+    'how to dockerize nodejs app',
+    'how to dockerize fullstack app',
+    'dockerize fullstack app',
+    'create docker image for nextjs app',
+    'create docker image for react app',
+    'create docker image for nodejs app',
+    'vite docker image for development',
   ]
+related: 'cloud'
 ---
 
 Dockerization is the process of converting your application into a container image. This container image can then be used to run your application in any environment without having to worry about the dependencies and environment setup.
@@ -57,10 +58,10 @@ To use `import` syntax and `nodemon` we need to add some configuration to our `p
 Create a file called `server.js` and add the following code to it.
 
 ```js
-import express from "express";
-import mongoose from "mongoose";
-import cors from "cors";
-import dotenv from "dotenv";
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
@@ -76,14 +77,14 @@ const UserSchema = mongoose.Schema({
   password: String,
 });
 
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model('User', UserSchema);
 
 // Routes
-app.get("/", (req, res) => {
-  res.send("Hello from backend");
+app.get('/', (req, res) => {
+  res.send('Hello from backend');
 });
 
-app.post("/user", async (req, res) => {
+app.post('/user', async (req, res) => {
   const { name, email, password } = req.body;
 
   const user = new User({
@@ -100,7 +101,7 @@ app.post("/user", async (req, res) => {
   }
 });
 
-app.get("/user", async (req, res) => {
+app.get('/user', async (req, res) => {
   try {
     const users = await User.find();
     res.status(200).json(users);
@@ -167,7 +168,7 @@ To get the data from our backend server we can remove the code from `app/page.ts
 const Page = async () => {
   const fetchIt = async () => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/user`, {
-      cache: "no-cache",
+      cache: 'no-cache',
     });
     const data = await response.json();
     console.log(data);
@@ -210,7 +211,7 @@ It will be very useful for us to run our backend, frontend and database server i
 Create a file called `docker-compose.yml` in your project root folder and add the following code to it.
 
 ```yml
-version: "3.8"
+version: '3.8'
 services:
   mongo:
     image: mongo
@@ -222,9 +223,9 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "4000:4000"
+      - '4000:4000'
     env_file:
-      - "./backend/.env"
+      - './backend/.env'
     volumes:
       - ./backend:/app
       - ./backend/node_modules:/app/node_modules
@@ -236,9 +237,9 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - '3000:3000'
     env_file:
-      - "./frontend/.env"
+      - './frontend/.env'
     volumes:
       - ./frontend:/app
       - ./frontend/node_modules:/app/node_modules

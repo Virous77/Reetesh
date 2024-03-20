@@ -32,10 +32,14 @@ const SingleBlogPage = async ({
   params: { id: string };
 }) => {
   const blog = allPosts.find((post) => post.slugAsParams === id);
+  const relatedBlogs =
+    allPosts.filter(
+      (post) => post.related === blog?.related && blog._id !== post._id
+    ) || [];
 
   if (!blog) return notFound();
 
-  return <SingleBlog blog={blog} />;
+  return <SingleBlog blog={blog} relatedBlogs={relatedBlogs.slice(0, 5)} />;
 };
 
 export default SingleBlogPage;

@@ -1,27 +1,28 @@
 ---
-title: "Best SEO Practices for Next.js Apps"
-date: "Jan 06 2024"
-author: "Reetesh Kumar"
-authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
-blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1704480202/seo-next_1_poefro.png"
+title: 'Best SEO Practices for Next.js Apps'
+date: 'Jan 06 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1704480202/seo-next_1_poefro.png'
 about: "Next.js is a React framework that enables server-side rendering and generating static websites. It's a great framework for building SEO-friendly websites."
 tags:
   [
-    "best practices for nextjs seo",
-    "nextjs seo best practices",
-    "nextjs seo",
-    "nextjs seo optimization",
-    "nextjs seo tips for ranking",
-    "how to do seo in nextjs",
-    "what is the best way to do seo in nextjs",
-    "how to do seo in nextjs",
-    "generate dynamic sitemap.xml in nextjs",
-    "generate dynamic robots.txt in nextjs",
-    "how to generate dynamic sitemap.xml in nextjs",
-    "nextjs14 best practices for seo in nextjs",
-    "nextjs script component",
-    "nextjs image component",
+    'best practices for nextjs seo',
+    'nextjs seo best practices',
+    'nextjs seo',
+    'nextjs seo optimization',
+    'nextjs seo tips for ranking',
+    'how to do seo in nextjs',
+    'what is the best way to do seo in nextjs',
+    'how to do seo in nextjs',
+    'generate dynamic sitemap.xml in nextjs',
+    'generate dynamic robots.txt in nextjs',
+    'how to generate dynamic sitemap.xml in nextjs',
+    'nextjs14 best practices for seo in nextjs',
+    'nextjs script component',
+    'nextjs image component',
   ]
+related: 'frontend'
 ---
 
 [Next.js](https://nextjs.org/) is a [React](https://react.dev/) framework that enables server-side rendering and generating static websites. It is a great framework for building SEO-friendly websites.
@@ -45,16 +46,16 @@ You can use the following code to create a `robots.txt` file:
 ```typescript
 // app/robots.ts  (App Router)
 
-import { MetadataRoute } from "next";
+import { MetadataRoute } from 'next';
 
 const robots: MetadataRoute.Robots = () => {
   return {
     rules: {
-      userAgent: "*",
-      allow: "/",
-      disallow: "/private/", // Disallow private routes
+      userAgent: '*',
+      allow: '/',
+      disallow: '/private/', // Disallow private routes
     },
-    sitemap: "https://example.com/sitemap.xml",
+    sitemap: 'https://example.com/sitemap.xml',
   };
 };
 
@@ -70,37 +71,37 @@ Next.js has a built-in feature that generates a `sitemap.xml` file for you. You 
 ```typescript
 // app/sitemap.ts  (App Router)
 
-import { allPosts } from "/example.ts";
-import { MetadataRoute } from "next";
+import { allPosts } from '/example.ts';
+import { MetadataRoute } from 'next';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const blogs = allPosts;
-  const URL = "https://example.com";
+  const URL = 'https://example.com';
 
   const restUrls = [
     {
       url: `${URL}/`, // Home Page
       lastModified: new Date(),
       priority: 1.0,
-      changeFrequency: "weekly",
+      changeFrequency: 'weekly',
     },
     {
       url: `${URL}/blogs`, // Blogs Page
       lastModified: new Date(),
       priority: 0.8,
-      changeFrequency: "daily",
+      changeFrequency: 'daily',
     },
     {
       url: `${URL}/projects`, // Projects Page
       lastModified: new Date(),
       priority: 0.8,
-      changeFrequency: "weekly",
+      changeFrequency: 'weekly',
     },
     {
       url: `${URL}/skills`, // Skills Page
       lastModified: new Date(),
       priority: 0.8,
-      changeFrequency: "weekly",
+      changeFrequency: 'weekly',
     },
   ];
 
@@ -109,7 +110,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${URL}/blog/${slugAsParams}`,
       lastModified: new Date(date),
       priority: 0.64,
-      changeFrequency: "daily",
+      changeFrequency: 'daily',
     };
   });
 
@@ -126,7 +127,7 @@ We can even use the `generateSitemaps` function to generate dynamic routes for e
 
 export async function generateSitemaps() {
   // the number of blog posts you have
-  return [{ id: "one" }, { id: "two" }, { id: "three" }, { id: "four" }];
+  return [{ id: 'one' }, { id: 'two' }, { id: 'three' }, { id: 'four' }];
 }
 
 export default async function sitemap({
@@ -206,10 +207,10 @@ You can create a utility function where to make it easier to generate meta tags.
 export async function generateMetadata() {
   //commonMetaData is a utility function
   const metaData = commonMetaData({
-    name: "",
-    desc: "",
-    image: "https:example.com/images/hero.png",
-    url: "/",
+    name: '',
+    desc: '',
+    image: 'https:example.com/images/hero.png',
+    url: '/',
     keywords: [],
   });
   return {

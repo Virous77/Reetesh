@@ -1,24 +1,25 @@
 ---
-title: "Building DApps with React and Solidity on Ethereum"
-date: "Jan 13 2024"
-author: "Reetesh Kumar"
-authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
-blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1705126086/eth-react_riwayz.jpg"
-about: "Dive into the exciting world of decentralized application (DApps) development with our comprehensive guide! Learn how to harness the power of Ethereum, the leading blockchain platform, to create robust and user-friendly DApps."
+title: 'Building DApps with React and Solidity on Ethereum'
+date: 'Jan 13 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1705126086/eth-react_riwayz.jpg'
+about: 'Dive into the exciting world of decentralized application (DApps) development with our comprehensive guide! Learn how to harness the power of Ethereum, the leading blockchain platform, to create robust and user-friendly DApps.'
 tags:
   [
-    "dapps on ethereum using react",
-    "dapps on ethereum using solidity",
-    "dapps on ethereum using react and solidity",
-    "react and solidity for dapps on ethereum",
-    "how to build dapps on ethereum using react and solidity",
-    "build dapps using react and solidity",
-    "nextjs and solidity for dapps on ethereum",
-    "metamask integration with react and solidity",
-    "how to integrate metamask with react",
-    "smart contract development using solidity",
-    "smart contract abi using solidity",
+    'dapps on ethereum using react',
+    'dapps on ethereum using solidity',
+    'dapps on ethereum using react and solidity',
+    'react and solidity for dapps on ethereum',
+    'how to build dapps on ethereum using react and solidity',
+    'build dapps using react and solidity',
+    'nextjs and solidity for dapps on ethereum',
+    'metamask integration with react and solidity',
+    'how to integrate metamask with react',
+    'smart contract development using solidity',
+    'smart contract abi using solidity',
   ]
+related: 'web3'
 ---
 
 A decentralized application (DApp) is a type of software application that operates on a decentralized network rather than being controlled by a single entity or authority. Unlike traditional applications that rely on central servers, DApps leverage blockchain technology to ensure decentralization, transparency, and immutability.
@@ -103,9 +104,9 @@ npm install web3 @metamask/sdk-react react-hot-toast
 Create a `utils` folder in the `src` directory and create a file called `MetamaskProvider.jsx` inside the `utils` folder. We will use this file to initialize the Metamask SDK.
 
 ```javascript
-import React from "react";
-import { MetaMaskProvider } from "@metamask/sdk-react";
-import icon from "../assets/logo192.png";
+import React from 'react';
+import { MetaMaskProvider } from '@metamask/sdk-react';
+import icon from '../assets/logo192.png';
 
 const MetamaskProvider = ({ children }) => {
   return (
@@ -114,7 +115,7 @@ const MetamaskProvider = ({ children }) => {
         debug={true}
         sdkOptions={{
           dappMetadata: {
-            name: "Storage App",
+            name: 'Storage App',
             url: window.location.host,
             iconUrl: icon, // optional
           },
@@ -132,13 +133,13 @@ export default MetamaskProvider;
 Now that we have initialized the Metamask SDK, let's wrap the `Index` component with the `MetamaskProvider` component. `Index` component is the entry point of the React app.
 
 ```javascript
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import MetamaskProvider from "./utils/MetamaskProvider";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import MetamaskProvider from './utils/MetamaskProvider';
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <MetamaskProvider>
@@ -155,52 +156,52 @@ Within the `utils` folder, create a file called `constant.js`. We will use this 
 We will add our contract address and ABI in this file.
 
 ```javascript
-export const address = "0x47472ae8413b98F645742884341CD88e9D10D6B6";
+export const address = '0x47472ae8413b98F645742884341CD88e9D10D6B6';
 
 export const abi = [
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "_data",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '_data',
+        type: 'uint256',
       },
     ],
-    name: "setData",
+    name: 'setData',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [],
-    stateMutability: "nonpayable",
-    type: "constructor",
+    stateMutability: 'nonpayable',
+    type: 'constructor',
   },
   {
     inputs: [],
-    name: "data",
+    name: 'data',
     outputs: [
       {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "getData",
+    name: 'getData',
     outputs: [
       {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
 ];
 ```
@@ -208,13 +209,13 @@ export const abi = [
 To initialize the contract instance, we will setup a `Context` with following code :
 
 ```javascript
-import { createContext, useState, useContext, useEffect } from "react";
-import { useSDK } from "@metamask/sdk-react";
-import Web3 from "web3";
-import { abi, address } from "../utils/constant";
+import { createContext, useState, useContext, useEffect } from 'react';
+import { useSDK } from '@metamask/sdk-react';
+import Web3 from 'web3';
+import { abi, address } from '../utils/constant';
 
 const contextState = {
-  account: "",
+  account: '',
   connectToMetaMask: () => {},
   connected: false,
   connecting: false,
@@ -226,7 +227,7 @@ const contextState = {
 const AppContext = createContext(contextState);
 
 export const AppContextProvider = ({ children }) => {
-  const [account, setAccount] = useState("");
+  const [account, setAccount] = useState('');
   const { sdk, connected, connecting, provider } = useSDK();
 
   const connectToMetaMask = async () => {
@@ -281,42 +282,42 @@ Now that we have initialized the contract instance, let's wrap the `App` compone
 Now that we have set up the React app, let's build the UI. We will create a `components` folder in the `src` directory and create a file called `Home.jsx` inside the `components` folder.
 
 ```javascript
-import React, { useEffect, useRef, useState } from "react";
-import styles from "./home.module.css";
-import { useAppContext } from "../contexts/AppContext";
-import toast from "react-hot-toast";
+import React, { useEffect, useRef, useState } from 'react';
+import styles from './home.module.css';
+import { useAppContext } from '../contexts/AppContext';
+import toast from 'react-hot-toast';
 
 const Home = () => {
   const { web3, account, connectToMetaMask, connected, connecting } =
     useAppContext();
   const inputRef = useRef(null);
 
-  const [isLoading, setIsLoading] = useState("idle");
-  const [number, setNumber] = useState("");
+  const [isLoading, setIsLoading] = useState('idle');
+  const [number, setNumber] = useState('');
 
   const getNumber = async (e) => {
     try {
-      setIsLoading("fetching");
+      setIsLoading('fetching');
       const number = await web3.methods.getData().call();
-      setIsLoading("idle");
+      setIsLoading('idle');
       setNumber(number);
     } catch (error) {
-      setIsLoading("idle");
-      toast.error("Error in fetching fleet");
+      setIsLoading('idle');
+      toast.error('Error in fetching fleet');
     }
   };
 
   const handleAddNumber = async (e) => {
     e.preventDefault();
-    if (inputRef.current.value === "") {
+    if (inputRef.current.value === '') {
       return;
     }
 
     try {
-      setIsLoading("adding");
+      setIsLoading('adding');
       if (!account) {
-        toast.error("Please connect to your wallet");
-        setIsLoading("idle");
+        toast.error('Please connect to your wallet');
+        setIsLoading('idle');
         return;
       }
 
@@ -326,18 +327,18 @@ const Home = () => {
           from: account,
           gas: 3000000,
         })
-        .on("receipt", () => {
-          inputRef.current.value = "";
+        .on('receipt', () => {
+          inputRef.current.value = '';
           getNumber();
-          toast.success("Number added successfully");
-          setIsLoading("idle");
+          toast.success('Number added successfully');
+          setIsLoading('idle');
         })
-        .on("error", () => {
-          throw new Error("Error in adding number");
+        .on('error', () => {
+          throw new Error('Error in adding number');
         });
     } catch (error) {
-      toast.error("Error in adding number");
-      setIsLoading("idle");
+      toast.error('Error in adding number');
+      setIsLoading('idle');
     }
   };
 
@@ -352,12 +353,12 @@ const Home = () => {
       <div className={styles.wallet}>
         {!connected && (
           <button onClick={connectToMetaMask}>
-            {connecting ? "Connecting..." : "Connect to MetaMask"}
+            {connecting ? 'Connecting...' : 'Connect to MetaMask'}
           </button>
         )}
       </div>
       <div className={styles.number}>
-        {isLoading === "fetching" ? (
+        {isLoading === 'fetching' ? (
           <p>Fetching number...</p>
         ) : (
           <p>
@@ -373,8 +374,8 @@ const Home = () => {
             ref={inputRef}
             disabled={!connected}
           />
-          <button type="submit" disabled={!connected || isLoading === "adding"}>
-            {isLoading === "adding" ? "Adding..." : "Add Number"}
+          <button type="submit" disabled={!connected || isLoading === 'adding'}>
+            {isLoading === 'adding' ? 'Adding...' : 'Add Number'}
           </button>
         </form>
       </div>
@@ -394,9 +395,9 @@ I have created two functions: `getNumber` and `handleAddNumber`. The `getNumber`
 Now that we have created the UI, let's add the `Home` component to the `App` component.
 
 ```javascript
-import React from "react";
-import { Toaster } from "react-hot-toast";
-import Home from "./components/Home";
+import React from 'react';
+import { Toaster } from 'react-hot-toast';
+import Home from './components/Home';
 
 const App = () => {
   return (

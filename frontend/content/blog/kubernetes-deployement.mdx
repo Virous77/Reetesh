@@ -1,20 +1,21 @@
 ---
-title: "Configuring Full-Stack Apps for Kubernetes Deployment"
-date: "Jan 27 2024"
-author: "Reetesh Kumar"
-authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
-blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1706351508/kubernetes_yfwfyf.jpg"
-about: "Deploy you Next.js, Node.js, and MongoDB application to Kubernetes. Kubernetes is a container orchestration tool that helps you to deploy your application to the cloud."
+title: 'Configuring Full-Stack Apps for Kubernetes Deployment'
+date: 'Jan 27 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1706351508/kubernetes_yfwfyf.jpg'
+about: 'Deploy you Next.js, Node.js, and MongoDB application to Kubernetes. Kubernetes is a container orchestration tool that helps you to deploy your application to the cloud.'
 tags:
   [
-    "deploy your app to kubernetes",
-    "how to deploy full stack to kubernetes",
-    "deploy next.js to kubernetes",
-    "deploy node.js to kubernetes",
-    "setup configuration for kubernetes",
-    "deploy mongodb to  kubernetes",
-    "deploy fullstack app to kubernetes",
+    'deploy your app to kubernetes',
+    'how to deploy full stack to kubernetes',
+    'deploy next.js to kubernetes',
+    'deploy node.js to kubernetes',
+    'setup configuration for kubernetes',
+    'deploy mongodb to  kubernetes',
+    'deploy fullstack app to kubernetes',
   ]
+related: 'cloud'
 ---
 
 ## What is Kubernetes?
@@ -312,7 +313,7 @@ metadata:
   name: frontend-app-config
 data:
   NEXT_PUBLIC_SERVER_URL: http://backend-app-service:4000
-  DEBUG: "true"
+  DEBUG: 'true'
 
 ---
 apiVersion: v1
@@ -321,8 +322,8 @@ metadata:
   name: backend-app-config
 data:
   MONGO_URI: mongodb://mongo-service:27017/dockerize-backend
-  PORT: "4000"
-  DEBUG: "true"
+  PORT: '4000'
+  DEBUG: 'true'
 ```
 
 ### Adding our images to Minikube

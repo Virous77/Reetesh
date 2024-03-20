@@ -1,24 +1,25 @@
 ---
-title: "Creating Rest API on BUN with ElysiaJS"
-date: "Dec 28 2023"
-author: "Reetesh Kumar"
-authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
-blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1703777093/elysia_zhobpo.png"
-about: "Elysia is built with simplicity and type-safety in mind. Highly performant and Optimized for Bun. Being WinterCG compliant, Elysia can run in your browser directly."
+title: 'Creating Rest API on BUN with ElysiaJS'
+date: 'Dec 28 2023'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1703777093/elysia_zhobpo.png'
+about: 'Elysia is built with simplicity and type-safety in mind. Highly performant and Optimized for Bun. Being WinterCG compliant, Elysia can run in your browser directly.'
 tags:
   [
-    "rest api on bun",
-    "elysiajs for rest api on bun",
-    "monogodb integration with bun",
-    "best way to create rest api on bun",
-    "how to create rest api on bun",
-    "rest api on bun with elysiajs",
-    "elysiajs rest api on bun",
-    "bun rest api",
-    "best way to create rest api on bun",
-    "how to setup rest api on bun",
-    "setup elysiajs on bun",
+    'rest api on bun',
+    'elysiajs for rest api on bun',
+    'monogodb integration with bun',
+    'best way to create rest api on bun',
+    'how to create rest api on bun',
+    'rest api on bun with elysiajs',
+    'elysiajs rest api on bun',
+    'bun rest api',
+    'best way to create rest api on bun',
+    'how to setup rest api on bun',
+    'setup elysiajs on bun',
   ]
+related: 'backend'
 ---
 
 ## What is ElysiaJS?
@@ -57,7 +58,7 @@ We will use `mongoose` as our database driver. You can use any other driver as w
 Create a new file **`rest-api/src/models/user-model.ts`** with the following code:
 
 ```typescript
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 export interface IUser extends mongoose.Document {
   name: string;
@@ -71,7 +72,7 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
 });
 
-export default mongoose.model<IUser>("User", UserSchema);
+export default mongoose.model<IUser>('User', UserSchema);
 ```
 
 Here we have created a simple model for our user. We will use this model to create, update, delete and get users from our database.
@@ -81,8 +82,8 @@ Here we have created a simple model for our user. We will use this model to crea
 Create a new file **`rest-api/src/controllers/user-controller.ts`** with the following code:
 
 ```typescript
-import Elysia from "elysia";
-import user from "../models/user-model";
+import Elysia from 'elysia';
+import user from '../models/user-model';
 
 type TUser = {
   name: string;
@@ -91,7 +92,7 @@ type TUser = {
 };
 
 export const UserController = (app: Elysia) => {
-  app.post("/user", async (context) => {
+  app.post('/user', async (context) => {
     const { name, email, password } = context.body as TUser;
     const newUser = await user.create({
       name,
@@ -102,12 +103,12 @@ export const UserController = (app: Elysia) => {
     return newUser;
   });
 
-  app.get("/user", async () => {
+  app.get('/user', async () => {
     const users = await user.find();
     return users;
   });
 
-  app.put("/user/:id", async (context) => {
+  app.put('/user/:id', async (context) => {
     const { id } = context.params;
     const { name, email, password } = context.body as TUser;
     const updatedUser = await user.findByIdAndUpdate(
@@ -122,10 +123,10 @@ export const UserController = (app: Elysia) => {
     return updatedUser;
   });
 
-  app.delete("/user/:id", async (context) => {
+  app.delete('/user/:id', async (context) => {
     const { id } = context.params;
     await user.findByIdAndDelete(id, { new: true });
-    return "User deleted";
+    return 'User deleted';
   });
 
   return Promise.resolve(app);
@@ -141,9 +142,9 @@ Obviously for good approach you can create a separate routes file and import you
 Move to **`app/src/index.ts`** file with the following code:
 
 ```typescript
-import { Elysia } from "elysia";
-import mongoose from "mongoose";
-import { UserController } from "./controller/user-controller";
+import { Elysia } from 'elysia';
+import mongoose from 'mongoose';
+import { UserController } from './controller/user-controller';
 
 const app = new Elysia();
 
@@ -152,7 +153,7 @@ app.use(UserController);
 const PORT = process.env.PORT || 4001;
 
 mongoose
-  .connect("mongodb://localhost:27017/elysia")
+  .connect('mongodb://localhost:27017/elysia')
   .then(() => {
     app.listen(PORT, () => {
       console.log(`Server is up and running on port ${PORT}`);
@@ -178,18 +179,18 @@ bun install @elysiajs/bearer
 This is how our complete server code will look like:
 
 ```typescript
-import { Elysia } from "elysia";
-import mongoose from "mongoose";
-import { UserController } from "./controller/user-controller";
-import { bearer } from "@elysiajs/bearer";
+import { Elysia } from 'elysia';
+import mongoose from 'mongoose';
+import { UserController } from './controller/user-controller';
+import { bearer } from '@elysiajs/bearer';
 
 const app = new Elysia();
 
 app.use(bearer()).onBeforeHandle(async ({ bearer }) => {
-  if (!bearer) throw new Error("Unauthorized");
-  const isAuthorized = bearer === "12345678";
+  if (!bearer) throw new Error('Unauthorized');
+  const isAuthorized = bearer === '12345678';
   if (!isAuthorized) {
-    throw new Error("Unauthorized");
+    throw new Error('Unauthorized');
   }
 });
 app.use(UserController);
@@ -197,9 +198,9 @@ app.use(UserController);
 const PORT = process.env.PORT || 4001;
 
 mongoose
-  .connect("mongodb://localhost:27017/elysia")
+  .connect('mongodb://localhost:27017/elysia')
   .then(() => {
-    console.log("Connected to MongoDB");
+    console.log('Connected to MongoDB');
     app.listen(PORT, () => {
       console.log(`Server is up and running on port ${PORT}`);
     });

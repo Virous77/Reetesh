@@ -1,18 +1,19 @@
 ---
-title: "Server Action in Client and Server Component in Next.Js Explained"
-date: "Feb 25 2024"
-author: "Reetesh Kumar"
-authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
-blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1708809648/server-action_fe1wvs.png"
-about: "Server Actions are asynchronous functions that are executed on the server. They can be used in Server and Client Components to handle form submissions and data mutations in Next.js applications."
+title: 'Server Action in Client and Server Component in Next.Js Explained'
+date: 'Feb 25 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1708809648/server-action_fe1wvs.png'
+about: 'Server Actions are asynchronous functions that are executed on the server. They can be used in Server and Client Components to handle form submissions and data mutations in Next.js applications.'
 tags:
   [
-    "how to use server actions in next.js",
-    "how server action works in next.js",
-    "what is best way to use server actions",
-    "how to use server action in client component",
-    "serer action in server component",
+    'how to use server actions in next.js',
+    'how server action works in next.js',
+    'what is best way to use server actions',
+    'how to use server action in client component',
+    'serer action in server component',
   ]
+related: 'frontend'
 ---
 
 Server Actions are asynchronous functions that are executed on the server. They can be used in Server and Client Components to handle form submissions and data mutations in Next.js applications.
@@ -28,8 +29,8 @@ As name suggest **Server Actions** using in server component is easy and straigh
 For example we wanna add formdata in our DB here is the example how we can do in server component.
 
 ```tsx
-import Button from "../button";
-import z from "zod";
+import Button from '../button';
+import z from 'zod';
 
 const schema = z.object({
   name: z.string().min(1),
@@ -37,9 +38,9 @@ const schema = z.object({
 
 const ServerExample = () => {
   const handleFormSubmit = async (e: FormData) => {
-    "use server";
+    'use server';
     try {
-      const name = e.get("name");
+      const name = e.get('name');
       const data = schema.parse({ name });
 
       /// DB work using prisma or other ORM
@@ -49,7 +50,7 @@ const ServerExample = () => {
       if (error instanceof z.ZodError) {
         throw new Error(error.errors[0].message);
       }
-      throw new Error("Failed to add data");
+      throw new Error('Failed to add data');
     }
   };
 
@@ -75,13 +76,13 @@ We are using `ZOD` for schema validation which is a great library for schema val
 Now since we want to get the `Loading` state we can use `useFormStatus` hook which give us the loading state for that we have created a client component which is our Button component.
 
 ```tsx
-"use client";
+'use client';
 
-import { useFormStatus } from "react-dom";
+import { useFormStatus } from 'react-dom';
 
 const Button = () => {
   const { pending } = useFormStatus();
-  return <button>{pending ? "Loading..." : "Submit"}</button>;
+  return <button>{pending ? 'Loading...' : 'Submit'}</button>;
 };
 
 export default Button;
@@ -94,9 +95,9 @@ useFormStatus hook gives us the `pending` state and we can use it to show the lo
 Next.js has a great feature of error boundary which we can use to handle the error in server component. We can create a file `error.ts` in page root folder and it will be used to handle the error in server component.
 
 ```tsx
-"use client";
+'use client';
 
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 export default function Error({
   error,
@@ -127,11 +128,11 @@ Server actions with client component are so easy and straight forward. We can us
 Clients component gives us flexibility to handle the error and loading state in more elegant way.
 
 ```tsx
-"use client";
+'use client';
 
-import { createData } from "./actions";
-import Button from "../button";
-import { RefObject, useRef } from "react";
+import { createData } from './actions';
+import Button from '../button';
+import { RefObject, useRef } from 'react';
 
 const Example = () => {
   const formRef = useRef() as RefObject<HTMLFormElement>;
@@ -168,16 +169,16 @@ We can use any client side error handling library like `react-toastify` or `reac
 Since `Example` component is client component we can't use server action directly in component. We can create a file `actions.ts` and then we can use server action in that file.
 
 ```ts
-"use server";
+'use server';
 
-import zod from "zod";
+import zod from 'zod';
 
 const schema = zod.object({
-  name: zod.string().min(1, { message: "Name is required" }),
+  name: zod.string().min(1, { message: 'Name is required' }),
 });
 
 export const createData = async (e: FormData) => {
-  const name = e.get("name");
+  const name = e.get('name');
 
   try {
     const data = schema.parse({ name });
@@ -186,7 +187,7 @@ export const createData = async (e: FormData) => {
     if (error instanceof zod.ZodError) {
       throw new Error(error.errors[0].message);
     } else {
-      throw new Error(error.message || "Failed to add data");
+      throw new Error(error.message || 'Failed to add data');
     }
   }
 };
@@ -205,10 +206,10 @@ Let's we want functionality to add a Like to a post and we want to show the like
 Here is the example how we can use useOptimistic hook with server action.
 
 ```tsx
-"use client";
+'use client';
 
-import { createData } from "./action";
-import { useOptimistic, startTransition } from "react";
+import { createData } from './action';
+import { useOptimistic, startTransition } from 'react';
 
 type TData = {
   id: number;
@@ -269,10 +270,10 @@ Here we are using `useOptimistic` hook to update the UI before the server respon
 We are then sending a request to server to update the like count and if any error we will revert the UI to previous state.
 
 ```ts
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
-import zod from "zod";
+import { revalidatePath } from 'next/cache';
+import zod from 'zod';
 
 type TData = {
   id: number;
@@ -291,12 +292,12 @@ export const createData = async (e: TData) => {
 
     // simulate server delay
     await new Promise((resolve) => setTimeout(resolve, 4000));
-    revalidatePath("/");
+    revalidatePath('/');
   } catch (error) {
     if (error instanceof zod.ZodError) {
       throw new Error(error.errors[0].message);
     } else {
-      throw new Error(error.message || "Failed to add data");
+      throw new Error(error.message || 'Failed to add data');
     }
   }
 };
@@ -313,9 +314,9 @@ We can use Server Actions in non-form Elements too. We can use in any event hand
 Here is the example how we can use Server Actions in non-form Elements.
 
 ```tsx
-"use client";
+'use client';
 
-import { incrementCounter } from "./actions";
+import { incrementCounter } from './actions';
 
 const Example = () => {
   return (
@@ -336,10 +337,10 @@ export default Example;
 We can use Server Actions in `useEffect` hook too, If we want to update page views when component mount.
 
 ```tsx
-"use client";
+'use client';
 
-import { incrementViews } from "./actions";
-import { useState, useEffect } from "react";
+import { incrementViews } from './actions';
+import { useState, useEffect } from 'react';
 
 const Example = () => {
   const [views, setViews] = useState(0);

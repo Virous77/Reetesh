@@ -1,26 +1,27 @@
 ---
-title: "Integrating Google Gemini to Node.js Application"
-date: "Dec 25 2023"
-author: "Reetesh Kumar"
-authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
-blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1703484040/google-ai-image_esiipb.png"
-about: "Google Gemini is a powerful and multifaceted AI model developed by Google AI. This article will help you to integrate Google Gemini to your Node.js application. "
+title: 'Integrating Google Gemini to Node.js Application'
+date: 'Dec 25 2023'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1703484040/google-ai-image_esiipb.png'
+about: 'Google Gemini is a powerful and multifaceted AI model developed by Google AI. This article will help you to integrate Google Gemini to your Node.js application. '
 tags:
   [
-    "google gemini ai integration in nodejs",
-    "google gemini ai integration in nodejs tutorial",
-    "integrating google gemini ai in nodejs",
-    "how to integrate google gemini ai in nodejs",
-    "google gemini ai integration in nodejs example",
-    "google gemini vs chatgpt",
-    "how to use google gemini ai in nodejs",
-    "chatgpt vs google gemini",
-    "nodejs google gemini ai integration",
-    "chatgpt",
-    "google ai for nodejs",
-    "google ai for nodejs tutorial",
-    "ai for nodejs",
+    'google gemini ai integration in nodejs',
+    'google gemini ai integration in nodejs tutorial',
+    'integrating google gemini ai in nodejs',
+    'how to integrate google gemini ai in nodejs',
+    'google gemini ai integration in nodejs example',
+    'google gemini vs chatgpt',
+    'how to use google gemini ai in nodejs',
+    'chatgpt vs google gemini',
+    'nodejs google gemini ai integration',
+    'chatgpt',
+    'google ai for nodejs',
+    'google ai for nodejs tutorial',
+    'ai for nodejs',
   ]
+related: 'ai'
 ---
 
 ## What is Google Gemini?
@@ -69,8 +70,8 @@ Now that we have the API key, let's set up the Google Gemini SDK. Create a new f
 ### Google Gemini Pro Model
 
 ```js
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import dotenv from "dotenv";
+import { GoogleGenerativeAI } from '@google/generative-ai';
+import dotenv from 'dotenv';
 dotenv.config();
 
 const gemini_api_key = process.env.API_KEY;
@@ -83,18 +84,18 @@ const geminiConfig = {
 };
 
 const geminiModel = googleAI.getGenerativeModel({
-  model: "gemini-pro",
+  model: 'gemini-pro',
   geminiConfig,
 });
 
 const generate = async () => {
   try {
-    const prompt = "Tell me about google.";
+    const prompt = 'Tell me about google.';
     const result = await geminiModel.generateContent(prompt);
     const response = result.response;
     console.log(response.text());
   } catch (error) {
-    console.log("response error", error);
+    console.log('response error', error);
   }
 };
 
@@ -106,9 +107,9 @@ In the above code we used Google Gemini Pro model which can excels at handling n
 ### Google Gemini Vision Model
 
 ```js
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import fs from "fs/promises";
-import dotenv from "dotenv";
+import { GoogleGenerativeAI } from '@google/generative-ai';
+import fs from 'fs/promises';
+import dotenv from 'dotenv';
 dotenv.config();
 
 const gemini_api_key = process.env.API_KEY;
@@ -121,34 +122,34 @@ const geminiConfig = {
 };
 
 const geminiModel = googleAI.getGenerativeModel({
-  model: "gemini-pro-vision",
+  model: 'gemini-pro-vision',
   geminiConfig,
 });
 
 const generate = async () => {
   try {
     // Read image file
-    const filePath = "some-image.jpeg";
+    const filePath = 'some-image.jpeg';
     const imageFile = await fs.readFile(filePath);
-    const imageBase64 = imageFile.toString("base64");
+    const imageBase64 = imageFile.toString('base64');
 
     const promptConfig = [
-      { text: "Can you tell me about this image whats happening there?" },
+      { text: 'Can you tell me about this image whats happening there?' },
       {
         inlineData: {
-          mimeType: "image/jpeg",
+          mimeType: 'image/jpeg',
           data: imageBase64,
         },
       },
     ];
 
     const result = await geminiModel.generateContent({
-      contents: [{ role: "user", parts: promptConfig }],
+      contents: [{ role: 'user', parts: promptConfig }],
     });
     const response = await result.response;
     console.log(response.text());
   } catch (error) {
-    console.log(" response error", error);
+    console.log(' response error', error);
   }
 };
 

@@ -1,25 +1,26 @@
 ---
-title: "Centralizing Error Handling in Node.js Express Applications"
-date: "Dec 24 2023"
-author: "Reetesh Kumar"
-authorImage: "https://avatars.githubusercontent.com/u/101452588?v=4"
-blogImage: "https://res.cloudinary.com/dw6wav4jg/image/upload/v1703418748/WhatsApp_Image_2023-12-24_at_12.01.13_PM_1_1_1_unsdpy.png"
-about: "Error handling is a critical aspect of building robust and reliable Node.js Express applications. In this article, we will learn about error handling in Node.js Express applications."
+title: 'Centralizing Error Handling in Node.js Express Applications'
+date: 'Dec 24 2023'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1703418748/WhatsApp_Image_2023-12-24_at_12.01.13_PM_1_1_1_unsdpy.png'
+about: 'Error handling is a critical aspect of building robust and reliable Node.js Express applications. In this article, we will learn about error handling in Node.js Express applications.'
 tags:
   [
-    "clean way to handle errors in express",
-    "centralized error handling in express",
-    "error handling in express",
-    "express error handling",
-    "express error handling middleware",
-    "node js error handling",
-    "node js error handling best practices",
-    "node js error handling middleware",
-    "How to handle errors in express and node js",
-    "How to handle errors in express",
-    "How to handle errors in node js",
-    "what is error handling in express",
+    'clean way to handle errors in express',
+    'centralized error handling in express',
+    'error handling in express',
+    'express error handling',
+    'express error handling middleware',
+    'node js error handling',
+    'node js error handling best practices',
+    'node js error handling middleware',
+    'How to handle errors in express and node js',
+    'How to handle errors in express',
+    'How to handle errors in node js',
+    'what is error handling in express',
   ]
+related: 'backend'
 ---
 
 Error handling is a critical aspect of building robust and reliable [Node.js](https://nodejs.org/en) , [Express](https://expressjs.com/) applications. Centralizing error handling not only makes your code cleaner and more maintainable but also provides several benefits in terms of consistency and ease of debugging.
@@ -57,7 +58,7 @@ By placing this middleware at the end of your middleware chain(index.js), it wil
 ```js
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
-  const errorMessage = err.message || "Something went wrong, Try again!";
+  const errorMessage = err.message || 'Something went wrong, Try again!';
 
   return res.status(errorStatus).json({
     status: errorStatus,
@@ -75,7 +76,7 @@ You can create a utility function to create errors with a default status code an
 ```js
 export const createError = ({
   status = 500,
-  message = "Internal Server Error",
+  message = 'Internal Server Error',
 }) => {
   const err = new Error();
   err.status = status;
@@ -90,12 +91,12 @@ export const createError = ({
 You can use the utility function to create errors in our controllers. This will ensure that all errors are created in a consistent manner.
 
 ```js
-app.get("/login", (req, res, next) => {
+app.get('/login', (req, res, next) => {
   try {
     const userFound = false;
 
     if (!userFound) {
-      return next(createError({ status: 404, message: "User not found" }));
+      return next(createError({ status: 404, message: 'User not found' }));
     }
   } catch (error) {
     next(error);
