@@ -2,9 +2,14 @@ import Navbar from '@/components/learn/navbar';
 import { commonMetaData } from '@/utils/utils';
 import React from 'react';
 
-export async function generateMetadata() {
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string; name: string };
+}) {
+  const { id } = params;
   const metaData = commonMetaData({
-    name: 'Learn',
+    name: `Learn ${id.slice(0, 1).toUpperCase() + id.slice(1)}`,
     desc: 'Learn Rect and Next.Js with Reetesh Kumar, I am going to share what i have learned in my journey of becoming a full-stack developer.',
     image: 'https://avatars.githubusercontent.com/u/101452588?v=4',
     url: '/learn',

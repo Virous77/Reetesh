@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useState } from 'react';
 import {
   Select,
@@ -9,10 +10,17 @@ import {
   SelectValue,
 } from '../ui/select';
 import { usePathname, useRouter } from 'next/navigation';
+import { slugify } from '@/utils/utils';
 
-const SelectComp = ({ topics }: any) => {
+const SelectComp = ({
+  topics,
+  id,
+}: {
+  topics: { title: string }[];
+  id: string;
+}) => {
   const router = useRouter();
-  const pathName = usePathname().split('/')[2];
+  const pathName = usePathname().split('/')[3];
   const [value, setValue] = useState(pathName);
 
   return (
@@ -20,7 +28,7 @@ const SelectComp = ({ topics }: any) => {
       value={value}
       onValueChange={(e) => {
         setValue(e);
-        router.push(`/learn/${e.toLowerCase().replace(' ', '-')}`);
+        router.push(`/learn/${id}/${slugify(e)}`);
       }}
     >
       <SelectTrigger>
@@ -30,11 +38,9 @@ const SelectComp = ({ topics }: any) => {
         <SelectGroup>
           {topics.map((topic: any) => (
             <SelectItem
-              value={topic.title.toLowerCase().replace(' ', '-')}
+              value={slugify(topic.title)}
               key={topic.title}
-              onSelect={() =>
-                setValue(topic.title.toLowerCase().replace(' ', '-'))
-              }
+              onSelect={() => setValue(slugify(topic.title))}
             >
               {topic.title}
             </SelectItem>

@@ -132,3 +132,8 @@ export const getLocalData = (key: string) => {
   }
   return 0;
 };
+
+export const slugify = (text: string) => {
+  const newText = text.toLowerCase().split(' ');
+  return newText.join('-');
+};
