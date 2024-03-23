@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import Link from 'next/link';
 
-const ReactCourse = () => {
+const Course = () => {
   const courses = [
     {
       id: 1,
@@ -18,7 +18,7 @@ const ReactCourse = () => {
         <Link
           key={course.id}
           aria-label={course.title}
-          href="/learn/introduction"
+          href="/learn/react/introduction"
           className=" w-full"
         >
           <Card className=" cursor-pointer hover:bg-accent">
@@ -46,4 +46,4 @@ const ReactCourse = () => {
   );
 };
 
-export default ReactCourse;
+export default Course;

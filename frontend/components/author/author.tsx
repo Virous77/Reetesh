@@ -1,4 +1,4 @@
-import ReactCourse from '../recent/react-course';
+import Course from '../recent/course';
 import Social from '../social/social';
 import Tab from '../tab/tab';
 
@@ -20,7 +20,7 @@ const Author = () => {
       </div>
 
       <Tab />
-      <ReactCourse />
+      <Course />
       <Social styles="mt-8 md:absolute left-0 bottom-12 z-10" />
     </section>
   );

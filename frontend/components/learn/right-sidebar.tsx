@@ -3,7 +3,6 @@ import Link from 'next/link';
 
 const RightSidebar = () => {
   const code = allPosts[0].body.raw;
-
   const allHeadings = code.match(/#{1,6} .+/g) || [];
 
   const headings = allHeadings.map((heading) => {
