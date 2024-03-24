@@ -1,10 +1,7 @@
 export const Note = ({ children, ...props }: any) => {
   return (
-    <div className="b-set mt-6 block  rounded  border bg-transparent not-italic [&>*]:text-muted-foreground">
-      <span {...props} className="p-2 text-sm">
-        <p style={{ marginBottom: '-20px' }} className="text-sm font-[600]">
-          Good to know :
-        </p>
+    <div className="rounded  border bg-accent not-italic">
+      <span {...props} className="b-set flex items-start gap-2 p-2">
         {children}
       </span>
     </div>

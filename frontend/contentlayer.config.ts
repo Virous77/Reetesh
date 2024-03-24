@@ -1,18 +1,28 @@
-import { defineDocumentType, makeSource } from 'contentlayer/source-files';
+import {
+  ComputedFields,
+  defineDocumentType,
+  makeSource,
+} from 'contentlayer/source-files';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import { visit } from 'unist-util-visit';
+import readingTime from 'reading-time';
 
-const computedFields: any = {
+const computedFields: ComputedFields = {
+  readingTime: {
+    type: 'json',
+    resolve: (doc) => readingTime(doc.body.raw, { wordsPerMinute: 200 }),
+  },
+
   slug: {
     type: 'string',
-    resolve: (doc: any) => `/${doc.title.toLowerCase().replace(/ /g, '-')}`,
+    resolve: (doc) => `/${doc.title.toLowerCase().replace(/ /g, '-')}`,
   },
   slugAsParams: {
     type: 'string',
-    resolve: (doc: any) => {
+    resolve: (doc) => {
       if (
         doc.title.includes(
           'Docker - The Complete Guide to Build and Deploy your Application'
@@ -26,6 +36,31 @@ const computedFields: any = {
   },
 };
 
+export const Course = defineDocumentType(() => ({
+  name: 'Course',
+  filePathPattern: `course/**/*.mdx`,
+  contentType: 'mdx',
+  fields: {
+    title: {
+      type: 'string',
+      required: true,
+    },
+    date: {
+      type: 'date',
+      required: true,
+    },
+    author: {
+      type: 'string',
+      required: true,
+    },
+    about: {
+      type: 'string',
+      required: true,
+    },
+  },
+  computedFields,
+}));
+
 export const Post = defineDocumentType(() => ({
   name: 'Post',
   filePathPattern: `blog/**/*.mdx`,
@@ -37,6 +72,7 @@ export const Post = defineDocumentType(() => ({
     },
     about: {
       type: 'string',
+      required: true,
     },
     date: {
       type: 'date',
@@ -68,7 +104,7 @@ export const Post = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: './content',
-  documentTypes: [Post],
+  documentTypes: [Post, Course],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
@@ -94,9 +130,10 @@ export default makeSource({
         rehypeAutolinkHeadings,
         {
           properties: {
-            className: ['subheading-anchor'],
-            ariaLabel: 'Link to section',
+            className: ['anchor'],
+            ariaLabel: 'Link to heading',
           },
+          behavior: 'append',
         },
       ],
     ],
