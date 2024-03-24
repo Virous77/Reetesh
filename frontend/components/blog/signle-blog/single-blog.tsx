@@ -3,7 +3,7 @@
 import Author from '@/components/common/author';
 import Social from '@/components/social/social';
 import Footer from '@/components/common/footer';
-import { Newspaper } from 'lucide-react';
+import { BookOpenText, CalendarDays, Newspaper } from 'lucide-react';
 import Link from 'next/link';
 import { Post } from '@/.contentlayer/generated';
 import { Mdx } from './mdx';
@@ -11,6 +11,7 @@ import Views from './views';
 import Comment from './comment/comment';
 import ReadMore from './read-more';
 import RelatedPost from '@/components/common/related-post';
+import { formateDate } from '@/utils/utils';
 
 type TSingleBlog = {
   blog: Post;
@@ -45,7 +46,18 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
           <h1 className=" m-auto -mb-1 mt-8 w-[90%] text-center text-[26px] font-bold leading-snug md:text-[32px]">
             {blog.title}
           </h1>
-          <Views date={blog.date} slug={blog.slugAsParams} />
+          <div className="m-2 mt-3 flex items-center justify-between rounded border p-2 md:m-0 md:mt-[14px]">
+            <div className=" flex items-center  gap-4 ">
+              <p className=" text-small flex items-center justify-center gap-2 text-[14px] text-default md:text-base">
+                <CalendarDays size={20} /> {formateDate(blog.date)}
+              </p>
+              <Views slug={blog.slugAsParams} />
+            </div>
+            <span className=" flex  items-center gap-2 text-[14px] capitalize text-default md:text-base">
+              <BookOpenText size={20} />
+              {blog.readingTime.text}
+            </span>
+          </div>
         </div>
 
         <div className="box-fit prose-headings:font-cal prose prose-base prose-neutral mt-6 dark:prose-invert prose-a:whitespace-nowrap prose-a:text-default prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-defaultMax prose-blockquote:font-light prose-img:rounded-lg">

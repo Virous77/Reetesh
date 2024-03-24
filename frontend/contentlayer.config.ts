@@ -1,18 +1,28 @@
-import { defineDocumentType, makeSource } from 'contentlayer/source-files';
+import {
+  ComputedFields,
+  defineDocumentType,
+  makeSource,
+} from 'contentlayer/source-files';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import { visit } from 'unist-util-visit';
+import readingTime from 'reading-time';
 
-const computedFields: any = {
+const computedFields: ComputedFields = {
+  readingTime: {
+    type: 'json',
+    resolve: (doc) => readingTime(doc.body.raw, { wordsPerMinute: 200 }),
+  },
+
   slug: {
     type: 'string',
-    resolve: (doc: any) => `/${doc.title.toLowerCase().replace(/ /g, '-')}`,
+    resolve: (doc) => `/${doc.title.toLowerCase().replace(/ /g, '-')}`,
   },
   slugAsParams: {
     type: 'string',
-    resolve: (doc: any) => {
+    resolve: (doc) => {
       if (
         doc.title.includes(
           'Docker - The Complete Guide to Build and Deploy your Application'
@@ -120,9 +130,10 @@ export default makeSource({
         rehypeAutolinkHeadings,
         {
           properties: {
-            className: ['subheading-anchor'],
-            ariaLabel: 'Link to section',
+            className: ['anchor'],
+            ariaLabel: 'Link to heading',
           },
+          behavior: 'append',
         },
       ],
     ],
