@@ -1,11 +1,11 @@
 'use client';
 
-import { formateDate, generateUUID, getLocalData } from '@/utils/utils';
-import { CalendarDays, Eye } from 'lucide-react';
+import { generateUUID, getLocalData } from '@/utils/utils';
+import { Eye } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { trpc } from '@/trpc-client/client';
 
-const Views = ({ date, slug }: { date: string; slug: string }) => {
+const Views = ({ slug }: { slug: string }) => {
   const [views, setViews] = useState(0);
   const { mutateAsync } = trpc.blogs.addViews.useMutation();
 
@@ -27,14 +27,9 @@ const Views = ({ date, slug }: { date: string; slug: string }) => {
   }, [slug, mutateAsync]);
 
   return (
-    <div className=" mt-[12px] flex items-center justify-center gap-4">
-      <p className=" text-small flex items-center justify-center gap-2 text-default">
-        <CalendarDays size={20} /> {formateDate(date)}
-      </p>
-      <p className=" text-small flex  items-center justify-center gap-2 text-default">
-        <Eye size={20} /> {views || 0}
-      </p>
-    </div>
+    <p className=" text-small flex  items-center justify-center gap-2 text-[14px] text-default md:text-base">
+      <Eye size={20} /> {views || 0}
+    </p>
   );
 };
 

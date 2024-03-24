@@ -19,8 +19,10 @@ const ThemeSwitcher = () => {
   return (
     <div
       className={`fixed right-3 flex  flex-col gap-2 ${
-        pathName.includes('/blog') ? 'bottom-5' : 'top-3'
-      } z-[101] md:fixed md:right-8 md:top-6`}
+        pathName.includes('/blog') || pathName.includes('/learn')
+          ? 'bottom-5'
+          : 'top-3'
+      } z-[101]`}
     >
       <div
         className="bg-default-100 hover:bg-default-200 flex h-8 w-8 cursor-pointer items-center justify-center"

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Image from 'next/image';
 import { useMDXComponent } from 'next-contentlayer/hooks';
-
 import { cn } from '@/lib/utils';
 import { Pre } from '@/lib/pre';
 import { Note } from '@/lib/note';
@@ -12,6 +11,7 @@ import Tabs from '@/lib/Tabs';
 import Section from '@/lib/section';
 import Callout from '@/lib/callout';
 import Table from '@/lib/table';
+import { Separator } from '@/components/ui/separator';
 
 const components = {
   h1: ({ className, ...props }: any) => (
@@ -85,14 +85,6 @@ const components = {
     <li className={cn('mt-2', className)} {...props} />
   ),
   blockquote: Note,
-  img: ({
-    className,
-    alt,
-    ...props
-  }: React.ImgHTMLAttributes<HTMLImageElement>) => (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img className={cn('rounded-md border', className)} alt={alt} {...props} />
-  ),
   hr: ({ ...props }) => <hr className="my-4 md:my-8" {...props} />,
   table: ({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) => (
     <div className="my-6 w-full overflow-y-auto">
@@ -141,6 +133,7 @@ const components = {
   Section,
   Callout,
   Table,
+  Separator,
 };
 
 interface MdxProps {
