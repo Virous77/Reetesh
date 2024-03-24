@@ -13,12 +13,12 @@ const Course = () => {
   ];
 
   return (
-    <section className=" mt-4 md:w-[80%]">
+    <section className=" mt-6 md:w-[80%]">
       {courses.slice(0, 1).map((course) => (
         <Link
           key={course.id}
           aria-label={course.title}
-          href="/learn/react/introduction"
+          href="/learn/react/introduction-to-react"
           className=" w-full"
         >
           <Card className=" cursor-pointer hover:bg-accent">

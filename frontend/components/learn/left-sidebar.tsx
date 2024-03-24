@@ -1,26 +1,39 @@
+'use client';
+
 import Link from 'next/link';
 import SelectComp from './select';
 import { slugify } from '@/utils/utils';
+import { courseMetadata, topics } from '@/courses';
+import { usePathname } from 'next/navigation';
 
-type TLeftSidebar = {
-  id: string;
-  topics: { title: string; courseId: string; id: number }[];
-  course: { id: string; metadata: string };
-};
+const LeftSidebar = () => {
+  const pathName = usePathname();
+  const course = pathName.split('/')[3];
 
-const LeftSidebar: React.FC<TLeftSidebar> = ({ id, course, topics }) => {
+  const currentCourse = courseMetadata.find(
+    (course) => course.id === pathName.split('/')[2]
+  );
+  if (!currentCourse) return <div>Course not found</div>;
+
+  const currentCourseTopics =
+    topics.find((topic) =>
+      topic.find((course) => course.courseId === currentCourse.id)
+    ) || [];
+
+  if (currentCourseTopics?.length === 0) return <div>Page not found</div>;
+
   return (
-    <section className=" lg:border-r">
+    <section className=" p-2 md:p-0 lg:border-r">
       <div className="md:p-4">
         <h2 className="mb-4 text-2xl font-bold text-default ">
-          {course.metadata}
+          {currentCourse.metadata}
         </h2>
-        <ul className="mt-4 hidden overflow-y-scroll lg:block lg:h-[80vh]">
-          {topics.map((topic) => (
+        <ul className="mt-4 hidden overflow-y-scroll lg:block lg:h-[75vh]">
+          {currentCourseTopics.map((topic) => (
             <li key={topic.title} className="mb-2">
               <Link
-                href={`/learn/${id}/${slugify(topic.title)}`}
-                className="text-default hover:text-primary"
+                href={`/learn/react/${slugify(topic.title)}`}
+                className={`text-[15px] text-default hover:underline ${course === slugify(topic.title) ? 'font-medium text-heading' : 'text-muted-foreground'}`}
               >
                 {topic.title}
               </Link>
@@ -29,7 +42,7 @@ const LeftSidebar: React.FC<TLeftSidebar> = ({ id, course, topics }) => {
         </ul>
 
         <div className="mb-4 block lg:hidden">
-          <SelectComp topics={topics} id={id} />
+          <SelectComp topics={currentCourseTopics} id={'react'} />
         </div>
       </div>
     </section>

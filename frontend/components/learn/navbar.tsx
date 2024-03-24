@@ -4,7 +4,7 @@ import { FileText, LibrarySquare } from 'lucide-react';
 
 const Navbar = () => {
   return (
-    <nav className=" items-center justify-between bg-accent p-4 md:flex md:px-8">
+    <nav className="sticky left-0 top-0 z-[10] w-full items-center  justify-between bg-accent px-2 py-4  md:flex md:p-4 md:px-8">
       <div className=" flex items-center justify-between gap-10 md:justify-normal">
         <h1 className="  text-xl text-heading">
           <Link href="/">Reetesh Kumar</Link>

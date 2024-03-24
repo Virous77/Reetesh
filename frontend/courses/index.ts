@@ -8,13 +8,15 @@ export const courseMetadata = [
 export const topics = [
   [
     {
-      id: 1,
       title: 'Introduction to React',
       courseId: 'react',
     },
     {
-      id: 2,
       title: 'React Components',
+      courseId: 'react',
+    },
+    {
+      title: 'React Components one',
       courseId: 'react',
     },
   ],

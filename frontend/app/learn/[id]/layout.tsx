@@ -1,3 +1,4 @@
+import LeftSidebar from '@/components/learn/left-sidebar';
 import Navbar from '@/components/learn/navbar';
 import { commonMetaData } from '@/utils/utils';
 import React from 'react';
@@ -29,7 +30,10 @@ export default function RootLayout({
     <React.Fragment>
       <main>
         <Navbar />
-        {children}
+        <section className="layout m-auto  w-full max-w-[1250px] pt-0 md:p-4">
+          <LeftSidebar />
+          {children}
+        </section>
       </main>
     </React.Fragment>
   );
