@@ -7,6 +7,12 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import Script from 'next/script';
 import { Provider } from '@/lib/reactQuery-provider';
 import { Analytics } from '@vercel/analytics/react';
+import PHProvider from '@/lib/post-hog';
+import dynamic from 'next/dynamic';
+
+const PostHogPageView = dynamic(() => import('../lib/posthog-pageview'), {
+  ssr: false,
+});
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -100,14 +106,17 @@ export default function RootLayout({
             style={{ display: 'none', visibility: 'hidden' }}
           ></iframe>
         </noscript>
-        <ThemeProviderComp attribute="class" defaultTheme="dark">
-          <Provider>
-            {children}
-            <Analytics debug={false} />
-            <SpeedInsights />
-            <ThemeSwitcher />
-          </Provider>
-        </ThemeProviderComp>
+        <PHProvider>
+          <ThemeProviderComp attribute="class" defaultTheme="dark">
+            <Provider>
+              {children}
+              <PostHogPageView />
+              <Analytics debug={false} />
+              <SpeedInsights />
+              <ThemeSwitcher />
+            </Provider>
+          </ThemeProviderComp>
+        </PHProvider>
       </body>
     </html>
   );
