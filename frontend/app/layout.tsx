@@ -97,27 +97,27 @@ export default function RootLayout({
         `}
         </Script>
       </head>
-      <body className={`${poppins.className} bg-white dark:bg-black`}>
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-PPW7TBMX"
-            height="0"
-            width="0"
-            style={{ display: 'none', visibility: 'hidden' }}
-          ></iframe>
-        </noscript>
-        <PHProvider>
+      <PHProvider>
+        <body className={`${poppins.className} bg-white dark:bg-black`}>
+          <noscript>
+            <iframe
+              src="https://www.googletagmanager.com/ns.html?id=GTM-PPW7TBMX"
+              height="0"
+              width="0"
+              style={{ display: 'none', visibility: 'hidden' }}
+            ></iframe>
+          </noscript>
           <ThemeProviderComp attribute="class" defaultTheme="dark">
             <Provider>
-              {children}
               <PostHogPageView />
+              {children}
               <Analytics debug={false} />
               <SpeedInsights />
               <ThemeSwitcher />
             </Provider>
           </ThemeProviderComp>
-        </PHProvider>
-      </body>
+        </body>
+      </PHProvider>
     </html>
   );
 }
