@@ -7,6 +7,12 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import Script from 'next/script';
 import { Provider } from '@/lib/reactQuery-provider';
 import { Analytics } from '@vercel/analytics/react';
+import PHProvider from '@/lib/post-hog';
+import dynamic from 'next/dynamic';
+
+const PostHogPageView = dynamic(() => import('../lib/posthog-pageview'), {
+  ssr: false,
+});
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -91,24 +97,27 @@ export default function RootLayout({
         `}
         </Script>
       </head>
-      <body className={`${poppins.className} bg-white dark:bg-black`}>
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-PPW7TBMX"
-            height="0"
-            width="0"
-            style={{ display: 'none', visibility: 'hidden' }}
-          ></iframe>
-        </noscript>
-        <ThemeProviderComp attribute="class" defaultTheme="dark">
-          <Provider>
-            {children}
-            <Analytics debug={false} />
-            <SpeedInsights />
-            <ThemeSwitcher />
-          </Provider>
-        </ThemeProviderComp>
-      </body>
+      <PHProvider>
+        <body className={`${poppins.className} bg-white dark:bg-black`}>
+          <noscript>
+            <iframe
+              src="https://www.googletagmanager.com/ns.html?id=GTM-PPW7TBMX"
+              height="0"
+              width="0"
+              style={{ display: 'none', visibility: 'hidden' }}
+            ></iframe>
+          </noscript>
+          <ThemeProviderComp attribute="class" defaultTheme="dark">
+            <Provider>
+              <PostHogPageView />
+              {children}
+              <Analytics debug={false} />
+              <SpeedInsights />
+              <ThemeSwitcher />
+            </Provider>
+          </ThemeProviderComp>
+        </body>
+      </PHProvider>
     </html>
   );
 }
