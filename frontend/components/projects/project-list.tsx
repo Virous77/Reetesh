@@ -63,6 +63,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
                   className="flex items-center gap-2 text-[13px] font-bold text-default underline underline-offset-4 hover:text-defaultMax"
                   target="_blank"
                   referrerPolicy="no-referrer"
+                  rel="noreferrer noopener"
                 >
                   <Link2 size={19} /> Project visit
                 </a>
@@ -72,6 +73,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
                   className="flex items-center gap-2 text-[13px] font-bold text-default underline underline-offset-4 hover:text-defaultMax"
                   target="_blank"
                   referrerPolicy="no-referrer"
+                  rel="noreferrer noopener"
                 >
                   <Code size={19} /> Code visit
                 </a>
