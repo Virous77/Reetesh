@@ -18,6 +18,7 @@ const AuthorCard: React.FC<TMessage> = ({ message }) => {
               href="https://twitter.com/imbitcoinb"
               target="_blank"
               referrerPolicy="no-referrer"
+              rel="noreferrer noopener"
             >
               Follow
             </a>

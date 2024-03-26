@@ -10,7 +10,11 @@ export default function PostHogPageView(): null {
   const posthog = usePostHog();
 
   useEffect(() => {
-    if (pathname && posthog) {
+    if (
+      pathname &&
+      posthog &&
+      process.env.NEXT_PUBLIC_NODE_ENV === 'production'
+    ) {
       let url = window.origin + pathname;
       if (searchParams.toString()) {
         url = url + `?${searchParams.toString()}`;
