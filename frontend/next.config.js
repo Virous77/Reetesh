@@ -11,6 +11,16 @@ const nextConfig = {
       },
     ];
   },
+  i18n: {
+    locales: ['en'],
+    defaultLocale: 'en',
+    domains: [
+      {
+        domain: 'reetesh.in',
+        defaultLocale: 'en',
+      },
+    ],
+  },
   images: {
     remotePatterns: [
       {

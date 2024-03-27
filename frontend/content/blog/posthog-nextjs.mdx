@@ -1,0 +1,209 @@
+---
+title: 'PostHog integration in Next.JS App Router'
+date: 'Mar 27 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1711348612/posthog_hca876.png'
+about: ' PostHog is an open-source product analytics platform that helps you understand how users interact with your product. PostHog make easy to track events, capture user interactions, and analyze other user behavior.'
+tags:
+  [
+    'how to integrate posthog with next.js',
+    'how to use posthog with next.js',
+    'posthog with next.js',
+    'posthog',
+    'how posthog works',
+    'posthog integration in react',
+  ]
+related: 'frontend'
+---
+
+PostHog is an open-source product analytics platform that helps you understand how users interact with your product. PostHog make easy to track events, capture user interactions, and analyze other user behavior.
+
+It's not just about tracking events, but also about understanding how users interact with your product. PostHog provides a powerful set of tools to help you understand your users and improve your product.
+
+We will see how to integrate PostHog with Next.js App Router. We will also see how to track events and capture user interactions using PostHog.
+
+### How to integrate PostHog with Next.js App Router
+
+PostHog provides a simple way to integrate with Next.js App Router. You can use the PostHog JavaScript library to track events and capture user interactions. We have to install the PostHog JavaScript library.
+
+```bash
+npm install posthog-js
+```
+
+Once you have installed the PostHog JavaScript library, now we need to get the PostHog API key. You can get the PostHog API key from the PostHog [dashboard](https://us.posthog.com/).
+
+You can add your PostHog API key in the `.env.local` file. Now we need to create PostHog provider as we don't want make our layout component client side as Next.JS 14 all components are default server components.
+
+```tsx
+//lib/posthog.tsx
+
+'use client';
+
+import posthog from 'posthog-js';
+import { PostHogProvider } from 'posthog-js/react';
+
+if (typeof window !== 'undefined') {
+  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
+    api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    capture_pageview: false,
+  });
+}
+
+const PHProvider = ({ children }: { children: React.ReactNode }) => {
+  return <PostHogProvider client={posthog}>{children}</PostHogProvider>;
+};
+
+export default PHProvider;
+```
+
+Here we have created a PostHog provider that will initialize the PostHog JavaScript library with the PostHog API key. We have also disabled the `capture_pageview` option as PostHog will manually capture the page view and it's recommended to disable it.
+
+The Good thing about PostHog we self-host and use our own PostHog instance. You can learn more about self-hosting PostHog [here](https://posthog.com/docs/self-host). Or you can use PostHog cloud service. We are using PostHog cloud service. The `api_host` option is used to set the PostHog API host. we are using `https://app.posthog.com` as the PostHog API host.
+
+Now we need to wrap our Next.js App Router root `layout.tsx` component with the PostHog provider.
+
+```tsx
+// /app/layout.tsx
+
+import './globals.css';
+import { PHProvider } from '../lib/posthog';
+import dynamic from 'next/dynamic';
+
+export const RootLayout = ({ children }) => {
+  return (
+    <html>
+      <PHProvider>
+        <body>{children}</body>
+      </PHProvider>
+    </html>
+  );
+};
+export default RootLayout;
+```
+
+This is all we need to setup PostHog with Next.js App Router. Now we can track events and capture user interactions using PostHog hooks.
+
+<Advertise title="Neon DB with Drizzle and Hono in Next.JS" />
+
+### How to track page views using PostHog
+
+PostHog provides powerful hooks to track events and capture user interactions. We can use `usePostHog` hook to track page views.
+
+```tsx
+// lib/posthog-pageview.tsx
+
+'use client';
+
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
+import { usePostHog } from 'posthog-js/react';
+
+const PostHogPageView = () => {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const posthog = usePostHog();
+
+  useEffect(() => {
+    if (pathname && posthog) {
+      let url = window.origin + pathname;
+      if (searchParams.toString()) {
+        url = url + `?${searchParams.toString()}`;
+      }
+      posthog.capture('$pageview', {
+        $current_url: url,
+      });
+    }
+  }, [pathname, searchParams, posthog]);
+
+  return null;
+};
+
+export default PostHogPageView;
+```
+
+Here we have created a `PostHogPageView` component that will track page views using the PostHog JavaScript library. We are using the `usePathname` and `useSearchParams` hooks to get the current pathname and search params. We are using the `usePostHog` hook to get the PostHog client.
+
+We are capturing the `$pageview` event with the current URL. We are using the `window.origin` to get the current origin and `pathname` to get the current pathname. We are also using the `searchParams` to get the current search params.
+
+Now we need to add the `PostHogPageView` component to our Next.js App Router root `layout.tsx` component.
+
+```tsx
+// /app/layout.tsx
+
+// ...rest of the code
+<PHProvider>
+  <body>
+    <PostHogPageView />
+    {children}
+  </body>
+</PHProvider>
+// ...rest of the code
+```
+
+This is all we need to track page views using PostHog with Next.js App Router. We have successfully integrated PostHog with Next.js App Router and we are now tracking page views using PostHog.
+
+### Tracking events using PostHog
+
+What if you want to track events using PostHog? In this example we gonna track a button click event using PostHog. Possibilities are endless with PostHog. You can track any event you want.
+
+```tsx
+// components/button.tsx
+
+import { usePostHog } from 'posthog-js/react';
+
+const Button = () => {
+  const posthog = usePostHog();
+
+  const handleClick = () => {
+    posthog.capture('button_click', {
+      button_name: 'Click Me',
+      // ...otherProps,
+    });
+  };
+
+  return <button onClick={handleClick}>Click Me</button>;
+};
+export default Button;
+```
+
+Here with just few line of code we are set to track button click event. We can pass any data we want to track with the event. We are passing the `button_name` as the button name. You can pass any data you want to track with the event.
+
+### Reverse proxy for PostHog
+
+It's recommended to use a reverse proxy for so tracking blocker doesn't intercept the PostHog tracking and it's also help to improve the client side readability.
+
+Here as we are using Next.JS and mostly gonna deploy on vercel. we can use `next.config.js` to setup reverse proxy.
+
+```js
+// next.config.js
+
+const nextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: '/ingest/:path*',
+        destination: 'https://app.posthog.com/:path*', // Proxy to PostHog cloud service
+      },
+    ];
+  },
+};
+```
+
+Here we have setup a reverse proxy for PostHog. We are using the `rewrites` option to setup the reverse proxy. We are proxying the `/ingest` path to the PostHog API host.
+
+Now since we have setup reverse proxy for PostHog. We need to update the `api_host` in our `.env.local` file. You need to update environment variable on vercel dashboard too.
+
+```bash
+NEXT_PUBLIC_POSTHOG_HOST=https://yourdomain.com/ingest
+```
+
+> You can use `vercel.json` too to setup reverse proxy. But I found `next.config.js` more convenient.
+
+### Conclusion
+
+PostHog is a powerful product analytics platform that helps you understand how users interact with your product. We have successfully integrated PostHog with Next.js App Router and we are now tracking page views and capturing user interactions using PostHog.
+
+I found PostHog very easy to use and it provides a powerful set of tools to help you understand your users and improve your product.
+
+I hope this article helps you to integrate PostHog with Next.js App Router and track events and capture user interactions using PostHog. If you have any questions or feedback, feel free to leave a comment below. Happy coding! 🚀
