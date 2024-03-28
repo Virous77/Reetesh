@@ -15,7 +15,11 @@ const MyProjects: React.FC<TMyProjects> = ({ projects }) => {
           <h2 className="p-2 text-center text-[18px] tracking-widest md:p-0 md:text-[25px]">
             My Projects
           </h2>
-          <Link href="/" className="-mb-1 block pr-12 md:hidden">
+          <Link
+            href="/"
+            className="-mb-1 block pr-12 md:hidden"
+            aria-label="Visit Home Page"
+          >
             <Home size={21} />
           </Link>
         </div>
