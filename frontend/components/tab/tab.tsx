@@ -12,6 +12,7 @@ const Tab = () => {
             <Link
               href={`/${tab.toLowerCase()}`}
               className="flex w-fit cursor-pointer items-center gap-3 text-[16px] leading-[1.1]"
+              aria-label="Visit all Projects"
             >
               <span className="block h-[1px] w-10 bg-foreground opacity-50"></span>
               <span className="font-mono">{tab}</span>
