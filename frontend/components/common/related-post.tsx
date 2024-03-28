@@ -17,7 +17,7 @@ const RelatedPost = ({ relatedBlogs }: { relatedBlogs: Post[] }) => {
             <CardContent className=" m-0 h-fit w-full p-0 md:w-[350px]">
               <Link href={`/blog/${post.slugAsParams}`}>
                 <Image
-                  alt={post.title}
+                  alt="blog thumbnail"
                   src={post.blogImage}
                   width={100}
                   height={100}

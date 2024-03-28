@@ -86,6 +86,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
         <Link
           className=" flex cursor-pointer items-center gap-2 text-[14px] text-primary"
           href="/projects"
+          aria-label="Visit all Projects"
         >
           Visit all Projects <MoveRight size={19} />
         </Link>

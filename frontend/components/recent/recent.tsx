@@ -40,6 +40,7 @@ const Recent = async () => {
             <Link
               href="/projects"
               className=" flex items-center gap-2 opacity-90 hover:opacity-100"
+              aria-label="Visit all Projects"
             >
               {project.title}
               <ExternalLink size={20} />

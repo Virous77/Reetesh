@@ -22,12 +22,14 @@ const ReadMore: React.FC<TReadMore> = ({ slug }) => {
         <Link
           href={previous ? `/blog/${previous}` : '/blogs'}
           className=" font-bold underline underline-offset-4 hover:opacity-80"
+          aria-label="Previous Post"
         >
           Previous Post
         </Link>
         <Link
           href={next ? `/blog/${next}` : '/blogs'}
           className=" font-bold underline underline-offset-4 hover:opacity-80"
+          aria-label="Next Post"
         >
           Next Post
         </Link>

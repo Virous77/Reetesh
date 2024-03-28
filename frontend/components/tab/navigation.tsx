@@ -4,7 +4,9 @@ import Link from 'next/link';
 const Navigation = () => {
   return (
     <div className=" mt-5 flex items-center gap-7">
-      <Link href="/blogs">
+      <Link href="/blogs"
+      aria-label='Visit all Blogs'
+      >
         <span className="flex cursor-pointer items-center gap-2 font-mono text-[13px] text-default hover:text-defaultMax">
           <FileText size={17} /> Blogs
         </span>

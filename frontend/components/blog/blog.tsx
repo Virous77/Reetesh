@@ -18,7 +18,7 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
         </h1>
 
         <div className="flex  items-center gap-4 pr-2 md:hidden">
-          <Link href="/projects">
+          <Link href="/projects" aria-label="Projects">
             <LibrarySquare size={22} />
           </Link>
 

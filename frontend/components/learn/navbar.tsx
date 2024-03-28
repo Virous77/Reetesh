@@ -13,12 +13,14 @@ const Navbar = () => {
           <Link
             href="/blogs"
             className="font-mono hover:underline hover:underline-offset-4"
+            aria-label="Visit all Blogs"
           >
             Blogs
           </Link>
           <Link
             href="/projects"
             className=" font-mono hover:underline hover:underline-offset-4"
+            aria-label="Visit all Projects"
           >
             Projects
           </Link>
@@ -28,7 +30,7 @@ const Navbar = () => {
           <Link
             href="/blogs"
             className="font-mono hover:underline hover:underline-offset-4"
-            aria-label="Blogs"
+            aria-label="Visit all Blogs"
           >
             <FileText size={20} />
           </Link>
@@ -36,7 +38,7 @@ const Navbar = () => {
           <Link
             href="/projects"
             className="font-mono hover:underline hover:underline-offset-4"
-            aria-label="Projects"
+            aria-label="Visit all Projects"
           >
             <LibrarySquare size={20} />
           </Link>

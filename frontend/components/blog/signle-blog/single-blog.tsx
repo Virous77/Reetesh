@@ -25,7 +25,7 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
         <Author />
 
         <div className=" flex items-center gap-3">
-          <Link href="/blogs" aria-label="blogs">
+          <Link href="/blogs" aria-label="Visit all Blogs">
             <Newspaper />
           </Link>
           <Social styles="" />
@@ -37,7 +37,7 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
             <Author />
 
             <div className=" flex items-center gap-3">
-              <Link href="/blogs">
+              <Link href="/blogs" aria-label="Visit all Blogs">
                 <Newspaper />
               </Link>
               <Social styles="" />
