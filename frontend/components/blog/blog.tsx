@@ -4,6 +4,7 @@ import { Card, CardContent } from '../ui/card';
 import Image from 'next/image';
 import { Post } from '@/.contentlayer/generated';
 import { formateDate } from '@/utils/utils';
+import CommandSearch from '../common/command-search';
 
 type TBlog = {
   blogs: Post[];
@@ -12,17 +13,18 @@ type TBlog = {
 const Blog: React.FC<TBlog> = ({ blogs }) => {
   return (
     <section className="body relative h-fit p-2 md:h-full md:p-0 lg:overflow-scroll">
-      <div className="sticky top-0 flex items-center justify-between bg-background   p-1 pl-2 md:static">
-        <h1 className=" my-2 text-[18px] md:my-5 md:text-[25px]  ">
+      <div className="sticky top-0 flex items-center justify-between bg-background p-1 pl-2  md:p-0 md:pl-2">
+        <h1 className=" my-2 hidden text-[18px] md:my-5 md:block md:text-[25px]">
           From My Blogs
         </h1>
+        <CommandSearch blogs={blogs} />
 
         <div className="flex  items-center gap-4 pr-2 md:hidden">
-          <Link href="/projects" aria-label="Projects">
+          <Link href="/projects" aria-label="Visit Projects Page">
             <LibrarySquare size={22} />
           </Link>
 
-          <Link href="/">
+          <Link href="/" aria-label="Visit Home Page">
             <Home size={22} />
           </Link>
         </div>
