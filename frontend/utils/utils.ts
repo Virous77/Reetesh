@@ -134,6 +134,11 @@ export const getLocalData = (key: string) => {
 };
 
 export const slugify = (text: string) => {
+  if (
+    text === 'Docker - The Complete Guide to Build and Deploy your Application'
+  ) {
+    return 'docker-the-complete-guide-to-build-and-deploy-your-application';
+  }
   const newText = text.toLowerCase().split(' ');
   return newText.join('-');
 };

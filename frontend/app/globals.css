@@ -114,7 +114,7 @@ pre {
   border: 1px solid hsl(var(--border));
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .l-template {
     grid-template-columns: 1fr;
   }
