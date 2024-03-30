@@ -23,11 +23,11 @@ const CommandSearch: React.FC<TCommandSearch> = ({ blogs }) => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState<string[] | []>([]);
   const router = useRouter();
-  const { capture } = usePostHog();
+  const posthog = usePostHog();
 
   const handleEvent = (type: string, blog?: string) => {
-    if (process.env.NEXT_PUBLIC_NODE_ENV === 'production') {
-      capture('searched_blog', {
+    if (posthog && process.env.NEXT_PUBLIC_NODE_ENV === 'production') {
+      posthog?.capture('searched_blog', {
         type: type,
         blog: blog || '',
       });
