@@ -89,7 +89,8 @@ const CommandSearch: React.FC<TCommandSearch> = ({ blogs }) => {
             <p className=" text-[14px] text-muted-foreground">Search Posts</p>
           </span>
           <kbd className="pointer-events-none  hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] text-sm font-medium text-muted-foreground opacity-100  md:inline-flex">
-            <span className="text-xs">⌘</span>K
+            <span className="text-xs">⌘</span>
+            <span className=" text-[10px]">K</span>
           </kbd>
         </div>
       </div>
