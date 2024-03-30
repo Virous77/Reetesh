@@ -30,7 +30,7 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
         </div>
       </div>
 
-      <ul className=" grid grid-cols-1 items-start gap-4 pb-3 lg:grid-cols-2">
+      <ul className=" grid grid-cols-1 items-start gap-4 pb-3 md:grid-cols-2">
         {blogs.map((blog) => (
           <li key={blog._id}>
             <Card className=" w-full border-none bg-transparent hover:bg-popover">
