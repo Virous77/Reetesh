@@ -20,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="h-full from-[#1A1D23] to-[#25272D] pt-12 dark:bg-gradient-to-r md:h-screen">
+    <main className="h-full from-[#111111] to-[#1f1f1f]   pt-12 dark:bg-gradient-to-r md:h-screen">
       {children}
     </main>
   );
