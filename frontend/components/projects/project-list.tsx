@@ -19,7 +19,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
       {projects?.map((project) => (
         <Card
           key={project._id}
-          className="m-1 h-fit border from-[#0c0e11] to-[#171d24] shadow-lg dark:border-none dark:bg-gradient-to-r dark:shadow-none"
+          className="to-[#25272D]shadow-lg m-1 h-fit border from-[#1A1D23] dark:border-none dark:bg-gradient-to-r dark:shadow-none"
         >
           <CardContent className="p-3">
             <>
