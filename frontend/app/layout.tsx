@@ -48,7 +48,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-     
         <meta
           name="google-site-verification"
           content="ymnya5tVzcP4bwvG455V0AZC282mwI4Iy3mnS3uBTD0"
@@ -83,7 +82,7 @@ export default function RootLayout({
         </Script>
       </head>
       <PHProvider>
-        <body className={`${poppins.className} bg-white dark:bg-black`}>
+        <body className={`${poppins.className}`}>
           <ThemeProviderComp attribute="class" defaultTheme="dark">
             <Provider>
               <PostHogPageView />

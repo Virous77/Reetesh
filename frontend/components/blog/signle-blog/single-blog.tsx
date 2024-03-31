@@ -21,7 +21,7 @@ type TSingleBlog = {
 const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
   return (
     <section className=" relative">
-      <div className=" sticky left-0 top-0 z-10 mb-3 flex w-full items-center justify-between bg-white/60 p-4 backdrop-blur dark:bg-black/60 md:hidden">
+      <div className=" sticky left-0 top-0 z-10 mb-3 flex w-full items-center justify-between p-4 backdrop-blur dark:bg-[#1b1e24]/60 md:hidden">
         <Author />
 
         <div className=" flex items-center gap-3">
