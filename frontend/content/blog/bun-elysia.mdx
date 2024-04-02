@@ -53,6 +53,8 @@ bun install mongoose
 
 We will use `mongoose` as our database driver. You can use any other driver as well.
 
+<Separator />
+
 ## Create a model
 
 Create a new file **`rest-api/src/models/user-model.ts`** with the following code:
@@ -76,6 +78,8 @@ export default mongoose.model<IUser>('User', UserSchema);
 ```
 
 Here we have created a simple model for our user. We will use this model to create, update, delete and get users from our database.
+
+<Separator />
 
 ## Create a controller
 
@@ -137,6 +141,8 @@ Here we created a controller for our user model. We implemented all the CRUD ope
 
 Obviously for good approach you can create a separate routes file and import your controller there. also for error handling you can use `try/catch` block.
 
+<Separator />
+
 ## Create a server
 
 Move to **`app/src/index.ts`** file with the following code:
@@ -166,11 +172,11 @@ mongoose
 
 Above we created a server and connected to our database. We also used our user controller and passed to Elysia middleware.
 
+<Separator />
+
 ## Implement Authentication for our API
 
 We will use simple key based authentication for our API. But you can use any other authentication method as well as the process will be same.
-
-### Install dependencies
 
 ```bash
 bun install @elysiajs/bearer

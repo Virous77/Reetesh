@@ -25,13 +25,13 @@ The main difference between `use` hook and other hooks is that `use` hook can be
 
 The rise of RSC(React Server Components) now we can fetch data in our server component and pass it to our client component. This is where `use` hook comes into picture. We can use `use` hook to get the value from promise and context.
 
-#### Key points of use hook
+<SubHeadings>Key points of use hook</SubHeadings>
 
 - It can be called within loops and conditional statements.
 - It returns value which was read from the promise or context.
 - When fetching data in a Server Component, prefer async and await over use. async and await pick up rendering from the point where await was invoked, whereas use re-renders the component after the data is resolved.
 
-### Working with promises using use hook
+## Working with promises using use hook
 
 ```jsx
 // server component
@@ -115,7 +115,9 @@ export default App;
 
 <Advertise title="Building DApps with React and Solidity on Ethereum" />
 
-### Working with context using use hook
+<Separator />
+
+## Working with context using use hook
 
 Till now when we had to work with context we had to use `useContext` to get value from our **context**. But now with the help of `use` hook we can use context value in our client component.
 

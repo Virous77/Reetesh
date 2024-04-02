@@ -14,7 +14,7 @@ tags:
     'kubernetes service with nginx',
     'kubernetes service with nginx reverse proxy',
   ]
-related: "cloud"
+related: 'cloud'
 ---
 
 Nginx is a popular open-source web server and reverse proxy server. Nginx is used by many high-traffic websites and is known for its high performance and low resource usage. We can use Nginx as a reverse proxy for Kubernetes services.
@@ -23,13 +23,13 @@ Although Kubernetes provides us **Ingress** to expose services to the outside wo
 
 For our this simple application and for learning purposes, we will use Nginx as standalone reverse proxy server.
 
-#### Prerequisites
+<SubHeadings>Prerequisites</SubHeadings>
 
 - Just clone this [repository](https://github.com/Virous77/dockerize-fullstack-app/tree/kubernetes-setup) and switch to the `kubernetes-setup` branch.
 
 > you can read [this](https://reetesh.in/blog/configuring-full-stack-apps-for-kubernetes-deployment) blog for more details about the repository and how to run the application in the local environment.
 
-### Creating Nginx Docker Image
+## Creating Nginx Docker Image
 
 We will create a Docker image for Nginx with a custom configuration file. We will use this image to deploy Nginx as a reverse proxy for our application.
 
@@ -73,11 +73,13 @@ COPY ./default.conf /etc/nginx/conf.d/default.conf
 In the `Dockerfile`, we have used the `nginx` base image and copied the `default.conf` file to the `/etc/nginx/conf.d` directory in the image.
 `/etc/nginx/conf.d` is the directory where Nginx looks for configuration files.
 
-### Configuring Deployment and Service
+<Separator />
+
+## Configuring Deployment and Service
 
 We have already created a deployment and service for our application in the previous blog. We will use the same deployment and service for need to add a few more things.
 
-##### Deployment
+### Deployment
 
 ```yaml
 apiVersion: apps/v1
@@ -200,7 +202,7 @@ As you can see, we have added a new deployment for Nginx. We have used the `full
 
 We are also using `PVC` for the mongo deployment to store the data in the persistent volume. You can read more about PVC [here](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
 
-##### Service
+### Service
 
 For service We just have to add a new service for the Nginx deployment and since we are using the NGINX as a reverse proxy for the **frontend** and **backend** services, We don't need to expose them to the outside world. So we will use the `ClusterIP` type instead of `LoadBalancer` so that they are only accessible within the cluster.
 
@@ -219,7 +221,7 @@ spec:
       targetPort: 80
 ```
 
-##### ConfigMap
+### ConfigMap
 
 We have already created a ConfigMap for the backend and frontend application but since we gonna build a new image for frontend which will be production-ready, we need to update the ConfigMap.
 
@@ -236,7 +238,7 @@ data:
 
 We just removed the config for frontend app since we are not using it anymore as environment variables for the frontend app will be passed at build time.
 
-##### PVC
+### PVC
 
 We need to create a PVC for the mongo deployment to store the data in the persistent volume. PVC is used to request storage resources from the cluster. We can use PVC to request a specific amount of storage and access mode for the persistent volume.
 
@@ -297,7 +299,7 @@ EXPOSE 3000
 CMD ["node", "server.js"]
 ```
 
-### Building the Docker Images
+## Building the Docker Images
 
 We need to build the Docker images for the frontend, backend, and Nginx applications. We can use the following commands to build the images.
 
@@ -329,7 +331,9 @@ cd nginx
 docker build -t full-nginx .
 ```
 
-### Deploying the Application
+<Separator />
+
+## Deploying the Application
 
 We have built all the required Docker images and kubernetes configuration files. Now we can deploy the application to the Kubernetes cluster.
 
@@ -359,7 +363,9 @@ As you will see that application is empty so for that you can take pull from the
 
 You can rebuild the images and deploy the application to the kubernetes cluster using the same commands.
 
-### Next.Js RSC data revalidate issue
+<Separator />
+
+## Next.Js RSC data revalidate issue
 
 Once you took pull and add the new user you will see that the new user is not showing up in the list. This is because of the Next.js need know which proxy is being used to fetch the data.
 

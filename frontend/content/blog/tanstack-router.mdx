@@ -19,7 +19,7 @@ related: 'frontend'
 
 [Tanstack router](https://tanstack.com/router/latest/docs/framework/react/overview) is a fully type-safe React router with built-in data fetching. It cache data until we invalidate it, also the search params APIs is too good since we get full type-safe and schema validation.
 
-#### Some of the features of Tanstack Router are:
+<SubHeadings>Some of the features of Tanstack Router</SubHeadings>
 
 - Fully type-safe
 - Built-in data fetching
@@ -32,7 +32,7 @@ Tanstack router built in data fetching hoist the data fetching and avoids waterf
 
 Tanstack router Search Params API so good with schemas validation, full type-safe which make to easy to store data in URL and use it in the application.
 
-### Setting up the React Vite app
+## Setting up the React Vite app
 
 First, we need to create a new React [Vite](https://vitejs.dev/) app. We can use the following command to create a new React Vite app.
 
@@ -50,7 +50,7 @@ After creating the app, we need to install the Tanstack router and React Query.
 yarn add @tanstack/react-query @tanstack/react-router @tanstack/router-vite-plugin @tanstack/react-query-devtools @tanstack/router-devtools axios
 ```
 
-### Setting up the Tanstack Router
+## Setting up the Tanstack Router
 
 We need to add our Tanstack router vite plugin to the `vite.config.js` file. It helps to auto generate the routes and make the routes type-safe.
 
@@ -110,7 +110,9 @@ we have declare a module to make it fully type-safe across the application. sinc
 
 <Advertise title="Docker - The Complete Guide to Build and Deploy your Application" />
 
-### Creating the routes
+<Separator />
+
+## Creating the root route
 
 we have to create a folder called `routes` within `src` directory and create a file called `__root.tsx` and add the following code.
 
@@ -145,7 +147,9 @@ Root component is a component that will be rendered on every route and with `<Ou
 
 Now this is pretty much it, we have configured the Tanstack router with React Vite app and React Query. We can now create the routes and fetch the data using `react-query` and use it in the application.
 
-### Creating the routes
+<Separator />
+
+### Creating the Home route
 
 We can create a new file called `index.tsx` within the `routes` folder and add the following code.
 

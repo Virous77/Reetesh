@@ -22,7 +22,7 @@ YAML heavily used in devops tools like Kubernetes, Docker, and many more. It is 
 
 When i started learning YAML, i found it very interesting and easy to learn. So, i thought to write a blog on it since it is widely used in devops tools.
 
-#### Strings and Numbers
+## Strings and Numbers
 
 Strings can be numbers, or special characters or text. Strings can be written with or without quotes. If you want to write a string with special characters or numbers, then you should use quotes.
 
@@ -43,7 +43,7 @@ description: >
   It is easy to learn.
 ```
 
-#### Lists (Arrays)
+## Lists (Arrays)
 
 Lists are nothing but an array of items. Lists are represented by a sequence of items. Each item in the list starts with a hyphen (-) followed by a space.
 
@@ -54,7 +54,7 @@ fruits:
   - Orange
 ```
 
-#### Maps (Objects)
+## Maps (Objects)
 
 Maps are same as objects in JSON. Maps are represented by key-value pairs.
 
@@ -65,7 +65,7 @@ person:
   isStudent: true
 ```
 
-#### Nested Data Structures
+## Nested Data Structures
 
 You can also nest lists and maps inside each other. This is one of the most powerful features of YAML. It is too flexible to nest data structures.
 
@@ -79,7 +79,7 @@ person:
     country: India
 ```
 
-#### Comments
+## Comments
 
 You can write comments in YAML using the `#` symbol. Comments are ignored by the YAML parser.
 
@@ -88,7 +88,7 @@ You can write comments in YAML using the `#` symbol. Comments are ignored by the
 name: Reetesh Kumar # This is also a comment
 ```
 
-#### Environment Variables
+## Environment Variables
 
 You can also use environment variables in YAML using the `${}` syntax. You can use environment variables in the value of a key.
 
@@ -97,7 +97,7 @@ name: ${NAME}
 age: ${AGE}
 ```
 
-#### Anchors and Aliases
+## Anchors and Aliases
 
 We can use anchors and aliases to reuse the same data in multiple places. You can use `&` to define an anchor and `*` to define an alias.
 

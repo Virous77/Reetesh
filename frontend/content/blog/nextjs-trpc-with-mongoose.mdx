@@ -20,14 +20,14 @@ related: 'common'
 
 With the demand of type-safe APIs, tRPC is a great choice to build and consume APIs. It's make writing endpoints type-safe which use in both the front and backend of your app. Type errors with your API contracts will be caught at build time, reducing the surface for bugs in your application at runtime
 
-#### What is some of the benefits of using tRPC?
+## What is some of the benefits of using tRPC?
 
 - Full static typesafety & autocompletion on the client, for inputs, outputs, and errors.
 - Snappy DX - No code generation, run-time bloat, or build pipeline.
 - Framework agnostic so we can use it with any framework like Next.js, Express, etc.
 - Request batching - Requests made at the same time can be automatically combined into one.
 
-#### Setting up our project
+### Setting up our project
 
 we will be using the latest version of next.js 14 to create a new app. We can use the following command to create a new next.js app with `app router`.
 
@@ -43,7 +43,9 @@ npm install mongoose @trpc/client @trpc/server zod @trpc/next @tanstack/react-qu
 
 <Advertise title="Server Action in Client and Server Component in Next.Js Explained" />
 
-### Setting up Mongoose
+<Separator />
+
+## Setting up Mongoose
 
 We will create a new folder `db` in the root of our project. This folder will contain the setup for our MongoDB connection.
 
@@ -135,7 +137,9 @@ const UserSchema = new mongoose.Schema<User>({
 export default mongoose.models.User || mongoose.model<User>('User', UserSchema);
 ```
 
-### Setting up tRPC
+<Separator />
+
+## Setting up tRPC
 
 Create a new folder `trpc-server` in the root of our project. This file will contain the tRPC setup for our app.
 
@@ -229,7 +233,9 @@ export type AppRouter = typeof appRouter;
 
 we have defined two endpoints `createUser` and `getUser`. We are using `zod` for input validation and `mongoose` for interacting with our MongoDB database.
 
-### Setting up tRPC with Next.js
+<Separator />
+
+## Setting up tRPC with Next.js
 
 Create a new folder `trpc-client` in the root of our project. This folder will contain the setup for our tRPC client.
 
@@ -260,7 +266,9 @@ export const serverClient = createCaller(createContext());
 
 With the above setup, we can now use `serverClient` to fetch data or do mutations in our server.
 
-### Exposing tRPC endpoints to the client
+<Separator />
+
+## Exposing tRPC endpoints to the client
 
 We have to expose our tRPC endpoints to the client. We will create a new folder inside of `app` directory called `api`. This folder will contain the setup for our tRPC endpoints.
 
@@ -284,7 +292,9 @@ export { handler as GET, handler as POST };
 
 We have setup our tRPC endpoints using `@trpc/server/adapters/fetch`. This will allow us to use `fetch` to make requests to our tRPC server.
 
-### Wrapping our app with tRPC provider using React Query
+<Separator />
+
+## Wrapping our app with tRPC provider using React Query
 
 We will create a folder `lib` in the root of our project. This folder will contain the setup for our tRPC provider.
 
@@ -344,7 +354,9 @@ import { Provider } from '@/lib/reactQuery-provider';
 </html>;
 ```
 
-### Using tRPC endpoints in our components
+<Separator />
+
+## Using tRPC endpoints in our components
 
 we can use the `getUser` endpoint in our components to fetch data from our server.
 

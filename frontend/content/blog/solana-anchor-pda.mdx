@@ -12,14 +12,14 @@ tags:
     'how program derived address works in solana',
     'pda in solana',
   ]
-related: "web3"
+related: 'web3'
 ---
 
 Program Derived Address (PDA) in solana development is a way to create a new account with a unique address based on the program and the seeds provided. PDAs are not public keys and therefore do not have an associated private key. This makes them useful for creating accounts that are only accessible by a specific program.
 
 PDA typically owned by a program itself, and this help to sign transactions on behalf of the account. This is useful for creating accounts that are only accessible by a specific program. Also help to structure the data in a way that is easy to access and modify. This help to create hashmap-like structures on-chain using PDAs.
 
-### How PDA are created in Anchor?
+## How PDA are created in Anchor?
 
 Anchor makes it easy to write Solana programs in Rust. It provides a set of tools and libraries that make it easy to write, deploy, and interact with Solana programs.
 
@@ -79,7 +79,9 @@ Since we want unique user profiles for each user, we use the `authority` key as 
 
 Now you will be thinking how i can create multiple PDA accounts 🤔? What if you have to store transaction history of the user, you must need a way to create multiple PDAs.
 
-### How to create multiple PDAs?
+<Separator />
+
+## How to create multiple PDAs?
 
 The approach is pretty simple and straight forward. as we did in the above example, we can use the same approach to create multiple PDAs. But here we have to use a different seed for each PDA.
 

@@ -21,7 +21,7 @@ WalletConnect provides a secure connection between DApps and wallets using end-t
 
 > Before we start make sure you have created account on [WalletConnect](https://cloud.walletconnect.com/app) and have your API key.
 
-### Setting up in Next.js Project
+## Setting up in Next.js Project
 
 First we need to initialize our Next.js project. If you don't have Next.js installed, you can install it using the following command
 
@@ -39,7 +39,9 @@ We are using `wagmi` which makes intreacting with `Ethereum` chains easy with go
 
 Web3Modal with wagmi is a simple and flexible solution for DApp developers to add a variety of wallet providers to their applications. It is a single library that provides a consistent user experience for connecting to a wallet and accessing the Ethereum blockchain.
 
-### Web3Modal Configuration
+<Separator />
+
+## Web3Modal Configuration
 
 We need to configure Web3Modal first for that we need to create a file `config.ts`. I'm creating under `lib` folder.
 
@@ -165,7 +167,9 @@ export default function RootLayout({
 
 We are using `cookieToInitialState` to get the initial state of the wallet connection. With this we are done with the configuration of wagmi and Web3Modal. Now we can use the wallet connection in our application.
 
-### Web3Modal Usage
+<Separator />
+
+## Web3Modal Usage
 
 We can create a Component to connect the wallet using Web3Modal. We will create a file `wallet-modal.tsx` under `lib` folder.
 
@@ -199,7 +203,9 @@ const nextConfig = {
 };
 ```
 
-### Reading Smart Contract Data using Wagmi
+<Separator />
+
+## Reading Smart Contract Data using Wagmi
 
 Now that we have connected the wallet, we can use wagmi to interact with the smart contract. Wagmi has good support for reading and writing the smart contract data. We can use `useContractRead` hook to read the smart contract data.
 

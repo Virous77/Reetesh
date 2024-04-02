@@ -37,7 +37,7 @@ service worker is a script that runs in the background of a web application, sep
 
 Service worker is important for push notification because it is the one that receives the push notification from the server and shows it to the user.
 
-### Registering Service Worker
+## Registering Service Worker
 
 In order to register a service worker, we need to create a file called `sw.js` in our public folder of Next.js or React app.
 
@@ -66,7 +66,9 @@ self.addEventListener('push', (event) => {
 
 We implemented the `push` event listener in the service worker. The `push` event is fired when the server sends a push notification to the client.
 
-### Registering Service Worker in React and Next.js
+<Separator />
+
+## Registering Service Worker in React and Next.js
 
 We need to register the service worker in our React and Next.js app. We will use the `useEffect` hook to register the service worker.
 
@@ -90,7 +92,9 @@ useEffect(() => {
 
 We are registering the service worker in the `useEffect` hook. We are checking if the `serviceWorker` is available in the `navigator` object. If it is available, we are registering the service worker.
 
-### Sending Push Notification from Server
+<Separator />
+
+## Sending Push Notification from Server
 
 We will use the **[web-push](https://www.npmjs.com/package/web-push)** library to send push notification from our Node.js server.
 
@@ -170,7 +174,9 @@ In the `/send-notification` route, we are sending the push notification to all t
 
 We are sending the push notification to all the subscribers using the `Promise.all` method. You can send the push notification to a specific user by filtering the `subscriptions` array.
 
-### Subscribing to Push Notification
+<Separator />
+
+## Subscribing to Push Notification
 
 We need to subscribe to push notification in order to receive the push notification. We will use the `serviceWorker` object to subscribe to push notification.
 

@@ -37,7 +37,7 @@ SEO is a complex process that requires a lot of time and effort. It is not somet
 
 **Next.js** has some built-in features that make it easier to build SEO-friendly websites. In this article, we will discuss some best practices for Next.js SEO.
 
-## 1) Robots.txt
+### 1) Robots.txt
 
 The first thing you should do is create a `robots.txt` file in the root directory of your website. This file tells search engines which pages they should crawl and which pages they should not crawl.
 
@@ -62,7 +62,7 @@ const robots: MetadataRoute.Robots = () => {
 export default robots;
 ```
 
-## 2) Sitemap.xml
+### 2) Sitemap.xml
 
 The next thing you should do is create a `sitemap.xml` file in the root directory of your website. This file tells search engines which pages they should crawl and which pages they should not crawl.
 
@@ -139,7 +139,7 @@ export default async function sitemap({
 }
 ```
 
-## 3) Meta Tags
+### 3) Meta Tags
 
 Meta tags are HTML tags that provide metadata about your website. They are used by search engines to determine what your website is about and how it should be ranked in search results.
 
@@ -219,7 +219,7 @@ export async function generateMetadata() {
 }
 ```
 
-## 4) Optimize Images and Fonts
+### 4) Optimize Images and Fonts
 
 Next.js has built in `Image` component which is used to optimize images. I highly advises to use `Image` component instead of `img` tag.
 
@@ -253,7 +253,7 @@ Images and fonts are important for SEO. They help search engines understand what
 
 It also help to improve your website's performance by reducing the number of network requests. and google also consider website performance as a ranking factor.
 
-## 5) Optimizing third-party Scripts
+### 5) Optimizing third-party Scripts
 
 Next.js has a built in `Script` component which is used to optimize third-party scripts.
 

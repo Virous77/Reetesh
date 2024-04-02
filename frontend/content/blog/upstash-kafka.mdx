@@ -1,0 +1,429 @@
+---
+title: 'Kafka integration in Node.JS with Upstash Kafka'
+date: 'April 02 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1711560946/node-kafka_m0pcs9.png'
+about: ' Kafka is a distributed event streaming platform capable of handling trillions of events a day. It is designed to be fast, scalable, and durable. Upstash Kafka is a fully managed Kafka service that makes it easy to use Kafka in your applications.'
+tags:
+  [
+    'How to use Kafka in Node.JS',
+    'Upstash Kafka in Node.JS',
+    'Kafka in Node.JS',
+    'Upstash Kafka',
+    'setup Kafka in Node.JS',
+    'Upstash Kafka setup',
+    'Kafka integration in Node.JS',
+  ]
+related: 'backend'
+---
+
+[Kafka](https://kafka.apache.org/) is a distributed event streaming platform capable of handling trillions of events a day. It is designed to be fast, scalable, and durable. Kafka is used by many companies to build real-time data pipelines and streaming applications. Kafka is a great fit for many use cases, such as tracking user activity, monitoring infrastructure, and processing logs.
+
+<SubHeadings>Key Features of Kafka</SubHeadings>
+
+- **Scalability:** Kafka is designed to be highly scalable. It can handle trillions of events a day. It is horizontally scalable, meaning you can add more brokers to increase the capacity of your Kafka cluster. This makes it easy to scale your Kafka cluster as your needs grow.
+
+- **Durability:** Kafka is designed to be durable. It stores messages on disk, so even if a broker fails, your data is safe. Kafka uses replication to ensure that messages are not lost. You can configure the replication factor to control how many copies of each message are stored in the cluster.
+
+- **Performance:** Kafka is designed to be fast. It can handle thousands of messages per second. Kafka uses a distributed architecture to achieve high throughput and low latency. It is optimized for performance, making it a great choice for real-time data processing.
+
+- **Flexibility:** Kafka is designed to be flexible. It supports a wide range of use cases, such as real-time data processing, log aggregation, and event sourcing. Kafka is a great fit for many use cases, making it a versatile tool for building real-time data pipelines.
+
+<Callout emoji="➡️">
+  To use Kakfa Either we can create a own **Kakfa Cluster** or we can use
+  **Upstash Kafka** which is a fully managed Kafka service that makes it easy to
+  use Kafka in your applications. In this article, we will see how to use Kafka
+  in Node.JS with Upstash Kafka and how to setup own Kafka Cluster.
+</Callout>
+
+## Kafka integration in Node.JS with Own Kafka Cluster
+
+We are going to use `kafkajs` which is a modern Apache Kafka client for Node.js. It's provides a high-level API for interacting with Kafka.
+
+To create Kafka Cluster we can use **Docker**. With Docker, you can run Kafka in a container on your local machine. We are going to use multiple Docker Images so It's better to use `docker-compose` to manage multiple containers.
+
+> Make sure you have Docker installed on your machine. and Your Docker is running.
+
+```yaml
+# docker-compose.yml
+
+version: '3.8'
+services:
+  zookeeper:
+    image: zookeeper
+    ports:
+      - 2181:2181
+    restart: always
+    container_name: zookeeper
+  kafka:
+    image: confluentinc/cp-kafka
+    ports:
+      - 9092:9092
+    depends_on:
+      - zookeeper
+    container_name: kafka
+    restart: always
+    environment:
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+```
+
+Here we are using `zookeeper` and `kafka` images. `zookeeper` is used to manage Kafka brokers and `kafka` is used to run Kafka brokers. We are exposing `2181` and `9092` ports for `zookeeper` and `kafka` respectively.
+
+There are many kafka images available on Docker Hub. You can use any of them. Here we are using `confluentinc/cp-kafka` image.
+
+To start Kafka Cluster run below command:
+
+```bash
+docker-compose up
+```
+
+This will start Kafka Cluster on your local machine. and now we are ready to use Kafka in Node.JS.
+
+<Separator />
+
+### Using Kafka in Node.JS
+
+First, we need to install `kafkajs` package. Run below command to install `kafkajs` package:
+
+```bash
+npm install kafkajs
+```
+
+When we use Kafka we need to create a `Producer` and a `Consumer`. Producer is used to send messages to Kafka and Consumer is used to read messages from Kafka.
+
+There is also a concept of `Topic` in Kafka. A topic is a category or feed name to which records are sent. For example, if you are building a real-time data pipeline to track user activity, you might have a topic called `user-activity`.
+
+`Topic` can have multiple `Partitions`. Partitions allow you to parallelize a topic by splitting the data in a particular topic across multiple brokers. Each partition can be placed on a separate machine to allow for multiple consumers to read from a topic in parallel.
+
+`Topic` is important as `producer` sends messages to a `topic` and `consumer` reads messages from a `topic`.
+
+<Tabs items={["Create Topics", "Producer", "Consumer"]} >
+  <Section>
+   ```js
+    // admin.js
+
+    import { Kafka } from 'kafkajs';
+
+    const kafka = new Kafka({
+    clientId: 'my-app',
+    brokers: ['localhost:9092'],
+    });
+
+    export async function adminInit() {
+      const admin = kafka.admin();
+      admin.connect();
+      await admin.createTopics({
+        topics: [
+          {
+            topic: 'test.topic',
+            numPartitions: 2,
+          },
+        ],
+      });
+      await admin.disconnect();
+    }
+
+    adminInit();
+
+      ```
+
+  </Section>
+
+   <Section>
+    ```js
+    // producer.js
+
+    import { Kafka } from 'kafkajs';
+
+    const kafka = new Kafka({
+      clientId: 'my-app',
+      brokers: ['localhost:9092'],
+    });
+
+    async function producerInit() {
+      const producer = kafka.producer();
+      await producer.connect();
+
+      await producer.send({
+        topic: 'test.topic',
+        messages: [
+          {
+            partition: 0,
+            key: 'just-a-key',
+            value: 'Hello Kafka!',
+          },
+        ],
+      });
+      await producer.disconnect();
+    }
+
+    producerInit();
+       ```
+
+  </Section>
+
+  <Section>
+  ```js
+    // consumer.js
+
+    import { Kafka } from 'kafkajs';
+
+    const kafka = new Kafka({
+      clientId: 'my-app',
+      brokers: ['localhost:9092'],
+    });
+
+    export async function consumerInit() {
+      const consumer = kafka.consumer({ groupId: 'test-group' });
+      await consumer.connect();
+
+      await consumer.subscribe({ topics: ['test.topic'], fromBeginning: true });
+
+      await consumer.run({
+        eachMessage: async ({ topic, partition, message, heartbeat, pause }) => {
+          console.log({
+            topic,
+            partition,
+            key: message.key.toString(),
+            value: message.value.toString(),
+          });
+        },
+      });
+    }
+
+    consumerInit();
+       ```
+
+  </Section>
+</Tabs>
+
+Above code are preety self explanatory. We are creating a `Topic` in `admin.js` file. We are sending a message to Kafka in `producer.js` file and reading messages from Kafka in `consumer.js` file.
+
+To run above code you can create 3 files `admin.js`, `producer.js` and `consumer.js` and run below command:
+
+```bash
+# 1 Run admin.js file
+node admin.js
+
+# 2 Run producer.js file
+node producer.js
+
+# 3 Run consumer.js file
+node consumer.js
+```
+
+There are many configuration options available in `kafkajs` package. You can explore more about `kafkajs` package in [official documentation](https://kafka.js.org/). But above code willl be core code to use Kafka in Node.JS. You can use this code to build real-time data pipelines, monitoring infrastructure, and processing logs.
+
+<Separator />
+
+## Kafka integration in Node.JS with Upstash Kafka
+
+Upstash Kafka is a fully managed Kafka service that makes it easy to use Kafka in your applications. Upstash Kafka provides a fully managed Kafka cluster with high availability, automatic scaling, and monitoring.
+
+To use Upstash Kafka, you need to [create an account](https://console.upstash.com/kafka) on Upstash and create a Kafka cluster. You can create a Kafka cluster with a few clicks and start using it in your applications. Upstash Kafka provides a web-based console to manage your Kafka cluster and monitor its performance. You can create topics, manage partitions, and monitor the health of your Kafka cluster from the console.
+
+After creating a Kafka cluster, you will get the connection details such as `brokers`, `username`, and `password`. You can use these details to connect to your Kafka cluster from your applications.
+
+### Using Upstash Kafka in Node.JS
+
+<Tabs items={["Create Topics", "Producer", "Consumer"]} >
+   <Section slot="Create Topics">
+    ```js
+    // /admin.js
+
+    import { Kafka, logLevel } from "kafkajs";
+
+    const kafka = new Kafka({
+      brokers: [process.env.URL],
+      sasl: {
+        mechanism: "scram-sha-256",
+        username: process.env.USERNAME,
+        password: process.env.PASSWORD,
+      },
+      ssl: true,
+      logLevel: logLevel.ERROR,
+    });
+
+    const admin = kafka.admin();
+
+    export async function adminInit() {
+      try {
+        admin.connect();
+
+        await admin.createTopics({
+          validateOnly: false,
+          waitForLeaders: true,
+          topics: [{ topic: "tes", numPartitions: 1, replicationFactor: 1 }],
+        });
+
+        await admin.disconnect();
+      } catch (error) {
+        console.error("Error in adminInit", error);
+      }
+    }
+
+    adminInit();
+
+
+    ```
+
+  </Section>
+
+     <Section slot="Producer">
+    ```js
+    // /producer.js
+
+    import { Kafka, logLevel } from "kafkajs";
+
+    const kafka = new Kafka({
+      brokers: [process.env.URL],
+      sasl: {
+        mechanism: "scram-sha-256",
+        username: process.env.USERNAME,
+        password: process.env.PASSWORD,
+      },
+      ssl: true,
+      logLevel: logLevel.ERROR,
+    });
+
+    const producer = kafka.producer();
+
+    const produce = async () => {
+      await producer.connect();
+
+      await producer.send({
+        topic: "test.topic",
+        messages: [{ value: "Hello Upstash!", partition: 0, key: "message" }],
+      });
+      console.log("Produced message");
+
+      await producer.disconnect();
+    };
+
+    produce();
+
+    ```
+
+  </Section>
+
+  <Section slot="Consumer" >
+   ```js
+    // /consumer.js
+
+    import { Kafka, logLevel } from "kafkajs";
+
+    const kafka = new Kafka({
+      brokers: [process.env.URL],
+      sasl: {
+        mechanism: "scram-sha-256",
+        username: process.env.USERNAME,
+        password: process.env.PASSWORD,
+      },
+      ssl: true,
+      logLevel: logLevel.ERROR,
+    });
+
+    const consumer = kafka.consumer({ groupId: "test-group" });
+
+    const consume = async () => {
+      await consumer.connect();
+      await consumer.subscribe({ topic: "test.topic" });
+
+      await consumer.run({
+        eachMessage: async ({ topic, partition, message }) => {
+          console.log({
+            value: message.value.toString(),
+            key: message.key.toString(),
+            partition,
+            topic,
+          });
+        },
+      });
+    };
+
+    consume();
+
+     ```
+
+  </Section>
+</Tabs>
+
+Above code is similar to the code we used with our own Kafka Cluster. The only difference is we are using Upstash Kafka connection details to connect to Kafka Cluster.
+
+With Upstah we can create `Topics` in their web-based console too. It's good to create `Topics` from their console. But you can also create `Topics` from your code.
+
+Upstah is good when don't want to manage Kafka Cluster. They provide a fully managed Kafka Cluster with high availability, automatic scaling, and monitoring. You can focus on building your applications and let Upstash manage your Kafka Cluster. They provider many regions to host your Kafka Cluster. You can choose the region that is closest to your users to reduce latency.
+
+<Separator />
+
+## Topics related operation in Kafka
+
+In Kafka, you can perform many operations on `Topics`. You can **Create Topic**, **List Topics**, **Delete Topic**, and **Describe Topic**. These operations are useful when you want to manage your Kafka cluster programmatically.
+
+<Tabs items={["New Topic", "List Topic", "Delete Topic", "Describe Topic"]} >
+
+<Section slot="New Topic">
+
+```js
+await admin.createTopics({
+  validateOnly: false, // If true, it will validate the topic configuration without creating the topic.
+  topics: [
+    {
+      topic: 'test-topic',
+      numPartitions: 2,
+      replicationFactor: 1,
+    },
+  ],
+});
+```
+
+</Section>
+
+<Section slot="List Topic">
+
+```js
+const topics = await admin.listTopics();
+
+console.log(topics);
+```
+
+</Section>
+
+<Section slot="Delete Topic">
+
+```js
+await admin.deleteTopics({
+  topics: ['test-topic'],
+});
+```
+
+</Section>
+
+<Section slot="Describe Topic">
+
+```js
+const topic = await admin.describeTopics({
+  topics: ['test-topic'],
+});
+
+console.log(topic);
+```
+
+</Section>
+
+</Tabs>
+
+These are some of the operations you can perform on topics in Kafka. Topics are an important concept in Kafka, as they allow you to organize and categorize messages. You can use topics to group related messages together and process them in parallel.
+
+> You can find all the code snippets in this article in this [GitHub repository](https://github.com/Virous77/kafka-test).
+
+<Separator />
+
+### Conclusion
+
+Kafka has gained popularity in recent years due to its scalability, durability, and performance. The demand for real-time data processing and streaming applications has increased, and Kafka is a great fit for many use cases.
+
+I hope this article helps you understand how to use Kafka in Node.JS with Upstash Kafka or using own cluster. If you have any questions or feedback, feel free to comment below.

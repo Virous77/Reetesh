@@ -24,7 +24,7 @@ Dockerization is the process of converting your application into a container ima
 
 Its a good practice to dockerize your application for development as well as production. since it makes the deployment process very easy and fast.
 
-#### Prerequisites
+<SubHeadings>Prerequisites</SubHeadings>
 
 - [Docker](https://www.docker.com/) installed on your machine
 - [NodeJS](https://nodejs.org/en) installed on your machine
@@ -147,6 +147,8 @@ EXPOSE 4000
 CMD ["npm", "start"]
 ```
 
+<Separator />
+
 ## Frontend
 
 We will create a NextJs application for our frontend. Create a folder called `frontend` and run the following commands inside it.
@@ -202,7 +204,9 @@ EXPOSE 3000
 CMD [ "npm", "run", "dev" ]
 ```
 
-### Setting up docker-compose
+<Separator />
+
+## Setting up docker-compose
 
 Docker compose is a tool for defining and running multi-container Docker applications. With Compose, you use a YAML file to configure your application's services.
 
@@ -250,7 +254,7 @@ services:
     tty: true
 ```
 
-#### Running the application
+### Running the application
 
 To run the application we need to run the following command in our project root folder.
 
@@ -274,7 +278,7 @@ curl --location --request POST 'http://localhost:4000/user' \
 }'
 ```
 
-#### Understanding the Dockerfile configuration
+### Understanding the Dockerfile configuration
 
 - `FROM node:18-alpine` - This will use the node version 18 and alpine linux as the base image.
 - `WORKDIR /app` - This will set the working directory to `/app`.
@@ -285,7 +289,7 @@ curl --location --request POST 'http://localhost:4000/user' \
 - `EXPOSE 3000` - This will expose the port `3000`.
 - `CMD [ "npm", "run", "dev" ]` - This will run the command `npm run dev` when the container is started.
 
-#### Understanding the docker-compose.yml configuration
+### Understanding the docker-compose.yml configuration
 
 - `version: "3.8"` - This will set the version of docker-compose.
 - `services` - This will define all the services that we want to run.
