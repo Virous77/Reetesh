@@ -22,7 +22,7 @@ We can use Server Actions in client and server both type of components. Server A
 
 There are several way we can use server action as per our need and with support of `useFormStatus`, `useOptimistic` and `useTransition` hooks it makes so easy to handle all the edge cases.
 
-### Server Component
+## Server Component
 
 As name suggest **Server Actions** using in server component is easy and straight forward but since it's server component come with few limitations too when it's come to error handling which we can do but not that elegant way we do in client component.
 
@@ -90,7 +90,7 @@ export default Button;
 
 useFormStatus hook gives us the `pending` state and we can use it to show the loading state. we can use this component for client and server both type of server actions.
 
-#### Error Boundary
+### Error Boundary
 
 Next.js has a great feature of error boundary which we can use to handle the error in server component. We can create a file `error.ts` in page root folder and it will be used to handle the error in server component.
 
@@ -121,7 +121,9 @@ export default function Error({
 
 Error component must need to be **client** component and it will be used to handle the error in server component.
 
-### Client Component
+<Separator />
+
+## Client Component
 
 Server actions with client component are so easy and straight forward. We can use server actions in client component and it will send a POST request to server.
 
@@ -197,7 +199,9 @@ Here we are using `use server` comment to tell next.js that this is server actio
 
 We can use `ZOD` for schema validation and then we can do our DB work and if any error we can throw error and it will be handled by client component.
 
-### Server Actions and useOptimistic
+<Separator />
+
+## Server Actions and useOptimistic
 
 useOptimistic hook is used to handle the optimistic UI updates. It is used to update the UI before the server response. It is used to give the user a better experience.
 
@@ -307,7 +311,9 @@ As usual we are `ZOD` from schema validation and then we can do our DB work and 
 
 Also we are using `revalidatePath` to revalidate the data in cache for current path.
 
-### Server Actions more ways to use
+<Separator />
+
+## Server Actions more ways to use
 
 We can use Server Actions in non-form Elements too. We can use in any event handler like `onClick`, `onMouseOver`, `onMouseOut` etc.
 

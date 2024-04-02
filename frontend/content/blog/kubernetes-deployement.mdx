@@ -22,7 +22,7 @@ related: 'cloud'
 
 Kubernetes is a container orchestration tool that helps you to deploy your application to the cloud. It is an open-source platform that was developed by Google. It is a portable, extensible, and open-source platform for managing containerized workloads and services, that facilitates both declarative configuration and automation. It has a large, rapidly growing ecosystem. Kubernetes services, support, and tools are widely available.
 
-**The advantages of Kubernetes are as follows :**
+<SubHeadings>The Advantages of Kubernetes are as Follows</SubHeadings>
 
 - **Portable** :- Kubernetes is portable, which means that you can deploy it on any cloud platform, likes of AWS, Azure, GCP, etc.
 
@@ -38,7 +38,7 @@ Kubernetes is a container orchestration tool that helps you to deploy your appli
 
 There are many other advantages of Kubernetes, but these are the main ones. and in this article, we will learn how to deploy a Next.js, Node.js, and MongoDB application to Kubernetes.
 
-#### Prerequisites
+<SubHeadings>Prerequisites</SubHeadings>
 
 - Setup Project your locally from [here](https://github.com/Virous77/dockerize-fullstack-app/tree/main)
 - Docker installed on your machine
@@ -48,7 +48,7 @@ There are many other advantages of Kubernetes, but these are the main ones. and 
 
 [Minikube](https://minikube.sigs.k8s.io/docs/) is a tool that makes it easy to run Kubernetes locally. Minikube runs a single-node Kubernetes cluster inside a Virtual Machine (VM) on your laptop for users looking to try out Kubernetes or develop with it day-to-day.
 
-#### Installing Minikube
+### Installing Minikube
 
 **MacOS**
 
@@ -76,7 +76,7 @@ curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-
 sudo install minikube-linux-arm64 /usr/local/bin/minikube
 ```
 
-#### Minikube Commands
+### Minikube Commands
 
 We will use Docker as driver for Minikube as it is the most stable one and easy to start. so make sure your Docker is running.
 
@@ -93,6 +93,8 @@ minikube dashboard
 ```
 
 For more information on Minikube, you can visit [here](https://minikube.sigs.k8s.io/docs/start/). here you can find more information on how to install Minikube on different platforms.
+
+<Separator />
 
 ## Installing Kubectl
 
@@ -112,13 +114,11 @@ If you get the following output, then it means that you have successfully instal
 # No resources found in default namespace.
 ```
 
+<Separator />
+
 ## Setting up our App configuration
 
-We are using same app which we have dockerized in our pervious article for development.
-
-#### Creating a Dockerfile for Frontend
-
-Rename the existing Dockerfile to **Dockerfile.dev** and Create a new file called **Dockerfile** in the frontend directory and add the following code to it.
+We are using same app which we have dockerized in our pervious article for development. Rename the existing Dockerfile to **Dockerfile.dev** and Create a new file called **Dockerfile** in the frontend directory and add the following code to it.
 
 ```docker
 FROM node:18-alpine
@@ -172,11 +172,7 @@ docker build -t full-backend .
 
 ### Creating YAML files for Kubernetes
 
-Make sure you are in the root directory of the project. out of frontend and backend directory.
-
-#### YAML file for Deployment
-
-Create a new file called `Deployment.yaml` and add the following code to it.
+Make sure you are in the root directory of the project. out of frontend and backend directory. Create a new file called `Deployment.yaml` and add the following code to it.
 
 ```yaml
 apiVersion: apps/v1
@@ -251,7 +247,7 @@ explanation:
 - `metadata`: It is the metadata of our deployment.
 - `spec` : It is the specification of our deployment. It contains the number of replicas, selector, and template. The number of replicas is the number of pods that we want to create. The selector is used to select the pods that we want to create. The template is used to create the pods. It contains the labels and containers. The labels are used to select the pods. The containers are used to create the containers. It contains the name of the container, image, and environment variables.
 
-#### YAML file for Service
+### YAML file for Service
 
 Create a new file called `Service.yaml` and add the following code to it.
 
@@ -302,7 +298,7 @@ As you can see, we have created three services. The type of the first two servic
 
 Thats why we have changed the URL in our ENV variables. since kubernetes will create a DNS for our services. so we can access our app by using the service name.
 
-#### YAML file for ConfigMap
+### YAML file for ConfigMap
 
 Create a new file called `ConfigMap.yaml` and add the following code to it.
 
@@ -326,7 +322,9 @@ data:
   DEBUG: 'true'
 ```
 
-### Adding our images to Minikube
+<Separator />
+
+## Adding our images to Minikube
 
 Make sure you have started your Minikube.
 
@@ -351,7 +349,9 @@ eval $(minikube docker-env)
 docker images
 ```
 
-### Starting our app
+<Separator />
+
+## Starting our App
 
 Make sure you are in the root directory of the project.
 
@@ -385,7 +385,7 @@ minikube service backend-app-service
 
 It will open our app in the browser. Else you can open your app on provided IP from `minikube` after running `minikube server ...` command.
 
-#### Access Kubernetes Dashboard
+### Access Kubernetes Dashboard
 
 ```bash
 minikube dashboard
@@ -393,7 +393,7 @@ minikube dashboard
 
 There you can see all the pods, services, and deployments. and you can also see the logs of your pods.
 
-#### Shutting down our app
+### Shutting down our app
 
 ```bash
 kubectl delete -f .

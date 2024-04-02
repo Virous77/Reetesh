@@ -21,7 +21,7 @@ It has built in adapters for various databases like MongoDB, Postgres, SQLite, a
 
 It has strong TypeScript support and i works well with all the major runtime like Node.js, Deno, and Bun.
 
-### Setting up Lucia with Next.js
+## Setting up Lucia with Next.js
 
 First, we need to create a new Next.js app. You can do this by running the following command
 
@@ -149,7 +149,9 @@ Since Lucia give us full control over how we wanna store the session data and us
 
 <Advertise title="Creating Rest API on BUN with ElysiaJS" />
 
-### Lucia instance setup
+<Separator />
+
+## Lucia instance setup
 
 Next, we need to create a new file called `auth.ts` and add the following code
 
@@ -221,7 +223,9 @@ We just created a new instance of Lucia where we are passing our adapter and som
 
 And thats pretty much it. We have successfully setup Lucia and now we are ready to use `Login`, `Logout`, `Signup` and `Protected` routes in our Next.js app.
 
-### Signup using server action
+<Separator />
+
+## Signup using server action
 
 We can use server action to register the user. You can do this by creating a new page `/app/register/page.tsx`.
 
@@ -276,7 +280,9 @@ Here as you can we are using server action to register the user. We are hashing 
 
 You can handle the registration action according to your need and use any library to validate the form data.
 
-### Login using server action
+<Separator />
+
+## Login using server action
 
 We can use server action to login the user. You can do this by creating a new page `/app/login/page.tsx`.
 
@@ -330,7 +336,9 @@ I have just created a simple login action where we are validating the user and c
 
 You can handle the login action according to your need and use any library to validate the form data. and also you can handle validation for existing user and password.
 
-### Logout using server action
+<Separator />
+
+## Logout using server action
 
 We can use server action to logout the user. and lucia has made it simple.
 
@@ -370,7 +378,9 @@ async function logout(): Promise<ActionResult> {
 
 We are using server action to logout the user. We are invalidating the session and creating a blank session cookie.
 
-### Protected routes
+<Separator />
+
+## Protected routes
 
 Right now we are protecting the routes using lucia `validateRequest` function. But since Next.Js give us `middleware` and lucia setting cookie on the client side. We can use cookie to protect the routes in middleware.
 

@@ -24,19 +24,21 @@ related: 'common'
 
 Hono is lightweight, small, simple, and ultrafast web framework for the Edges. As we are going to use Next.Js in this article hono makes it's too easy to create REST API and has vast majority of built in api which speed up the development. While Drizzle ORM is a headless TypeScript ORM which is also lightweight and support edges network out of the box.
 
-### Why Hono?
+## Why Hono?
 
 - **Runtime** :- Hono supports Cloudflare Workers, Fastly Compute, Deno, Bun, AWS Lambda, or Node.js. The same code runs on all platforms. With rise of edge computing, Hono is the perfect choice for the future.
 - **Performance** :- Hono router is ultrafast. It's use Web Standard APIs and has zero dependencies.
 - **Easy to use** :- Hono is simple and easy to use as there is many built-in middleware, third-party middleware, and helpers.
 
-### Why Drizzle over other ORM?
+## Why Drizzle over other ORM?
 
 - **SQL-Like** :- Drizzle is a traditional SQL query builder that lets you compose SQL queries with JavaScript/TypeScript functions.
 - **TypeScript** :- Drizzle is written in TypeScript and has first-class support for TypeScript. Its type-safe and has auto-completion.
 - **Serverless** :- Drizzle is designed to work with serverless environments like AWS Lambda, Cloudflare Workers or Vercel Edge Functions.
 
-### How to use Hono in Next.js?
+<Separator />
+
+## How to use Hono in Next.js?
 
 I'm assuming you have already setup Next.js app and ready to deep dive into the Hono and Drizzle. If not you can follow the [official documentation](https://nextjs.org/docs/getting-started/installation) to setup Next.js app.
 
@@ -50,7 +52,7 @@ I'm using `dotenv` for environment variables and `@hono/zod-validator` middlewar
 
 I'm using `@neondatabase/serverless` for database. You can use any database you want. Neon is a fully managed serverless Postgres database with modern developer features such as autoscaling, branching, bottomless storage, and more. To use NeonDatabase, you need to create project on [NeonDatabase](https://neon.tech/) and get the connection string.
 
-#### Setting up Hono
+### Setting up Hono
 
 We need to setup our routes for hono. which will handle all the requests and response.
 
@@ -79,7 +81,7 @@ We just imported `handle` from `hono/vercel` which will handle the request and r
 
 <Advertise title="Integrating Google Gemini to Node.js Application" />
 
-#### Setting up Drizzle
+### Setting up Drizzle
 
 Drizzle is very easy to setup. We need to crete few files and we are good to go. You can create a folder `db` in your root directory and create a file `drizzle .ts` in it.
 
@@ -148,7 +150,9 @@ npx drizzle-kit push:pg
 
 With this we are done with the setup of hono and drizzle. Now we can focus on creating our rest api.
 
-#### Creating CRUD APIs for Todo
+<Separator />
+
+### Creating CRUD APIs for Todo
 
 Coming from `express.js` background, hono gives same feel and easy to use with some additional features. Which makes it more powerful. Let's create a simple rest api for todo.
 
@@ -340,7 +344,9 @@ There are some additional features in hono like `c.req.valid("form")` which will
 
 We are using `zValidator` for validation which will validate the request body and if it's not valid it will return the error message.
 
-### Hono RPC example in Next.JS
+<Separator />
+
+## Hono RPC example in Next.JS
 
 Hono `rpc` feature is too powerful which enable developers to write backend api and use it in client with fully type-safe and auto-completion. The best part is since HONO use web standard APIs, it's support all the environment.
 

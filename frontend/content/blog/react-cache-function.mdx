@@ -22,13 +22,13 @@ Unlike React Query, React Cache Function is not a library, it's a built-in featu
 
 It's also very different from other React `useMemo` or `useCallback` hooks. It's not a hook, it's a function that you can call from anywhere in your component. It's also not a replacement for `useMemo` or `useCallback` hooks.
 
-### Key Features of React Cache Function
+<SubHeadings>Key Features of React Cache Function</SubHeadings>
 
 - `cache` only can use with React Server Components.
 - React will invalidate the cache for all memoized functions for each server request.
 - It can cache all type of data, like if here `cache(fn)` in `fn` return error, then it will cache the error as well.
 
-### Usage of Cache Function
+## Usage of Cache Function
 
 ```jsx
 import { getPost } from '@/api/api';
@@ -52,7 +52,9 @@ export default HomePage;
 
 In the above example, we are using `cache` function to cache the result of `getPost` function. So, when we call `getSinglePost` function, it will return the cached result if it's already cached.
 
-### How to efficiently use Cache Function
+<Separator />
+
+## How to efficiently use Cache Function
 
 There are few things that you should keep in mind while using cache function. Always consider to keep `cache function` in a separate file, so that you can import it anywhere and use same cache all over the places.
 
@@ -89,7 +91,9 @@ In the above example, we are using `cache` function in a separate file, so that 
 
 <Advertise title="Nginx as Reverse Proxy for Kubernetes Services" />
 
-### Preload data with Cache Function
+<Separator />
+
+## Preload data with Cache Function
 
 The best part of cache function is that you can preload the data as well. You can use `cache` function to preload the data. This is helpful when you want to preload the data before the component is rendered.
 

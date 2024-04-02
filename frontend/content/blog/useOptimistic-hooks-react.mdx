@@ -22,13 +22,13 @@ The `useOptimistic` and `useTransition` hooks are two new hooks thats currently 
 
 I'm pretty excited about these hooks and I think they are going to be a game changer since now we don't have to rely on third party libraries to achieve this. It's built into React itself, and good thing is that it's very easy to use.
 
-### Whats is Optimistic Update?
+## Whats is Optimistic Update?
 
 Optimistic updates are a way to make the UI feel faster by updating the UI before the server responds. This is a common pattern in modern web applications, and it can be a great way to improve the user experience.
 
 Building a good user experience is all about making the app feel fast and responsive. Optimistic updates are a great way to do that, and they can be a powerful tool for improving the user experience.
 
-### Setting up a new Next.js Project
+## Setting up a new Next.js Project
 
 You can setup a new `Next.js` project by running the following command.
 
@@ -40,7 +40,7 @@ Since I have already cover how you can setup Next.Js with `MongoDB` or `PostgreS
 
 We are creating a Todo app where we will use `useOptimistic` and `useTransition` hooks.
 
-#### useOptimistic
+### useOptimistic
 
 Lets start with `useOptimistic` hook. We will fetch the initial Todos data from the server and show it on UI.
 
@@ -129,7 +129,9 @@ Since here we are using Next.Js `server action` on action after adding todo to `
 
 So after revalidating the data on the server, Next.js will fetch the latest data.
 
-#### useTransition
+<Separator />
+
+### useTransition
 
 useTransition hooks helps useOptimistic hooks to use in client components when we are using click events. Right now we have to wrap the useOptimistic setter function with a `useTransition` setter function. It is advised to use useTransition hooks when we are using outiside of transition or action otherwise Next.Js will give a warning.
 
