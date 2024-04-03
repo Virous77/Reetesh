@@ -198,3 +198,18 @@ li code {
     grid-template-columns: 1fr;
   }
 }
+
+.icon-link {
+  margin-left: 10px !important;
+  display: none !important;
+}
+
+.heading:hover .icon-link {
+  display: inline-block !important;
+  position: relative !important;
+  color: #e21d49 !important;
+}
+
+.icon-link:hover {
+  text-decoration: underline !important;
+}

@@ -129,8 +129,15 @@ export default makeSource({
       [
         rehypeAutolinkHeadings,
         {
+          content: {
+            type: 'element',
+            tagName: 'span',
+            properties: {
+              className: ['icon-link'],
+              children: ['#'],
+            },
+          },
           properties: {
-            className: ['anchor'],
             ariaLabel: 'Link to heading',
           },
           behavior: 'append',
