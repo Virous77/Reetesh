@@ -13,7 +13,7 @@ const CommentList = async ({ data }: { data: TBlog[] }) => {
         {data.map((comment) => (
           <div
             key={comment._id.toString()}
-            className="grid-cols-custom mb-4 grid items-start gap-3"
+            className="grid-cols-custom mb-4 grid items-start gap-3 overflow-scroll"
           >
             <div className="flex h-[40px]  w-[40px] items-center justify-center rounded-full bg-gray-200">
               <span className="text-[18px] font-bold text-heading">
