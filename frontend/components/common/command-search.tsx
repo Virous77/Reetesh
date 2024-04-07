@@ -12,7 +12,6 @@ import {
 } from '@/components/ui/command';
 import { Post } from '@/.contentlayer/generated';
 import { useRouter } from 'next/navigation';
-import { usePostHog } from 'posthog-js/react';
 import { getLocalData, slugify } from '@/utils/utils';
 
 type TCommandSearch = {
@@ -23,16 +22,6 @@ const CommandSearch: React.FC<TCommandSearch> = ({ blogs }) => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState<string[] | []>([]);
   const router = useRouter();
-  const posthog = usePostHog();
-
-  const handleEvent = (type: string, blog?: string) => {
-    if (posthog && process.env.NEXT_PUBLIC_NODE_ENV === 'production') {
-      posthog?.capture('searched_blog', {
-        type: type,
-        blog: blog || '',
-      });
-    }
-  };
 
   const handleRecentSearch = (params: string) => {
     const recentSearch: string[] = getLocalData('recentSearch');
@@ -65,7 +54,6 @@ const CommandSearch: React.FC<TCommandSearch> = ({ blogs }) => {
     const down = (e: KeyboardEvent) => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        handleEvent('mouse_click');
         setOpen((open) => !open);
       }
     };
@@ -79,10 +67,7 @@ const CommandSearch: React.FC<TCommandSearch> = ({ blogs }) => {
       <div>
         <div
           className=" flex cursor-pointer items-center gap-10 rounded border p-2 pr-6 transition-colors duration-200 ease-in-out hover:bg-accent md:pr-2"
-          onClick={() => {
-            setOpen(true);
-            handleEvent('search_click');
-          }}
+          onClick={() => setOpen(true)}
         >
           <span className=" flex items-center gap-2">
             <Search size={16} className=" text-muted-foreground" />
@@ -105,7 +90,6 @@ const CommandSearch: React.FC<TCommandSearch> = ({ blogs }) => {
                   key={item}
                   className=" flex items-center justify-between"
                   onSelect={() => {
-                    handleEvent('recent_search_click', item);
                     handleRecentSearch(item);
                     router.push(`/blog/${slugify(item)}`);
                   }}
@@ -127,7 +111,6 @@ const CommandSearch: React.FC<TCommandSearch> = ({ blogs }) => {
                 key={blog._id}
                 className=" flex items-center justify-between"
                 onSelect={() => {
-                  handleEvent('blog_click', blog.title);
                   handleRecentSearch(blog.title);
                   router.push(`/blog/${blog.slugAsParams}`);
                 }}

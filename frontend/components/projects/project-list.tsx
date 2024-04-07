@@ -1,5 +1,3 @@
-'use server';
-
 import { CalendarDays, Code, Link2, MoveRight } from 'lucide-react';
 import parse from 'html-react-parser';
 import Link from 'next/link';
