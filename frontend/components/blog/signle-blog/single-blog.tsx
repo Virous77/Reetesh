@@ -1,5 +1,3 @@
-'use server';
-
 import Author from '@/components/common/author';
 import Social from '@/components/social/social';
 import Footer from '@/components/common/footer';
