@@ -62,7 +62,11 @@ export const RESUME_DATA = {
     "Node.js",
     "GraphQL",
     "tRPC",
-    ,
+    "MongoDB",
+    "PostgreSQL",
+    "Bun",
+    "Anchor",
+    "Docker",
   ],
   projects: [
     {
