@@ -45,7 +45,7 @@ export const RESUME_DATA = {
       company: "Inara Consultancy Services",
       link: "https://www.inaraconsultancy.com",
       badges: [],
-      title: "Junior Full Stack Developer",
+      title: "Full Stack Developer",
       logo: GitHubIcon,
       start: "2023",
       end: "Present",

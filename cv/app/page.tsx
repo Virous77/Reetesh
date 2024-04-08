@@ -198,7 +198,7 @@ const CV = () => {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="m-0 mt-2 p-0">
+                <CardContent className="m-0 mt-2 p-0 font-mono text-[14px]">
                   {education.degree}
                 </CardContent>
               </Card>

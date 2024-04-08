@@ -1,0 +1,196 @@
+---
+title: 'Nested Comments in React using Recursion'
+date: 'April 08 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1711908820/react-comment-nested_knqk5m.png'
+about: ' Nested comments are a common feature in many applications. We will use recursion to create nested comments. Also, we will see how to render nested comments in React.'
+tags:
+  [
+    'how to create nested comment in react',
+    'how to write nested comment in react',
+    'nested comment using recursion in react',
+    'react components render using recursion',
+  ]
+related: 'frontend'
+---
+
+<TableContent title="Nested Comments in React using Recursion" />
+
+Comments are a common feature in many applications. Nested comments are a more advanced feature that allows users to reply to comments. You might have seen nested comments on platforms like Reddit, Facebook, or Twitter.
+
+It is a good practice to use recursion to create nested comments. Basically, we will create a component that renders a comment and then calls itself to render the replies to that comment. This way, we can create a tree-like structure of comments.
+
+Before we start, We need to understand what will be structure of comment object. A comment object will have two properties:
+
+- `content`: The content of the comment.
+- `children`: An array of child comments.
+
+> You can also add more properties like `user`, `date`, etc. to the comment object as per your requirements.
+
+**Content** property is string and **children** property is an array of comments. This is a recursive structure where each comment can have its own children comments.
+
+<Separator />
+
+## Creating a Comment Component
+
+First we need to create a `Comment` component which will will be parent component for all comments. We can fetch all the comments and store in a state variable.
+
+```tsx
+// comment.tsx
+
+import { useState } from 'react';
+import CommentInput from './comment-form';
+import CommentsItem from './commnet-items';
+
+export type Comment = {
+  content: string;
+  children: Comment[];
+};
+
+const CommentComp = () => {
+  const [comments, setComments] = useState<Comment[]>([]);
+
+  const handleAddComment = (comment: Comment) => {
+    setComments((prevComments) => [...prevComments, comment]);
+  };
+
+  return (
+    <main>
+      <div>
+        <CommentInput handleAddComment={handleAddComment} />
+
+        <div>
+          {comments.map((comment, index) => (
+            <CommentsItem
+              key={index}
+              comment={comment}
+              onUpdateComments={(updatedComments) => {
+                const updatedCommentsArray = [...comments];
+                updatedCommentsArray[index].children = updatedComments;
+                setComments(updatedCommentsArray);
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </main>
+  );
+};
+
+export default CommentComp;
+```
+
+In the above code, we have created a `CommentComp` component that renders a list of comments. We have used the `useState` hook to store the comments in a state variable. We have also created a `handleAddComment` function that adds a new comment to the list of comments.
+
+`onUpdateComments` function is passed to the `CommentsItem` component as a prop. This function is used to update the comments array when a reply is added to a comment. Here we are updating the comments array by replacing the children of the comment with the updated children once a reply is added. We are using the index of the comment to update the correct comment in the array.
+
+<Separator />
+
+## Creating a Comment-Item Component
+
+Next, we need to create a `CommentItem` component that will render a single comment. This component will also call itself recursively to render the replies to that comment.
+
+```tsx
+// comment-item.tsx
+
+import { useState } from 'react';
+import { Comment } from './comment';
+import CommentInput from './comment-form';
+
+const CommentsItem = ({
+  comment,
+  onUpdateComments,
+}: {
+  comment: Comment;
+  onUpdateComments: (updatedComments: Comment[]) => void;
+}) => {
+  const [reply, setReply] = useState(false);
+  return (
+    <div>
+      <p>{comment.content}</p>
+      <div>
+        {reply && (
+          <CommentInput
+            handleAddComment={(e) => onUpdateComments([...comment.children, e])}
+          />
+        )}
+        <button onClick={() => setReply(!reply)}>
+          {reply ? 'Cancel' : 'Reply'}
+        </button>
+      </div>
+      <div>
+        {comment.children.map((child, index) => (
+          <CommentsItem
+            key={index}
+            comment={child}
+            onUpdateComments={(updatedComments) => {
+              const updatedChildren = [...comment.children];
+              updatedChildren[index] = { ...child, children: updatedComments };
+              onUpdateComments(updatedChildren);
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default CommentsItem;
+```
+
+In the above code, we have created a `CommentsItem` component that renders a single comment. The component takes two props: `comment` and `onUpdateComments`. The `comment` prop contains the comment to be rendered, and the `onUpdateComments` prop is a function that is called when a reply is added to the comment.
+
+The component renders the content of the comment and a button to reply to the comment. When the reply button is clicked, the `CommentInput` component is rendered to allow the user to add a reply. The `reply` state variable is used to toggle the visibility of the `CommentInput` component.
+
+The component then renders the replies to the comment using the `comment.children` array. For each child comment, the `CommentsItem` component is called **recursively** to render the child comment.
+
+<Separator />
+
+## Creating a CommentForm Component
+
+Finally, we need to create a `CommentForm` component that allows the user to add a new comment. We are reusing the `CommentForm` component in the `CommentItem` and `CommentComp` components.
+
+```tsx
+import { FormEvent } from 'react';
+import { Comment } from '../utils/util';
+
+const CommentInput = ({
+  handleAddComment,
+}: {
+  handleAddComment: (comment: Comment) => void;
+}) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
+    const comment = formData.get('comment') as string;
+    if (!comment || comment.trim() === '') return alert('Comment is required');
+
+    handleAddComment({ content: comment, children: [] });
+    e.currentTarget.reset();
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input type="text" name="comment" placeholder="Add comment" />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  );
+};
+
+export default CommentInput;
+```
+
+In the above code, we have created a `CommentInput` component that renders a form with an input field to add a new comment. The component takes a `handleAddComment` prop, which is a function that is called when the form is submitted. The `handleAddComment` function adds the new comment to the list of comments.
+
+We have added some basic validation to check if the comment is empty before adding it to the list of comments. once comment is added, we are resetting the form.
+
+> You can find the complete code in this [GitHub repository](https://github.com/Virous77/blog-projects/tree/main/comment-example)
+
+### Conclusion
+
+Recursion is a powerful technique that can be used to create nested comments in React. By creating a component that calls itself recursively, we can create a tree-like structure of comments. This allows users to reply to comments and create nested threads of conversation.
+
+I hope this article helps you understand how to create nested comments in React using recursion. If you have any questions or feedback, feel free to leave a comment below. Happy coding! 🚀
