@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Navigation from './navigation';
 
 const Tab = () => {
-  const tabs = ['Projects'];
+  const tabs = ['Projects', 'Resume'];
 
   return (
     <div className=" mt-[50px] md:mt-[80px]">
@@ -10,9 +10,18 @@ const Tab = () => {
         {tabs.map((tab) => (
           <li key={tab}>
             <Link
-              href={`/${tab.toLowerCase()}`}
+              target={tab === 'Resume' ? '_blank' : '_self'}
+              href={
+                tab === 'Resume'
+                  ? 'https://cv.reetesh.in'
+                  : `/${tab.toLowerCase()}`
+              }
+              referrerPolicy={tab === 'Resume' ? 'no-referrer' : 'origin'}
+              rel={tab === 'Resume' ? 'noopener noreferrer' : ''}
               className="flex w-fit cursor-pointer items-center gap-3 text-[16px] leading-[1.1]"
-              aria-label="Visit all Projects"
+              aria-label={
+                tab === 'Resume' ? 'Reetesh Resume' : 'Visit all Projects'
+              }
             >
               <span className="block h-[1px] w-10 bg-foreground opacity-50"></span>
               <span className="font-mono">{tab}</span>
