@@ -2,17 +2,7 @@ const { withContentlayer } = require('next-contentlayer');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: false,
-  i18n: {
-    locales: ['en'],
-    defaultLocale: 'en',
-    domains: [
-      {
-        domain: 'reetesh.in',
-        defaultLocale: 'en',
-      },
-    ],
-  },
+  reactStrictMode: true,
   images: {
     remotePatterns: [
       {

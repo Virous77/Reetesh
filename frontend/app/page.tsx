@@ -1,9 +1,7 @@
-import dynamic from 'next/dynamic';
-
-const Author = dynamic(() => import('@/components/author/author'));
-const About = dynamic(() => import('@/components/about/about'));
-const Footer = dynamic(() => import('@/components/common/footer'));
-const Recent = dynamic(() => import('@/components/recent/recent'));
+import About from '@/components/about/about';
+import Author from '@/components/author/author';
+import Footer from '@/components/common/footer';
+import Recent from '@/components/recent/recent';
 
 const Home = () => {
   return (
