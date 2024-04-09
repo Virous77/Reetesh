@@ -11,6 +11,7 @@ const Tab = () => {
           <li key={tab}>
             <Link
               target={tab === 'Resume' ? '_blank' : '_self'}
+              prefetch={false}
               href={
                 tab === 'Resume'
                   ? 'https://cv.reetesh.in'
