@@ -24,6 +24,7 @@ const Recent = async () => {
                   href={`/blog/${post.slugAsParams}`}
                   className=" flex items-center gap-2 opacity-90 hover:opacity-100 "
                   aria-label={`Visit ${post.title}`}
+                  prefetch={false}
                 >
                   {post.title}
                   <ExternalLink size={20} className=" hidden md:block" />
@@ -42,6 +43,7 @@ const Recent = async () => {
               href="/projects"
               className=" flex items-center gap-2 opacity-90 hover:opacity-100"
               aria-label="Visit all Projects"
+              prefetch={false}
             >
               {project.title}
               <ExternalLink size={20} />
