@@ -1,20 +1,20 @@
+import { Blogs, Skills } from '@/routes';
 import { FileText, Target } from 'lucide-react';
-import Link from 'next/link';
 
 const Navigation = () => {
   return (
     <div className=" mt-5 flex items-center gap-7">
-      <Link href="/blogs" aria-label="Visit all Blogs">
+      <Blogs.Link aria-label="Visit all Blogs">
         <span className="flex cursor-pointer items-center gap-2 font-mono text-[13px] text-default hover:text-defaultMax">
           <FileText size={17} /> Blogs
         </span>
-      </Link>
+      </Blogs.Link>
 
-      <Link href="/skills">
+      <Skills.Link>
         <span className=" flex cursor-pointer items-center gap-2 font-mono text-[13px] text-default hover:text-defaultMax">
           <Target size={17} /> Skills
         </span>
-      </Link>
+      </Skills.Link>
     </div>
   );
 };

@@ -2,7 +2,6 @@ import Author from '@/components/common/author';
 import Social from '@/components/social/social';
 import Footer from '@/components/common/footer';
 import { BookOpenText, CalendarDays, Newspaper } from 'lucide-react';
-import Link from 'next/link';
 import { Post } from '@/.contentlayer/generated';
 import { Mdx } from './mdx';
 import Views from './views';
@@ -10,6 +9,7 @@ import Comment from './comment/comment';
 import ReadMore from './read-more';
 import RelatedPost from '@/components/common/related-post';
 import { formateDate } from '@/utils/utils';
+import { Blogs } from '@/routes';
 
 type TSingleBlog = {
   blog: Post;
@@ -23,9 +23,9 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
         <Author />
 
         <div className=" flex items-center gap-3">
-          <Link href="/blogs" aria-label="Visit all Blogs">
+          <Blogs.Link aria-label="Visit all Blogs">
             <Newspaper />
-          </Link>
+          </Blogs.Link>
           <Social styles="" />
         </div>
       </div>
@@ -35,9 +35,9 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
             <Author />
 
             <div className=" flex items-center gap-3">
-              <Link href="/blogs" aria-label="Visit all Blogs">
+              <Blogs.Link aria-label="Visit all Blogs">
                 <Newspaper />
-              </Link>
+              </Blogs.Link>
               <Social styles="" />
             </div>
           </div>

@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import React from 'react';
 import { allPosts } from '@/.contentlayer/generated';
 import { notFound } from 'next/navigation';
+import { BlogDetails } from '@/routes';
 
 type TAdvertise = {
   title: string;
@@ -27,13 +27,13 @@ const Advertise: React.FC<TAdvertise> = ({ title }) => {
         <div>
           <h1 className=" text-center text-xl capitalize">{title}</h1>
           <p className="whitespace-normal text-center text-[14px]">{about}</p>
-          <Link
+          <BlogDetails.Link
             className=" inline-block w-full text-center"
-            href={`/blog/${slugAsParams}`}
+            id={slugAsParams}
             aria-label={`Read full post ${title}`}
           >
             Read Full Post
-          </Link>
+          </BlogDetails.Link>
         </div>
         <Image
           width={300}

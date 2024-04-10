@@ -1,10 +1,10 @@
 import { Home, LibrarySquare, MoveRight } from 'lucide-react';
-import Link from 'next/link';
 import { Card, CardContent } from '../ui/card';
 import Image from 'next/image';
 import { Post } from '@/.contentlayer/generated';
 import { formateDate } from '@/utils/utils';
 import CommandSearch from '../common/command-search';
+import { BlogDetails, Projects, Root } from '@/routes';
 
 type TBlog = {
   blogs: Post[];
@@ -20,13 +20,13 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
         <CommandSearch blogs={blogs} />
 
         <div className="flex  items-center gap-4 pr-2 md:hidden">
-          <Link href="/projects" aria-label="Visit Projects Page">
+          <Projects.Link aria-label="Visit Projects Page">
             <LibrarySquare size={22} />
-          </Link>
+          </Projects.Link>
 
-          <Link href="/" aria-label="Visit Home Page">
+          <Root.Link aria-label="Visit Home Page">
             <Home size={22} />
-          </Link>
+          </Root.Link>
         </div>
       </div>
 
@@ -60,11 +60,11 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
 
                 <div className=" mt-3 flex items-center gap-3">
                   <span className=" h-[2px] w-full bg-default"></span>
-                  <Link href={`/blog/${blog.slugAsParams}`}>
+                  <BlogDetails.Link id={blog.slugAsParams}>
                     <span className=" flex cursor-pointer items-center gap-2 whitespace-nowrap text-[13px] font-bold hover:underline hover:underline-offset-4">
                       Read Full Blog <MoveRight />
                     </span>
-                  </Link>
+                  </BlogDetails.Link>
                 </div>
               </CardContent>
             </Card>

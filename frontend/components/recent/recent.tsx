@@ -1,8 +1,8 @@
 import { allPosts } from '@/.contentlayer/generated';
 import { ExternalLink } from 'lucide-react';
-import Link from 'next/link';
 import React from 'react';
 import { serverClient } from '@/trpc-client/server';
+import { BlogDetails, Projects } from '@/routes';
 
 const Recent = async () => {
   const posts = allPosts
@@ -20,14 +20,14 @@ const Recent = async () => {
           <ul className=" flex flex-col gap-2">
             {posts.map((post) => (
               <li key={post.slug} className=" underline underline-offset-4">
-                <Link
-                  href={`/blog/${post.slugAsParams}`}
+                <BlogDetails.Link
+                  id={post.slugAsParams}
                   className=" flex items-center gap-2 opacity-90 hover:opacity-100 "
                   aria-label={`Visit ${post.title}`}
                 >
                   {post.title}
                   <ExternalLink size={20} className=" hidden md:block" />
-                </Link>
+                </BlogDetails.Link>
               </li>
             ))}
           </ul>
@@ -38,14 +38,13 @@ const Recent = async () => {
         <Common name="Projects" />
         <ul className=" flex flex-col gap-2">
           <li className=" underline underline-offset-4">
-            <Link
-              href="/projects"
+            <Projects.Link
               className=" flex items-center gap-2 opacity-90 hover:opacity-100"
               aria-label="Visit all Projects"
             >
               {project.title}
               <ExternalLink size={20} />
-            </Link>
+            </Projects.Link>
           </li>
         </ul>
       </div>
