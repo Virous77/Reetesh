@@ -1,7 +1,7 @@
 import { TProject } from '@/models/projects';
 import ProjectList from './project-list';
-import Link from 'next/link';
 import { Home } from 'lucide-react';
+import { Root } from '@/routes';
 
 type TMyProjects = {
   projects: TProject[];
@@ -15,13 +15,12 @@ const MyProjects: React.FC<TMyProjects> = ({ projects }) => {
           <h2 className="p-2 text-center text-[18px] tracking-widest md:p-0 md:text-[25px]">
             My Projects
           </h2>
-          <Link
-            href="/"
+          <Root.Link
             className="-mb-1 block pr-12 md:hidden"
             aria-label="Visit Home Page"
           >
             <Home size={21} />
-          </Link>
+          </Root.Link>
         </div>
         <p className=" mb-10 mt-2 w-[95%] text-center text-[15px] text-default md:w-[60%]">
           Welcome to my Projects Page, a curated showcase of the diverse array

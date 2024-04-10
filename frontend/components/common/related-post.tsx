@@ -1,7 +1,7 @@
 import { Post } from '@/.contentlayer/generated';
 import { Card, CardContent } from '../ui/card';
 import Image from 'next/image';
-import Link from 'next/link';
+import { BlogDetails } from '@/routes';
 
 const RelatedPost = ({ relatedBlogs }: { relatedBlogs: Post[] }) => {
   const posts = relatedBlogs;
@@ -15,7 +15,7 @@ const RelatedPost = ({ relatedBlogs }: { relatedBlogs: Post[] }) => {
         {posts.slice(0, 5).map((post) => (
           <Card key={post.slug}>
             <CardContent className=" m-0 h-fit w-full p-0 md:w-[350px]">
-              <Link href={`/blog/${post.slugAsParams}`}>
+              <BlogDetails.Link id={post.slugAsParams}>
                 <Image
                   alt="blog thumbnail"
                   src={post.blogImage}
@@ -26,7 +26,7 @@ const RelatedPost = ({ relatedBlogs }: { relatedBlogs: Post[] }) => {
                   style={{ width: '100%', height: '220px' }}
                 />
                 <h1 className=" mt-2 p-2 pt-0 text-[18px]">{post.title}</h1>
-              </Link>
+              </BlogDetails.Link>
             </CardContent>
           </Card>
         ))}

@@ -1,10 +1,10 @@
 import { CalendarDays, Code, Link2, MoveRight } from 'lucide-react';
 import parse from 'html-react-parser';
-import Link from 'next/link';
 import React from 'react';
 import { Card, CardContent } from '../ui/card';
 import Image from 'next/image';
 import { TProject } from '@/models/projects';
+import { Projects } from '@/routes';
 
 type TProjects = {
   projects: TProject[];
@@ -81,13 +81,12 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
         </Card>
       ))}
       {isActive && (
-        <Link
+        <Projects.Link
           className=" flex cursor-pointer items-center gap-2 text-[14px] text-primary"
-          href="/projects"
           aria-label="Visit all Projects"
         >
           Visit all Projects <MoveRight size={19} />
-        </Link>
+        </Projects.Link>
       )}
     </div>
   );

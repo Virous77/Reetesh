@@ -1,6 +1,5 @@
 import Social from '../social/social';
 import { Home } from 'lucide-react';
-import Link from 'next/link';
 import Image from 'next/image';
 import {
   Tooltip,
@@ -9,6 +8,7 @@ import {
   TooltipTrigger,
 } from '../ui/tooltip';
 import { TSkill } from '@/models/skills';
+import { Root } from '@/routes';
 
 type TSkills = {
   skills: TSkill[];
@@ -76,9 +76,9 @@ const Skill: React.FC<TSkills> = ({ skills }) => {
 
       <section className=" flex flex-col items-center justify-center  gap-5">
         <Social styles=" mt-6 justify-center" />
-        <Link href="/" aria-label="home">
+        <Root.Link aria-label="home">
           <Home className=" text-primary" />
-        </Link>
+        </Root.Link>
       </section>
     </main>
   );
