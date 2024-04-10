@@ -36,31 +36,6 @@ const computedFields: ComputedFields = {
   },
 };
 
-export const Course = defineDocumentType(() => ({
-  name: 'Course',
-  filePathPattern: `course/**/*.mdx`,
-  contentType: 'mdx',
-  fields: {
-    title: {
-      type: 'string',
-      required: true,
-    },
-    date: {
-      type: 'date',
-      required: true,
-    },
-    author: {
-      type: 'string',
-      required: true,
-    },
-    about: {
-      type: 'string',
-      required: true,
-    },
-  },
-  computedFields,
-}));
-
 export const Post = defineDocumentType(() => ({
   name: 'Post',
   filePathPattern: `blog/**/*.mdx`,
@@ -104,7 +79,7 @@ export const Post = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: './content',
-  documentTypes: [Post, Course],
+  documentTypes: [Post],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
