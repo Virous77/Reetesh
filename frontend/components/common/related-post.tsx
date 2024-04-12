@@ -13,7 +13,10 @@ const RelatedPost = ({ relatedBlogs }: { relatedBlogs: Post[] }) => {
       </h1>
       <div className=" mt-4 flex flex-col items-stretch gap-3 md:flex-row md:flex-wrap">
         {posts.slice(0, 5).map((post) => (
-          <Card key={post.slug}>
+          <Card
+            key={post.slug}
+            className=" transition-all duration-700 hover:scale-105"
+          >
             <CardContent className=" m-0 h-fit w-full p-0 md:w-[350px]">
               <BlogDetails.Link id={post.slugAsParams}>
                 <Image
@@ -25,7 +28,9 @@ const RelatedPost = ({ relatedBlogs }: { relatedBlogs: Post[] }) => {
                   sizes="100vw"
                   style={{ width: '100%', height: '220px' }}
                 />
-                <h1 className=" mt-2 p-2 pt-0 text-[18px]">{post.title}</h1>
+                <h1 className=" mt-2 p-2 pt-0 text-[18px] font-[500]">
+                  {post.title}
+                </h1>
               </BlogDetails.Link>
             </CardContent>
           </Card>

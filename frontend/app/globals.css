@@ -213,3 +213,11 @@ li code {
 .icon-link:hover {
   text-decoration: underline !important;
 }
+
+.blog-table {
+  list-style-type: square;
+}
+
+.blog-table li::marker {
+  color: #e21d49;
+}
