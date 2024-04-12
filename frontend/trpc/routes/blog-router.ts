@@ -46,7 +46,7 @@ export const blogRouter = router({
       const comment: TBlog = await blogComments.create({
         ...input,
       });
-      await commentMail(input.comment, input.blogId);
+      commentMail(input.comment, input.blogId);
       return comment;
     }),
   addViews: publicProcedure

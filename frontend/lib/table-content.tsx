@@ -41,7 +41,7 @@ const TableContent = ({ title }: { title: string }) => {
         </AccordionTrigger>
         <AccordionContent>
           <ul
-            className=" flex flex-col text-sm font-medium"
+            className=" blog-table flex flex-col text-sm font-medium"
             style={{
               marginTop: '0rem',
               marginBottom: '0rem',
