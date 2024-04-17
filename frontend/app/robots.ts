@@ -6,5 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
+    host: 'https://reetesh.in',
+    sitemap: 'https://reetesh.in/sitemap.xml',
   };
 }

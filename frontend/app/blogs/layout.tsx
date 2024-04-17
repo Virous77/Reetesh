@@ -19,9 +19,5 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <React.Fragment>
-      <main>{children}</main>
-    </React.Fragment>
-  );
+  return children;
 }
