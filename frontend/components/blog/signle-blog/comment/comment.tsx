@@ -6,7 +6,7 @@ export const Comment = async ({ slug }: { slug: string }) => {
   const data = await serverClient.blogs.getComments({ id: slug });
 
   return (
-    <div className=" px-3 md:px-0">
+    <section className=" px-3 md:px-0">
       <span className=" mb-3 inline-block h-[2px] w-full bg-accent"></span>
       <div className=" flex  items-center justify-between md:w-[85%]">
         <h2 className=" pb-2 text-lg text-heading">
@@ -18,7 +18,7 @@ export const Comment = async ({ slug }: { slug: string }) => {
       <CommentForm />
       <CommentList data={data} />
       <span className=" mb-3 inline-block h-[2px] w-full bg-accent"></span>
-    </div>
+    </section>
   );
 };
 

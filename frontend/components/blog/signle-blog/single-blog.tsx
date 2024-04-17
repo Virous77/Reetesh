@@ -18,7 +18,7 @@ type TSingleBlog = {
 
 const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
   return (
-    <section className=" relative">
+    <main className=" relative">
       <div className=" sticky left-0 top-0 z-10 mb-3 flex w-full items-center justify-between p-4 backdrop-blur dark:bg-[#111111]/60 md:hidden">
         <Author />
 
@@ -29,8 +29,9 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
           <Social styles="" />
         </div>
       </div>
+
       <div style={{ maxWidth: '750px', margin: 'auto' }}>
-        <div className="mb-8 mt-4 w-full">
+        <section className="mb-8 mt-4 w-full">
           <div className="mb-3 hidden items-center justify-between md:flex">
             <Author />
 
@@ -56,18 +57,18 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
               {blog.readingTime.text}
             </span>
           </div>
-        </div>
+        </section>
 
-        <div className="box-fit prose-headings:font-cal prose prose-base prose-neutral mt-6 dark:prose-invert prose-a:whitespace-nowrap prose-a:text-default prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-defaultMax prose-blockquote:font-light prose-img:rounded-lg">
+        <section className="box-fit prose-headings:font-cal prose prose-base prose-neutral mt-6 dark:prose-invert prose-a:whitespace-nowrap prose-a:text-default prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-defaultMax prose-blockquote:font-light prose-img:rounded-lg">
           <Mdx code={blog.body.code} />
-        </div>
+        </section>
 
         <ReadMore slug={blog.slugAsParams} />
         <Comment slug={blog.slugAsParams} />
         {relatedBlogs.length > 0 && <RelatedPost relatedBlogs={relatedBlogs} />}
         <Footer />
       </div>
-    </section>
+    </main>
   );
 };
 
