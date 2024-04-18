@@ -39,7 +39,7 @@
     "html-react-parser": "^5.1.6",
     "lucide-react": "^0.364.0",
     "mongoose": "^8.3.0",
-    "next": "^14.1.4",
+    "next": "^14.2.2",
     "next-contentlayer": "^0.3.4",
     "next-themes": "^0.2.1",
     "query-string": "^9.0.0",
