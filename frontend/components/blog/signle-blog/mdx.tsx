@@ -78,7 +78,7 @@ const components = {
     />
   ),
   ul: ({ className, ...props }: any) => (
-    <ul className={cn('my-6 ml-2 list-disc', className)} {...props} />
+    <ul className={cn('my-6 ml-0 list-disc', className)} {...props} />
   ),
   ol: ({ className, ...props }: any) => (
     <ol className={cn('my-6 ml-2 list-decimal', className)} {...props} />

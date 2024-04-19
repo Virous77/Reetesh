@@ -1,0 +1,361 @@
+---
+title: 'Tanstack Form with Next.JS App Router'
+date: 'April 19 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1713466182/tanstack-form_q35f1n.png'
+about: ' Tanstack Form is a best tool for handling form in our React Apps which provides Reactive, Complex validation, Accessibility and custom styling. Which help to build a better and robust form in our Apps.'
+tags:
+  [
+    'tanstack form with next.js',
+    'tanstack form',
+    'tanstack form with react',
+    'tanstack form with remix',
+    'how tanstack form works',
+    'react form',
+  ]
+related: 'frontend'
+---
+
+<TableContent title="Tanstack Form with Next.JS App Router" />
+
+Forms are the most important part of any web application. It is used to collect data from the user. It can be tricky to handle form with good validation, accessibility and custom styling. Providing good user experience is the most important part of any web application. You don't want to let user fill the form again and again.
+
+[Tanstack Form](https://tanstack.com/form/latest/docs/overview) is a best tool for handling form in our React Apps which provides Reactive, Complex validation, Accessibility and custom styling. Which help to build a better and robust form in our Apps. It works with **React Server Component** out of the box and Support for Typescript make it end to end type safe.
+
+<SubHeadings>Tanstack From</SubHeadings>
+
+- **Reactive :** Tanstack Form is reactive in nature. It means that the form will update automatically when the state of the form changes. It uses the concept of observables to achieve this.
+- **Complex validation :** Tanstack Form provides a easy way to validate the form. we can use the own custom validation logic or use the built-in supported validators like zod, yup, valibot etc.
+- **Bundle size :** Tanstack Form is very lightweight. It is only 6.1kb. Compared to React Hook Form which is 10.1kb and Formik which is 13.2kb.
+- **Type safe :** Tanstack Form is fully type safe. It provides full type safety with Typescript. It even infer the type of nested objects and arrays quite well.
+
+## Installation
+
+We are going to use Tanstack Form with Next.JS latest version where we will explore how we can use Tanstack Form with Next.JS App Router using server action.
+
+> I assume you have already created a Next.JS App and you are familiar with Next.JS App Router.
+
+```bash
+npm install @tanstack/react-form zod @tanstack/zod-form-adapter
+```
+
+We will use **zod** as a validation library. You can use any other validation library like **yup**, **valibot** etc which are supported by Tanstack Form.
+
+## Tanstack form setup
+
+We have to structure our form in a way that it can work with server component and we can use server action.
+
+<SubHeadings> Form Schema </SubHeadings>
+
+Tanstack Form provides `createFormFactory` function which let us create form instance. We can create form schema and validation for server using `onServerValidate` function.
+
+```tsx
+// form-factory.tsx
+
+import { createFormFactory } from '@tanstack/react-form';
+
+const formFactory = createFormFactory({
+  defaultValues: {
+    firstName: '',
+    age: 0,
+  },
+  onServerValidate({ value }) {
+    if (value.age < 12) {
+      return 'age | You must be at least 12 to sign up';
+    }
+
+    if (value.firstName === '') {
+      return 'firstName | FirstName is required';
+    }
+  },
+});
+
+export default formFactory;
+```
+
+Here we have created a form schema with default values and validation logic. We are using `onServerValidate` function to validate the form on server side. We are returning the error message if the validation fails.
+
+> You can use **ZOD** to validte data instead for manually checking the validation.
+
+<Separator />
+
+<SubHeadings> Server Action </SubHeadings>
+
+We need to create a server action which will be used to validate the form on server side and do the server side action like saving the form data to database etc.
+
+```tsx
+// action.ts
+
+'use server';
+
+import formFactory from './form-factory';
+const initialState = formFactory.initialFormState.values!;
+export type TResult = typeof initialState;
+
+const getFormData = (formData: FormData) => {
+  const result = {} as TResult;
+
+  formData.forEach((data, key) => {
+    if (key.includes('$ACTION')) return;
+    (result as any)[key] = data;
+  });
+  return result;
+};
+
+const action = async (prev: unknown, formData: FormData) => {
+  const res = await formFactory.validateFormData(formData);
+  if (res.errors && res.errors?.length > 0) return res;
+
+  const data = getFormData(formData);
+  // Do your server side action here
+  console.log(data);
+
+  return res;
+};
+
+export default action;
+```
+
+Here witch `action` function we are validating the form data and doing the server side action. We are using `formFactory.validateFormData` function to validate the form data.
+
+We are extracting the form data from `formData` as formData contains some extra data which we don't need. We are using `getFormData` function to extract the form data.
+
+<Advertise title="Server Action in Client and Server Component in Next.Js Explained" />
+
+<Separator />
+
+<SubHeadings> Form Component </SubHeadings>
+
+With the above setup we are ready to use Tanstack Form with server action. Now we need to create a form component which will be used to render the form.
+
+```tsx
+// form.tsx
+
+'use client';
+
+import {
+  FormApi,
+  mergeForm,
+  useTransform,
+  ValidationError,
+} from '@tanstack/react-form';
+import action, { TResult } from './action';
+import { useFormState } from 'react-dom';
+import formFactory from './form-factory';
+import ButtonStatus from './button-status';
+
+const Form = () => {
+  const [state, setAction] = useFormState(action, formFactory.initialFormState);
+
+  // form instance
+  const { useStore, Subscribe, handleSubmit, Field } = formFactory.useForm({
+    transform: useTransform(
+      (baseForm: FormApi<any, any>) => mergeForm(baseForm, state),
+      [state]
+    ),
+  });
+
+  // server side errors
+  const formErrors = useStore((formState) => formState.errors);
+  // we are extracting the server side errors from formErrors
+  const serverErrors = formErrors.reduce((acc, curr) => {
+    if (!curr) return acc;
+    const [key, value] = curr.split(' | ');
+    const result = { ...acc, [key]: value };
+    return result;
+  }, {} as TResult);
+
+  return (
+    <section>
+      <form action={setAction as never} onSubmit={() => handleSubmit()}>
+        <div>
+          <Field name="age">
+            {(field) => {
+              return (
+                <>
+                  <input
+                    name="age"
+                    type="number"
+                    value={field.state.value || ''}
+                    onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+                  />
+                  <ErrorText error={field.state.meta.errors}>
+                    {serverErrors?.age}
+                  </ErrorText>
+                </>
+              );
+            }}
+          </Field>
+
+          <Field name="firstName">
+            {(field) => {
+              return (
+                <>
+                  <input
+                    name="firstName"
+                    type="text"
+                    value={field.state.value || ''}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                  />
+                  <ErrorText error={field.state.meta.errors}>
+                    {serverErrors?.firstName}
+                  </ErrorText>
+                </>
+              );
+            }}
+          </Field>
+        </div>
+
+        <Subscribe selector={(formState) => [formState.canSubmit]}>
+          {([canSubmit]) => <ButtonStatus canSubmit={canSubmit} />}
+        </Subscribe>
+      </form>
+    </section>
+  );
+};
+
+export default Form;
+
+// ErrorText.tsx
+const ErrorText = ({
+  children,
+  error,
+}: {
+  children: React.ReactNode;
+  error: ValidationError[];
+}) => {
+  console.log(error);
+  return (
+    <>
+      {error.map((error) => (
+        <p key={error as string}>{error}</p>
+      ))}
+      {error.length === 0 && <p>{children}</p>}
+    </>
+  );
+};
+```
+
+Let's break down the above code:
+
+- `useFormState` is hook provided by React which lets us work with server actions forms. It allows us to update state based on the result of a form action.
+
+- We are using `formFactory.useForm` hook to get the form instance. `useTransform` function to merge the form state with the server state.
+
+- We are extracting the server side errors from `formErrors` and showing them in the form. If you remember we are passing error from server in a form that later we can transform it in key value pair and use it.
+
+- We are rendering our form and there is no client side validation yet. `action` let us use server action and `onSubmit` for client side interaction with form to show state based on event and validation.
+
+- `ErrorText` Component is where we are showing error for **client** and **server** both. In the form of children we are passing the server error and in prop the client one.
+
+You see we are using `ButtonStatus` component which let's us know the current state of form.
+
+```tsx
+import { useFormStatus } from 'react-dom';
+
+const ButtonStatus = ({ canSubmit }: { canSubmit: boolean }) => {
+  const { pending } = useFormStatus();
+  return (
+    <button type="submit" disabled={!canSubmit}>
+      {pending ? 'Loading...' : 'Submit'}
+    </button>
+  );
+};
+
+export default ButtonStatus;
+```
+
+You must be thinking why we created a different component as we can hove use in the same component right?
+
+Well to work `useFormStatus` we must need to use in a component which will be rendered inside the form. and its provides state for parent form. Like here we are using `pending` and its provides few other state too you can check [here](https://react.dev/reference/react-dom/hooks/useFormStatus)
+
+<Separator />
+
+## Client side validation using ZOD
+
+Zod is a TypeScript-first schema declaration and validation library. I like zod because it is very easy to use and provides a lot of features an widely used in the community, Which make it easy to find the solution if you face any issue.
+
+```tsx
+'use client';
+
+// ...rest of the imports
+import { zodValidator } from '@tanstack/zod-form-adapter';
+import { z } from 'zod';
+
+const Form = () => {
+  // ... rest of the code
+  return (
+    <section>
+      <form action={setAction as never} onSubmit={() => handleSubmit()}>
+        <div>
+          <Field
+            name="age"
+            validatorAdapter={zodValidator}
+            validators={{
+              onChange: (value) => {
+                if (Number.isNaN(value.value)) return false;
+                const schema = z.number().min(9);
+                const res = schema.safeParse(value.value);
+                if (res.success) return false;
+                return 'You must be at least 8 to sign up';
+              },
+            }}
+          >
+            {(field) => {
+              return (
+                <>
+                  <input
+                    name="age"
+                    type="number"
+                    value={field.state.value || ''}
+                    onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+                  />
+                </>
+              );
+            }}
+          </Field>
+
+          <Field
+            name="firstName"
+            validatorAdapter={zodValidator}
+            validators={{
+              onChange: z.string().min(1, 'FirstName is required'),
+            }}
+          >
+            {(field) => {
+              return (
+                <>
+                  <input
+                    name="firstName"
+                    type="text"
+                    value={field.state.value || ''}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                  />
+                </>
+              );
+            }}
+          </Field>
+        </div>
+        ... rest of the code
+      </form>
+    </section>
+  );
+};
+
+export default Form;
+```
+
+Here we are using `zodValidator` which is provided by `@tanstack/zod-form-adapter`. We are using `zod` to validate the form on client side. We are using `validators` prop to validate the form fields. We are using `onChange` validator to validate the form fields on change.
+
+You can write any custom validation logic in the `validators` prop. It just you have return support error types like string, boolean, null etc.
+
+> The source code for this article is available on [GitHub](https://github.com/Virous77/blog-projects/tree/main/tanstack-form)
+
+## Conclusion
+
+Tanstack Form is a best tool for handling form in our React Apps and with the rise of RSC(React Server Components), We want to use server action which make life easy to handle form on server side. The end to end type safe with Typescript make it more reliable and easy to use.
+
+The flexibility and control it provides to the developer is amazing. We always want to build a better and robust form in our Apps which provide good user experience. There are many other things to learn which you can explore in the [official documentation](https://tanstack.com/form/latest/docs/overview).
+
+I hope you like this article, If you have any question or suggestion, feel free to ask me in the comment section below. Happy coding😊
