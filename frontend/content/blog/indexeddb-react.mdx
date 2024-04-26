@@ -1,0 +1,209 @@
+---
+title: 'IndexedDB in Recat using Dexie.js'
+date: 'April 26 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1714093969/indexeddb_z6zsvo.png'
+about: ' IndexedDB is a low-level API for client-side storage of significant amounts of structured data, including files/blobs. It helps to store data in browser which can be used even in offline mode.'
+tags:
+  [
+    ' how to use indexeddb in react',
+    ' indexeddb in react',
+    ' indexeddb in react using dexie.js',
+    'dexie.js with react',
+    'how dexie.js works in react',
+    'indexeddb in next.js',
+  ]
+related: 'frontend'
+---
+
+<TableContent title="IndexedDB in Recat using Dexie.js" />
+
+IndexedDB is a low-level API for client-side storage of significant amounts of structured data, including files/blobs. The IndexedDB API provides a way to store data in the browser which can be used even in offline mode. It is a NoSQL database that uses a transactional database model. It is a part of the HTML5 specification.
+
+With the rise of Progressive Web Apps, or high interactive web applications, the IndexedDB API is becoming more and more important. It allows you to store data on the client-side and access it offline. This is especially useful for applications that need to work offline or have a lot of data that would be expensive to retrieve from the server every time.
+
+### What is Dexie.js?
+
+Dexie.js is a wrapper library for IndexedDB. It provides a simple and concise API for working with IndexedDB. It is a minimalistic IndexedDB wrapper that provides a simple API for storing and retrieving data in the browser. It is designed to be easy to use and understand, and it provides a lot of features that make working with IndexedDB easier.
+
+Querying data and mutation in IndexedDB can be a bit tricky, but Dexie.js makes it easy. It let assure that you can write queries in a more readable way. It also provides a way to handle errors and exceptions in a more elegant way.
+
+<Separator />
+
+## How to use IndexedDB in React using Dexie.js?
+
+To use IndexedDB in React using Dexie.js, you need to install the Dexie.js library.
+
+> I assume you have already created a React application. If not, you can create a new React application using `npm create vite@latest`
+
+```bash
+npm install dexie dexie-react-hooks
+```
+
+Once you have installed the Dexie.js library, you can create a new Dexie instance and define a schema for your database. Here is an example of how you can create a new Dexie instance and define a schema for your database:
+
+```ts
+// src/indexed/index.ts
+
+import Dexie, { Table } from 'dexie';
+
+export interface Student {
+  id?: number;
+  name: string;
+  marks: number;
+  college: string;
+}
+
+export class MySubClassedDexie extends Dexie {
+  students!: Table<Student>;
+
+  constructor() {
+    super('student');
+    this.version(1).stores({
+      students: '++id, name, marks, college',
+    });
+  }
+}
+
+export const db = new MySubClassedDexie();
+```
+
+In the above code, we have defined a schema for a database that contains a table called `students`. The `students` table has four columns: `id`, `name`, `marks`, and `college`. The `id` column is an auto-incrementing primary key.
+
+Now, you can use the `db` object to interact with the database. Here is an example of how you can insert a new student record into the `students` table.
+
+```tsx
+// src/components/StudentForm.tsx
+
+import { db, Student } from '../indexed';
+
+const StudentForm = () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const student: Student = {
+      name: formData.get('name') as string,
+      marks: Number(formData.get('marks')),
+      college: formData.get('college') as string,
+    };
+    await db.students.add(student);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input type="text" name="name" placeholder="Name" />
+      <input type="number" name="marks" placeholder="Marks" />
+      <input type="text" name="college" placeholder="College" />
+      <button type="submit">Submit</button>
+    </form>
+  );
+};
+```
+
+In the above code, we have created a `StudentForm` component that allows the user to enter the name, marks, and college of a student and submit the form. When the form is submitted, a new student record is inserted into the `students` table in the database.
+
+<Advertise title="Nested Comments in React using Recursion" />
+
+<Separator />
+
+### Querying data from IndexedDB
+
+Dexie provides special hooks to query data from the IndexedDB. Here is an example of how you can query all the student records from the `students` table.
+
+```tsx
+// src/App.tsx
+
+import { useLiveQuery } from 'dexie-react-hooks';
+import { db } from './indexed';
+
+const App = () => {
+  const students = useLiveQuery(() => db.students.toArray());
+
+  return (
+    <div>
+      {students?.map((student) => (
+        <div key={student.id}>
+          <p>Name: {student.name}</p>
+          <p>Marks: {student.marks}</p>
+          <p>College: {student.college}</p>
+        </div>
+      ))}
+    </div>
+  );
+};
+```
+
+In the above code, we have used the `useLiveQuery` hook from `dexie-react-hooks` to query all the student records from the `students` table. The `useLiveQuery` hook automatically updates the `students` variable whenever the data in the `students` table changes.
+
+<Separator />
+
+## Dexie.js more APIs
+
+<Tabs items={["Advanced Query", "Delete", "Update", "Clear"]} >
+
+   <Section slot="Advanced Query">
+    ```ts
+    // src/indexdb/utils.ts
+
+    import { db, Student } from './indexed';
+
+    export const getStudentsByCollege = async (college: string) => {
+      return db.students.where('college').equals(college).toArray();
+    };
+    ```
+
+  </Section>
+   <Section slot="Delete">
+    ```ts
+    // src/indexdb/utils.ts
+    
+    import { db, Student } from './indexed';
+
+    export const deleteStudent = async (id: number) => {
+      return db.students.delete(id);
+    };
+    ```
+
+  </Section>
+   <Section slot="Update">
+    ```ts
+    // src/indexdb/utils.ts
+
+    import { db, Student } from './indexed';
+
+    export const updateStudent = async (id: number, student: Partial<Student>) => {
+      return db.students.update(id, student);
+    };
+    ```
+
+  </Section>
+
+   <Section slot="Clear">
+    ```ts
+    // src/indexdb/utils.ts
+
+    import { db, Student } from './indexed';
+
+    export const clearStudents = async () => {
+      return db.students.clear();
+    };
+    ```
+
+  </Section>
+
+</Tabs>
+
+Above are some of the common APIs that you can use to interact with the IndexedDB using Dexie.js. You can create more utility functions like this to interact with the IndexedDB in your React application. There are many more APIs available in Dexie.js that you can use to interact with the IndexedDB. You can refer to the [Dexie.js documentation](https://dexie.org/docs/Tutorial/React) for more information.
+
+> You can find the complete source code of the example in this [GitHub repository]()
+
+<Separator />
+
+## Conclusion
+
+IndexedDB is a powerful API that allows you to store data in the browser and access it offline. Dexie.js makes is easy and intuitive to work with IndexedDB in React applications.
+
+When we work with IndexedDB, we need to be careful about the performance and the amount of data we store in the browser. It is recommended to store only the necessary data in the browser and keep the data size as small as possible. It's always recommended to use IndexedDB for storing data that is required for offline use or for caching data that is expensive to retrieve from the server.
+
+I hope this article helps you understand how to use IndexedDB in React using Dexie.js. If you have any questions or feedback, feel free to leave a comment below. Happy coding! 🚀
