@@ -1,4 +1,4 @@
-import { Poppins } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
 import './globals.css';
 import ThemeProviderComp from '@/lib/theme-provider';
 import ThemeSwitcher from '@/components/theme/theme-switcher';
@@ -7,13 +7,12 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import Script from 'next/script';
 import { Provider } from '@/lib/reactQuery-provider';
 import { Analytics } from '@vercel/analytics/react';
-import dynamic from 'next/dynamic';
 
-
-
-const poppins = Poppins({
+const montserrat = Montserrat({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['300', '400', '700', '900', '600', '500', '800'],
+  style: 'normal',
+  fallback: ['Poppins', 'sans-serif', 'ui-sans-serif', 'system-ui'],
 });
 
 export async function generateMetadata() {
@@ -78,16 +77,16 @@ export default function RootLayout({
         `}
         </Script>
       </head>
-        <body className={`${poppins.className}`}>
-          <ThemeProviderComp attribute="class" defaultTheme="dark">
-            <Provider>
-              {children}
-              <Analytics debug={false} />
-              <SpeedInsights />
-              <ThemeSwitcher />
-            </Provider>
-          </ThemeProviderComp>
-        </body>
+      <body className={`${montserrat.className}`}>
+        <ThemeProviderComp attribute="class" defaultTheme="dark">
+          <Provider>
+            {children}
+            <Analytics debug={false} />
+            <SpeedInsights />
+            <ThemeSwitcher />
+          </Provider>
+        </ThemeProviderComp>
+      </body>
     </html>
   );
 }

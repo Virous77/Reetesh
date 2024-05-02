@@ -18,7 +18,7 @@ type TSingleBlog = {
 
 const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
   return (
-    <main className=" relative">
+    <>
       <div className=" sticky left-0 top-0 z-10 mb-3 flex w-full items-center justify-between p-4 backdrop-blur dark:bg-[#111111]/60 md:hidden">
         <Author />
 
@@ -68,7 +68,7 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
         {relatedBlogs.length > 0 && <RelatedPost relatedBlogs={relatedBlogs} />}
         <Footer />
       </div>
-    </main>
+    </>
   );
 };
 

@@ -2,6 +2,13 @@ import { allPosts } from '@/.contentlayer/generated';
 import SingleBlog from '@/components/blog/signle-blog/single-blog';
 import { commonMetaData } from '@/utils/utils';
 import { notFound } from 'next/navigation';
+import { Merriweather } from 'next/font/google';
+
+const merriweather = Merriweather({
+  subsets: ['latin'],
+  weight: ['300', '400', '700', '900'],
+  fallback: ['Poppins', 'sans-serif', 'ui-sans-serif', 'system-ui'],
+});
 
 export async function generateStaticParams() {
   const posts = allPosts;
@@ -39,7 +46,11 @@ const SingleBlogPage = async ({
 
   if (!blog) return notFound();
 
-  return <SingleBlog blog={blog} relatedBlogs={relatedBlogs.slice(0, 5)} />;
+  return (
+    <main className={`relative ${merriweather.className}`}>
+      <SingleBlog blog={blog} relatedBlogs={relatedBlogs.slice(0, 5)} />
+    </main>
+  );
 };
 
 export default SingleBlogPage;

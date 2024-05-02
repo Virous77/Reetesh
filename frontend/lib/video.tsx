@@ -9,7 +9,7 @@ export const Video = ({ src }: { src: string }) => {
       src={src}
       controls
       preload="none"
-      aria-details="Video of the author"
+      aria-details="blog video"
       aria-label="video"
     />
   );
