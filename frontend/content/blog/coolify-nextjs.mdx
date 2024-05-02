@@ -1,0 +1,134 @@
+---
+title: 'Deploy Next.JS App on AWS EC2 using Coolify'
+date: 'May 02 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1714580286/coolify_wiqr4x.png'
+about: 'Coolify is an all-in one PaaS that helps you to self-host your own applications, databases or many other services without managing your servers, also known as an open-source & self-hostable Heroku, Netlify, Vercel alternative.'
+tags:
+  [
+    'how to deploy next.js app on aws',
+    'what is coolify',
+    'nextjs app deployment using coolify',
+    'coolify',
+    'deploy next.js app on aws',
+    'coolify for next.js',
+    'How coolify works',
+    'self-hosted coolify',
+  ]
+related: 'common'
+---
+
+<TableContent title="Deploy Next.JS App on AWS EC2 using Coolify" />
+
+We build a lot of Web Apps and deploy them on [Vercel](https://vercel.com), [Netlify](https://www.netlify.com/) or [Render](https://render.com/). They are great platforms for deploying Frontend applications. They provide a lot of features like serverless functions, preview deployments, and much more. We just push our code to the repository and they take care of the rest.
+
+It is great for small to medium-sized applications. But what if you want to deploy your Web Apps on your own server? And you want the same features like on push deployment, preview deployments, and much more. That's where [Coolify](https://coolify.io/) comes in.
+
+## What is Coolify?
+
+Coolify is an all-in one PaaS that helps you to self-host your own applications, databases or many other services without managing your servers, also known as an open-source & self-hostable **Heroku**, **Netlify**, **Vercel** alternative.
+
+Sounds cool, right? There is much more. 🥳
+
+<SubHeadings>Coolify Key Features</SubHeadings>
+
+- **Git Push Deployment**: Deploy your applications by just pushing your code to the repository.
+- **Language Support**: Supports multiple languages like Node.js, Python, Ruby, Go, etc.
+- **Any Server**: You can deploy your applications on any server like AWS, DigitalOcean, Linode, etc.
+- **SSL**: Coolify provides SSL certificates for your applications and auto renews them.
+- **Monitoring**: Monitor your applications with Coolify and get insights and notify you if something goes wrong.
+
+There are many more good features that Coolify provides. You can check them out on their [Docs](https://coolify.io/docs/introduction).
+
+## Setting up AWS EC2
+
+First, we need to set up an AWS EC2 instance. If you already have an EC2 instance, you can skip this step.
+
+> Coolify requires a server with at least 2GB of CPUs and 2GB of Memory.
+
+You can login to your AWS account and create an EC2 instance. You can follow the below video to create an EC2 instance.
+
+<Video src="https://res.cloudinary.com/dw6wav4jg/video/upload/v1714593765/Screen_Recording_2024-05-02_at_1.28.41_AM_pbrh0y.mov" />
+
+> There are many strict security groups and firewall rules that you can setup to secure your EC2 instance. Here for sake of simplicity, I have not set up any security groups. You can always check official docs.
+
+Now we need to setup security groups for our EC2 instance. It is needed to open ports for our application to run as Coolify run default on port 8000. You can follow the below video to setup security groups.
+
+<Video src="https://res.cloudinary.com/dw6wav4jg/video/upload/v1714595250/Screen_Recording_2024-05-02_at_1.55.17_AM_lqjra4.mov" />
+
+<Advertise title="IndexedDB in Recat using Dexie.js" />
+
+<Separator />
+
+## Installing Coolify on EC2
+
+Now To install Coolify on your EC2 instance, you need to SSH into your EC2 instance. You can click on the connect button on your EC2 instance and follow the instructions to SSH into your EC2 instance.
+
+Once you are in your EC2 instance, you can run the below command to install Coolify. But before If you have just setup you instanceof, it's always good to update your server.
+
+```bash
+sudo apt update
+
+sudo apt upgrade
+
+sudo curl -fsSL https://cdn.coollabs.io/coolify/install.sh | bash
+```
+
+It will setup Coolify on your EC2 instance. And you can able you access Coolify on your EC2 instance IP address on port 8000. For example `http://your-ec2-ip:8000`.
+
+Once you open your EC2 instance IP address on port 8000, you will see the Coolify dashboard where you have register first. You can register with your email and password.
+
+| ![Coolify](https://res.cloudinary.com/dw6wav4jg/image/upload/v1714595698/Image_02-05-24_at_2.03_AM_gt4pwi.jpg) |
+| :------------------------------------------------------------------------------------------------------------: |
+|                                               _Coolify Register_                                               |
+
+Once you register, you can simply skip the onboarding process and you will see the Coolify dashboard.
+
+Now You can click on Porject Tab and and click on **+ Add** button to create new porject where you can fill Porject and a description and click on **Continue** button.
+
+Now you will see there will be default **Production** environment created for you. And also we want production environment so we can click on that and clcik on **Add New Resource** button.
+
+| ![Coolify](https://res.cloudinary.com/dw6wav4jg/image/upload/v1714596386/Image_02-05-24_at_2.16_AM_edcqko.jpg) |
+| :------------------------------------------------------------------------------------------------------------: |
+|                                                   _Coolify_                                                    |
+
+As you can see here we can choose many services as per our need. But here we are going to deploy Next.js app and want to connect with our GitHub repository. So we can choose **Public Repository**.
+
+> You can also choose **Private Repository** if you want to deploy your private repository. For that you can follow Coolify Docs.
+
+You can fill your repository URL and click on **Check Repository** button. and then it will auto fill the repository details and you can click on **Continue** button.
+
+> You can change the branch or deploy command later after configuration.
+
+After all this process we can now finally able to setup our App. To deploy our app you can see the the **Deploy** button on the top right corner. You can click on that and it will start deploying your app.
+
+| ![Coolify](https://res.cloudinary.com/dw6wav4jg/image/upload/v1714596973/Image_02-05-24_at_2.25_AM_q8bnss.jpg) |
+| :------------------------------------------------------------------------------------------------------------: |
+|                                               _Coolify Project_                                                |
+
+Here you can configure all the other things you need like environment variables, custom domains, monitoring, etc. After successful deployment, you can visiit to Domain provided by Coolify and you will see your Next.js app running.
+
+<Separator />
+
+## Auto Deploy on Push
+
+Coolify provides a feature to auto-deploy your application on push. You can enable this feature by going to the project settings and click on **Webhooks** tab. Here you can see the webhook URL that you need to add to your GitHub repository.
+
+You need to click on **WebHook configuration on Github** button and it will redirect you to GitHub. You can add the webhook URL which you can get from above input on coolify and add it to your GitHub repository. also you need to add **Secret** which can be anything you want. But it should be same on both side.
+
+| ![Github](https://res.cloudinary.com/dw6wav4jg/image/upload/v1714623829/Image_02-05-24_at_9.53_AM_z3wdku.jpg) |
+| :-----------------------------------------------------------------------------------------------------------: |
+|                                               _Github Webhook_                                                |
+
+After adding the webhook now you all set for auto deploymnet on push on selected branch. You can test it by pushing some changes to your repository and you will see the deployment on Coolify Project **Deployment** tab. You can see the logs and status of the deployment.
+
+<Separator />
+
+## Conclusion
+
+Coolify is a great platform to self-host your applications. It provides a good UI which is easy to use and help to manage you application easily. As we are seeing multiple incident of data breach and paymnet issue on platform like Vercel and Netlify. It is good to have your own platform where you can manage your application and data.
+
+We can deploy our Database for ur any application be it backend or frontend or any framework. Coolify is a great platform to manage all your applications and services.
+
+I hope you like this article. If you have any questions or feedback, feel free to comment below. Happy Coding! 🚀
