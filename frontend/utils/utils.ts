@@ -147,6 +147,5 @@ export const slugify = (text: string) => {
   });
 
   const newText = text.toLowerCase().split(' ');
-
   return newText.join('-');
 };
