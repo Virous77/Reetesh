@@ -221,3 +221,13 @@ li code {
 .blog-table li::marker {
   color: #e21d49;
 }
+
+.c-height {
+  height: 100vh;
+}
+
+@media (max-width: 992px) {
+  .c-height {
+    height: auto;
+  }
+}
