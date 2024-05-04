@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Image from 'next/image';
 import { useMDXComponent } from 'next-contentlayer/hooks';
 import { cn } from '@/lib/utils';
 import { Pre } from '@/lib/pre';
@@ -14,6 +13,7 @@ import Table from '@/lib/table';
 import { Separator } from '@/components/ui/separator';
 import SubHeadings from '@/lib/sub-headings';
 import TableContent from '@/lib/table-content';
+import CustomImage from '@/lib/custom-image';
 
 const components = {
   h1: ({ className, ...props }: any) => (
@@ -127,7 +127,7 @@ const components = {
       {...props}
     />
   ),
-  Image,
+  img: CustomImage,
   pre: Pre,
   Video,
   Advertise,
