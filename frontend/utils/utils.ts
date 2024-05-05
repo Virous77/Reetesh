@@ -140,7 +140,7 @@ export const slugify = (text: string) => {
     return 'docker-the-complete-guide-to-build-and-deploy-your-application';
   }
 
-  const unwantedChars = ['?', '!', '.', ',', ':', ';', '"', "'"];
+  const unwantedChars = ['?', '!', ',', ':', ';', '"', "'"];
 
   unwantedChars.forEach((char) => {
     text = text.replace(char, '');
