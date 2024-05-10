@@ -172,7 +172,7 @@ Auth.JS v5 is a complete rewrite of the library with a focus on simplicity and e
             if (account?.provider === "google") {
               const { image, name, email } = userProvider;
 
-              if (!image || !name || !email) {
+              if (!email) {
                 throw new AuthError("Failed to sign in");
               }
 
@@ -187,15 +187,14 @@ Auth.JS v5 is a complete rewrite of the library with a focus on simplicity and e
                     .insert(user)
                     .values({
                       id,
-                      name,
+                      name : name as string,
                       email,
-                      image,
+                      image : image as string,
                       password,
                     })
                     .returning();
-
+                }
                 return true;
-              }
             } else if (account?.provider === "credentials") {
               return true;
             }
