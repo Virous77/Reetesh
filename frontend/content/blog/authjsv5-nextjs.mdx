@@ -1,0 +1,530 @@
+---
+title: 'Authentication using Auth.js v5 and Drizzle for Next.js App Router'
+date: 'May 10 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1715228267/authjs_jf2uk6.png'
+about: 'Auth.js is a runtime agnostic authentication library that provides a simple and secure way to authenticate users in web applications. In this article, we will learn how to use Auth.js v5 with Drizzle for authentication in a Next.js application. We will also use NeonDatabase for the database.'
+tags:
+  [
+    'how to use auth.js v5',
+    'next.js authentication using auth.js v5',
+    'drizzle with auth.js v5',
+    'neon database with auth.js v5',
+    'auth.js v5',
+    'neon database using drizzle in next.js',
+  ]
+related: 'common'
+---
+
+<TableContent title="Authentication using Auth.js v5 and Drizzle for Next.js App Router" />
+
+Authentication in web applications is a crucial part of the user experience. It is essential to have a secure and reliable authentication system in place to protect user data and privacy.
+
+Authentication helps us to identify users and grant them access to specific resources or features based on their identity. And building an authentication system from scratch can be a complex and time-consuming process. You always want your authentication system to be secure, reliable, and easy to use.
+
+## What is Auth.JS?
+
+**Auth.JS (formerly Next Auth)** is a JavaScript library that provides a simple and secure way to authenticate users in web applications. It's support multiple framework likes **Next.JS**, **Express**, **Svelte**, and more. It's runtime agnostic, so you can use it with any JavaScript runtime environment. It's has built in adapters for popular authentication providers like **Google**, **Facebook**, **Twitter**, and more. as well as built adapters for **Prisma**, **Mongoose**, and more.
+
+Before we start, make sure you have a Next.js project set up. We need to install few dependencies to get started.
+
+```bash
+yarn add next-auth zod nanoid drizzle-orm drizzle-kit dotenv @neondatabase/serverless
+```
+
+We will use **Drizzle** for the ORM and **NeonDatabase** for the database. You can use any database of your choice. also for validation we will use **Zod**. To understand and Learn more about **Drizzle** and **NeonDatabase** you can visit this [article](https://reetesh.in/blog/neon-db-with-drizzle-and-hono-in-next.js).
+
+<Separator />
+
+## Setting up Drizzle and NeonDatabase
+
+We will use `postgreSQL` as our database and `Drizzle` as our ORM. NeonDatabase is a postgres serverless database so we are going to use it as our database.
+
+We need to quickly create few files and and code to setup the database and ORM.
+
+<Tabs items={["Drizzle", "Schema", "Drizzle Config"]} >
+
+ <Section slot="Drizzle">
+    ```ts
+    // db/index.ts
+
+    import { neon } from "@neondatabase/serverless";
+    import { drizzle } from "drizzle-orm/neon-http";
+
+    const sql = neon(process.env.NEON_DATABASE_URL!);
+    const db = drizzle(sql);
+
+    export default db;
+
+    ```
+
+ </Section>
+
+  <Section slot="Schema" >
+
+    ```ts
+    // db/schema.ts
+
+    import { sql } from "drizzle-orm";
+    import { text, boolean, pgTable, timestamp } from "drizzle-orm/pg-core";
+
+    export const user = pgTable("user", {
+      id: text("id").primaryKey().notNull().unique(),
+      email: text("email").notNull(),
+      name: text("name").notNull(),
+      image: text("image"),
+      created_at: timestamp("created_at").default(sql`now()`),
+      updated_at: timestamp("updated_at").default(sql`now()`),
+      password: text("password").notNull(),
+    });
+
+    ```
+
+  </Section>
+
+  <Section slot="Drizzle Config" >
+
+    ```ts
+    // drizzle.config.ts
+
+    import "dotenv/config";
+    import type { Config } from "drizzle-kit";
+
+    export default {
+      schema: "./db/schema.ts",
+      out: "./drizzle",
+      driver: "pg",
+      dbCredentials: {
+        connectionString: process.env.NEON_DATABASE_URL!,
+      },
+    } satisfies Config;
+
+      ```
+    </Section>
+
+</Tabs>
+
+Here we have created a `db` folder with three files `index.ts`, `schema.ts`, and `drizzle.config.ts`. This is all we need to setup **Drizzle** with **NeonDatabase**. Now we need to run the migration to create the tables in the database. But drizzle come with built command which work well for development.
+
+```bash
+npx drizzle-kit push:pg
+```
+
+This command is helpful in development since we often need to make changes to the schema and push them to the database. Once you run this command you will see the tables in the database. If not you can check the logs for any errors.
+
+> You need to add the `NEON_DATABASE_URL` in your `.env` file. You can get the URL from the NeonDatabase dashboard.
+
+<Advertise title="Neon DB with Drizzle and Hono in Next.JS" />
+
+<Separator />
+
+## Setting up Auth.JS
+
+Auth.JS v5 is a complete rewrite of the library with a focus on simplicity and ease of use. It provides a set of APIs that make it easy to integrate authentication into your application. We will `Credentials` and OAuth2 provider for the authentication. For OAuth2 provider we will use `Google`.
+
+<Tabs items={["Auth", "Auth Route", "Middleware"]}>
+
+<Section slot="Auth">
+  ```ts
+     // auth/auth.ts
+
+    import db from "@/db";
+    import { user } from "@/db/schema";
+    import NextAuth, { AuthError } from "next-auth";
+    import Credentials from "next-auth/providers/credentials";
+    import Google from "next-auth/providers/google";
+    import { nanoid } from "nanoid";
+
+    export const { handlers, signIn, signOut, auth } = NextAuth({
+      providers: [
+        Credentials({
+          name: "Credentials",
+          credentials: {
+            email: {},
+            id: {},
+            name: {},
+          },
+          authorize: async ({ email, id, name }) => {
+            const data = {
+              email: email as string,
+              id: id as string,
+              name: name as string,
+            };
+            return data;
+          },
+        }),
+        Google({
+          clientId: process.env.AUTH_GOOGLE_ID,
+          clientSecret: process.env.AUTH_GOOGLE_SECRET,
+        }),
+      ],
+      pages: {
+        signIn: "/login",
+      },
+      callbacks: {
+        session: async ({ session, token }) => {
+          session.user.id = token.sub!;
+          return session;
+        },
+        signIn: async ({ user: userProvider, account }) => {
+          try {
+            if (account?.provider === "google") {
+              const { image, name, email } = userProvider;
+
+              if (!image || !name || !email) {
+                throw new AuthError("Failed to sign in");
+              }
+
+              const isUserExist = (await db.select().from(user)).find(
+                (user) => user.email === email
+              );
+
+              if (!isUserExist) {
+                  const id = nanoid();
+                  const password = nanoid();
+                  await db
+                    .insert(user)
+                    .values({
+                      id,
+                      name,
+                      email,
+                      image,
+                      password,
+                    })
+                    .returning();
+
+                return true;
+              }
+            } else if (account?.provider === "credentials") {
+              return true;
+            }
+            return false;
+          } catch (error) {
+            throw new AuthError("Failed to sign in");
+          }
+        },
+      },
+    });
+
+      ```
+
+</Section>
+
+<Section slot="Auth Route" >
+   ```ts
+    // /app/api/auth/[...nextauth]/route.ts
+
+    import { handlers } from "@/auth/auth";
+    export const { GET, POST } = handlers;
+
+       ```
+
+</Section>
+
+<Section slot="Middleware" >
+   ```ts
+   // middleware.ts
+
+    export { auth as middleware } from "@/auth"
+
+       ```
+
+</Section>
+
+</Tabs>
+
+We have created three files `auth.ts`, `route.ts`, and `middleware.ts`. In `auth.ts` we have the Auth.JS configuration. In `route.ts` we have the route for the Auth.JS. In `middleware.ts` we have the middleware for the Auth.JS.
+
+Auth.ts is the main file where we have the configuration for the Auth.JS. We have two providers `Credentials` and `Google`. We have also added the `callbacks` for the `signIn` and `session`. In the `signIn` callback we are checking if the user is already in the database or not. If not we are adding the user to the database. You can add more providers and callbacks as per your requirement.
+
+> `middleware.ts` is optional you can use it as per your requirement. But it help Auth.Js to update the session expiry every time whenever its called.
+
+<Separator />
+
+## Auth Routes
+
+We have configure our **Databse** and **Auth.JS**. Now we need to create routes for Authentication. We will use server action for Registering user and calling the Auth.JS signIn function.
+
+<Tabs items={["Login", "Login Action", "Signup", "Signup Action"]} >
+
+<Section slot="Login">
+```tsx
+// /app/login/page.tsx
+
+"use client";
+
+import action from './action';
+import z from 'zod';
+
+const schema = z.object({
+email: z.string().email("email is invalid"),
+password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+const LoginForm = () => {
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      try {
+        const formData = new FormData(e.currentTarget);
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
+        const schemaResult = schema.safeParse({ email, password });
+
+         if (!schemaResult.success) {
+           throw new Error(schemaResult.error.errors[0].message);
+        }
+
+        const res = await action(schemaResult.data);
+          if (res && !res?.status) {
+            toast.error(res?.message);
+            return;
+          }
+        } catch (error: any) {
+          console.error(error.message || "Something went wrong");
+        }
+    };
+
+    return (
+    <form onSubmit={handleSubmit} className=" flex flex-col gap-3">
+      <Label htmlFor="email">Email</Label>
+      <Input id="email" name="email" type="email" />
+      <Label htmlFor="password">Password</Label>
+      <Input id="password" name="password" type="password" />
+      <Button type="submit" className="w-full">
+        <span>Login</span>
+      </Button>
+    </form>
+    )};
+
+export default LoginForm;
+
+       ```
+
+</Section>
+
+<Section slot="Login Action">
+
+     ```ts
+    // /app/login/action.ts
+
+    "use server";
+
+    import { signIn } from "@/auth/auth";
+    import db from "@/db";
+    import { user } from "@/db/schema";
+
+    type TResult = {
+    email: string;
+    password: string;
+    }
+
+    const action = async (formData: TResult) => {
+
+      const { password, email } = formData;
+      const isUserExist = (await db.select().from(user)).find(
+        (user) => user.email === email
+      );
+
+      if (!isUserExist) {
+        return {
+          message: "User not found",
+          status: false,
+        };
+      }
+
+      const { password: existPassword, ...rest } = isUserExist;
+      const isPasswordMatch = existPassword === password;
+
+      if (!isPasswordMatch) {
+        return {
+          message: "Password is incorrect",
+          status: false,
+        };
+      }
+
+      await signIn("credentials", {
+        email: rest.email,
+        name: rest.name,
+        id: rest.id,
+        redirect: true,
+        redirectTo: "/",
+      });
+
+      return {
+        message: "User logged in successfully",
+        status: true,
+      };
+    };
+
+    export default action;
+
+
+     ```
+
+</Section>
+
+<Section slot="Signup" >
+
+```tsx
+// /app/register/page.tsx
+
+'use client';
+
+import action from './action';
+import z from 'zod';
+import { useRouter } from 'next/navigation';
+
+const schema = z.object({
+  email: z.string().email('email is invalid'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+  name: z.string().min(3, 'Name must be at least 3 characters'),
+});
+
+const RegisterPage = () => {
+  const { push } = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const data = new FormData(e.currentTarget);
+    const email = data.get('email') as string;
+    const password = data.get('password') as string;
+    const name = data.get('name') as string;
+
+    await action({ email, password });
+
+    try {
+      const schemaResult = schema.safeParse({ email, password, name });
+      if (!schemaResult.success) {
+        throw new Error(schemaResult.error.errors[0].message);
+      }
+
+      const res = await action({ email, password, name });
+      if (res && !res?.status) {
+        // toast error
+        return;
+      }
+      push('/login');
+    } catch (error) {
+      console.error(error.message || 'Something went wrong');
+    }
+  };
+
+    return (
+    <form onSubmit={handleSubmit}>
+     <label htmlFor="name">Name</abel>
+      <input id="name" name="name" type="text" />
+      <label htmlFor="email">Email</abel>
+      <input id="email" name="email" type="email" />
+      <label htmlFor="password">Password</label>
+      <input id="password" name="password" type="password" />
+      <button type="submit">
+        Login
+      </button>
+    </form>
+    )};
+};
+
+export default RegisterPage;
+```
+
+</Section>
+
+<Section slot="Signup Action" >
+
+```ts
+// /app/register/action.ts
+
+'use server';
+
+import db from '@/db';
+import { user } from '@/db/schema';
+import { nanoid } from 'nanoid';
+
+type TResult = {
+  email: string;
+  password: string;
+};
+
+const action = async (formData: TResult) => {
+  const isAlreadyRegistered = (await db.select().from(user)).find(
+    (user) => user.email === rest.email
+  );
+
+  if (isAlreadyRegistered) {
+    return {
+      message: 'Email already registered',
+      status: false,
+    };
+  }
+
+  await db.insert(user).values({
+    ...formData,
+    id: nanoid(),
+  });
+
+  return {
+    message: 'User registered successfully',
+    status: true,
+  };
+};
+
+export default action;
+```
+
+</Section>
+
+</Tabs>
+
+We have created two pages `login` and `register` for the authentication. We have also created two actions `login` and `register` for the authentication. In the `login` action we are checking if the user is already in the database or not. If the user is in the database we are checking if the password is correct or not. If the password is correct we are calling the `signIn` function of the Auth.JS. In the `register` action we are checking if the user is already in the database or not. If the user is not in the database we are adding the user to the database.
+
+These are bare minimum code to get started, You can add more fields and decrypt the password before saving to db for more security.
+
+For OAuth2 provider you can use the `signIn` function of the Auth.JS. In nextjs with RSC(React Server Components) we can use the `form` and call our action function. Auth.JS `signIn` function will take care of the rest.
+
+```tsx
+
+<form
+  action={async () => {
+    "use server";
+    await signIn("google", {
+      redirect: true,
+      redirectTo: "/", // as per your requirement
+    });
+  }}
+>
+  <button>
+    <
+    Sign in with Google
+  </button>
+</form>
+
+```
+
+Now you must be able to login and register the user. You can always visit to Auth.JS [documentation](https://authjs.dev/getting-started/installation) for more information. Now once you register user and login you will be get the user data in the session. You can use this data to show the user profile or any other information.
+
+```tsx
+// /app/page.tsx
+
+import { auth } from '@/auth/auth';
+
+const HomePage = async () => {
+  const user = await auth();
+
+  return <h1>{JSON.stringify(user)}</h1>;
+};
+```
+
+> You can find the complete code in the [GitHub repository](https://github.com/Virous77/learnup/tree/auth).You can always clone the repository and move to `auth` branch and run the code to see the working example. You just need to add the `.env` file with the required variables.
+
+<Separator />
+
+## Conclusion
+
+Auth.JS v5 with latest changes has made too easy to manges authentication specially in Next.JS apps with RSC also playes major role in this and this verison is updated keeping mind of Next.JS APP Router.
+
+I like Auth.JS over other auth libaray because of its simplicity and easy to use. It's support multiple framework and runtime. It's just abstract the complexity and the same time gives us full control and flexibility to custimize as per our requirement.
+
+I hope this article helps you to understand how to use Auth.JS v5 with Drizzle for authentication in a Next.js application. You can always comment below if you have any questions or feedback. Happy coding!
