@@ -67,12 +67,12 @@ We need to quickly create few files and and code to setup the database and ORM.
     // db/schema.ts
 
     import { sql } from "drizzle-orm";
-    import { text, boolean, pgTable, timestamp } from "drizzle-orm/pg-core";
+    import { text, boolean, pgTable, timestamp, uuid } from "drizzle-orm/pg-core";
 
     export const user = pgTable("user", {
-      id: text("id").primaryKey().notNull().unique(),
-      email: text("email").notNull(),
-      name: text("name").notNull(),
+      id: uuid("id").primaryKey().unique().defaultRandom(),
+      email: text("email").notNull().unique(),
+      name: text("name"),
       image: text("image"),
       created_at: timestamp("created_at").default(sql`now()`),
       updated_at: timestamp("updated_at").default(sql`now()`),
@@ -94,11 +94,14 @@ We need to quickly create few files and and code to setup the database and ORM.
     export default {
       schema: "./db/schema.ts",
       out: "./drizzle",
-      driver: "pg",
+      dialect: "postgresql",
       dbCredentials: {
-        connectionString: process.env.NEON_DATABASE_URL!,
+        url: process.env.NEON_DATABASE_URL!,
       },
+      strict: true,
+      verbose: true,
     } satisfies Config;
+
 
       ```
     </Section>
@@ -108,7 +111,9 @@ We need to quickly create few files and and code to setup the database and ORM.
 Here we have created a `db` folder with three files `index.ts`, `schema.ts`, and `drizzle.config.ts`. This is all we need to setup **Drizzle** with **NeonDatabase**. Now we need to run the migration to create the tables in the database. But drizzle come with built command which work well for development.
 
 ```bash
-npx drizzle-kit push:pg
+npx drizzle-kit generate
+
+npx drizzle-kit push
 ```
 
 This command is helpful in development since we often need to make changes to the schema and push them to the database. Once you run this command you will see the tables in the database. If not you can check the logs for any errors.
@@ -181,12 +186,13 @@ Auth.JS v5 is a complete rewrite of the library with a focus on simplicity and e
               );
 
               if (!isUserExist) {
-                  const id = nanoid();
+                 // create password and you mail it to user as temporary password
+                 // so user can login with email and password too.
                   const password = nanoid();
+
                   await db
                     .insert(user)
                     .values({
-                      id,
                       name : name as string,
                       email,
                       image : image as string,
@@ -277,7 +283,7 @@ const LoginForm = () => {
 
         const res = await action(schemaResult.data);
           if (res && !res?.status) {
-            toast.error(res?.message);
+            // toast error
             return;
           }
         } catch (error: any) {
@@ -314,12 +320,12 @@ export default LoginForm;
     import db from "@/db";
     import { user } from "@/db/schema";
 
-    type TResult = {
+    type TFormData = {
     email: string;
     password: string;
     }
 
-    const action = async (formData: TResult) => {
+    const action = async (formData: TFormData) => {
 
       const { password, email } = formData;
       const isUserExist = (await db.select().from(user)).find(
@@ -400,7 +406,7 @@ const RegisterPage = () => {
         throw new Error(schemaResult.error.errors[0].message);
       }
 
-      const res = await action({ email, password, name });
+      const res = await action(schemaResult.data);
       if (res && !res?.status) {
         // toast error
         return;
@@ -442,14 +448,15 @@ import db from '@/db';
 import { user } from '@/db/schema';
 import { nanoid } from 'nanoid';
 
-type TResult = {
+type TFormData = {
   email: string;
   password: string;
+  name: string;
 };
 
-const action = async (formData: TResult) => {
+const action = async (formData: TFormData) => {
   const isAlreadyRegistered = (await db.select().from(user)).find(
-    (user) => user.email === rest.email
+    (user) => user.email === formData.email
   );
 
   if (isAlreadyRegistered) {
@@ -461,7 +468,6 @@ const action = async (formData: TResult) => {
 
   await db.insert(user).values({
     ...formData,
-    id: nanoid(),
   });
 
   return {
