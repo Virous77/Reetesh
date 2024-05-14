@@ -137,17 +137,21 @@ import type { Config } from 'drizzle-kit';
 export default {
   schema: './db/schema.ts',
   out: './drizzle',
-  driver: 'pg',
+  dialect: 'postgresql',
   dbCredentials: {
-    connectionString: process.env.NEON_DATABASE_URL!,
+    url: process.env.NEON_DATABASE_URL!,
   },
+  strict: true,
+  verbose: true,
 } satisfies Config;
 ```
 
 Now Push your schema changes directly to the database without generating any migrations files using drizzle kit.
 
 ```bash
-npx drizzle-kit push:pg
+npx drizzle-kit generate
+
+npx drizzle-kit push
 ```
 
 With this we are done with the setup of hono and drizzle. Now we can focus on creating our rest api.
