@@ -19,9 +19,17 @@ const TableContent = ({ title }: { title: string }) => {
 
   const headings = allHeadings.map((heading) => {
     let title = heading.replace(/#/g, '').trim();
-    if (title.includes('?')) {
-      title = title.replace('?', '');
+    if (title.includes('.')) {
+      title = title.replace('.', '');
     }
+    if (title.includes('(')) {
+      title = title.replace('(', '');
+    }
+
+    if (title.includes(')')) {
+      title = title.replace(')', '');
+    }
+
     return { title };
   });
 
