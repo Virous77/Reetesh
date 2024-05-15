@@ -1,0 +1,166 @@
+---
+title: 'useActionState and useFormStatus React Hooks explained'
+date: 'May 15 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1715707529/useActionState_grkeaz.png'
+about: 'useActionState and useFormStatus react hooks help you to work with form actions and status in a more organized way. With the rise of RSC(React Server Component) these tow hooks has become more important.'
+tags:
+  [
+    'how to use useActionState in react',
+    'how to use useFormStatus in react',
+    'useActionState react hook',
+    'how to use useActionState in nextjs',
+    'react new hooks',
+  ]
+related: 'frontend'
+---
+
+<TableContent title="useActionState and useFormStatus React Hooks explained" />
+
+**useActionState** and **useFormStatus** react hooks help us to work with form actions and status in a more organized way.
+Working with forms using server actions can be a bit tricky but these hooks make it easier to manage the form state and actions.
+
+Both the hooks are in React Canary and going to be released soon with React 19.0.0 hopefully\*. But we can use them in Next.js as Next.JS has already supporting React Canary most of the features.
+
+## What is useActionState?
+
+useActionState hook is like all other hooks in React we have to call it inside a functional component. It took an `function` and `initialState` as an argument and return an array of `state` and `function` to call with form action.
+
+```tsx
+'use client';
+
+import { useActionState } from 'react';
+import { action } from './action';
+
+const Homepage = () => {
+  const [state, formAction] = useActionState(action, {
+    name: '',
+    error: '',
+    status: false,
+  });
+
+  console.log(state);
+
+  return (
+    <main>
+      <form action={formAction}>
+        <input type="text" name="name" />
+        <button type="submit">Submit</button>
+      </form>
+    </main>
+  );
+};
+
+export default Homepage;
+```
+
+Here we have a simple form with an input field and a submit button. We are using `useActionState` hook to manage the form state and actions. The `action` function is a server action that we will call when the form is submitted.
+
+As you can see we are passing the `action` function and initial state to the `useActionState` hook. It returns an array of `state` and `formAction` function. We can use the `state` to show the form state and `formAction` to call the server action.
+
+> You can keep anything as `initial state`, it's not necessary to keep the same as I have kept. But you have to return same state from the `action` function. Otherwise you won't be able to get the latest state as expected.
+
+Now let's se how the `action.ts` file looks like. We have to keep it in separate file as our `HomePage` component is a `client` side component and we can't call server actions directly from client side.
+
+```tsx
+'use server';
+
+export const action = async (prevState: any, queryData: FormData) => {
+  const name = queryData.get('name') as string;
+
+  /// Validate the name | you can use zod for validation
+  if (!name || name.trim() === '') {
+    return {
+      name: '',
+      error: 'Name is required',
+      status: false,
+    };
+  }
+
+  /// Save the name to the database
+  console.log(name);
+
+  return {
+    name: '',
+    error: '',
+    status: true,
+  };
+};
+```
+
+As you can see we are exporting an `action` function that takes `prevState` and `queryData` as arguments. We are getting the `name` from the `queryData` and validating it. And with validation we are returning the new state. Which will be updated in the `HomePage` component. In case of no error, You can do the operation you want to do with the data and return the new state.
+
+<Advertise title="Server Action in Client and Server Component in Next.Js Explained" />
+
+<Separator />
+
+## What is useFormStatus?
+
+As name suggests, `useFormStatus` is a hook to get the status of the form. When we submit the form `useFormStatus` hook give us the status of form.
+
+- **pending**: It will be `true` when the form is submitting and `false` when the form is submitted.
+- **data**: We can get the data of the form after the form is submitted. `data.get('name')` will give us the name of the form.
+- **method**: We can get the method of the form. `method` will be `POST` in case of form submission.
+- **action**: A reference to the function passed to the action.
+
+> The **useFormStatus** Hook must be called from a component that is rendered inside a form. And it's the status of parent form.
+
+```tsx
+// button.tsx
+
+import { useFormStatus } from 'react-dom';
+
+const Button = () => {
+  const { pending } = useFormStatus();
+
+  return (
+    <button type="submit" disabled={pending}>
+      {pending ? 'Loading...' : 'Submit'}
+    </button>
+  );
+};
+
+export default Button;
+```
+
+Since we are using form submission, we can use the `useFormStatus` hook to get the status of the form. here `pending` property will be `true` when the form is submitting and `false` when the form is submitted.
+
+Now we can use this **Button** component in our **HomePage** component.
+
+```tsx
+'use client';
+
+import { useActionState } from 'react';
+import { action } from './action';
+import Button from './button';
+
+const Homepage = () => {
+  const [state, formAction] = useActionState(action, {
+    name: '',
+    error: '',
+    status: false,
+  });
+
+  return (
+    <main>
+      <form action={formAction}>
+        <input type="text" name="name" />
+        <Button />
+      </form>
+    </main>
+  );
+};
+
+export default Homepage;
+```
+
+Now we have a button component that shows the status of the form. It will show `Loading...` when the form is submitting and `Submit` when the form is submitted.
+
+<Separator />
+
+## Conclusion
+
+useActionState and useFormStatus react hooks gonna make life easier for us developers to work with forms using server actions. Working with forms can be a bit tricky and these hooks make it easier to manage the form state and actions. Server actions with the rise for RSC(React Server Component) has become more important and these hooks are gonna help us a lot.
+
+I hope you this article helps you to understand the use of `useActionState` and `useFormStatus` hooks in React. If you have any questions or suggestions, feel free to ask in the comments below. Happy coding! 🚀
