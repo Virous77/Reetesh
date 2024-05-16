@@ -25,7 +25,7 @@ Both the hooks are in React Canary and going to be released soon with React 19.0
 
 ## What is useActionState?
 
-useActionState hook is like all other hooks in React we have to call it inside a functional component. It took an `function` and `initialState` as an argument and return an array of `state` and `function` to call with form action.
+useActionState hook is like all other hooks in React we have to call it inside a functional component. It took an `function` and `initialState` as an argument and return an array of `state`, `isPending` `function` to call with form action.
 
 ```tsx
 'use client';
@@ -34,7 +34,7 @@ import { useActionState } from 'react';
 import { action } from './action';
 
 const Homepage = () => {
-  const [state, formAction] = useActionState(action, {
+  const [state, formAction, isPending] = useActionState(action, {
     name: '',
     error: '',
     status: false,
@@ -46,7 +46,9 @@ const Homepage = () => {
     <main>
       <form action={formAction}>
         <input type="text" name="name" />
-        <button type="submit">Submit</button>
+        <button type="submit" disabled={isPending}>
+          {isPending ? 'Loading...' : 'Submit'}
+        </button>
       </form>
     </main>
   );
@@ -57,7 +59,7 @@ export default Homepage;
 
 Here we have a simple form with an input field and a submit button. We are using `useActionState` hook to manage the form state and actions. The `action` function is a server action that we will call when the form is submitted.
 
-As you can see we are passing the `action` function and initial state to the `useActionState` hook. It returns an array of `state` and `formAction` function. We can use the `state` to show the form state and `formAction` to call the server action.
+As you can see we are passing the `action` function and initial state to the `useActionState` hook. It returns an array of `state` , `formAction` and `isPending`. We can use the `state` to show the form state and `formAction` to call the server action. `isPending` will be `true` when the form is submitting and `false` when the form is submitted.
 
 > You can keep anything as `initial state`, it's not necessary to keep the same as I have kept. But you have to return same state from the `action` function. Otherwise you won't be able to get the latest state as expected.
 

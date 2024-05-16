@@ -18,19 +18,19 @@ related: 'frontend'
 
 <TableContent title="React Cache Function Explained" />
 
-React Cache Function which is right now in canary version, but going to introduce in React 19 mostly likely. It's help to cache the result of a data fetch or computation. But right now we can only use cache function in React Server Components. Since next.js already support React Server Components, so we can use it in next.js.
+React Cache API which is right now in canary version, but going to introduce in React 19 mostly likely. It's help to cache the result of a data fetch or computation. But we can only use **cache API** in React Server Components. Since next.js already support React Server Components, so we can use it in next.js.
 
-Unlike React Query, React Cache Function is not a library, it's a built-in feature of React. It's a low-level API that allows you to cache the result of a data fetch or computation. It's not a replacement for React Query as It's only work with React Server Components.
+Unlike React Query, React **cache API** is not a library, it's a built-in feature of React. It's a low-level API that allows you to cache the result of a data fetch or computation. It's not a replacement for React Query as It's only work with React Server Components.
 
-It's also very different from other React `useMemo` or `useCallback` hooks. It's not a hook, it's a function that you can call from anywhere in your component. It's also not a replacement for `useMemo` or `useCallback` hooks.
+It's also very different from other React `useMemo` or `useCallback` hooks. It's not a hook, it's a API that you can call anywhere in your server component. It's also not a replacement for `useMemo` or `useCallback` hooks.
 
-<SubHeadings>Key Features of React Cache Function</SubHeadings>
+<SubHeadings>Key Features of React Cache API</SubHeadings>
 
 - `cache` only can use with React Server Components.
 - React will invalidate the cache for all memoized functions for each server request.
 - It can cache all type of data, like if here `cache(fn)` in `fn` return error, then it will cache the error as well.
 
-## Usage of Cache Function
+## Usage of Cache API
 
 ```jsx
 import { getPost } from '@/api/api';
@@ -52,18 +52,18 @@ const HomePage = async () => {
 export default HomePage;
 ```
 
-In the above example, we are using `cache` function to cache the result of `getPost` function. So, when we call `getSinglePost` function, it will return the cached result if it's already cached.
+In the above example, we are using `cache` API to cache the result of `getPost` function. So, when we call `getSinglePost` function, it will return the cached result if it's already cached.
 
 <Separator />
 
-## How to efficiently use Cache Function
+## How to efficiently use Cache API
 
 There are few things that you should keep in mind while using cache function. Always consider to keep `cache function` in a separate file, so that you can import it anywhere and use same cache all over the places.
 
 > Keeping `cache` in seperate file only needed if you want to use the same cache all over the places. It recommended to keep it in a separate file, so that you get good performance improvement over cache hit.
 
 ```jsx
-/// This is wrong way to use cache function
+/// This is wrong way to use cache API
 
 const HomePage = async () => {
   const getSinglePost = cache(getPost);
@@ -80,7 +80,7 @@ const HomePage = async () => {
 export default HomePage;
 
 
-/// This is the right way to use cache function
+/// This is the right way to use cache API
 
 // /post.js
 import {cache} from 'react';
@@ -89,17 +89,17 @@ import { getPost } from "@/api/api";
 export default cache(getPost);
 ```
 
-In the above example, we are using `cache` function in a separate file, so that we can import it anywhere and use so the all places will use the same cache.
+In the above example, we are using `cache` in a separate file, so that we can import it anywhere and use so the all places will use the same cache.
 
 <Advertise title="Nginx as Reverse Proxy for Kubernetes Services" />
 
 <Separator />
 
-## Preload data with Cache Function
+## Preload data with Cache API
 
-The best part of cache function is that you can preload the data as well. You can use `cache` function to preload the data. This is helpful when you want to preload the data before the component is rendered.
+The best part of **cache** is that you can preload the data as well. You can use `cache` to preload the data. This is helpful when you want to preload the data before the component is rendered.
 
-For example we want only fetch user posts when user data fetched, so we can use `cache` function to preload the user posts.
+For example we want only fetch user posts when user data fetched, so we can use `cache` to preload the user posts.
 
 ```jsx
 import { cache } from 'react';
@@ -135,7 +135,7 @@ const Posts = async ({ userId }) => {
 };
 ```
 
-In the above example, we are using `cache` function to preload the user posts. So, when the `User` component is rendered, the user posts will be already fetched.
+In the above example, we are using `cache` to preload the user posts. So, when the `User` component is rendered, the user posts will be already fetched.
 
 This help to improve the performance of the application, as the user posts will be already fetched before the component is rendered.
 
@@ -143,6 +143,6 @@ This help to improve the performance of the application, as the user posts will 
 
 ### Conclusion
 
-`cache` function is useful when we want to memoize work that can be shared across React Server Components. So that we can improve the performance of the application by caching the result or we can preload the data before the component is rendered.
+`cache` API is useful when we want to memoize work that can be shared across React Server Components. So that we can improve the performance of the application by caching the result or we can preload the data before the component is rendered.
 
 I hope you find this article helpful. If you have any question, feel free to ask in the comment section below. Happy coding!
