@@ -4,37 +4,36 @@ date: 'Mar 10 2024'
 author: 'Reetesh Kumar'
 authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
 blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1710040742/usehook_qewbtb.png'
-about: ' React new use hook can be called within loops and conditional statements like if. Like other React Hooks, the function that calls use must be a Component or Hook.'
+about: ' React new use api can be called within loops and conditional statements like if. Like other React Hooks, the function that calls use must be a Component or Hook.'
 tags:
   [
-    'how to use useHook in React',
-    'ways to use useHook in React',
-    'what is use case for use hook in React',
-    'how easy to use useHook in React',
-    'new use hook in React',
-    'use hook in React',
-    'use hook in React 19',
-    'use hook in React 19 version',
+    'how to use use API in React',
+    'ways to use use api in React',
+    'what is use case for use api in React',
+    'how easy to use use api in React',
+    'new use api in React',
+    'use api in React',
+    'use api in React 19',
+    'use api in React 19 version',
   ]
 related: 'frontend'
 ---
 
 <TableContent title="use Hook in React and its use cases" />
 
+**use** is new React API which is going to introduce in React 19 version. It is a very useful to work with **Context** and **Promises**.
 
-**use** new React hook which is going to introduce in React 19 version. It is a very useful to work with **Context** and **Promises**.
+The main difference between `use` and other hooks is that `use` can be called within loops and conditional statements like `if`. But the core concept of `use` API is same as other hooks as we can use only only in **function** component or **custom** hook.
 
-The main difference between `use` hook and other hooks is that `use` hook can be called within loops and conditional statements like `if`. But the core concept of `use` hook is same as other hooks as we can use only only in **function** component or **custom** hook.
+The rise of RSC(React Server Components) now we can fetch data in our server component and pass it to our client component. This is where `use` comes into picture. We can use `use` to get the value from promise and context.
 
-The rise of RSC(React Server Components) now we can fetch data in our server component and pass it to our client component. This is where `use` hook comes into picture. We can use `use` hook to get the value from promise and context.
-
-<SubHeadings>Key points of use hook</SubHeadings>
+<SubHeadings>Key points of use API</SubHeadings>
 
 - It can be called within loops and conditional statements.
 - It returns value which was read from the promise or context.
 - When fetching data in a Server Component, prefer async and await over use. async and await pick up rendering from the point where await was invoked, whereas use re-renders the component after the data is resolved.
 
-## Working with promises using use hook
+## Working with promises using use API
 
 ```jsx
 // server component
@@ -50,7 +49,7 @@ const App = () => {
 export default App;
 ```
 
-As you can see above code here we are fetching message data in our server component and passing it to our client component. Now we can use this promise in our client component using `use` hook.
+As you can see above code here we are fetching message data in our server component and passing it to our client component. Now we can use this promise in our client component using `use`.
 
 ```jsx
 // client component(message.js)
@@ -65,9 +64,9 @@ export function Message({ messagePromise }) {
 }
 ```
 
-Here we are using `use` hook to get the message from the promise and using it in our client component.
+Here we are using `use` API to get the message from the promise and using it in our client component.
 
-But wait, You must be thinking that what about **Loading** and **Error** state of promise. This is where `suspense` and `error boundary` comes into picture.
+But wait, You must be thinking that what about **Loading** and **Error** state of promise. This is where `suspense` and `error boundary` comes into picture as use support them as well.
 
 We can simply wrap our client component with `suspense` and `error boundary` to handle **Loading** and **Error** state of promise.
 
@@ -101,7 +100,7 @@ import { Message } from './message.js';
 const App = () => {
   const messagePromise = new Promise((resolve, reject) => {
     fetchMessage()
-      .then((res) => resolve(res)
+      .then(res) => resolve(res)
       .catch((error) => {
         resolve(error.message || 'Something went wrong');
       });
@@ -120,11 +119,11 @@ export default App;
 
 <Separator />
 
-## Working with context using use hook
+## Working with context using use API
 
-Till now when we had to work with context we had to use `useContext` to get value from our **context**. But now with the help of `use` hook we can use context value in our client component.
+Till now when we had to work with context we had to use `useContext` to get value from our **context**. But now with the help of `use` we can use context value in our client component.
 
-As `use` hook is flexible we can use it within loops and conditional statements, It's recommended to use `use` hook to get the value from context.
+As `use` API is flexible we can use it within loops and conditional statements, It's recommended to use `use` to get the value from context.
 
 ```jsx
 // context component
@@ -146,7 +145,7 @@ export const AppContextProvider = ({ children }) => {
 };
 ```
 
-We just created a simple context and providing value to it. Now we can use this context value in our client component using `use` hook.
+We just created a simple context and providing value to it. Now we can use this context value in our client component using `use` API.
 
 ```jsx
 'use client';
@@ -169,7 +168,7 @@ const ContextExample = () => {
 export default ContextExample;
 ```
 
-As you can see above we are using `use` hook to get the value from context and rendering initial value. We can also use `setState` to update the value of context.
+As you can see above we are using `use` to get the value from context and rendering initial value. We can also use `setState` to update the value of context.
 
 Now you must curious about how can i use it in conditional statement. Here is the example.
 
@@ -205,12 +204,12 @@ const ContextExample = () => {
 export default ContextExample;
 ```
 
-We are here simply using `use` hook within conditional statement to render different component based on condition.
+We are here simply using `use` within conditional statement to render different component based on condition.
 
 ### Conclusion
 
-**use** hook is going to play vital role as RSC(React Server Components) is going to introduce in React 19. while Next.JS latest version we had already seen how simplified the data fetching has been with server components.
+**use** API is going to play vital role as RSC(React Server Components) is going to introduce in React 19. while Next.JS latest version we had already seen how simplified the data fetching has been with server components.
 
-Also the flexibity of **use** hook make it more dynamic. It's going to be very useful to work with context and promise. You can find the full source code of this article [here](https://github.com/Virous77/blog-projects/tree/main/use-hook).
+Also the flexibity of **use** API make it more dynamic. It's going to be very useful to work with context and promise. You can find the full source code of this article [here](https://github.com/Virous77/blog-projects/tree/main/use-hook).
 
 I hope you find this article useful. If you have any question or suggestion feel free to comment below. I appreciate your feedback.
