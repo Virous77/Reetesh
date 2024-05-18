@@ -1,11 +1,12 @@
 'use client';
 
-import { trpc } from '@/trpc-client/client';
 import { generateUUID, getLocalData } from '@/utils/utils';
 import { ThumbsDown, ThumbsUp } from 'lucide-react';
 import React, { useLayoutEffect } from 'react';
 import action from './action';
 import DeleteComment from './delete-comment';
+import { useMutation } from '@tanstack/react-query';
+import { addLikeAction } from './like-action';
 
 type TLike = {
   like: string[];
@@ -16,25 +17,29 @@ type TLike = {
 };
 
 const Like: React.FC<TLike> = ({ id, like, dislike, blogId, blogUserId }) => {
-  const { mutateAsync } = trpc.blogs.addLike.useMutation();
   const [userId, setUserId] = React.useState<string | null>(null);
 
-  const handleLike = async (type: 'like' | 'dislike') => {
-    try {
-      let tempId = '';
-      if (!userId) {
-        tempId = generateUUID();
-        localStorage.setItem('tempId', JSON.stringify(tempId.toString()));
-      }
-      await mutateAsync({
-        commentId: id,
-        userId: userId ? userId : tempId,
-        type,
-      });
+  const { mutate } = useMutation({
+    mutationFn: addLikeAction,
+    onSuccess: () => {
       action(blogId);
-    } catch (error) {
-      alert('An error occurred, please try again');
+    },
+    onError: (data: any) => {
+      alert(data.message || 'Failed to like');
+    },
+  });
+
+  const handleLike = async (type: 'like' | 'dislike') => {
+    let tempId = '';
+    if (!userId) {
+      tempId = generateUUID();
+      localStorage.setItem('tempId', JSON.stringify(tempId.toString()));
     }
+    mutate({
+      commentId: id,
+      userId: userId ? userId : tempId,
+      type,
+    });
   };
 
   useLayoutEffect(() => {

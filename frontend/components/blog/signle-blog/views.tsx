@@ -2,33 +2,29 @@
 
 import { generateUUID, getLocalData } from '@/utils/utils';
 import { Eye } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
-import { trpc } from '@/trpc-client/client';
+import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { addViewsAction } from './action';
 
 const Views = ({ slug }: { slug: string }) => {
-  const [views, setViews] = useState(0);
-  const { mutateAsync } = trpc.blogs.addViews.useMutation();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const id: string = getLocalData('tempId');
-        let tempId: string = '';
-        if (!id) {
-          tempId = generateUUID();
-          localStorage.setItem('tempId', JSON.stringify(tempId.toString()));
-        }
-        const blog =
-          (await mutateAsync({ blogId: slug, viewsId: id || tempId })) || 0;
-        setViews(blog);
-      } catch (error) {}
-    };
-    fetchData();
-  }, [slug, mutateAsync]);
+  const { data } = useQuery({
+    queryKey: [slug],
+    queryFn: async () => {
+      const id: string = getLocalData('tempId');
+      let tempId: string = '';
+      if (!id) {
+        tempId = generateUUID();
+        localStorage.setItem('tempId', JSON.stringify(tempId.toString()));
+      }
+      const views = addViewsAction({ blogId: slug, viewsId: id || tempId });
+      return views;
+    },
+    enabled: slug ? true : false,
+  });
 
   return (
     <p className=" text-small flex  items-center justify-center gap-2 text-[14px] text-default md:text-base">
-      <Eye size={20} /> {views || 0}
+      <Eye size={20} /> {data || 0}
     </p>
   );
 };

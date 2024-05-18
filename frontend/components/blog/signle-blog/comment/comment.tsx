@@ -1,9 +1,18 @@
+import dbConnect from '@/db/mongoose';
 import CommentForm from './comment-form';
 import CommentList from './comment-list';
-import { serverClient } from '@/trpc-client/server';
+import blogComments, { TBlog } from '@/models/blog-comments';
+
+const getComments = async ({ id }: { id: string }) => {
+  await dbConnect();
+  const comments: TBlog[] = await blogComments
+    .find({ blogId: id })
+    .sort({ createdAt: -1 });
+  return comments;
+};
 
 export const Comment = async ({ slug }: { slug: string }) => {
-  const data = await serverClient.blogs.getComments({ id: slug });
+  const data = await getComments({ id: slug });
 
   return (
     <section className=" px-3 md:px-0">

@@ -1,15 +1,24 @@
 import { allPosts } from '@/.contentlayer/generated';
 import { ExternalLink } from 'lucide-react';
 import React from 'react';
-import { serverClient } from '@/trpc-client/server';
 import { BlogDetails, Projects } from '@/routes';
+import dbConnect from '@/db/mongoose';
+import projects, { TProject } from '@/models/projects';
+
+const getLatestProjects = async () => {
+  await dbConnect();
+  const latestProject: TProject = await projects
+    .findOne()
+    .sort({ createdAt: -1 });
+  return latestProject;
+};
 
 const Recent = async () => {
   const posts = allPosts
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 3);
 
-  const project = await serverClient.projects.getLatestProject();
+  const project = await getLatestProjects();
 
   return (
     <div className=" mb-10 mt-12 flex flex-col gap-8 md:mb-0 md:mt-0">

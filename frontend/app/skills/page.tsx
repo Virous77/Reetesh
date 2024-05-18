@@ -1,8 +1,15 @@
 import Skill from '@/components/skills/skill';
-import { serverClient } from '@/trpc-client/server';
+import dbConnect from '@/db/mongoose';
+import skills, { TSkill } from '@/models/skills';
+
+const getSkills = async () => {
+  await dbConnect();
+  const skillLists: TSkill[] = await skills.find();
+  return skillLists;
+};
 
 const SkillPage = async () => {
-  const skills = await serverClient.skills.getSkills();
+  const skills = await getSkills();
 
   return <Skill skills={skills} />;
 };
