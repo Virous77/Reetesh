@@ -1,7 +1,8 @@
-import { trpc } from '@/trpc-client/client';
 import { Trash2 } from 'lucide-react';
 import React from 'react';
 import action from './action';
+import { useMutation } from '@tanstack/react-query';
+import { deleteCommentAction } from './delete-action';
 
 type TDeleteComment = {
   userId: string | null;
@@ -14,18 +15,20 @@ const DeleteComment: React.FC<TDeleteComment> = ({
   commentId,
   blogId,
 }) => {
-  const { mutateAsync } = trpc.blogs.deleteComment.useMutation();
-  const handleDelete = async () => {
-    try {
-      await mutateAsync({ commentId, userId: userId ? userId : '' });
+  const { mutate } = useMutation({
+    mutationFn: deleteCommentAction,
+    onSuccess: () => {
       action(blogId);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        alert(error.message || 'An error occurred, please try again');
-      }
-      alert('An error occurred, please try again');
-    }
+    },
+    onError: (data: any) => {
+      alert(data.message || 'Failed to delete comment');
+    },
+  });
+
+  const handleDelete = () => {
+    mutate({ commentId, userId: userId ? userId : '' });
   };
+
   return (
     <span
       className=" flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full hover:bg-accent"
