@@ -1,0 +1,270 @@
+---
+title: 'Server Action with TanStack Query in Next.JS Explained'
+date: 'May 19 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1715883196/tanstackquery_aqcges.png'
+about: 'Server Actions are asynchronous functions that are executed on the server. With Tanstack query we can make it more intuitive and easy to use with end to end type safe.'
+tags:
+  [
+    'how to use server action with tanstack query',
+    'how server action works',
+    'what is server action',
+    'tanstack query',
+    'server action in next.js',
+  ]
+related: 'common'
+---
+
+<TableContent title="Server Action with TanStack Query in Next.JS Explained" />
+
+**Server Actions** are asynchronous functions that are executed on the server. You can use server actions in server component and client component. Server actions can be used to form submission using form action or in any event handler like **onClick**, **onChange** etc or in **useEffect** hook.
+
+Server actions has made things easier whether you have to fetch data for mutate data directly into your React Server Components.
+
+**React Server Components** are a new way to build server-rendered React applications. They are similar to React components, but run on the server and are rendered to HTML. Since they run on the server, they can access server-side resources like databases and files. And also help to minimize the JS bundle size as the server components are not sent to the client.
+
+You can use server actions directly in you server component like that,
+
+```tsx
+const HomePage = () => {
+  // Server Action
+  const addUserAction = async (formData: FormData) => {
+    'use server';
+    const name = FormData.get('name');
+    console.log(name);
+  };
+
+  return (
+    <form action={addUserAction}>
+      <input name="name" />
+    </form>
+  );
+};
+
+export default HomePage;
+```
+
+Here with **'use server'** we are telling the server that this function should be executed on the server. Now what about client component?
+
+Well to use server actions in client component we have to create new file and we can mark that file run on server by adding **'use server'** on top of file like that,
+
+```tsx
+// action.ts
+
+'use server';
+
+export const addUserAction = async (formData: FormData) => {
+  'use server';
+  const name = FormData.get('name');
+  console.log(name);
+};
+
+// Now you can use this action in client component like that,
+
+// client.tsx
+import { addUserAction } from './action';
+
+const ClientPage = () => {
+  return (
+    <form action={addUserAction}>
+      <input name="name" />
+    </form>
+  );
+};
+```
+
+This all looks good and with the help of new hooks like **useActionState** and **useFormStatus** we can make it more intuitive and get the other benefits like pending state, error state etc. You can check below article for more details.
+
+<Advertise title="useActionState and useFormStatus React Hooks explained" />
+
+<Separator />
+
+## How to use Server Action to Fetch data with TanStack Query
+
+TanStack Query is a powerful data fetching and caching library for React. It is a part of TanStack which is a collection of libraries that help you build full-stack React applications. It provides a set of hooks and utilities to fetch and cache data in your React components.
+
+Now as we know fetching data with server components is easy but what about the client components? Well with TanStack Query we can make it more intuitive and easy to use with end to end type safe.
+
+> It's recommended to use Server Action for data mutations only not for data fetching. I'm just here sharing a way we can use server action to fetch data too with TanStack Query.
+
+But what if we can use server componnet to fetch initial data and pass to tanstack query and use server action to refetch the data? Sounds good right?
+
+```tsx
+// app/page.tsx
+
+import Post from '@/components/post';
+
+export type TPost = {
+  userId: number;
+  id: number;
+  title: string;
+  body: string;
+};
+
+export const getAllPost = async (): Promise<TPost[]> => {
+  const response = await fetch(`https://jsonplaceholder.typicode.com/posts`);
+  const data = await response.json();
+  return data;
+};
+
+const HomePage = async () => {
+  const post = await getAllPost();
+  return <Post post={post} />;
+};
+
+export default HomePage;
+```
+
+Here as you can see we are fetching the data in server component and passing it to the client component. Now we can pass it to the Tanstack query as initial data and use server action to refetch the data.
+
+```tsx
+// components/post.tsx
+
+'use client';
+
+import { useQuery } from '@tanstack/react-query';
+import { postAction } from './action/post-action';
+import { TPost } from '@/app/page';
+
+const Post = ({ post }: { post: TPost[] }) => {
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: [`post`],
+    queryFn: async () => {
+      const data = await postAction();
+      return data;
+    },
+    initialData: post,
+    refetchOnMount: false,
+  });
+
+  return (
+    <main>
+      <h1>Post</h1>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <ul>
+          {data?.map((post) => (
+            <li key={post.id}>
+              <h2>{post.title}</h2>
+              <p>{post.body}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <button onClick={() => refetch()}>Refresh</button>
+    </main>
+  );
+};
+
+export default Post;
+```
+
+Here we are using Tanstack query to fetch the data and using server action to refetch the data. The important thing to note here we have keep `refetchOnMount` to `false` to avoid refetching the data on mount as we have already passed the initial data which we have fetched in server component.
+
+well now what about our server action file?
+
+```ts
+// action/post-action.ts
+
+'use server';
+
+import { getAllPost, TPost } from '@/app/page';
+
+export const postAction = async (): Promise<TPost[]> => {
+  const posts = await getAllPost();
+  return posts.slice(0, 5);
+};
+```
+
+We simply created a `post-action.ts` file and marked it as server file and created a function to fetch the data and return it. Now we can use this function in our client component to refetch the data. For testing purpose to see you we are returning only 5 posts. And most importnat part we are resuing same function which we have used in server component to fetch the data.
+
+Now obiviously It always good to fetch data in server componnet and pass to client component and on mutation we can revalidate using next.js provided function `revalidatePath` and `revalidateTag`. We can use React new `cache API` to handle the data fetchimg to next level in React Server Componets. You can check this [article](https://reetesh.in/blog/react-cache-function-explained) for more details.
+
+<Separator />
+
+## Mutation using Server Action with TanStack Query
+
+We mutate data in our app in multiple places and we want to give user a good exprience with client side validation for quick response and loading state for ongoing task and error shown if server returns error. We can all do it manually but this is where tanstack query shine and handle everything out of the box.
+
+```tsx
+// components/post-mutation.tsx
+
+'use client';
+
+import { useMutation } from '@tanstack/react-query';
+import { postMutationAction } from './action/postMutation-action';
+
+const PostMutation = () => {
+  const { data, mutate, isPending } = useMutation({
+    mutationFn: postMutationAction,
+    onError: (error) => {
+      return alert(error.message || 'Failed to updated');
+    },
+    onSuccess: () => {
+      // revalidate data or show success toast
+    },
+  });
+
+  return (
+    <div>
+      <h1>Post Mutation</h1>
+      <button onClick={() => mutate({ title: 'foo', body: 'bar', userId: 1 })}>
+        Post
+      </button>
+      {isPending ? <p>pending...</p> : null}
+      {data ? <p>{JSON.stringify(data)}</p> : null}
+    </div>
+  );
+};
+
+export default PostMutation;
+```
+
+Here as you can see we passed our server action mutation function to tanstack `mutationFn` and after that we are handling all the other state for a Response. And this is fully end to end type safe. Tanstack provide `mutate` function which we can use to trigger the mutation and if we need to pass that data in case our server action need here we can simply pass here with type safe manner.
+
+```ts
+// postMutation-action.ts
+
+'use server';
+
+type TParams = {
+  title: string;
+  body: string;
+  userId: number;
+};
+
+type TPost = TParams & {
+  id: number;
+};
+
+export const postMutationAction = async (params: TParams): Promise<TPost> => {
+  const response = await fetch(`https://jsonplaceholder.typicode.com/posts`, {
+    method: 'POST',
+    body: JSON.stringify(params),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+  });
+  const data = await response.json();
+  return data;
+};
+```
+
+Here we are simply creating a server action file and passing the data to server and returning the response. And we are using this function in our client component to mutate the data.
+
+As you can see how easy it is to use server action with TanStack Query to fetch and mutate the data in your application. The good thing is here we are getting benefit of both end where server actions give us power where we don't need to create API routes and qith tanstack we can get all the state management and caching out of the box.
+
+> You can get full source code of this article from [Github Repo](https://github.com/Virous77/blog-projects/tree/main/react-hooks)
+
+<Separator />
+
+## Conclusion
+
+React Server Components is new paradigm which helps us to render our some part of application directly on server and send the html to client after that react hydrate it and make it interactive. Server Actions took it to next level where we can use server actions to fetch data and mutate data directly in our server components.
+
+[Tanstack Query](https://tanstack.com/query/latest/docs/framework/react/overview) and Server Actions are two powerful tools which can be used together to make our application more intuitive and easy to use. With Tanstack Query we can fetch and cache data in our application and with Server Actions we can mutate data and fetch data in our server components.
+
+I hope this article helps you to understand how to use Server Actions with TanStack Query in Next.JS. If you have any questions or feedback, feel free to comment below. Happy coding! 🚀
