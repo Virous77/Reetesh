@@ -1,17 +1,11 @@
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Root } from '@/routes';
+import AuthorImage from './author-image';
 
 const Author = () => {
   return (
     <div className="flex gap-5">
       <Root.Link aria-label="home">
-        <Avatar>
-          <AvatarImage
-            src="https://avatars.githubusercontent.com/u/101452588?v=4"
-            alt="Reetesh Kumar"
-          />
-          <AvatarFallback>RK</AvatarFallback>
-        </Avatar>
+        <AuthorImage />
       </Root.Link>
       <div className="flex flex-col items-start justify-center gap-1">
         <span className="text-[16px] font-semibold leading-none">
