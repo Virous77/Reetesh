@@ -2,6 +2,30 @@
   "extends": [
     "next/core-web-vitals",
     "plugin:testing-library/react",
-    "plugin:jest-dom/recommended"
+    "plugin:jest-dom/recommended",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "env": {
+    "node": true,
+    "commonjs": true,
+    "browser": true,
+    "es6": true
+  },
+  "plugins": ["react", "react-hooks"],
+  "rules": {
+    "react/react-in-jsx-scope": "on",
+    "react/prop-types": "off",
+    "eslint no-undef": "off",
+    "react-compiler/react-compiler": "error",
+    "react-hooks/exhaustive-deps": "off"
+  },
+  "ignorePatterns": [
+    "node_modules/",
+    ".next/",
+    ".contentlayer/",
+    "__test__/",
+    "coverage/"
   ]
 }
