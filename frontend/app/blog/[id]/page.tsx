@@ -1,7 +1,7 @@
 import { allPosts } from '@/.contentlayer/generated';
 import SingleBlog from '@/components/blog/signle-blog/single-blog';
 import { commonMetaData } from '@/utils/utils';
-import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { Merriweather } from 'next/font/google';
 
 const merriweather = Merriweather({
@@ -44,7 +44,7 @@ const SingleBlogPage = async ({
       (post) => post.related === blog?.related && blog._id !== post._id
     ) || [];
 
-  if (!blog) return notFound();
+  if (!blog) return redirect('/blogs');
 
   return (
     <main className={`relative ${merriweather.className}`}>
