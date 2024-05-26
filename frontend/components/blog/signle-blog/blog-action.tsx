@@ -49,7 +49,7 @@ const BlogAction = ({
     mutate({
       blogId,
       viewsId: viewId,
-      like: data?.totalLike === 0 ? 1 : data?.totalLike || 0,
+      like: 1,
     });
   };
 

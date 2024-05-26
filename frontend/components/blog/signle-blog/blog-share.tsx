@@ -28,7 +28,7 @@ const BlogMain = ({ blogId, url, title, isMobile }: TBlogMain) => {
       className={`${isMobile ? 'flex w-full items-center justify-between' : 'flex-col'}  gap-2`}
     >
       <BlogAction blogId={blogId} isMobile={isMobile} />
-      {!isMobile && <h2 className="pl-2 text-xl">Share Article</h2>}
+      {!isMobile && <h2 className="pl-2 text-xl">Share Post</h2>}
       <div
         className={`${isMobile ? 'mt-0' : 'mt-1'} flex flex-wrap items-center gap-1 md:gap-2`}
       >
