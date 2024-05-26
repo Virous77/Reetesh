@@ -10,7 +10,7 @@ import ReadMore from './read-more';
 import RelatedPost from '@/components/common/related-post';
 import { formateDate } from '@/utils/utils';
 import { Blogs } from '@/routes';
-import BlogShare from './blog-share';
+import BlogShare, { BlogShareMobile } from './blog-share';
 
 type TSingleBlog = {
   blog: Post;
@@ -46,17 +46,25 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
           <h1 className=" m-auto -mb-1 mt-8 w-[90%] text-center text-[26px] font-bold leading-snug md:text-[32px]">
             {blog.title}
           </h1>
-          <div className="m-2 mt-3 flex items-center justify-between rounded border p-2 md:m-0 md:mt-[14px]">
-            <div className=" flex items-center  gap-4 ">
-              <p className=" text-small flex items-center justify-center gap-2 text-[14px] text-default md:text-base">
-                <CalendarDays size={20} /> {formateDate(blog.date)}
-              </p>
-              <Views slug={blog.slugAsParams} />
+          <div className="m-2 mt-3 rounded border p-2 md:m-0 md:mt-[14px]">
+            <div className=" flex items-center justify-between ">
+              <div className=" flex items-center  gap-4 ">
+                <p className=" text-small flex items-center justify-center gap-2 text-[14px] text-default md:text-base">
+                  <CalendarDays size={20} /> {formateDate(blog.date)}
+                </p>
+                <Views slug={blog.slugAsParams} />
+              </div>
+              <span className=" flex  items-center gap-2 text-[14px] capitalize text-default md:text-base">
+                <BookOpenText size={20} />
+                {blog.readingTime.text}
+              </span>
             </div>
-            <span className=" flex  items-center gap-2 text-[14px] capitalize text-default md:text-base">
-              <BookOpenText size={20} />
-              {blog.readingTime.text}
-            </span>
+
+            <BlogShareMobile
+              blogId={blog.slugAsParams}
+              title={blog.title}
+              url={`https://reetesh.in/blog/${blog.slug}`}
+            />
           </div>
         </section>
 

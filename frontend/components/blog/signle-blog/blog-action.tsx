@@ -1,13 +1,19 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { ThumbsUp } from 'lucide-react';
+import { MessageSquareQuote, ThumbsUp } from 'lucide-react';
 import { addBlogLikeAction, getLikeAction } from './action';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import action from './comment/action';
 import { getLocalData } from '@/utils/utils';
 
-const BlogAction = ({ blogId }: { blogId: string }) => {
+const BlogAction = ({
+  blogId,
+  isMobile,
+}: {
+  blogId: string;
+  isMobile: boolean;
+}) => {
   const { data, refetch } = useQuery({
     queryKey: [`like-${blogId}`],
     queryFn: async () => {
@@ -40,16 +46,22 @@ const BlogAction = ({ blogId }: { blogId: string }) => {
 
   const handleLike = () => {
     const viewId = getLocalData('tempId');
-    mutate({ blogId, viewsId: viewId, like: data?.totalLike || 0 });
+    mutate({
+      blogId,
+      viewsId: viewId,
+      like: data?.totalLike === 0 ? 1 : data?.totalLike || 0,
+    });
   };
 
   return (
-    <div className="mb-4 flex items-center gap-3 pl-2">
+    <div
+      className={`${isMobile ? 'mb-0 pl-0' : 'mb-4 pl-2'} flex items-center gap-3`}
+    >
       <Button
         size="icon"
         onClick={handleLike}
         disabled={isPending}
-        className=" flex w-[60px] items-center gap-1"
+        className=" flex w-[60px] items-center gap-2"
       >
         <ThumbsUp size={20} />
         <span className=" text-base">
@@ -58,7 +70,9 @@ const BlogAction = ({ blogId }: { blogId: string }) => {
             : data?.totalLike || 0}
         </span>
       </Button>
-      <Button onClick={scrollToTarget}>Comment</Button>
+      <Button onClick={scrollToTarget} size="icon">
+        <MessageSquareQuote size={20} />
+      </Button>
     </div>
   );
 };
