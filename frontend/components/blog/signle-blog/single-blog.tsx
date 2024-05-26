@@ -10,6 +10,7 @@ import ReadMore from './read-more';
 import RelatedPost from '@/components/common/related-post';
 import { formateDate } from '@/utils/utils';
 import { Blogs } from '@/routes';
+import BlogShare from './blog-share';
 
 type TSingleBlog = {
   blog: Post;
@@ -65,9 +66,14 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
 
         <ReadMore slug={blog.slugAsParams} />
         <Comment slug={blog.slugAsParams} />
-        {relatedBlogs.length > 0 && <RelatedPost relatedBlogs={relatedBlogs} />}
-        <Footer />
       </div>
+      {relatedBlogs.length > 0 && <RelatedPost relatedBlogs={relatedBlogs} />}
+      <Footer />
+      <BlogShare
+        title={blog.title}
+        url={`https://reetesh.in/blog/${blog.slug}`}
+        blogId={blog.slugAsParams}
+      />
     </>
   );
 };
