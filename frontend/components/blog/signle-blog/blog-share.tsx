@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
-import { Linkedin, Twitter, Facebook, MessageCircle } from 'lucide-react';
+import { Linkedin, Facebook, MessageCircle } from 'lucide-react';
 import BlogAction from './blog-action';
+import { XIcon } from '@/utils/icons/x';
 
 type TBlogAction = {
   title: string;
@@ -37,7 +38,7 @@ const BlogMain = ({ blogId, url, title, isMobile }: TBlogMain) => {
         </A>
 
         <A url={`https://x.com/intent/tweet?url=${url}&text=${title}`}>
-          <Twitter />
+          <XIcon className="h-[21px] w-[21px]" />
         </A>
 
         <A
