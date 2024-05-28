@@ -17,7 +17,11 @@ const Social: React.FC<TSocial> = ({ styles }) => {
           referrerPolicy="no-referrer"
           aria-label={social.title}
         >
-          {<social.name size={25} />}
+          {
+            <social.name
+              className={`${social.title === 'Linkedin' ? 'h-[25px] w-[25px]' : 'h-[23px] w-[23px]'}`}
+            />
+          }
         </a>
       ))}
     </div>

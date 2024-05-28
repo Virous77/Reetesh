@@ -1,13 +1,15 @@
-import { Github, Linkedin, Twitter } from 'lucide-react';
+import { Linkedin } from 'lucide-react';
+import { GitHubIcon } from './icons/github';
+import { XIcon } from './icons/x';
 
 export const socials = [
   {
-    name: Github,
+    name: GitHubIcon,
     url: 'https://github.com/Virous77',
     title: 'Github',
   },
   {
-    name: Twitter,
+    name: XIcon,
     url: 'https://twitter.com/imbitcoinb',
     title: 'Twitter',
   },
