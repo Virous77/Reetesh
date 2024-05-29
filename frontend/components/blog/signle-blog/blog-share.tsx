@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import { Linkedin, Facebook, MessageCircle } from 'lucide-react';
 import BlogAction from './blog-action';
 import { XIcon } from '@/utils/icons/x';
+import { ToolTipComp } from '@/components/ui/tooltip';
 
 type TBlogAction = {
   title: string;
@@ -33,21 +34,28 @@ const BlogMain = ({ blogId, url, title, isMobile }: TBlogMain) => {
       <div
         className={`${isMobile ? 'mt-0' : 'mt-1'} flex flex-wrap items-center gap-1 md:gap-2`}
       >
-        <A url={`https://www.facebook.com/sharer/sharer.php?u=${url}`}>
+        <A
+          url={`https://www.facebook.com/sharer/sharer.php?u=${url}`}
+          name="Facebook"
+        >
           <Facebook />
         </A>
 
-        <A url={`https://x.com/intent/tweet?url=${url}&text=${title}`}>
+        <A
+          url={`https://x.com/intent/tweet?url=${url}&text=${title}`}
+          name="Twitter"
+        >
           <XIcon className="h-[21px] w-[21px]" />
         </A>
 
         <A
           url={`https://www.linkedin.com/shareArticle?mini=true&url=${url}&text=${title}`}
+          name="Linkedin"
         >
           <Linkedin />
         </A>
 
-        <A url={`https://wa.me/?text=${url}`}>
+        <A url={`https://wa.me/?text=${url}`} name="Whatsapp">
           <MessageCircle />
           <p className="absolute left-[13.5px] top-[15px] flex h-3 w-3 items-center justify-center  text-[7px]">
             W
@@ -66,18 +74,21 @@ export const BlogShareMobile = ({ blogId, url, title }: TBlogAction) => {
   );
 };
 
-const A: React.FC<{ children: ReactNode; url: string }> = ({
+const A: React.FC<{ children: ReactNode; url: string; name: string }> = ({
   children,
   url,
+  name,
 }) => {
   return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="relative flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full hover:bg-accent"
-    >
-      {children}
-    </a>
+    <ToolTipComp name={name}>
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="relative flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full hover:bg-accent"
+      >
+        {children}
+      </a>
+    </ToolTipComp>
   );
 };

@@ -11,6 +11,7 @@ import RelatedPost from '@/components/common/related-post';
 import { formateDate } from '@/utils/utils';
 import { Blogs } from '@/routes';
 import BlogShare, { BlogShareMobile } from './blog-share';
+import { ToolTipComp } from '@/components/ui/tooltip';
 
 type TSingleBlog = {
   blog: Post;
@@ -37,9 +38,11 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
             <Author />
 
             <div className=" flex items-center gap-3">
-              <Blogs.Link aria-label="Visit all Blogs">
-                <Newspaper />
-              </Blogs.Link>
+              <ToolTipComp name="All Blogs">
+                <Blogs.Link aria-label="Visit all Blogs">
+                  <Newspaper />
+                </Blogs.Link>
+              </ToolTipComp>
               <Social styles="" />
             </div>
           </div>
