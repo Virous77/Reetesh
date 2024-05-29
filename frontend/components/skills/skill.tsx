@@ -1,12 +1,7 @@
 import Social from '../social/social';
 import { Home } from 'lucide-react';
 import Image from 'next/image';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '../ui/tooltip';
+import { ToolTipComp } from '../ui/tooltip';
 import { TSkill } from '@/models/skills';
 import { Root } from '@/routes';
 
@@ -55,20 +50,15 @@ const Skill: React.FC<TSkills> = ({ skills }) => {
         <ul className=" flex flex-wrap place-content-center items-center gap-5">
           {skills.map((skill) => (
             <li key={skill._id}>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Image
-                      src={skill.icon}
-                      alt={skill.name}
-                      width={40}
-                      height={40}
-                      className=" cursor-pointer rounded-full"
-                    />
-                  </TooltipTrigger>
-                  <TooltipContent>{skill.name}</TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <ToolTipComp name={skill.name}>
+                <Image
+                  src={skill.icon}
+                  alt={skill.name}
+                  width={40}
+                  height={40}
+                  className=" cursor-pointer rounded-full"
+                />
+              </ToolTipComp>
             </li>
           ))}
         </ul>

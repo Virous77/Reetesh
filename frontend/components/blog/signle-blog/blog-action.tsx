@@ -6,6 +6,7 @@ import { addBlogLikeAction, getLikeAction } from './action';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import action from './comment/action';
 import { getLocalData } from '@/utils/utils';
+import { ToolTipComp } from '@/components/ui/tooltip';
 
 const BlogAction = ({
   blogId,
@@ -57,22 +58,27 @@ const BlogAction = ({
     <div
       className={`${isMobile ? 'mb-0 pl-0' : 'mb-4 pl-2'} flex items-center gap-3`}
     >
-      <Button
-        size="icon"
-        onClick={handleLike}
-        disabled={isPending}
-        className=" flex w-[60px] items-center gap-2"
-      >
-        <ThumbsUp size={20} />
-        <span className=" text-base">
-          {isPending
-            ? data && data?.totalLike + variables.like
-            : data?.totalLike || 0}
-        </span>
-      </Button>
-      <Button onClick={scrollToTarget} size="icon">
-        <MessageSquareQuote size={20} />
-      </Button>
+      <ToolTipComp name="Like">
+        <Button
+          size="icon"
+          onClick={handleLike}
+          disabled={isPending}
+          className=" flex w-[60px] items-center gap-2"
+        >
+          <ThumbsUp size={20} />
+          <span className=" text-base">
+            {isPending
+              ? data && data?.totalLike + variables.like
+              : data?.totalLike || 0}
+          </span>
+        </Button>
+      </ToolTipComp>
+
+      <ToolTipComp name="Comment">
+        <Button onClick={scrollToTarget} size="icon">
+          <MessageSquareQuote size={20} />
+        </Button>
+      </ToolTipComp>
     </div>
   );
 };
