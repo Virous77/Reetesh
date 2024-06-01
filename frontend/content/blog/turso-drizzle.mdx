@@ -1,0 +1,254 @@
+---
+title: 'Turso Database with Drizzle ORM in Next.JS Application'
+date: 'June 01 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1716833407/turso_gbsamz.png'
+about: ' Turso is a simple and lightweight database that can be used with Drizzle ORM in a Next.JS application. It is a good alternative to SQLite and can be used in small to medium-sized projects.'
+tags:
+  [
+    'how to use turso database',
+    'what is turso database',
+    'turso database with drizzle orm',
+    'turos in nextjs app using drizzle',
+    'turso database with nextjs',
+  ]
+related: 'common'
+---
+
+<TableContent title="Turso Database with Drizzle ORM in Next.JS Application" />
+
+Turos database is based on [libSQL](https://turso.tech/libsql) which is a fork of SQLite. Turso support edge computing which is a new way of thinking about distributed systems. Turso is designed to minimize query latency since database replica ditributed across the globe.
+
+<SubHeadings>SQLite Advantages</SubHeadings>
+
+- **Lightweight**: SQLite has a small footprint and minimal setup requirements.
+- **Self-contained**: It's a serverless database, which means it doesn't require a separate server process.
+- **Zero configuration**: No configuration or administration is required for setup and maintenance.
+- **Portable**: Database files can be easily shared across different platforms.
+- **File-based**: Uses a simple file format, making it easy to back up and transfer databases.
+
+> It lacks advanced features and performance optimizations found in more robust DBMSs like PostgreSQL or MySQL, limiting its scalability for large-scale applications.
+
+## Turso Configuration
+
+Turso has made it so easy to working with SQLite database for all the enviorment whether you develop locally or production. **Turos CLI** gives us everything we need to get started whether creating new database or auth token for connection or managing the database. Turso CLI make it easy to start dev server to work locally and we can presist the data too.
+
+```bash
+# MacOs and Linux and Windows with WSL
+
+curl -sSfL https://get.tur.so/install.sh | bash
+```
+
+It will install the Turso CLI in your system after that you need to authenticate the CLI with the Turso. Make sure you have created an account on [Turso](https://turso.tech/).
+
+```bash
+turso auth login
+```
+
+This commnad will open the browser and ask you to login with your Turso account. After that you can create a new database with the following command.
+
+```bash
+turso db create learning
+```
+
+here we are creating a new database with the name `learning`. You can create as many databases as you want depend on plan you are using. You can check the database create on your Turso dashboard. you can check with Turso CLI too.
+
+```bash
+turso db show learning
+```
+
+When you will run this command you will see the response below with the database details shown in image.
+
+| ![Turso](https://res.cloudinary.com/dw6wav4jg/image/upload/v1717094709/Image_31-05-24_at_12.14_AM_jgp6rb.jpg) |
+| :-----------------------------------------------------------------------------------------------------------: |
+|                                            _Turso Databse Details_                                            |
+
+Here for us database URL is importnat as we need to add in our `.env` so that Drizzle ORM can connect with the database. We also need `AUTH TOKEN` to pass drizzle for successful connection.
+
+```bash
+turso db tokens create learning -e none
+```
+
+This command will create a auth token and log in terminal. You can copy that and add in your `.env` file. You can provide your own db name insted of `learning`. `-e none` is here to make auth token without any expiry. This is all we need to create a database and get the auth token to connect with the database for porduction enviorment.
+
+You must be thinking how can we work with the database locally. Well we can spin up the local server with the following command.
+
+```bash
+turso dev --db-file learning.db
+```
+
+This command will start the local server on `http://localhost:8080`. We can configure our `.env` file to connect with the local server. You can see the response below.
+
+```bash
+# // Production
+# DATABASE_URL="libsql://learning-virous77.turso.io"
+# DATABASE_AUTH_TOKEN=""
+
+
+# // Development
+DATABASE_URL=http://localhost:8080
+
+```
+
+We are now all set to work with the Turso database. We can now connect with the database using Drizzle ORM for that now we need to configure the Drizzle ORM.
+
+<Advertise title="IndexedDB in Recat using Dexie.js" />
+
+<Separator />
+
+## Turso connection with Drizzle
+
+I have already written a blog on Drizzle ORM connection with postgres database you can check it our [here](https://reetesh.in/blog/authentication-using-auth.js-v5-and-drizzle-for-next.js-app-router). But I'll add the code here for reference.
+
+Drizzle mental model while connection with various databases is the same. You just need to change the adapter and connection config.
+
+<Tabs items={["Drizzle", "Schema", "Drizzle Config"]} >
+
+ <Section slot="Drizzle">
+    ```ts
+    // /db/index.ts
+
+    import { drizzle } from "drizzle-orm/libsql";
+    import { createClient } from "@libsql/client";
+
+    const client = createClient({
+      url: process.env.DATABASE_URL!,
+      authToken: process.env.DATABASE_AUTH_TOKEN,
+    });
+    const db = drizzle(client);
+
+    export default db;
+
+
+    ```
+
+ </Section>
+
+  <Section slot="Schema" >
+
+    ```ts
+    // db/schema/index.ts
+
+    import { sql } from "drizzle-orm";
+    import { text, sqliteTable } from "drizzle-orm/sqlite-core";
+
+    export const user = sqliteTable("user", {
+      id: text("id").primaryKey(),
+      email: text("email").notNull().unique(),
+      name: text("name"),
+      image: text("image"),
+      password: text("password").notNull(),
+      createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+      updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
+    });
+
+
+    ```
+
+  </Section>
+
+  <Section slot="Drizzle Config" >
+
+    ```ts
+    // drizzle.config.ts
+
+    import "dotenv/config";
+    import type { Config } from "drizzle-kit";
+
+    export default {
+      schema: "./db/schema/index.ts",
+      out: "./drizzle",
+      dialect: "sqlite",
+      dbCredentials: {
+        url: process.env.DATABASE_URL!,
+        authToken: process.env.DATABASE_AUTH_TOKEN,
+      },
+      strict: true,
+      verbose: true,
+    } satisfies Config;
+      ```
+    </Section>
+
+</Tabs>
+
+When you will work with Drizzle ORM you will see these three files in your project. You just have to chnage the adapter based on the database you are using and the connection config and you are good to go.
+
+Now we need to run the folowing command to run the migration and create the table in the database.
+
+```bash
+npx drizzle-kit generate
+
+npx drizzle-kit push
+```
+
+<Separator />
+
+## Drizzle with Next.JS
+
+The setup of Drizzle and Turso is done now we can create `user` in our NEXT.JS app. I have already a blog related to Drizzle **CURD** operation you can check it out [here](https://reetesh.in/blog/authentication-using-auth.js-v5-and-drizzle-for-next.js-app-router). Right now we simply create a user in our Next.JS app.
+
+```tsx
+// /app/page.tsx
+
+import db from '@/db';
+import { user } from '@/db/schema';
+import { desc } from 'drizzle-orm';
+
+export const dynamic = 'force-dynamic';
+
+const createUser = async () => {
+  await db
+    .insert(user)
+    .values({
+      id: '3',
+      email: 'test@gmail.com',
+      name: 'test',
+      image: 'test.png',
+      password: '1234',
+    })
+    .returning();
+};
+
+const getUser = async () => {
+  const users = await db.select().from(user).orderBy(desc(user.createdAt));
+  return users;
+};
+
+const page = async () => {
+  await createUser();
+  const p = await getUser();
+  console.log(p);
+
+  return (
+    <div>
+      <h1>Page</h1>
+      <p>{JSON.stringify(p)}</p>
+    </div>
+  );
+};
+
+export default page;
+```
+
+Above as you can see we imported the `db` from the `db/index.ts` file and `user` from the `db/schema/index.ts` file. We created a `createUser` function to create a user in the database and `getUser` function to get the user from the database. We are calling these functions in the `page` function and returning the user in the page.
+
+Drizzle comes with their studio where you can see the data in the database and also you can run the query to get the data from the database. You can run the following command to start the studio.
+
+```bash
+npx drizzle-kit studio
+```
+
+This is how we can work with the Turso database with Drizzle ORM in the Next.JS application. You can check the official docs of [Turso](https://turso.tech/) and [Drizzle](https://orm.drizzle.team/) for more information.
+
+> You can find the source code of this blog on [Github](https://github.com/Virous77/blog-projects/tree/main/turso)
+
+<Separator />
+
+## Conclusion
+
+SQLite is a versatile, reliable, and lightweight database management system that has established itself as a fundamental tool in various applications ranging from embedded systems to high-level software solutions.
+
+Turso has made it so easy since good suuport for all the enviorment and also Turso CLI is so powerful to manage the database. When we create database on Turso it configure our Database based on our near region so that we can get the best performance and also we can configure the database location based on our need.
+
+I hope you found the article helpful. If you have any questions or feedback, feel free to comment below. Happy Coding! 🚀
