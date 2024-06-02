@@ -17,7 +17,6 @@ related: 'common'
 
 <TableContent title="Next.Js authentication using Lucia and MongoDB" />
 
-
 Lucia is an auth library for server that abstracts away the complexity of handling sessions. It is a simple and easy to use library that provides a strong support of database out of the box.
 
 It has built in adapters for various databases like MongoDB, Postgres, SQLite, and MySQL. Which makes it easy to use with any database and with less configuration and full control over the user data. Unlike other libraries where there are many configurations and setup required and things are very abstracted which makes it difficult to understand and use. Lucia gives start to end control over the user data and session management.
@@ -387,7 +386,10 @@ We are using server action to logout the user. We are invalidating the session a
 
 Right now we are protecting the routes using lucia `validateRequest` function. But since Next.Js give us `middleware` and lucia setting cookie on the client side. We can use cookie to protect the routes in middleware.
 
-> It advised by Lucia to configure Next.config.ts to prevent Oslo to getting bundled. You can do this by adding the following code.
+<Callout emoji="" isRegular={true}>
+  It advised by Lucia to configure Next.config.ts to prevent Oslo to getting
+  bundled. You can do this by adding the following code.
+</Callout>
 
 ```ts
 /** @type {import('next').NextConfig} */
@@ -404,7 +406,7 @@ const nextConfig = {
 export default nextConfig;
 ```
 
-### Conclusion
+## Conclusion
 
 I Found Lucia to be a very simple and easy to use library for authentication. It gives us full control over the user data and session management. There are several provider for OAuth and other social logins. It has strong TypeScript support and works well with all the major runtime like Node.js, Deno, and Bun.
 

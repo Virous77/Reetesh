@@ -26,7 +26,6 @@ related: 'ai'
 
 <TableContent title="Integrating Google Gemini to Node.js Application" />
 
-
 ## What is Google Gemini?
 
 Google Gemini is a powerful and multifaceted AI model developed by Google AI. Gemini doesn't just handle text; it can understand and operate across various formats like code, audio, images, and video. This opens up exciting possibilities for your Node.js projects.
@@ -40,7 +39,7 @@ This article will help you to integrate Google Gemini to your Node.js applicatio
 
 > Node.js version 18+ is required and to use `import` in node.js you need to add `"type": "module"` in your `package.json` file.
 
-### Getting Started
+<SubHeadings> Getting Started </SubHeadings>
 
 Let's start by creating a new Node.js project. Open your terminal and run the following command:
 
@@ -70,7 +69,7 @@ API_KEY=YOUR_API_KEY
 
 Now that we have the API key, let's set up the Google Gemini SDK. Create a new file called `index.js` in the root of your project and add the following code:
 
-### Google Gemini Pro Model
+<SubHeadings>Google Gemini Pro Model </SubHeadings>
 
 ```js
 import { GoogleGenerativeAI } from '@google/generative-ai';
@@ -107,7 +106,7 @@ generate();
 
 In the above code we used Google Gemini Pro model which can excels at handling natural language tasks like text generation, translation, and multi-turn text and code chat. This makes it perfect for building intelligent systems that interact with users in natural language.
 
-### Google Gemini Vision Model
+<SubHeadings> Google Gemini Vision Model </SubHeadings>
 
 ```js
 import { GoogleGenerativeAI } from '@google/generative-ai';
@@ -161,7 +160,7 @@ generate();
 
 In the above code we used Google Gemini Vision model which can categorize entire images based on their content and generate captions for images. This makes it perfect for building intelligent systems that interact with users in natural language.
 
-## Running the Application
+<SubHeadings> Running the Application </SubHeadings>
 
 To run the application, open your terminal and run the following command:
 

@@ -37,7 +37,10 @@ Before we move ahead we need to install few packages which will help us to make 
 
 We can use eden in Server Component directly as we use other async functions and good thing is we will get response fully type safe.
 
-> `@tanstack/react-query` is optional you can use simple `useEffect` to fetch data or any other library. we are using latest 14.1.4 version with APP router.
+<Callout emoji="" isRegular={true}>
+  `@tanstack/react-query` is optional you can use simple `useEffect` to fetch
+  data or any other library. we are using latest 14.1.4 version with APP router.
+</Callout>
 
 ```bash
 yarn add elysia @elysiajs/eden @tanstack/react-query @elysiajs/bearer
@@ -360,7 +363,11 @@ Let's for example we wanna secure our `/sign` API which we created above. We can
 
 As you can see above we are using `bearer` plugin and `onBeforeHandle` to check if token is valid or not. If token is not valid we are returning `Unauthorized` status. And in client mutation we are passing token in header which will be read by `@elysiajs/bearer` plugin and check if token is valid or not.
 
-> In our Post Route any route after `use(bearer())` will be secure and need token to access. If you want to keep some route public you can keep it before `use(bearer())`.
+<Callout emoji="💡" isRegular={false}>
+  In our Post Route any route after `use(bearer())` will be secure and need
+  token to access. If you want to keep some route public you can keep it before
+  `use(bearer())`.
+</Callout>
 
 ## Conclusion
 

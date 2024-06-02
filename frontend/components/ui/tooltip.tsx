@@ -37,7 +37,7 @@ export const ToolTipComp = ({
   name: string;
 }) => {
   return (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={400}>
       <Tooltip>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
         <TooltipContent>{name}</TooltipContent>

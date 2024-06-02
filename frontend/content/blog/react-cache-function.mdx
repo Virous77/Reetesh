@@ -60,7 +60,11 @@ In the above example, we are using `cache` API to cache the result of `getPost` 
 
 There are few things that you should keep in mind while using cache function. Always consider to keep `cache function` in a separate file, so that you can import it anywhere and use same cache all over the places.
 
-> Keeping `cache` in seperate file only needed if you want to use the same cache all over the places. It recommended to keep it in a separate file, so that you get good performance improvement over cache hit.
+<Callout emoji="💡" isRegular={true}>
+  Keeping `cache` in seperate file only needed if you want to use the same cache
+  all over the places. It recommended to keep it in a separate file, so that you
+  get good performance improvement over cache hit.
+</Callout>
 
 ```jsx
 /// This is wrong way to use cache API
@@ -139,9 +143,12 @@ In the above example, we are using `cache` to preload the user posts. So, when t
 
 This help to improve the performance of the application, as the user posts will be already fetched before the component is rendered.
 
-> Calling a memoized function outside of a component will not use the cache. The cache is only used when the memoized function is called inside a component.
+<Callout emoji="💡" isRegular={true}>
+  Calling a memoized function outside of a component will not use the cache. The
+  cache is only used when the memoized function is called inside a component.
+</Callout>
 
-### Conclusion
+## Conclusion
 
 `cache` API is useful when we want to memoize work that can be shared across React Server Components. So that we can improve the performance of the application by caching the result or we can preload the data before the component is rendered.
 

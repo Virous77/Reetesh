@@ -50,8 +50,6 @@ There are many other advantages of Kubernetes, but these are the main ones. and 
 
 [Minikube](https://minikube.sigs.k8s.io/docs/) is a tool that makes it easy to run Kubernetes locally. Minikube runs a single-node Kubernetes cluster inside a Virtual Machine (VM) on your laptop for users looking to try out Kubernetes or develop with it day-to-day.
 
-### Installing Minikube
-
 **MacOS**
 
 ```bash
@@ -78,7 +76,7 @@ curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-
 sudo install minikube-linux-arm64 /usr/local/bin/minikube
 ```
 
-### Minikube Commands
+<SubHeadings>Minikube Commands </SubHeadings>
 
 We will use Docker as driver for Minikube as it is the most stable one and easy to start. so make sure your Docker is running.
 
@@ -118,7 +116,7 @@ If you get the following output, then it means that you have successfully instal
 
 <Separator />
 
-## Setting up our App configuration
+## Dockerizing our App
 
 We are using same app which we have dockerized in our pervious article for development. Rename the existing Dockerfile to **Dockerfile.dev** and Create a new file called **Dockerfile** in the frontend directory and add the following code to it.
 
@@ -353,7 +351,7 @@ docker images
 
 <Separator />
 
-## Starting our App
+<SubHeadings> Starting our App </SubHeadings>
 
 Make sure you are in the root directory of the project.
 
@@ -376,7 +374,7 @@ kubectl get pods
 kubectl get services
 ```
 
-### Accessing our app
+<SubHeadings> Accessing our app </SubHeadings>
 
 Minikube provides a command to access our app. since we have added the type as LoadBalancer in our service, so we can access our app by running the following command in two different terminals tab.
 
@@ -387,7 +385,7 @@ minikube service backend-app-service
 
 It will open our app in the browser. Else you can open your app on provided IP from `minikube` after running `minikube server ...` command.
 
-### Access Kubernetes Dashboard
+<SubHeadings>Access Kubernetes Dashboard </SubHeadings>
 
 ```bash
 minikube dashboard
@@ -395,7 +393,7 @@ minikube dashboard
 
 There you can see all the pods, services, and deployments. and you can also see the logs of your pods.
 
-### Shutting down our app
+<SubHeadings> Shutting down our app </SubHeadings>
 
 ```bash
 kubectl delete -f .
@@ -405,9 +403,12 @@ kubectl delete -f .
 kubectl delete -f Deployment.yaml -f Service.yaml -f ConfigMap.yaml
 ```
 
-> You can rebuild you images if you do changes in app with same name and load to minikube and then apply the changes.
+<Callout emoji="💡" isRegular={false}>
+  You can rebuild your images if you do changes in app with same name and load
+  to minikube and then apply the changes.
+</Callout>
 
-### Conclusion
+## Conclusion
 
 Kubernetes make it easy to deploy our app to the cloud. It is a very powerful tool. There is a lot more to learn about Kubernetes. I will share new article where we will learn how to presist our data in Kubernetes and using `nginx` as reverse proxy.
 

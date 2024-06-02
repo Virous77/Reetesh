@@ -61,7 +61,11 @@ Here we have a simple form with an input field and a submit button. We are using
 
 As you can see we are passing the `action` function and initial state to the `useActionState` hook. It returns an array of `state` , `formAction` and `isPending`. We can use the `state` to show the form state and `formAction` to call the server action. `isPending` will be `true` when the form is submitting and `false` when the form is submitted.
 
-> You can keep anything as `initial state`, it's not necessary to keep the same as I have kept. But you have to return same state from the `action` function. Otherwise you won't be able to get the latest state as expected.
+<Callout emoji="💡" isRegular={true}>
+  You can keep anything as `initial state`, it's not necessary to keep the same
+  as I have kept. But you have to return same state from the `action` function.
+  Otherwise you won't be able to get the latest state as expected.
+</Callout>
 
 Now let's se how the `action.ts` file looks like. We have to keep it in separate file as our `HomePage` component is a `client` side component and we can't call server actions directly from client side.
 
