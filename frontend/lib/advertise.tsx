@@ -40,7 +40,7 @@ const Advertise: React.FC<TAdvertise> = ({ title }) => {
           height={200}
           alt={title}
           src={blogImage}
-          className=" !mb-[10px] !mt-[5px] flex items-end justify-end"
+          className=" !mb-[10px] !mt-[5px] flex items-end justify-end rounded-lg"
           style={{ marginTop: '5px', marginBottom: '10px' }}
         />
       </div>

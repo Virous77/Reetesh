@@ -8,6 +8,9 @@ export const Video = ({ src }: { src: string }) => {
       playsInline
       src={src}
       controls
+      lang="en"
+      suppressContentEditableWarning
+      title="video"
       preload="none"
       aria-details="blog video"
       aria-label="video"

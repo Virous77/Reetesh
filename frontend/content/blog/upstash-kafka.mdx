@@ -24,7 +24,7 @@ related: 'backend'
 
 <SubHeadings>Key Features of Kafka</SubHeadings>
 
-- **Scalability:** Kafka is designed to be highly scalable. It can handle trillions of events a day. It is horizontally scalable, meaning you can add more brokers to increase the capacity of your Kafka cluster. This makes it easy to scale your Kafka cluster as your needs grow.
+- **Scalability :** Kafka is designed to be highly scalable. It can handle trillions of events a day. It is horizontally scalable, meaning you can add more brokers to increase the capacity of your Kafka cluster. This makes it easy to scale your Kafka cluster as your needs grow.
 
 - **Durability:** Kafka is designed to be durable. It stores messages on disk, so even if a broker fails, your data is safe. Kafka uses replication to ensure that messages are not lost. You can configure the replication factor to control how many copies of each message are stored in the cluster.
 
@@ -32,7 +32,7 @@ related: 'backend'
 
 - **Flexibility:** Kafka is designed to be flexible. It supports a wide range of use cases, such as real-time data processing, log aggregation, and event sourcing. Kafka is a great fit for many use cases, making it a versatile tool for building real-time data pipelines.
 
-<Callout emoji="➡️">
+<Callout emoji="💡" isRegular={false}>
   To use Kakfa Either we can create a own **Kakfa Cluster** or we can use
   **Upstash Kafka** which is a fully managed Kafka service that makes it easy to
   use Kafka in your applications. In this article, we will see how to use Kafka
@@ -45,7 +45,10 @@ We are going to use `kafkajs` which is a modern Apache Kafka client for Node.js.
 
 To create Kafka Cluster we can use **Docker**. With Docker, you can run Kafka in a container on your local machine. We are going to use multiple Docker Images so It's better to use `docker-compose` to manage multiple containers.
 
-> Make sure you have Docker installed on your machine. and Your Docker is running.
+<Callout emoji="⚙️" isRegular={true}>
+  Make sure you have Docker installed on your machine. and Your Docker is
+  running.
+</Callout>
 
 ```yaml
 # docker-compose.yml

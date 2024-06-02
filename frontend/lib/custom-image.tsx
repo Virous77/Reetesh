@@ -10,7 +10,7 @@ const CustomImage = ({ children, ...props }: any) => {
         width={0}
         height={0}
         sizes="100vw"
-        className="h-full w-full rounded-lg  shadow-lg"
+        className="h-full w-full shadow-lg"
         priority={true}
         style={{ cursor: 'zoom-in' }}
       />

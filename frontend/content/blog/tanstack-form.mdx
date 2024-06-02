@@ -239,15 +239,32 @@ const ErrorText = ({
 
 Let's break down the above code:
 
-- `useFormState` is hook provided by React which lets us work with server actions forms. It allows us to update state based on the result of a form action.
-
-- We are using `formFactory.useForm` hook to get the form instance. `useTransform` function to merge the form state with the server state.
-
-- We are extracting the server side errors from `formErrors` and showing them in the form. If you remember we are passing error from server in a form that later we can transform it in key value pair and use it.
-
-- We are rendering our form and there is no client side validation yet. `action` let us use server action and `onSubmit` for client side interaction with form to show state based on event and validation.
-
-- `ErrorText` Component is where we are showing error for **client** and **server** both. In the form of children we are passing the server error and in prop the client one.
+<Summary>
+  <LI>
+    `useFormState` is hook provided by React which lets us work with server
+    actions forms. It allows us to update state based on the result of a form
+    action.
+  </LI>
+  <LI>
+    We are using `formFactory.useForm` hook to get the form instance.
+    `useTransform` function to merge the form state with the server state.
+  </LI>
+  <LI>
+    We are extracting the server side errors from `formErrors` and showing them
+    in the form. If you remember we are passing error from server in a form that
+    later we can transform it in key value pair and use it.
+  </LI>
+  <LI>
+    We are rendering our form and there is no client side validation yet.
+    `action` let us use server action and `onSubmit` for client side interaction
+    with form to show state based on event and validation.
+  </LI>
+  <LI>
+    `ErrorText` Component is where we are showing error for **client** and
+    **server** both. In the form of children we are passing the server error and
+    in prop the client one.
+  </LI>
+</Summary>
 
 You see we are using `ButtonStatus` component which let's us know the current state of form.
 
