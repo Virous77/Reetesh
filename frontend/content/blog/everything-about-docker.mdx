@@ -18,7 +18,6 @@ related: 'cloud'
 
 <TableContent title="Docker - The Complete Guide to Build and Deploy your Application" />
 
-
 Docker has been a de facto standard for containerization and is widely used in the industry. Docker ability to package and run applications in a loosely isolated environment called a container has made it popular among developers.
 
 Docker solves the problem of inconsistent environments and dependencies by providing a standard way to package and distribute applications. Docker containers are lightweight and contain everything needed to run an application, including code, runtime, system tools, system libraries, and settings.
@@ -243,7 +242,11 @@ Since `node-app` is a custom image, we are using the `build` key to specify the 
 
 Now after this config we run and do changes in the code, the changes will be reflected in the container without rebuilding the image and running the container again.
 
-> When we use Volumes of services like `mongodb` or `mysql` to bind he path we can follow official documentation of the image to know the path of the volume. For example, for `mongodb` the path is `/data/db`.
+<Callout emoji="💡" isRegular={false}>
+  When we use Volumes of services like `mongodb` or `mysql` to bind he path we
+  can follow official documentation of the image to know the path of the volume.
+  For example, for `mongodb` the path is `/data/db`.
+</Callout>
 
 <Separator />
 
@@ -373,7 +376,7 @@ Since when build the app we got static files, we can use the official nginx imag
 
 Now we can build image and push to **Docker Hub** or any other registry. and then use cloud services like **AWS**, **GCP**, **Azure** to deploy the application.
 
-### Conclusion
+## Conclusion
 
 There are many things that we can do with docker and we have just scratched the surface. Docker is a powerful tool and is widely used in the industry. The need and importnace of docker shine when we work with microservices and kubernetes. Eeven when we work on old projects where we have to maintain the old version of the application, docker is very useful.
 

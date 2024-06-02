@@ -26,7 +26,10 @@ Before we start, We need to understand what will be structure of comment object.
 - `content`: The content of the comment.
 - `children`: An array of child comments.
 
-> You can also add more properties like `user`, `date`, etc. to the comment object as per your requirements.
+<Callout emoji="" isRegular={true}>
+  You can also add more properties like `user`, `date`, etc. to the comment
+  object as per your requirements.
+</Callout>
 
 **Content** property is string and **children** property is an array of comments. This is a recursive structure where each comment can have its own children comments.
 
@@ -190,7 +193,7 @@ We have added some basic validation to check if the comment is empty before addi
 
 > You can find the complete code in this [GitHub repository](https://github.com/Virous77/blog-projects/tree/main/comment-example)
 
-### Conclusion
+## Conclusion
 
 Recursion is a powerful technique that can be used to create nested comments in React. By creating a component that calls itself recursively, we can create a tree-like structure of comments. This allows users to reply to comments and create nested threads of conversation.
 

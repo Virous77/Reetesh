@@ -30,7 +30,7 @@ related: 'backend'
 
 In this article, we will create a simple REST API using ElysiaJS and Bun. We will also use MongoDB as our database.
 
-### Installation
+<SubHeadings> Installation </SubHeadings>
 
 ```bash
 curl -fsSL https://bun.sh/install | bash
@@ -38,7 +38,7 @@ curl -fsSL https://bun.sh/install | bash
 
 You need to install Bun in your system so that we can use it to create our project.
 
-### Create a new project
+<SubHeadings>Create a new project </SubHeadings>
 
 ```bash
 bun create elysia rest-api
@@ -46,7 +46,7 @@ bun create elysia rest-api
 
 This will create a new project named `rest-api` in the current directory.
 
-### Install dependencies
+<SubHeadings>Install dependencies </SubHeadings>
 
 ```bash
 cd rest-api
@@ -222,7 +222,7 @@ We used **bearer** plugin which is provided by Elysia. After that we used **`onB
 
 We are passing `12345678` as Bearar token in our request header. and we are checking if the token is valid or not. By default, Elysia in case of invalid token will return `404` status code with **`Unauthorized`** message.
 
-### Conclusion
+## Conclusion
 
 In this article, we created a simple REST API using ElysiaJS and Bun. We also implemented authentication for our API. You can find the complete code on **[Github](https://github.com/Virous77/elysia-bun)**
 

@@ -29,7 +29,12 @@ For our this simple application and for learning purposes, we will use Nginx as 
 
 - Just clone this [repository](https://github.com/Virous77/dockerize-fullstack-app/tree/kubernetes-setup) and switch to the `kubernetes-setup` branch.
 
-> you can read [this](https://reetesh.in/blog/configuring-full-stack-apps-for-kubernetes-deployment) blog for more details about the repository and how to run the application in the local environment.
+<Callout emoji="📖" isRegular={true}>
+  you can read
+  [this](https://reetesh.in/blog/configuring-full-stack-apps-for-kubernetes-deployment)
+  blog for more details about the repository and how to run the application in
+  the local environment.
+</Callout>
 
 ## Creating Nginx Docker Image
 
@@ -309,7 +314,11 @@ Since if your following the previous blog, you know that we are using `minikube`
 
 You can read the previous blog to know more about the `minikube` and how to use and configure it.
 
-> You need to add `output: "standalone"` in the `next.config.js` file to build the image since in our image we are using the `server.js` file to run the application.
+<Callout emoji="" isRegular={true}>
+  You need to add `output: "standalone"` in the `next.config.js` file to build
+  the image since in our image we are using the `server.js` file to run the
+  application.
+</Callout>
 
 ```bash
 # move to mini kube docker environment
@@ -392,7 +401,7 @@ You can add your URL in place of the current URL in the `allowedOrigins` array.
 
 Once you have added the URL, you can rebuild the frontend image and deploy the application to the kubernetes cluster using the same commands.
 
-### Conclusion
+## Conclusion
 
 Nginx is a good tool to use as a reverse proxy for Kubernetes services. It provides a simple and efficient way to route traffic to the appropriate services. We also learn how we build the production-ready image for the frontend application and how to configure the Next.js to use the correct proxy.
 

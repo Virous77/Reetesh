@@ -218,11 +218,11 @@ useEffect(() => {
 
 We are subscribing to push notification in the `useEffect` hook. We are using the `pushManager.subscribe` method to subscribe to push notification. Once user is subscribed to push notification, we are sending the subscription object to the server.
 
-### Sending Push Notification from Server
+<SubHeadings>Sending Push Notification from Server to Client</SubHeadings>
+
+To send push notification from server to client, we need to send a post request to the `/send-notification` route. First run the server using the following command to start the server.
 
 ```bash
-// run server.js
-
 node server.js
 ```
 

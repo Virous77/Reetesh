@@ -25,12 +25,9 @@ related: 'frontend'
 
 <TableContent title="State management in React apps" />
 
-
 ## What is state in React?
 
 State in **React** is an object that determines how a component renders and behaves. In other words, state is what allows you to create components that are dynamic and interactive. State is mutable, which means that it can be changed over time.
-
-## Why do we need state?
 
 State is used to store data that can change over time. For example, if you have a counter component that displays the number of times a button has been clicked, then the state would be used to store the current count value.
 
@@ -38,19 +35,19 @@ React applications often need to update the user interface dynamically in respon
 
 ## Types of state in React
 
-1. Local state
-2. Global state
-3. External state
+- Local state
+- Global state
+- External state
 
-### Local state
+<SubHeadings>Local state </SubHeadings>
 
 Local state is a state that is accessible to the component it is defined in, or its children. It is not accessible to other components in the application.
 
-### Global state
+<SubHeadings>Global state </SubHeadings>
 
 Global state is a state that is accessible to all components in the application. It is usually defined in a top-level component, such as App.js, and passed down to other components as props. or it can be managed by a state management library like [Redux](https://redux.js.org/), [Context API](https://react.dev/learn/passing-data-deeply-with-context), [Zustand](https://zustand-demo.pmnd.rs/).
 
-### External state
+<SubHeadings>External state </SubHeadings>
 
 External state is a state that is managed by an external library, such as [Redux](https://redux.js.org/) or [Zustand](https://zustand-demo.pmnd.rs/). Redux being the most popular one. external libraries make it easier to manage state in large applications. since they provide a centralized place for storing and updating state.
 
@@ -72,7 +69,7 @@ For remote data, we can use libraries like [React Query](https://tanstack.com/qu
 
 They also provide tools for caching, pagination, and other features that make it easier to work with remote data. These libraries are very useful when working with large applications that need to fetch data from multiple sources.
 
-### Conclusion
+## Conclusion
 
 managing state in React apps is one of the most important and challenging tasks. In this article, we learned about state management in React apps. We also learned about the different types of state and how to manage remote data in React.
 
