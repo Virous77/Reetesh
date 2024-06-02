@@ -71,7 +71,7 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
           </div>
         </section>
 
-        <section className="box-fit prose-headings:font-cal prose prose-base prose-neutral mt-6 dark:prose-invert prose-a:whitespace-nowrap prose-a:text-default prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-defaultMax prose-blockquote:font-light prose-img:rounded-lg">
+        <section className="box-fit prose-headings:font-cal prose prose-base prose-neutral mt-6 dark:prose-invert prose-a:whitespace-nowrap prose-a:text-default prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-defaultMax prose-blockquote:font-light prose-th:p-0 prose-img:mb-0 prose-img:mt-0">
           <Mdx code={blog.body.code} />
         </section>
 

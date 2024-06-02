@@ -14,6 +14,8 @@ import { Separator } from '@/components/ui/separator';
 import SubHeadings from '@/lib/sub-headings';
 import TableContent from '@/lib/table-content';
 import CustomImage from '@/lib/custom-image';
+import { ArrowRight } from 'lucide-react';
+import Summary, { LI } from '@/lib/summary';
 
 const components = {
   h1: ({ className, ...props }: any) => (
@@ -78,13 +80,29 @@ const components = {
     />
   ),
   ul: ({ className, ...props }: any) => (
-    <ul className={cn('my-6 ml-0 list-disc', className)} {...props} />
+    <ul
+      className={cn('my-6 ml-0 list-disc pl-0', className)}
+      {...props}
+      style={{ listStyle: 'none' }}
+    />
   ),
   ol: ({ className, ...props }: any) => (
     <ol className={cn('my-6 ml-2 list-decimal', className)} {...props} />
   ),
   li: ({ className, ...props }: any) => (
-    <li className={cn('mt-2', className)} {...props} />
+    <li
+      className={cn(
+        'custom-white m-0 mt-2 flex items-start gap-2 p-0',
+        className
+      )}
+      {...props}
+    >
+      <div className="w-[16px]">
+        <ArrowRight size={16} color="#e21d49" style={{ marginTop: '7px' }} />
+      </div>
+
+      <div>{props.children}</div>
+    </li>
   ),
   blockquote: Note,
   hr: ({ ...props }) => <hr className="my-4 md:my-8" {...props} />,
@@ -138,6 +156,8 @@ const components = {
   Separator,
   SubHeadings,
   TableContent,
+  Summary,
+  LI,
 };
 
 interface MdxProps {
