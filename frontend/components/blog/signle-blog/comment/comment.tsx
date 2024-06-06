@@ -1,14 +1,60 @@
 import dbConnect from '@/db/mongoose';
-import CommentForm from './comment-form';
 import CommentList from './comment-list';
 import blogComments, { TBlog } from '@/models/blog-comments';
 
 const getComments = async ({ id }: { id: string }) => {
   await dbConnect();
+
   const comments: TBlog[] = await blogComments
-    .find({ blogId: id })
-    .sort({ createdAt: -1 });
-  return comments;
+    .find({ blogId: id, parent: true })
+    .sort({ createdAt: -1 })
+    .populate({
+      path: 'children',
+      options: { sort: { createdAt: -1 } },
+      populate: {
+        path: 'children',
+        options: { sort: { createdAt: -1 } },
+        populate: {
+          path: 'children',
+          options: { sort: { createdAt: -1 } },
+          populate: {
+            path: 'children',
+            options: { sort: { createdAt: -1 } },
+            populate: {
+              path: 'children',
+              options: { sort: { createdAt: -1 } },
+              populate: {
+                path: 'children',
+                options: { sort: { createdAt: -1 } },
+                populate: {
+                  path: 'children',
+                  options: { sort: { createdAt: -1 } },
+                  populate: {
+                    path: 'children',
+                    options: { sort: { createdAt: -1 } },
+                    populate: {
+                      path: 'children',
+                      options: { sort: { createdAt: -1 } },
+                      populate: {
+                        path: 'children',
+                        options: { sort: { createdAt: -1 } },
+                        populate: {
+                          path: 'children',
+                          options: { sort: { createdAt: -1 } },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    })
+    .lean();
+
+  return JSON.parse(JSON.stringify(comments));
 };
 
 export const Comment = async ({ slug }: { slug: string }) => {
@@ -21,10 +67,8 @@ export const Comment = async ({ slug }: { slug: string }) => {
         <h2 className=" pb-2 text-lg text-heading">
           Comments ({data.length || 0})
         </h2>
-
         <span className=" text-[12px]">Markdown is supported.*</span>
       </div>
-      <CommentForm />
       <CommentList data={data} />
       <span className=" mb-3 inline-block h-[2px] w-full bg-accent"></span>
     </section>
