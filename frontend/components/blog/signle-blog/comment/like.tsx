@@ -1,5 +1,3 @@
-'use client';
-
 import { generateUUID, getLocalData } from '@/utils/utils';
 import { ThumbsDown, ThumbsUp } from 'lucide-react';
 import React, { useLayoutEffect } from 'react';
@@ -14,9 +12,19 @@ type TLike = {
   id: string;
   blogId: string;
   blogUserId: string;
+  reply: boolean;
+  onClick: () => void;
 };
 
-const Like: React.FC<TLike> = ({ id, like, dislike, blogId, blogUserId }) => {
+const Like: React.FC<TLike> = ({
+  id,
+  like,
+  dislike,
+  blogId,
+  blogUserId,
+  reply,
+  onClick,
+}) => {
   const [userId, setUserId] = React.useState<string | null>(null);
 
   const { mutate } = useMutation({
@@ -70,6 +78,15 @@ const Like: React.FC<TLike> = ({ id, like, dislike, blogId, blogUserId }) => {
             <ThumbsDown size={18} cursor="pointer" />
           </span>
           <p>{dislike.length}</p>
+        </div>
+
+        <div className="flex items-center">
+          <span
+            className="flex h-[30px] w-[55px] cursor-pointer items-center justify-center rounded-full text-[15px] hover:bg-accent"
+            onClick={onClick}
+          >
+            {reply ? 'Cancel' : 'Reply'}
+          </span>
         </div>
       </div>
       {blogUserId === userId && (

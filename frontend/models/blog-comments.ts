@@ -6,6 +6,9 @@ interface IBlogComment {
   userId: string;
   like: string[];
   dislike: string[];
+  children: mongoose.Types.ObjectId[];
+  parent: boolean;
+  isDeleted: boolean;
 }
 
 interface MongoBlogComment extends IBlogComment, mongoose.Document {}
@@ -26,6 +29,14 @@ const BlogCommentSchema = new mongoose.Schema<MongoBlogComment>(
       type: String,
       required: true,
     },
+    parent: {
+      type: Boolean,
+      default: false,
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
     userId: {
       type: String,
       required: true,
@@ -36,6 +47,15 @@ const BlogCommentSchema = new mongoose.Schema<MongoBlogComment>(
     },
     dislike: {
       type: [String],
+      default: [],
+    },
+    children: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'BlogComment',
+        },
+      ],
       default: [],
     },
   },

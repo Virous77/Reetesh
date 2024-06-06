@@ -3,7 +3,7 @@
 import z from 'zod';
 import { revalidatePath } from 'next/cache';
 import dbConnect from '@/db/mongoose';
-import blogComments from '@/models/blog-comments';
+import blogComments, { TBlog } from '@/models/blog-comments';
 import CommentEmail from '@/components/email/blogComment-mail';
 import { Resend } from 'resend';
 
@@ -11,6 +11,7 @@ const schema = z.object({
   blogId: z.string().min(1, { message: 'Blog id is required' }),
   userId: z.string().min(1, { message: 'User id is required' }),
   comment: z.string().min(1, { message: 'Comment is required' }),
+  parentId: z.string().optional(),
 });
 
 export default async function action(path: string) {
@@ -43,9 +44,39 @@ export const createComment = async (params: TInput) => {
     await dbConnect();
     await blogComments.create({
       ...validate,
+      parent: true,
     });
-    commentMail(validate.comment, validate.blogId);
+
+    if (process.env.NODE_ENV === 'production') {
+      commentMail(validate.comment, validate.blogId);
+    }
+
     return 'Comment added successfully';
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      throw new Error(error.errors[0].message);
+    }
+    throw new Error('Failed to add comment');
+  }
+};
+
+type TCommentReply = TInput & { commentId: string };
+
+export const createReplyComment = async (params: TCommentReply) => {
+  try {
+    const validate = schema.parse(params);
+    await dbConnect();
+    const newComment: TBlog = await blogComments.create({
+      ...validate,
+      parent: false,
+    });
+    await blogComments.findByIdAndUpdate(params.parentId, {
+      $push: { children: newComment._id },
+    });
+
+    if (process.env.NODE_ENV === 'production') {
+      commentMail(validate.comment, validate.blogId);
+    }
   } catch (error) {
     if (error instanceof z.ZodError) {
       throw new Error(error.errors[0].message);

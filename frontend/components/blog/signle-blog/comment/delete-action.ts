@@ -23,7 +23,15 @@ export const deleteCommentAction = async (input: z.infer<typeof schema>) => {
     if (findComment.userId !== validate.userId) {
       throw new Error('You are not authorized to delete this comment');
     }
-    await blogComments.findByIdAndDelete(validate.commentId);
+
+    if (findComment.children.length > 0) {
+      await blogComments.findByIdAndUpdate(validate.commentId, {
+        isDeleted: true,
+      });
+    } else {
+      await blogComments.findByIdAndDelete(validate.commentId);
+    }
+
     return {
       message: 'Comment deleted successfully',
     };
