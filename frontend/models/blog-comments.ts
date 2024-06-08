@@ -6,17 +6,20 @@ interface IBlogComment {
   userId: string;
   like: string[];
   dislike: string[];
-  children: mongoose.Types.ObjectId[];
   parent: boolean;
   isDeleted: boolean;
 }
 
-interface MongoBlogComment extends IBlogComment, mongoose.Document {}
+type MongoBlogComment = IBlogComment &
+  mongoose.Document & {
+    children: mongoose.Types.ObjectId[];
+  };
 
 export type TBlog = IBlogComment & {
   _id: string;
   createdAt: string;
   updatedAt: string;
+  children: TBlog[];
 };
 
 const BlogCommentSchema = new mongoose.Schema<MongoBlogComment>(

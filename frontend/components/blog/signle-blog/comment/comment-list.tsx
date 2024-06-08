@@ -7,20 +7,26 @@ import action, { createComment } from './action';
 import { useMutation } from '@tanstack/react-query';
 import { getLocalData } from '@/utils/utils';
 import CommentForm from './comment-form';
-import React from 'react';
+import React, { useOptimistic, startTransition } from 'react';
 
 export type TNewComment = {
   comment: string;
-  children: any[];
+  children: TNewComment[];
   id?: string;
 };
 
 const CommentList = ({ data }: { data: TBlog[] }) => {
   const pathName = usePathname();
+  const [optimisticComment, addNewComment] = useOptimistic(
+    data,
+    (state, newTodo: TBlog) => {
+      return [newTodo, ...state];
+    }
+  );
 
   const { mutate, isPending } = useMutation({
     mutationFn: createComment,
-    onError: (data: any) => {
+    onError: (data) => {
       alert(data.message || 'Failed to send comment');
     },
     onSuccess: () => {
@@ -36,6 +42,22 @@ const CommentList = ({ data }: { data: TBlog[] }) => {
       const tempId = getLocalData('tempId');
       localStorage.setItem('tempId', JSON.stringify(tempId));
     }
+
+    startTransition(() =>
+      addNewComment({
+        comment: comment.comment,
+        children: [],
+        _id: `opt_${Math.random().toString()}`,
+        userId: id,
+        blogId: pathName.split('/')[2],
+        parent: true,
+        like: [],
+        dislike: [],
+        isDeleted: false,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      })
+    );
     mutate({
       comment: comment.comment,
       userId: id,
@@ -47,9 +69,9 @@ const CommentList = ({ data }: { data: TBlog[] }) => {
   return (
     <React.Fragment>
       <CommentForm handleAddComment={handleAddComment} isPending={isPending} />
-      {data.length > 0 ? (
+      {optimisticComment.length > 0 ? (
         <div className="no-scrollbar mt-3 max-h-[800px] overflow-y-scroll">
-          {data.map((comment, index) => (
+          {optimisticComment.map((comment, index) => (
             <CommentsItem key={index} comment={comment} />
           ))}
         </div>

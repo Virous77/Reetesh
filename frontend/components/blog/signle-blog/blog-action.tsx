@@ -21,8 +21,13 @@ const BlogAction = ({
       try {
         const views = getLikeAction({ blogId });
         return views;
-      } catch (error: any) {
-        alert(error.message || 'Failed to get like');
+      } catch (error) {
+        if (error instanceof Error) {
+          alert(error.message);
+          return { totalLike: 0 };
+        }
+        alert('Failed to get likes');
+        return { totalLike: 0 };
       }
     },
   });
@@ -33,8 +38,8 @@ const BlogAction = ({
       refetch();
       action(blogId);
     },
-    onError: (data: any) => {
-      alert(data.message || 'Failed to delete comment');
+    onError: (error) => {
+      alert(error.message || 'Failed to delete comment');
     },
   });
 
