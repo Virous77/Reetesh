@@ -35,7 +35,7 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
     }
   );
 
-  const { mutate: replyMutate, isPending: isReplyPending } = useMutation({
+  const { mutate: replyMutate } = useMutation({
     mutationFn: createReplyComment,
     onError: (data) => {
       alert(data.message || 'Failed to send comment');
@@ -109,15 +109,17 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
             </div>
 
             <div className=" mt-2 flex  flex-col">
-              <Like
-                id={optimisticComment._id.toString()}
-                like={optimisticComment.like}
-                dislike={optimisticComment.dislike}
-                blogId={optimisticComment.blogId}
-                blogUserId={optimisticComment.userId}
-                onClick={() => setReply(!reply)}
-                reply={reply}
-              />
+              {optimisticComment && (
+                <Like
+                  id={optimisticComment._id.toString()}
+                  like={optimisticComment.like}
+                  dislike={optimisticComment.dislike}
+                  blogId={optimisticComment.blogId}
+                  blogUserId={optimisticComment.userId}
+                  onClick={() => setReply(!reply)}
+                  reply={reply}
+                />
+              )}
               <p className=" text-[12px] text-default">
                 {formateDate(optimisticComment.createdAt)}
               </p>
@@ -136,7 +138,6 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
                 parentId: optimisticComment._id,
               });
             }}
-            isPending={isReplyPending}
           />
         )}
       </div>
