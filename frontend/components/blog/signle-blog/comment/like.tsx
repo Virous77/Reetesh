@@ -5,6 +5,7 @@ import action from './action';
 import DeleteComment from './delete-comment';
 import { useMutation } from '@tanstack/react-query';
 import { addLikeAction } from './like-action';
+import { Button } from '@/components/ui/button';
 
 type TLike = {
   like: string[];
@@ -27,13 +28,13 @@ const Like: React.FC<TLike> = ({
 }) => {
   const [userId, setUserId] = React.useState<string | null>(null);
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: addLikeAction,
     onSuccess: () => {
       action(blogId);
     },
-    onError: (data: any) => {
-      alert(data.message || 'Failed to like');
+    onError: (error) => {
+      alert(error.message || 'Failed to like');
     },
   });
 
@@ -59,34 +60,39 @@ const Like: React.FC<TLike> = ({
     <div className=" flex items-end justify-between">
       <div className=" -ml-1 flex items-center gap-2">
         <div className=" flex items-center">
-          <span
-            className={`flex h-[30px] w-[30px] items-center justify-center rounded-full hover:bg-accent ${like?.includes(userId || '') ? 'text-heading' : ''} `}
+          <Button
+            size={'icon'}
+            className={`flex h-[30px] w-[30px] items-center justify-center rounded-full bg-transparent  text-secondary-foreground hover:bg-accent ${like?.includes(userId || '') ? 'text-heading' : ''}`}
             onClick={() => handleLike('like')}
+            disabled={isPending || id.includes('opt_')}
           >
             <ThumbsUp size={18} cursor="pointer" />
-          </span>
+          </Button>
           <p>{like?.length}</p>
         </div>
 
         <div className=" flex items-center">
-          <span
-            className={`flex h-[30px] w-[30px] items-center justify-center rounded-full hover:bg-accent ${
+          <Button
+            size={'icon'}
+            className={`flex h-[30px] w-[30px] items-center justify-center rounded-full bg-transparent text-secondary-foreground  hover:bg-accent ${
               dislike?.includes(userId || '') ? 'text-heading' : ''
             } `}
             onClick={() => handleLike('dislike')}
           >
             <ThumbsDown size={18} cursor="pointer" />
-          </span>
+          </Button>
           <p>{dislike.length}</p>
         </div>
 
         <div className="flex items-center">
-          <span
-            className="flex h-[30px] w-[55px] cursor-pointer items-center justify-center rounded-full text-[15px] hover:bg-accent"
+          <Button
+            size={'icon'}
+            className="flex h-[30px] w-[55px] cursor-pointer items-center justify-center rounded-full bg-transparent text-[15px] text-secondary-foreground  hover:bg-accent"
             onClick={onClick}
+            disabled={isPending || id.includes('opt_')}
           >
             {reply ? 'Cancel' : 'Reply'}
-          </span>
+          </Button>
         </div>
       </div>
       {blogUserId === userId && (

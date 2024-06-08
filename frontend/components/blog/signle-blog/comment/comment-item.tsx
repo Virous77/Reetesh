@@ -1,14 +1,16 @@
 import CommentForm from './comment-form';
 import { TBlog } from '@/models/blog-comments';
 import { formateDate, getLocalData } from '@/utils/utils';
-import Like from './like';
-import CommentMarkdown from './comment-markdown';
 import AuthorImage from '@/components/common/author-image';
 import { useMutation } from '@tanstack/react-query';
 import action, { createReplyComment } from './action';
-import { useState } from 'react';
+import { startTransition, useOptimistic, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Info } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+const Like = dynamic(() => import('./like'));
+const CommentMarkdown = dynamic(() => import('./comment-markdown'));
 
 type TReplyComment = {
   id: string;
@@ -24,14 +26,21 @@ const adminID = [
 const CommentsItem = ({ comment }: { comment: TBlog }) => {
   const [reply, setReply] = useState(false);
   const pathName = usePathname();
+  const [optimisticComment, addNewComment] = useOptimistic(
+    comment,
+    (state, newTodo: TBlog) => {
+      const newState = { ...state };
+      newState.children = [newTodo, ...state.children];
+      return newState;
+    }
+  );
 
   const { mutate: replyMutate, isPending: isReplyPending } = useMutation({
     mutationFn: createReplyComment,
-    onError: (data: any) => {
+    onError: (data) => {
       alert(data.message || 'Failed to send comment');
     },
     onSuccess: () => {
-      setReply(false);
       action(pathName.split('/')[2]);
     },
   });
@@ -44,6 +53,23 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
       const tempId = getLocalData('tempId');
       localStorage.setItem('tempId', JSON.stringify(tempId));
     }
+
+    startTransition(() =>
+      addNewComment({
+        comment: comment.comment,
+        children: [],
+        _id: `opt_${Math.random().toString()}`,
+        userId: id,
+        blogId: pathName.split('/')[2],
+        parent: false,
+        like: [],
+        dislike: [],
+        isDeleted: false,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      })
+    );
+    setReply(false);
 
     replyMutate({
       commentId: comment.id,
@@ -58,20 +84,20 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
     <div
       className={` mt-2 ${comment.children.length > 0 ? 'border-l-2' : 'border-none'} p-2 pl-3 pr-0`}
     >
-      {comment.isDeleted ? (
+      {optimisticComment.isDeleted ? (
         <div className=" flex items-center gap-2 rounded-md bg-accent p-2 text-[15px] text-default">
           <Info size={18} />
           <p>Comment has been deleted</p>
         </div>
       ) : (
         <div
-          key={comment._id.toString()}
+          key={optimisticComment._id.toString()}
           className="grid-cols-custom mb-4 grid items-start gap-3"
         >
-          {!adminID.includes(comment.userId.toLowerCase()) ? (
+          {!adminID.includes(optimisticComment.userId.toLowerCase()) ? (
             <div className="flex h-[40px]  w-[40px] items-center justify-center rounded-full bg-gray-200">
               <span className="text-[18px] font-bold text-heading">
-                {comment.userId.slice(0, 2)}
+                {optimisticComment.userId.slice(0, 2)}
               </span>
             </div>
           ) : (
@@ -79,21 +105,21 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
           )}
           <div className=" overflow-scroll">
             <div className="just-way box-fit prose-headings:font-cal prose prose-base prose-neutral  dark:prose-invert prose-a:whitespace-nowrap prose-a:text-default prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-defaultMax prose-blockquote:font-light prose-img:rounded-lg">
-              <CommentMarkdown comment={comment.comment} />
+              <CommentMarkdown comment={optimisticComment.comment} />
             </div>
 
             <div className=" mt-2 flex  flex-col">
               <Like
-                id={comment._id.toString()}
-                like={comment.like}
-                dislike={comment.dislike}
-                blogId={comment.blogId}
-                blogUserId={comment.userId}
+                id={optimisticComment._id.toString()}
+                like={optimisticComment.like}
+                dislike={optimisticComment.dislike}
+                blogId={optimisticComment.blogId}
+                blogUserId={optimisticComment.userId}
                 onClick={() => setReply(!reply)}
                 reply={reply}
               />
               <p className=" text-[12px] text-default">
-                {formateDate(comment.createdAt)}
+                {formateDate(optimisticComment.createdAt)}
               </p>
             </div>
           </div>
@@ -105,9 +131,9 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
           <CommentForm
             handleAddComment={(e) => {
               handleSubmit({
-                id: comment._id,
+                id: optimisticComment._id,
                 comment: e.comment,
-                parentId: comment._id,
+                parentId: optimisticComment._id,
               });
             }}
             isPending={isReplyPending}
@@ -115,8 +141,8 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
         )}
       </div>
       <div>
-        {comment.children.map((child: any, index: number) => (
-          <CommentsItem key={index} comment={child} />
+        {optimisticComment.children.map((child) => (
+          <CommentsItem key={child._id} comment={child} />
         ))}
       </div>
     </div>
