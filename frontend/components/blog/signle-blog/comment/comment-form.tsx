@@ -11,10 +11,8 @@ type TComment = {
 
 const CommentForm = ({
   handleAddComment,
-  isPending,
 }: {
   handleAddComment: (e: TComment) => void;
-  isPending: boolean;
 }) => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,12 +35,8 @@ const CommentForm = ({
         className=" max-h-[150px] min-h-[70px] py-6 text-base"
         name="comment"
       />
-      <Button
-        disabled={isPending}
-        type="submit"
-        className=" w-full px-[30px] py-6 md:w-auto"
-      >
-        {isPending ? 'Sending...' : 'Send'}
+      <Button type="submit" className=" w-full px-[30px] py-6 md:w-auto">
+        Send
       </Button>
     </form>
   );

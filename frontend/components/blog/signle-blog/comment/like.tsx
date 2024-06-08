@@ -78,6 +78,7 @@ const Like: React.FC<TLike> = ({
               dislike?.includes(userId || '') ? 'text-heading' : ''
             } `}
             onClick={() => handleLike('dislike')}
+            disabled={isPending || id.includes('opt_')}
           >
             <ThumbsDown size={18} cursor="pointer" />
           </Button>

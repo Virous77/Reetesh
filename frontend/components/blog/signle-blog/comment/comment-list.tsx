@@ -24,7 +24,7 @@ const CommentList = ({ data }: { data: TBlog[] }) => {
     }
   );
 
-  const { mutate, isPending } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: createComment,
     onError: (data) => {
       alert(data.message || 'Failed to send comment');
@@ -68,7 +68,7 @@ const CommentList = ({ data }: { data: TBlog[] }) => {
 
   return (
     <React.Fragment>
-      <CommentForm handleAddComment={handleAddComment} isPending={isPending} />
+      <CommentForm handleAddComment={handleAddComment} />
       {optimisticComment.length > 0 ? (
         <div className="no-scrollbar mt-3 max-h-[800px] overflow-y-scroll">
           {optimisticComment.map((comment, index) => (
