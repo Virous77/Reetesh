@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import { Copy, CopyCheck } from 'lucide-react';
 import { Icon } from './icons';
 import { ToolTipComp } from '@/components/ui/tooltip';
+import { Button } from '@/components/ui/button';
 
 export const Pre = ({ children, ...props }: any) => {
   const preRef = useRef<HTMLPreElement>(null);
@@ -21,7 +22,7 @@ export const Pre = ({ children, ...props }: any) => {
   return (
     <div className="pre rounded border">
       <div
-        className="flex w-full items-center justify-between px-3 py-1  pb-3"
+        className="flex w-full items-center justify-between px-3 py-1 pb-3"
         style={{
           marginTop: '5px',
           borderBottom: '1px solid hsl(var(--border))',
@@ -33,14 +34,15 @@ export const Pre = ({ children, ...props }: any) => {
         </span>
 
         <ToolTipComp name="Copy">
-          <button
-            type="button"
+          <Button
+            size="icon"
+            className="bg-transparent text-secondary-foreground hover:bg-transparent"
             aria-label="Copy to Clipboard"
             onClick={onClick}
             disabled={copied}
           >
             {copied ? <CopyCheck size={20} /> : <Copy size={20} />}
-          </button>
+          </Button>
         </ToolTipComp>
       </div>
       <pre {...props} ref={preRef}>

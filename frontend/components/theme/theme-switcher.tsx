@@ -4,6 +4,7 @@ import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import { Moon, Sun } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { Button } from '../ui/button';
 
 const ThemeSwitcher = () => {
   const { theme, setTheme } = useTheme();
@@ -18,14 +19,15 @@ const ThemeSwitcher = () => {
 
   return (
     <div
-      className={`fixed right-3 flex  flex-col gap-2 ${
+      className={`fixed right-3 flex flex-col gap-2 ${
         pathName.includes('/blog') || pathName.includes('/learn')
           ? 'bottom-5'
           : 'top-3'
       } z-[101]`}
     >
-      <div
-        className="bg-default-100 hover:bg-default-200 flex h-8 w-8 cursor-pointer items-center justify-center"
+      <Button
+        size="icon"
+        className="flex h-8 w-8 cursor-pointer items-center justify-center bg-transparent text-secondary-foreground hover:bg-transparent"
         onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
       >
         {theme === 'dark' ? (
@@ -33,7 +35,7 @@ const ThemeSwitcher = () => {
         ) : (
           <Moon size={20} data-testid="moon" />
         )}
-      </div>
+      </Button>
     </div>
   );
 };

@@ -6,7 +6,7 @@ interface IBlogComment {
   userId: string;
   like: string[];
   dislike: string[];
-  parent: boolean;
+  parent: string | null;
   isDeleted: boolean;
 }
 
@@ -33,8 +33,8 @@ const BlogCommentSchema = new mongoose.Schema<MongoBlogComment>(
       required: true,
     },
     parent: {
-      type: Boolean,
-      default: false,
+      type: String,
+      default: null,
     },
     isDeleted: {
       type: Boolean,

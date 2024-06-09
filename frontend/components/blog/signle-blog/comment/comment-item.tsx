@@ -61,7 +61,7 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
         _id: `opt_${Math.random().toString()}`,
         userId: id,
         blogId: pathName.split('/')[2],
-        parent: false,
+        parent: comment.id,
         like: [],
         dislike: [],
         isDeleted: false,
@@ -72,7 +72,6 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
     setReply(false);
 
     replyMutate({
-      commentId: comment.id,
       blogId: pathName.split('/')[2],
       userId: id,
       comment: comment.comment,
@@ -82,10 +81,10 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
 
   return (
     <div
-      className={` mt-2 ${comment.children.length > 0 ? 'border-l-2' : 'border-none'} p-2 pl-3 pr-0`}
+      className={`mt-2 ${comment.children.length > 0 ? 'border-l-2' : 'border-none'} p-2 pl-3 pr-0`}
     >
       {optimisticComment.isDeleted ? (
-        <div className=" flex items-center gap-2 rounded-md bg-accent p-2 text-[15px] text-default">
+        <div className="flex items-center gap-2 rounded-md bg-accent p-2 text-[15px] text-default">
           <Info size={18} />
           <p>Comment has been deleted</p>
         </div>
@@ -95,7 +94,7 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
           className="grid-cols-custom mb-4 grid items-start gap-3"
         >
           {!adminID.includes(optimisticComment.userId.toLowerCase()) ? (
-            <div className="flex h-[40px]  w-[40px] items-center justify-center rounded-full bg-gray-200">
+            <div className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-gray-200">
               <span className="text-[18px] font-bold text-heading">
                 {optimisticComment.userId.slice(0, 2)}
               </span>
@@ -103,12 +102,12 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
           ) : (
             <AuthorImage />
           )}
-          <div className=" overflow-scroll">
-            <div className="just-way box-fit prose-headings:font-cal prose prose-base prose-neutral  dark:prose-invert prose-a:whitespace-nowrap prose-a:text-default prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-defaultMax prose-blockquote:font-light prose-img:rounded-lg">
+          <div className="overflow-scroll">
+            <div className="just-way box-fit prose-headings:font-cal prose prose-base prose-neutral dark:prose-invert prose-a:whitespace-nowrap prose-a:text-default prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-defaultMax prose-blockquote:font-light prose-img:rounded-lg">
               <CommentMarkdown comment={optimisticComment.comment} />
             </div>
 
-            <div className=" mt-2 flex  flex-col">
+            <div className="mt-2 flex flex-col">
               {optimisticComment && (
                 <Like
                   id={optimisticComment._id.toString()}
@@ -120,7 +119,7 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
                   reply={reply}
                 />
               )}
-              <p className=" text-[12px] text-default">
+              <p className="text-[12px] text-default">
                 {formateDate(optimisticComment.createdAt)}
               </p>
             </div>
@@ -128,7 +127,7 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
         </div>
       )}
 
-      <div className=" mb-2 mt-2">
+      <div className="mb-2 mt-2">
         {reply && (
           <CommentForm
             handleAddComment={(e) => {

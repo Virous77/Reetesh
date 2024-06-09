@@ -50,7 +50,7 @@ const CommentList = ({ data }: { data: TBlog[] }) => {
         _id: `opt_${Math.random().toString()}`,
         userId: id,
         blogId: pathName.split('/')[2],
-        parent: true,
+        parent: null,
         like: [],
         dislike: [],
         isDeleted: false,
@@ -76,7 +76,7 @@ const CommentList = ({ data }: { data: TBlog[] }) => {
           ))}
         </div>
       ) : (
-        <p className=" pb-2 pt-4 text-center">No comments yet</p>
+        <p className="pb-2 pt-4 text-center">No comments yet</p>
       )}
     </React.Fragment>
   );
