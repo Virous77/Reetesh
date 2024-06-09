@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 interface ISkill {
   name: string;
   level: string;
-  about: string;
   icon: string;
+  skillType: string;
 }
 
 interface MongoSkill extends ISkill, mongoose.Document {}
@@ -25,13 +25,13 @@ const SkillSchema = new mongoose.Schema<MongoSkill>(
       type: String,
       required: true,
     },
-    about: {
-      type: String,
-      required: true,
-    },
     icon: {
       type: String,
       required: true,
+    },
+    skillType: {
+      type: String,
+      default: 'frontend',
     },
   },
   {

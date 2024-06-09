@@ -38,8 +38,10 @@ export async function generateMetadata() {
 
 export default function RootLayout({
   children,
+  modal,
 }: {
   children: React.ReactNode;
+  modal: React.ReactNode;
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -80,6 +82,7 @@ export default function RootLayout({
       <body className={`${montserrat.className}`}>
         <ThemeProviderComp attribute="class" defaultTheme="dark">
           <Provider>
+            {modal}
             {children}
             <Analytics debug={false} />
             <SpeedInsights />
