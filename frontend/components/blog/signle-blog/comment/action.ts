@@ -44,7 +44,7 @@ export const createComment = async (params: TInput) => {
     await dbConnect();
     await blogComments.create({
       ...validate,
-      parent: true,
+      parent: null,
     });
 
     if (process.env.NODE_ENV === 'production') {
@@ -60,15 +60,13 @@ export const createComment = async (params: TInput) => {
   }
 };
 
-type TCommentReply = TInput & { commentId: string };
-
-export const createReplyComment = async (params: TCommentReply) => {
+export const createReplyComment = async (params: TInput) => {
   try {
     const validate = schema.parse(params);
     await dbConnect();
     const newComment: TBlog = await blogComments.create({
       ...validate,
-      parent: false,
+      parent: validate.parentId,
     });
     await blogComments.findByIdAndUpdate(params.parentId, {
       $push: { children: newComment._id },

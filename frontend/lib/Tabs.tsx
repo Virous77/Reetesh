@@ -1,12 +1,13 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import React from 'react';
 
 const Tabs = ({ children, items }: { children: any; items: string[] }) => {
   const [activeTab, setActiveTab] = React.useState(0);
 
   return (
-    <div className=" flex flex-col gap-2">
+    <div className="flex flex-col gap-2">
       <div
         className="flex w-full items-center gap-1 overflow-scroll rounded border p-1"
         style={{
@@ -16,13 +17,13 @@ const Tabs = ({ children, items }: { children: any; items: string[] }) => {
         }}
       >
         {items.map((item, index) => (
-          <span
+          <Button
             onClick={() => setActiveTab(index)}
-            className={` m-2 cursor-pointer whitespace-nowrap rounded p-2 hover:bg-accent  ${activeTab === index ? ' text-heading underline underline-offset-4' : ''}`}
+            className={`m-2 cursor-pointer whitespace-nowrap rounded bg-transparent p-2 hover:bg-accent ${activeTab === index ? 'text-heading underline underline-offset-4' : 'text-secondary-foreground'}`}
             key={index}
           >
             {item}
-          </span>
+          </Button>
         ))}
       </div>
       {children[activeTab]}

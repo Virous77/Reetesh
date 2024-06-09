@@ -28,7 +28,7 @@ const Like: React.FC<TLike> = ({
 }) => {
   const [userId, setUserId] = React.useState<string | null>(null);
 
-  const { mutate, isPending } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: addLikeAction,
     onSuccess: () => {
       action(blogId);
@@ -57,28 +57,28 @@ const Like: React.FC<TLike> = ({
   }, []);
 
   return (
-    <div className=" flex items-end justify-between">
-      <div className=" -ml-1 flex items-center gap-2">
-        <div className=" flex items-center">
+    <div className="flex items-end justify-between">
+      <div className="-ml-1 flex items-center gap-2">
+        <div className="flex items-center">
           <Button
             size={'icon'}
-            className={`flex h-[30px] w-[30px] items-center justify-center rounded-full bg-transparent  text-secondary-foreground hover:bg-accent ${like?.includes(userId || '') ? 'text-heading' : ''}`}
+            className={`flex h-[30px] w-[30px] items-center justify-center rounded-full bg-transparent text-secondary-foreground hover:bg-accent ${like?.includes(userId || '') ? 'text-heading' : ''}`}
             onClick={() => handleLike('like')}
-            disabled={isPending || id.includes('opt_')}
+            disabled={id.includes('opt_')}
           >
             <ThumbsUp size={18} cursor="pointer" />
           </Button>
           <p>{like?.length}</p>
         </div>
 
-        <div className=" flex items-center">
+        <div className="flex items-center">
           <Button
             size={'icon'}
-            className={`flex h-[30px] w-[30px] items-center justify-center rounded-full bg-transparent text-secondary-foreground  hover:bg-accent ${
+            className={`flex h-[30px] w-[30px] items-center justify-center rounded-full bg-transparent text-secondary-foreground hover:bg-accent ${
               dislike?.includes(userId || '') ? 'text-heading' : ''
             } `}
             onClick={() => handleLike('dislike')}
-            disabled={isPending || id.includes('opt_')}
+            disabled={id.includes('opt_')}
           >
             <ThumbsDown size={18} cursor="pointer" />
           </Button>
@@ -88,9 +88,9 @@ const Like: React.FC<TLike> = ({
         <div className="flex items-center">
           <Button
             size={'icon'}
-            className="flex h-[30px] w-[55px] cursor-pointer items-center justify-center rounded-full bg-transparent text-[15px] text-secondary-foreground  hover:bg-accent"
+            className="flex h-[30px] w-[55px] cursor-pointer items-center justify-center rounded-full bg-transparent text-[15px] text-secondary-foreground hover:bg-accent"
             onClick={onClick}
-            disabled={isPending || id.includes('opt_')}
+            disabled={id.includes('opt_')}
           >
             {reply ? 'Cancel' : 'Reply'}
           </Button>
