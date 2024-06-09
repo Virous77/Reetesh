@@ -256,3 +256,20 @@ li code {
   padding: 0px !important;
   margin: 0px !important;
 }
+
+.skill-list {
+  display: grid;
+  grid-row-end: 1fr;
+}
+
+@media (min-width: 768px) {
+  .skill-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .skill-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

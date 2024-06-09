@@ -11,7 +11,7 @@ const getSkills = async () => {
 const SkillPage = async () => {
   const skills = await getSkills();
 
-  return <Skill skills={skills} />;
+  return <Skill skills={skills} componentType="main" />;
 };
 
 export default SkillPage;
