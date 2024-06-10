@@ -7,6 +7,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import Script from 'next/script';
 import { Provider } from '@/lib/reactQuery-provider';
 import { Analytics } from '@vercel/analytics/react';
+import { Viewport } from 'next';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -33,8 +34,12 @@ export async function generateMetadata() {
   });
   return {
     ...metaData,
+    manifest: '/manifest.json',
   };
 }
+export const viewport: Viewport = {
+  themeColor: '#000000',
+};
 
 export default function RootLayout({
   children,
