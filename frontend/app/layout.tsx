@@ -33,7 +33,6 @@ export async function generateMetadata() {
   });
   return {
     ...metaData,
-    manifest: '/manifest.json',
   };
 }
 

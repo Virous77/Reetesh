@@ -1,15 +1,5 @@
 const { withContentlayer } = require('next-contentlayer');
 
-const withPWA = require('@ducanh2912/next-pwa').default({
-  dest: 'public',
-  register: true,
-  aggressiveFrontEndNavCaching: true,
-  cacheStartUrl: true,
-  dynamicStartUrl: true,
-  reloadOnOnline: true,
-  scope: '/',
-});
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -30,5 +20,4 @@ const nextConfig = {
   // output: "standalone",
 };
 
-const App = withContentlayer(nextConfig);
-module.exports = withPWA(App);
+module.exports = withContentlayer(nextConfig);
