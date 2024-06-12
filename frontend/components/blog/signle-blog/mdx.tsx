@@ -16,6 +16,7 @@ import TableContent from '@/lib/table-content';
 import CustomImage from '@/lib/custom-image';
 import { ArrowRight } from 'lucide-react';
 import Summary, { LI } from '@/lib/summary';
+import Youtube from '@/lib/youtube';
 
 const components = {
   h1: ({ className, ...props }: any) => (
@@ -139,7 +140,7 @@ const components = {
   code: ({ className, ...props }: any) => (
     <code
       className={cn(
-        'relative  px-[0.3rem] py-[0.2rem] font-mono text-sm',
+        'relative px-[0.3rem] py-[0.2rem] font-mono text-sm',
         className
       )}
       {...props}
@@ -158,6 +159,7 @@ const components = {
   TableContent,
   Summary,
   LI,
+  Youtube,
 };
 
 interface MdxProps {
