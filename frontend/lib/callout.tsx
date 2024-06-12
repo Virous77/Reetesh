@@ -15,13 +15,13 @@ const Callout: React.FC<TCallout> = (props) => {
       }}
     >
       <span
-        className=" absolute z-10 flex h-[40px] w-[40px] items-center justify-center rounded-full bg-background text-[20px]"
+        className="absolute flex h-[40px] w-[40px] items-center justify-center rounded-full bg-background text-[20px]"
         style={{ left: '-20px', top: '-10px' }}
       >
         {props.emoji || <CircleAlert size={20} />}
       </span>
       <div
-        className=" w-full"
+        className="w-full"
         style={{ paddingLeft: '12px', paddingTop: '2px' }}
       >
         {props.children}
