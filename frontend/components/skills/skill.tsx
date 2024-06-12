@@ -13,7 +13,7 @@ type TSkills = {
 
 const Skill: React.FC<TSkills> = ({ skills, componentType }) => {
   return (
-    <div className="pb-8 md:pb-0">
+    <div className="pb-8 md:pb-4">
       {componentType === 'main' && (
         <section className="m-auto flex items-center justify-center p-4 md:w-[60%] md:p-0">
           <div className="relative">
