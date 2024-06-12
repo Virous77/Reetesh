@@ -1,0 +1,241 @@
+---
+title: 'Stripe Payment Links in Next.JS App and Webhooks Explained'
+date: 'June 12 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://res.cloudinary.com/dw6wav4jg/image/upload/v1718020069/stripe-nextjs_v4uoi5.png'
+about: ' Stripe is a popular payment gateway that allows you to accept payments online. In this article, we will learn how to integrate Stripe payment checkout in a Next.JS application and set up webhooks to handle payment events.'
+tags:
+  [
+    'how to use stripe with next.js',
+    'stripe payment Links',
+    'stripe payment gateway in next.js',
+    'stripe webhooks in next.js',
+    'stripe payment events',
+  ]
+related: 'common'
+---
+
+<TableContent title="Stripe Payment Links in Next.JS App and Webhooks Explained" />
+
+Stripe is a popular payment gateway that allows you to accept payments online. Stripe provides a simple and easy-to-use API that allows you to integrate payment checkout in your web applications. Payment checkout is a crucial part of any e-commerce application, and Stripe makes it easy to integrate payment checkout in your web application.
+
+Taking payment globally was never easy before Stripe. Stripe built a platform that allows businesses to accept payments from customers all over the world. Stripe supports multiple payment methods, including credit cards, debit cards, and digital wallets like Apple Pay and Google Pay.
+
+We will learn how to integrate Stripe payment link checkout in a Next.JS application and set up webhooks to handle payment events where we will listen to payment events like payment success, payment failure, etc and take actions accordingly.
+
+## Stripe Payment Link Generation
+
+> Make sure you have a Stripe account. If you don't have a Stripe account, you can create one by visiting the [Stripe website](https://stripe.com/).
+
+Before we move ahead to integrate Stripe payment checkout in our Next.JS application, we need to generate a payment link from the Stripe dashboard. The payment link is a URL that you can share with your customers to accept payments. The payment link can be generated from the Stripe dashboard by following below video.
+
+<Video src="https://res.cloudinary.com/dw6wav4jg/video/upload/q_35/v1718093226/Screen_Recording_2024-06-11_at_10.55.47_AM_ncgrca.mp4" />
+
+As you can see in the video, we have generated a payment link from the Stripe dashboard. You can copy the payment link and store which we need to use in our Next.JS application.
+
+<Callout emoji="" isRegular={true}>
+  You can create multiple payment links for different products or services. Each
+  payment link can have a different amount, currency, and description.
+</Callout>
+
+I have created **Three** payments links as we are going to create plans for our application which contains **HOBBY**, **PRO** and **ENTERPRISE**. Each plan has different amount and description.
+
+<Advertise title="Neon DB with Drizzle and Hono in Next.JS" />
+
+<Separator />
+
+## Stripe Payment Link Checkout Integration in Next.JS
+
+The best part of Stripe Payment Links are that it make so easy to integarte as all the heavey lifting is done by Stripe. We just need to create a payment link and share with the customer. When customer click on the link, it will take them to the Stripe checkout page where they can enter the payment details and complete the payment.
+
+We need to create our **Plan UI** where we will show the plans and all the details of the plan. When user click on the plan, we will redirect them to the Stripe checkout page. The Plan UI will look like below.
+
+| ![Plain UI](https://res.cloudinary.com/dw6wav4jg/image/upload/v1718094000/Image_11-06-24_at_1.49_PM_rchdbw.jpg) |
+| :-------------------------------------------------------------------------------------------------------------: |
+|                                                    _Plan UI_                                                    |
+
+It's simple and clean UI which i came up 😄. I assume your Next.JS app is setup you just need to remove all the contnet from `app/page.tsx` and add below code.
+
+```tsx
+// app/page.tsx
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+
+const data = [
+  {
+    name: 'Hobby',
+    description: 'Everything you need to kickstart your web project.',
+    features: ['Unlimited projects'],
+    link: 'your stripe link',
+  },
+  {
+    name: 'Pro',
+    description: 'Collaborate with a team for $10 /month, per member.',
+    features: ['Everything in Hobby, plus'],
+    link: 'your stripe link',
+  },
+  {
+    name: 'Enterprise',
+    description: 'Critical security, performance, observability and support.',
+    features: ['Everything in Pro, plus'],
+    link: 'yor stripe link',
+  },
+];
+
+const HomePage = () => {
+  return (
+    <main>
+      <h1>Next Stripe Payment</h1>
+      <section>
+        {data.map((item) => (
+          <Card key={item.name}>
+            <CardHeader>
+              <CardTitle>{item.name}</CardTitle>
+              <CardDescription>{item.description}</CardDescription>
+            </CardHeader>
+
+            <CardContent>
+              <ul>
+                {item.features.map((feature) => (
+                  <li key={feature}>
+                    <ArrowRight />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+            <CardFooter>
+              <Link href={item.link}>
+                <Button>Continue</Button>
+              </Link>
+            </CardFooter>
+          </Card>
+        ))}
+      </section>
+    </main>
+  );
+};
+
+export default HomePage;
+```
+
+As you can see above the code is self explanatory. We first created `data` array which contains all the plans details. We are looping over the `data` array and showing the plan details in the card. When user click on the `Continue` button, it will redirect them to the Stripe checkout page. The **JSON Data** is dummy and you need to replace with your Stripe payment link which you have generated. and also configure based on your plan.
+
+<Separator />
+
+## Stripe Webhooks in Next.JS
+
+<Callout emoji="💡" isRegular={false}>
+  Stripe Webhook is optional but if you want to track user payment events like
+  payment success, payment failure, subscription updated, etc then you need to
+  setup webhook endpoint in your app.
+</Callout>
+
+We have come so far after integrating Stripe Payment Link checkout in our Next.JS application. Now we need to handle payment events like payment success, payment failure, etc. We can handle payment events using Stripe webhooks. Stripe webhooks are HTTP callbacks that are sent to your server when a specific event occurs in your Stripe account.
+
+You need to create a webhook endpoint in your Next.JS application to receive the Stripe webhook events. You can create a webhook endpoint in your Next.JS app `app/api/webhook/route.ts` file.
+
+> You can keep the name of the endpoint as per your choice. Here we are keeping it as `webhook`.
+
+```tsx
+// app/api/webhook/route.ts
+
+import { NextRequest, NextResponse } from 'next/server';
+import Stripe from 'stripe';
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2024-04-10',
+});
+
+const webHookEndpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+
+export async function POST(req: NextRequest) {
+  const body = await req.text();
+  const sig = req.headers.get('stripe-signature')!;
+
+  try {
+    const stripeEvent = stripe.webhooks.constructEvent(
+      body,
+      sig,
+      webHookEndpointSecret
+    );
+
+    switch (stripeEvent.type) {
+      case 'checkout.session.completed':
+        const sessionLineItems = await stripe.checkout.sessions.retrieve(
+          stripeEvent.data.object.id,
+          {
+            expand: ['line_items'],
+          }
+        );
+        const lineItems = sessionLineItems.line_items;
+        if (!lineItems)
+          return NextResponse.json({ error: 'No line items' }, { status: 400 });
+
+        // save checkout session to your database
+        console.log('Checkout Session Completed', stripeEvent.data.object);
+
+        break;
+      default:
+        NextResponse.json({ message: 'Unhandled event type' }, { status: 200 });
+        console.log(`Unhandled event type: ${stripeEvent.type}`);
+    }
+
+    return NextResponse.json({ message: 'Webhook Received' }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ error: 'Webhook Error' }, { status: 400 });
+  }
+}
+```
+
+In the above code, we have created a webhook endpoint that listens to the Stripe webhook events. We are using the Stripe Node.js library to construct the Stripe event and verify the webhook signature. We are handling two Stripe events: `checkout.session.completed` and `customer.subscription.updated`.
+
+When the `checkout.session.completed` event occurs, we are retrieving the line items from the checkout session and saving them to the database. When the `customer.subscription.updated` event occurs, we are retrieving the customer subscription details and saving them to the database.
+
+There are several other Stripe events that you can handle using Stripe webhooks. You can refer to the [Stripe webhook events](https://stripe.com/docs/api/events/types) documentation for more information. The main core logic to handling the events will be same you just need to change the event type and data based on your requirement.
+
+> You need to replace the `process.env.STRIPE_SECRET_KEY` and `process.env.STRIPE_WEBHOOK_SECRET` with your Stripe secret key and webhook secret.
+
+You must be thinking from where you will get the `STRIPE_WEBHOOK_SECRET`. We can use Stripe CLI to create a webhook endpoint and get the webhook secret.
+
+```bash
+stripe login
+
+stripe listen --forward-to http://localhost:3000/api/webhook
+
+# Start your app
+yarn dev
+```
+
+The above command will create a webhook endpoint and provide you with the webhook secret. You can use that webhook secret and add it to your `.env` file.
+
+<Callout emoji="🚀" isRegular={true}>
+  For production webhook you need to add in the Stripe dashboard. You can add
+  the webhook endpoint in the Stripe dashboard by visiting the [Stripe webhook
+  settings](https://dashboard.stripe.com/webhooks). The `STRIPE_WEBHOOK_SECRET` you can get 
+  from the stripe dashboard after creating the webhook.
+
+You can find the source code of this article on [GitHub](https://github.com/Virous77/blog-projects/tree/main/next-stripe)
+
+</Callout>
+
+<Separator />
+
+## Conclusion
+
+Stripe Paymnets Links is a good way to quickly accpet payments with minimal code as all the heavy lifting is done by Stripe. There are several other ways to integrate Stripe payment checkout in your web application, but Stripe Payment Links is the easiest way to get started.
+
+Webhhooks are crcuial part of any payment gateway integration as it allows you to handle payment events like **payment success**, **payment failure**, **subscription updated**, etc. Having safe and secure webhook endpoint is important to handle payment events.
+
+I hope you found this blog post helpful. If you have any questions or comments, feel free to leave them below. Thanks for reading! 🚀
