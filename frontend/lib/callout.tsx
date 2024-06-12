@@ -9,7 +9,7 @@ type TCallout = {
 const Callout: React.FC<TCallout> = (props) => {
   return (
     <div
-      className="callout relative m-auto w-[95%] rounded p-1"
+      className="callout relative m-auto mt-5 w-[95%] rounded p-1"
       style={{
         background: `${props.isRegular ? 'rgb(219 234 254)' : 'rgb(220 252 231)'}`,
       }}

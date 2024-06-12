@@ -1,10 +1,8 @@
-import React from 'react';
-
 const Youtube = ({ link }: { link: string }) => {
   return (
     <iframe
       width="100%"
-      height="315"
+      height="310"
       src={link}
       title="YouTube video player"
       frameBorder="0"
@@ -12,6 +10,8 @@ const Youtube = ({ link }: { link: string }) => {
       referrerPolicy="strict-origin-when-cross-origin"
       allowFullScreen
       suppressHydrationWarning
+      loading="lazy"
+      aria-label="YouTube video player"
     ></iframe>
   );
 };
