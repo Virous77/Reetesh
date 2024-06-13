@@ -15,6 +15,11 @@ const nextConfig = {
         hostname: 'avatars.githubusercontent.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: '8qbgmple95w84kds.public.blob.vercel-storage.com',
+        port: '',
+      },
     ],
   },
   // output: "standalone",
