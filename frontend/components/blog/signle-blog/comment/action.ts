@@ -37,6 +37,8 @@ const commentMail = async (comment: string, blogId: string) => {
 };
 
 const restrictSpamComment = async (userId: string) => {
+  if (process.env.NODE_ENV === 'development') return;
+
   const kv = createClient({
     url: process.env.KV_REST_API_URL,
     token: process.env.KV_REST_API_TOKEN,
@@ -50,10 +52,12 @@ const restrictSpamComment = async (userId: string) => {
     await kv.set(`comment:${userId}`, user + 1, {
       ex: 300,
     });
+    return true;
   } else {
     await kv.set(`comment:${userId}`, 1, {
       ex: 300,
     });
+    return true;
   }
 };
 
@@ -72,7 +76,7 @@ type TInput = z.infer<typeof schema>;
 export const createComment = async (params: TInput) => {
   try {
     const validate = schema.parse(params);
-    await restrictSpamComment(validate.userId);
+    const shouldMail = await restrictSpamComment(validate.userId);
 
     await dbConnect();
     await blogComments.create({
@@ -80,7 +84,7 @@ export const createComment = async (params: TInput) => {
       parent: null,
     });
 
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === 'production' && shouldMail) {
       commentMail(validate.comment, validate.blogId);
     }
 
@@ -93,7 +97,7 @@ export const createComment = async (params: TInput) => {
 export const createReplyComment = async (params: TInput) => {
   try {
     const validate = schema.parse(params);
-    await restrictSpamComment(validate.userId);
+    const shouldMail = await restrictSpamComment(validate.userId);
 
     await dbConnect();
     const newComment: TBlog = await blogComments.create({
@@ -104,9 +108,11 @@ export const createReplyComment = async (params: TInput) => {
       $push: { children: newComment._id },
     });
 
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === 'production' && shouldMail) {
       commentMail(validate.comment, validate.blogId);
     }
+
+    return 'Comment added successfully';
   } catch (error) {
     commonError(error, 'Failed to add comment');
   }
