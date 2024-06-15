@@ -7,17 +7,17 @@ const RelatedPost = ({ relatedBlogs }: { relatedBlogs: Post[] }) => {
   const posts = relatedBlogs;
 
   return (
-    <section className=" w-full rounded-[30px] bg-accent p-3 py-5 md:mb-6 md:p-5">
-      <h1 className=" text-xl text-heading underline underline-offset-4">
+    <section className="w-full rounded-[30px] bg-accent p-3 py-5 md:mb-6 md:p-5">
+      <h1 className="text-xl text-heading underline underline-offset-4">
         Related Posts
       </h1>
-      <div className=" mt-4  grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-4 grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 lg:grid-cols-3">
         {posts.slice(0, 5).map((post) => (
           <Card
             key={post.slug}
-            className=" rounded-[25px] transition-all duration-700 hover:scale-105"
+            className="rounded-[25px] transition-all duration-700 hover:scale-105"
           >
-            <CardContent className=" m-0 h-fit w-full p-0">
+            <CardContent className="m-0 h-fit w-full p-0">
               <BlogDetails.Link id={post.slugAsParams}>
                 <Image
                   alt="blog thumbnail"
@@ -28,7 +28,7 @@ const RelatedPost = ({ relatedBlogs }: { relatedBlogs: Post[] }) => {
                   className="rounded-t-[25px]"
                   style={{ width: '100%', height: '220px' }}
                 />
-                <h1 className=" mt-2 p-2 pt-0 text-[18px] font-[500]">
+                <h1 className="mt-2 p-2 pt-0 text-[18px] font-[500]">
                   {post.title}
                 </h1>
               </BlogDetails.Link>

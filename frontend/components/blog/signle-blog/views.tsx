@@ -23,7 +23,7 @@ const Views = ({ slug }: { slug: string }) => {
   });
 
   return (
-    <p className=" text-small flex  items-center justify-center gap-2 text-[14px] text-default md:text-base">
+    <p className="text-small flex items-center justify-center gap-2 text-[14px] text-default md:text-base">
       <Eye size={20} /> {data || 0}
     </p>
   );

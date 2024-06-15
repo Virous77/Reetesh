@@ -10,14 +10,14 @@ In NextJS applications, Declarative Routes also handles API routes, so you'll ha
 
 Here are the routes of the application:
 
-| Route | Verb | Route Name | Using It |
-| ----- | ---- | ---- | ---- |
-| `/api/trpc/[trpc]` | - | `ApiTrpcTrpc` | `<ApiTrpcTrpc.Link>` |
-| `/blog/[id]` | - | `BlogId` | `<BlogId.Link>` |
-| `/blogs` | - | `Blogs` | `<Blogs.Link>` |
-| `/` | - | `Home` | `<Home.Link>` |
-| `/projects` | - | `Projects` | `<Projects.Link>` |
-| `/skills` | - | `Skills` | `<Skills.Link>` |
+| Route              | Verb | Route Name    | Using It             |
+| ------------------ | ---- | ------------- | -------------------- |
+| `/api/trpc/[trpc]` | -    | `ApiTrpcTrpc` | `<ApiTrpcTrpc.Link>` |
+| `/blog/[id]`       | -    | `BlogId`      | `<BlogId.Link>`      |
+| `/blogs`           | -    | `Blogs`       | `<Blogs.Link>`       |
+| `/`                | -    | `Home`        | `<Home.Link>`        |
+| `/projects`        | -    | `Projects`    | `<Projects.Link>`    |
+| `/skills`          | -    | `Skills`      | `<Skills.Link>`      |
 
 To use the routes, you can import them from `@/routes` and use them in your code.
 
@@ -26,10 +26,10 @@ To use the routes, you can import them from `@/routes` and use them in your code
 For pages, use the `Link` component (built on top of `next/link`) to link to other pages. For example:
 
 ```tsx
-import { ProductDetail } from "@/routes";
+import { ProductDetail } from '@/routes';
 
 return (
-  <ProductDetail.Link productId={"abc123"}>Product abc123</ProductDetail.Link>
+  <ProductDetail.Link productId={'abc123'}>Product abc123</ProductDetail.Link>
 );
 ```
 
@@ -38,12 +38,12 @@ This is the equivalent of doing `<Link href="/product/abc123">Product abc123</Li
 For APIs, use the exported `fetch` wrapping functions. For example:
 
 ```tsx
-import { useEffect } from "react";
-import { getProductInfo } from "@/routes";
+import { useEffect } from 'react';
+import { getProductInfo } from '@/routes';
 
 useEffect(() => {
   // Parameters are typed to the input of the API
-  getProductInfo({ productId: "abc123" }).then((data) => {
+  getProductInfo({ productId: 'abc123' }).then((data) => {
     // Data is typed to the result of the API
     console.log(data);
   });
@@ -95,7 +95,7 @@ Post setup there are some additional tasks that you need to complete to complete
 - [ ] Convert `Link` components for `/projects` to `<Projects.Link>`
 - [ ] `/skills/page.info.ts`: Add search typing to if the page supports search paramaters
 - [ ] Convert `Link` components for `/skills` to `<Skills.Link>`
-Once you've got that done you can remove this section.
+      Once you've got that done you can remove this section.
 
 # Why is `makeRoute` copied into the `@/routes` module?
 

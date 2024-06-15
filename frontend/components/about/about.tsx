@@ -1,7 +1,7 @@
 const About = () => {
   return (
     <div className="mt-[50px] flex flex-col gap-4 md:mt-0 md:scroll-my-20">
-      <div className=" flex flex-col gap-3">
+      <div className="flex flex-col gap-3">
         <p>
           I&apos;m Reetesh Kumar, a Full Stack Developer turning caffeine into
           code. Crafting seamless digital experiences with a blend of front-end

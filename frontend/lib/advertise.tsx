@@ -20,15 +20,15 @@ const Advertise: React.FC<TAdvertise> = ({ title }) => {
 
   return (
     <div
-      className="mt-2 flex w-full  items-center rounded border p-2"
+      className="mt-2 flex w-full items-center rounded border p-2"
       style={{ justifyContent: 'end' }}
     >
-      <div className="flex w-full flex-col items-center justify-between gap-3 md:flex-row  md:items-end">
+      <div className="flex w-full flex-col items-center justify-between gap-3 md:flex-row md:items-end">
         <div>
-          <h1 className=" text-center text-xl capitalize">{title}</h1>
+          <h1 className="text-center text-xl capitalize">{title}</h1>
           <p className="whitespace-normal text-center text-[14px]">{about}</p>
           <BlogDetails.Link
-            className=" inline-block w-full text-center"
+            className="inline-block w-full text-center"
             id={slugAsParams}
             aria-label={`Read full post ${title}`}
           >
@@ -40,7 +40,7 @@ const Advertise: React.FC<TAdvertise> = ({ title }) => {
           height={200}
           alt={title}
           src={blogImage}
-          className=" !mb-[10px] !mt-[5px] flex items-end justify-end rounded-lg"
+          className="!mb-[10px] !mt-[5px] flex items-end justify-end rounded-lg"
           style={{ marginTop: '5px', marginBottom: '10px' }}
         />
       </div>

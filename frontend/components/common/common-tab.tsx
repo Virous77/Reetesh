@@ -21,14 +21,14 @@ const CommonTab: React.FC<TCommonTab> = ({ links, type = true }) => {
     <aside
       className={`px-[40px] md:px-0 ${
         type ? 'items-center md:h-[50vh]' : 'pb-4 md:mt-6'
-      }  relative flex flex-col md:flex-row `}
+      } relative flex flex-col md:flex-row`}
     >
-      <ul className=" flex flex-col gap-3">
+      <ul className="flex flex-col gap-3">
         {links.map((link, idx) => (
           <li key={idx}>
             <Link
               href={link.path}
-              className=" flex items-center gap-2"
+              className="flex items-center gap-2"
               aria-label={link.name}
             >
               {link.icon ? (

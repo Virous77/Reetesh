@@ -21,10 +21,10 @@ type TSingleBlog = {
 const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
   return (
     <>
-      <div className=" sticky left-0 top-0 z-10 mb-3 flex w-full items-center justify-between p-4 backdrop-blur dark:bg-[#111111]/60 md:hidden">
+      <div className="sticky left-0 top-0 z-10 mb-3 flex w-full items-center justify-between p-4 backdrop-blur dark:bg-[#111111]/60 md:hidden">
         <Author />
 
-        <div className=" flex items-center gap-3">
+        <div className="flex items-center gap-3">
           <Blogs.Link aria-label="Visit all Blogs">
             <Newspaper />
           </Blogs.Link>
@@ -37,7 +37,7 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
           <div className="mb-3 hidden items-center justify-between md:flex">
             <Author />
 
-            <div className=" flex items-center gap-3">
+            <div className="flex items-center gap-3">
               <ToolTipComp name="All Blogs">
                 <Blogs.Link aria-label="Visit all Blogs">
                   <Newspaper />
@@ -46,18 +46,18 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
               <Social styles="" />
             </div>
           </div>
-          <h1 className=" m-auto -mb-1 mt-8 w-[90%] text-center text-[26px] font-bold leading-snug md:text-[32px]">
+          <h1 className="m-auto -mb-1 mt-8 w-[90%] text-center text-[26px] font-bold leading-snug md:text-[32px]">
             {blog.title}
           </h1>
           <div className="m-2 mt-3 rounded border p-2 md:m-0 md:mt-[14px]">
-            <div className=" flex items-center justify-between ">
-              <div className=" flex items-center  gap-4 ">
-                <p className=" text-small flex items-center justify-center gap-2 text-[14px] text-default md:text-base">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <p className="text-small flex items-center justify-center gap-2 text-[14px] text-default md:text-base">
                   <CalendarDays size={20} /> {formateDate(blog.date)}
                 </p>
                 <Views slug={blog.slugAsParams} />
               </div>
-              <span className=" flex  items-center gap-2 text-[14px] capitalize text-default md:text-base">
+              <span className="flex items-center gap-2 text-[14px] capitalize text-default md:text-base">
                 <BookOpenText size={20} />
                 {blog.readingTime.text}
               </span>

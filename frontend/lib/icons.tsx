@@ -263,7 +263,7 @@ export const Icon = ({
   className?: string;
 }) => {
   return (
-    <div className=" !h-4 !w-4">
+    <div className="!h-4 !w-4">
       <svg
         viewBox="0 0 128 128"
         className={cn('rounded-[3px]', className)}

@@ -26,16 +26,16 @@ const CommentForm = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className=" flex flex-col items-center gap-2 md:flex-row"
+      className="flex flex-col items-center gap-2 md:flex-row"
     >
       <Textarea
         placeholder="Your Comment"
         aria-label="comment"
         required={true}
-        className=" max-h-[150px] min-h-[70px] py-6 text-base"
+        className="max-h-[150px] min-h-[70px] py-6 text-base"
         name="comment"
       />
-      <Button type="submit" className=" w-full px-[30px] py-6 md:w-auto">
+      <Button type="submit" className="w-full px-[30px] py-6 md:w-auto">
         Send
       </Button>
     </form>

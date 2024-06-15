@@ -14,8 +14,8 @@ export default function GlobalError({
   return (
     <html>
       <body>
-        <main className=" flex h-screen items-center justify-center">
-          <section className=" flex w-[95%] flex-col  items-center gap-1 rounded p-4 shadow md:w-[500px]">
+        <main className="flex h-screen items-center justify-center">
+          <section className="flex w-[95%] flex-col items-center gap-1 rounded p-4 shadow md:w-[500px]">
             <h2>Something went wrong!</h2>
             <Image
               width={250}

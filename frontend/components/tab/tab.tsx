@@ -5,7 +5,7 @@ const Tab = () => {
   const tabs = ['Projects', 'Resume'];
 
   return (
-    <div className=" mt-[50px] md:mt-[80px]">
+    <div className="mt-[50px] md:mt-[80px]">
       <ul className="flex flex-col gap-3">
         {tabs.map((tab) => (
           <li key={tab}>

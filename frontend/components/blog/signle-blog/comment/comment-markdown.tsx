@@ -7,7 +7,7 @@ const CommentMarkdown = ({ comment }: { comment: string }) => {
       components={{
         code: Code,
         p: ({ children }) => <span>{children}</span>,
-        pre: ({ children }) => <pre className=" p-0">{children}</pre>,
+        pre: ({ children }) => <pre className="p-0">{children}</pre>,
         h3: ({ children }) => <h3 className="m-0">{children}</h3>,
         h4: ({ children }) => <h4 className="m-0">{children}</h4>,
         h1: ({ children }) => <h1 className="m-0">{children}</h1>,

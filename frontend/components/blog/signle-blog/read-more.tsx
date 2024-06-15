@@ -17,18 +17,18 @@ const ReadMore: React.FC<TReadMore> = ({ slug }) => {
   const { next, previous } = findNextAndPrevious(slug);
 
   return (
-    <div className=" mx-2 mb-3 rounded border px-2 py-3 md:mx-0">
-      <div className=" flex  items-center justify-between gap-4">
+    <div className="mx-2 mb-3 rounded border px-2 py-3 md:mx-0">
+      <div className="flex items-center justify-between gap-4">
         <Link
           href={previous ? `/blog/${previous}` : '/blogs'}
-          className=" font-bold underline underline-offset-4 hover:opacity-80"
+          className="font-bold underline underline-offset-4 hover:opacity-80"
           aria-label="Previous Post"
         >
           Previous Post
         </Link>
         <Link
           href={next ? `/blog/${next}` : '/blogs'}
-          className=" font-bold underline underline-offset-4 hover:opacity-80"
+          className="font-bold underline underline-offset-4 hover:opacity-80"
           aria-label="Next Post"
         >
           Next Post
