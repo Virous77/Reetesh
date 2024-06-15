@@ -40,16 +40,16 @@ const TableContent = ({ title }: { title: string }) => {
       className="rounded-lg bg-accent pl-4"
       style={{ paddingLeft: '1rem' }}
     >
-      <AccordionItem value="item-1" className=" border-b-0">
+      <AccordionItem value="item-1" className="border-b-0">
         <AccordionTrigger
           isActive={false}
-          className="font-serif text-base uppercase text-default  "
+          className="font-serif text-base uppercase text-default"
         >
           Table of Content
         </AccordionTrigger>
         <AccordionContent>
           <ul
-            className=" blog-table flex flex-col text-sm font-medium"
+            className="blog-table flex flex-col text-sm font-medium"
             style={{
               marginTop: '0rem',
               marginBottom: '0rem',

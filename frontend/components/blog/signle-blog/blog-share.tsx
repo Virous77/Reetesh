@@ -27,7 +27,7 @@ type TBlogMain = TBlogAction & {
 const BlogMain = ({ blogId, url, title, isMobile }: TBlogMain) => {
   return (
     <div
-      className={`${isMobile ? 'flex w-full items-center justify-between' : 'flex-col'}  gap-2`}
+      className={`${isMobile ? 'flex w-full items-center justify-between' : 'flex-col'} gap-2`}
     >
       <BlogAction blogId={blogId} isMobile={isMobile} />
       {!isMobile && <h2 className="pl-2 text-xl">Share Post</h2>}
@@ -57,7 +57,7 @@ const BlogMain = ({ blogId, url, title, isMobile }: TBlogMain) => {
 
         <A url={`https://wa.me/?text=${url}`} name="Whatsapp">
           <MessageCircle />
-          <p className="absolute left-[13.5px] top-[15px] flex h-3 w-3 items-center justify-center  text-[7px]">
+          <p className="absolute left-[13.5px] top-[15px] flex h-3 w-3 items-center justify-center text-[7px]">
             W
           </p>
         </A>

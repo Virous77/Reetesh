@@ -41,7 +41,7 @@ const CommentEmail = ({ comment, blogId }: CommentEmailProps) => {
               {previewText}
             </Heading>
 
-            <Text className=" mt-2 text-[18px] font-bold">{blogId}</Text>
+            <Text className="mt-2 text-[18px] font-bold">{blogId}</Text>
             <Text className="text-sm">{comment}</Text>
             <Link href="https://reetesh.in">Reetesh.in</Link>
           </Container>

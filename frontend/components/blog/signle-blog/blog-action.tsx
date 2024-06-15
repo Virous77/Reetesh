@@ -68,10 +68,10 @@ const BlogAction = ({
           size="icon"
           onClick={handleLike}
           disabled={isPending}
-          className=" flex w-[60px] items-center gap-2"
+          className="flex w-[60px] items-center gap-2"
         >
           <ThumbsUp size={20} />
-          <span className=" text-base">
+          <span className="text-base">
             {isPending
               ? data && data?.totalLike + variables.like
               : data?.totalLike || 0}

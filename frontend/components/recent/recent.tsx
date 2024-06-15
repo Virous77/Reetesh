@@ -21,21 +21,21 @@ const Recent = async () => {
   const project = await getLatestProjects();
 
   return (
-    <div className=" mb-10 mt-12 flex flex-col gap-8 md:mb-0 md:mt-0">
+    <div className="mb-10 mt-12 flex flex-col gap-8 md:mb-0 md:mt-0">
       <div>
         <h2 className="mb-4 text-2xl font-bold">Recent Activity</h2>
         <div>
           <Common name="Blogs" />
-          <ul className=" flex flex-col gap-2">
+          <ul className="flex flex-col gap-2">
             {posts.map((post) => (
-              <li key={post.slug} className=" underline underline-offset-4">
+              <li key={post.slug} className="underline underline-offset-4">
                 <BlogDetails.Link
                   id={post.slugAsParams}
-                  className=" flex items-center gap-2 opacity-90 hover:opacity-100 "
+                  className="flex items-center gap-2 opacity-90 hover:opacity-100"
                   aria-label={`Visit ${post.title}`}
                 >
                   {post.title}
-                  <ExternalLink size={20} className=" hidden md:block" />
+                  <ExternalLink size={20} className="hidden md:block" />
                 </BlogDetails.Link>
               </li>
             ))}
@@ -45,10 +45,10 @@ const Recent = async () => {
 
       <div>
         <Common name="Projects" />
-        <ul className=" flex flex-col gap-2">
-          <li className=" underline underline-offset-4">
+        <ul className="flex flex-col gap-2">
+          <li className="underline underline-offset-4">
             <Projects.Link
-              className=" flex items-center gap-2 opacity-90 hover:opacity-100"
+              className="flex items-center gap-2 opacity-90 hover:opacity-100"
               aria-label="Visit all Projects"
             >
               {project.title}
@@ -67,7 +67,7 @@ const Common = ({ name }: { name: string }) => {
   return (
     <div className="flex items-center gap-2">
       <span className="block h-[1px] w-10 bg-foreground opacity-50"></span>
-      <h3 className=" mb-2 font-mono">{name}</h3>
+      <h3 className="mb-2 font-mono">{name}</h3>
     </div>
   );
 };

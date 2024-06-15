@@ -21,7 +21,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
         >
           <CardContent className="p-3">
             <>
-              <h3 className=" mb-1 font-mono text-base text-heading md:text-[18px]">
+              <h3 className="mb-1 font-mono text-base text-heading md:text-[18px]">
                 {project.title}
               </h3>
               {project?.develop && (
@@ -41,21 +41,21 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
                 width={100}
                 sizes="100vw"
                 style={{ width: '100%', height: 'auto' }}
-                className=" rounded"
+                className="rounded"
               />
 
-              <div className=" mt-2 flex flex-wrap gap-2 ">
+              <div className="mt-2 flex flex-wrap gap-2">
                 {project.tags?.map((tag) => (
                   <span
                     key={tag}
-                    className=" rounded-md bg-muted px-2 py-1 text-[12px] capitalize"
+                    className="rounded-md bg-muted px-2 py-1 text-[12px] capitalize"
                   >
                     {tag}
                   </span>
                 ))}
               </div>
 
-              <div className=" mt-4 flex items-center justify-center gap-5">
+              <div className="mt-4 flex items-center justify-center gap-5">
                 <a
                   href={project.projectLink}
                   className="flex items-center gap-2 text-[13px] font-bold text-default underline underline-offset-4 hover:text-defaultMax"
@@ -82,7 +82,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
       ))}
       {isActive && (
         <Projects.Link
-          className=" flex cursor-pointer items-center gap-2 text-[14px] text-primary"
+          className="flex cursor-pointer items-center gap-2 text-[14px] text-primary"
           aria-label="Visit all Projects"
         >
           Visit all Projects <MoveRight size={19} />
