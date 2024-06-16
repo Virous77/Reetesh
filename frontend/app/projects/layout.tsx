@@ -1,7 +1,7 @@
 import { commonMetaData } from '@/utils/utils';
 import React from 'react';
 
-export async function generateMetadata() {
+export const generateMetadata = async () => {
   const metaData = commonMetaData({
     name: 'Projects',
     desc: "Discover my projects on this personal website. I'm a full-stack developer passionate about crafting innovative solutions",
@@ -12,12 +12,10 @@ export async function generateMetadata() {
   return {
     ...metaData,
   };
-}
+};
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const RootLayout = async ({ children }: { children: React.ReactNode }) => {
   return <React.Fragment>{children}</React.Fragment>;
-}
+};
+
+export default RootLayout;

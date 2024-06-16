@@ -3,7 +3,7 @@ import { Home } from 'lucide-react';
 import Image from 'next/image';
 import { Root } from '@/routes';
 
-export default function NotFound() {
+const NotFound = () => {
   return (
     <main
       className="flex items-center justify-center"
@@ -18,4 +18,6 @@ export default function NotFound() {
       </div>
     </main>
   );
-}
+};
+
+export default NotFound;

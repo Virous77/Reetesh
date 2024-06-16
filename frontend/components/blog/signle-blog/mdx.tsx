@@ -166,7 +166,7 @@ interface MdxProps {
   code: string;
 }
 
-export function Mdx({ code }: MdxProps) {
+export const Mdx = ({ code }: MdxProps) => {
   const Component = useMDXComponent(code);
 
   return (
@@ -174,4 +174,4 @@ export function Mdx({ code }: MdxProps) {
       <Component components={components} />
     </div>
   );
-}
+};

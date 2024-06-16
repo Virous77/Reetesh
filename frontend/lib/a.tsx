@@ -9,8 +9,3 @@ export const A = ({ children, ...props }: any) => {
     </a>
   );
 };
-
-// target = '_blank';
-// referrerPolicy = 'no-referrer';
-// title = 'Opens in a new tab';
-// rel = 'noreferrer noopener';

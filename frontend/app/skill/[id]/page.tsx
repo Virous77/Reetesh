@@ -8,16 +8,20 @@ import { commonMetaData } from '@/utils/utils';
 const Sidebar = dynamic(() => import('@/components/skills/common/sidebar'));
 const SkillInfo = dynamic(() => import('./skill-info'));
 
-export async function generateStaticParams() {
+export const generateStaticParams = async () => {
   await dbConnect();
   const skillLists: TSkill[] = await skills.find();
 
   return skillLists.map((skill) => ({
     id: skill.name.toLowerCase().replace(/ /g, '-'),
   }));
-}
+};
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
+export const generateMetadata = async ({
+  params,
+}: {
+  params: { id: string };
+}) => {
   const newName = params.id
     .split('-')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -32,7 +36,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   return {
     ...metaData,
   };
-}
+};
 
 const getSkills = async () => {
   await dbConnect();
