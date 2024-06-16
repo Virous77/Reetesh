@@ -21,7 +21,14 @@ export default async function action(path: string) {
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const commentMail = async (comment: string, blogId: string) => {
+const commentMail = async (
+  comment: string,
+  blogId: string,
+  shouldMail: boolean | undefined
+) => {
+  if (process.env.NODE_ENV === 'development') return;
+  if (!shouldMail) return;
+
   const data = await resend.emails.send({
     from: process.env.EMAIL!,
     to: process.env.SEND_TO!,
@@ -84,9 +91,7 @@ export const createComment = async (params: TInput) => {
       parent: null,
     });
 
-    if (process.env.NODE_ENV === 'production' && shouldMail) {
-      commentMail(validate.comment, validate.blogId);
-    }
+    commentMail(validate.comment, validate.blogId, shouldMail);
 
     return 'Comment added successfully';
   } catch (error) {
@@ -108,9 +113,7 @@ export const createReplyComment = async (params: TInput) => {
       $push: { children: newComment._id },
     });
 
-    if (process.env.NODE_ENV === 'production' && shouldMail) {
-      commentMail(validate.comment, validate.blogId);
-    }
+    commentMail(validate.comment, validate.blogId, shouldMail);
 
     return 'Comment added successfully';
   } catch (error) {
