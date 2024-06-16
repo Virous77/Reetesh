@@ -10,15 +10,19 @@ const merriweather = Merriweather({
   fallback: ['Poppins', 'sans-serif', 'ui-sans-serif', 'system-ui'],
 });
 
-export async function generateStaticParams() {
+export const generateStaticParams = async () => {
   const posts = allPosts;
 
   return posts.map((post) => ({
     id: post.slugAsParams,
   }));
-}
+};
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
+export const generateMetadata = async ({
+  params,
+}: {
+  params: { id: string };
+}) => {
   const blog = allPosts.find((post) => post.slugAsParams === params.id);
 
   const metaData = commonMetaData({
@@ -31,7 +35,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   return {
     ...metaData,
   };
-}
+};
 
 const SingleBlogPage = async ({
   params: { id },

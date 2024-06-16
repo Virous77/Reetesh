@@ -15,7 +15,7 @@ const montserrat = Montserrat({
   fallback: ['Poppins', 'sans-serif', 'ui-sans-serif', 'system-ui'],
 });
 
-export async function generateMetadata() {
+export const generateMetadata = async () => {
   const metaData = commonMetaData({
     name: '',
     desc: "I'm passionate full-stack developer with strong proficiency in versatile set of technologies like React, Next.js, Node.js, TypeScript, Docker, Kubernetes, Solidity.",
@@ -34,15 +34,15 @@ export async function generateMetadata() {
   return {
     ...metaData,
   };
-}
+};
 
-export default function RootLayout({
+const RootLayout = ({
   children,
   modal,
 }: {
   children: React.ReactNode;
   modal: React.ReactNode;
-}) {
+}) => {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -92,4 +92,6 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

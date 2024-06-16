@@ -113,9 +113,7 @@ export const generateUUID = () => {
 
 export const getLocalData = (key: string) => {
   const data = localStorage.getItem(key);
-  if (data) {
-    return JSON.parse(data);
-  }
+  if (data) return JSON.parse(data);
   return 0;
 };
 

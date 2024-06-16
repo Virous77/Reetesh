@@ -1,6 +1,6 @@
 import { allPosts } from '@/.contentlayer/generated';
 
-export default async function sitemap() {
+const sitemap = async () => {
   const blogs = allPosts;
   const URL = 'https://reetesh.in';
 
@@ -41,4 +41,6 @@ export default async function sitemap() {
   });
 
   return [...restUrls, ...allBlogs];
-}
+};
+
+export default sitemap;
