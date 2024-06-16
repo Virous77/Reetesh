@@ -36,6 +36,8 @@ const commentMail = async (
     react: CommentEmail({ comment, blogId }),
   });
 
+  console.log(data);
+
   if (!data.error) {
     return 'Success!';
   } else {
