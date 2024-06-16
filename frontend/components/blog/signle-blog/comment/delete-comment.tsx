@@ -4,6 +4,7 @@ import action from './action';
 import { useMutation } from '@tanstack/react-query';
 import { deleteCommentAction } from './delete-action';
 import { Button } from '@/components/ui/button';
+import { ToolTipComp } from '@/components/ui/tooltip';
 
 type TDeleteComment = {
   userId: string | null;
@@ -31,14 +32,16 @@ const DeleteComment: React.FC<TDeleteComment> = ({
   };
 
   return (
-    <Button
-      size="icon"
-      disabled={isPending || commentId.includes('opt_')}
-      className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full bg-transparent text-secondary-foreground hover:bg-accent"
-      onClick={handleDelete}
-    >
-      <Trash2 size={18} />
-    </Button>
+    <ToolTipComp name="Delete">
+      <Button
+        size="icon"
+        disabled={isPending || commentId.includes('opt_')}
+        className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full bg-transparent text-secondary-foreground hover:bg-accent"
+        onClick={handleDelete}
+      >
+        <Trash2 size={18} />
+      </Button>
+    </ToolTipComp>
   );
 };
 

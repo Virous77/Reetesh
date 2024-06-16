@@ -1,4 +1,4 @@
-import { generateUUID, getLocalData } from '@/utils/utils';
+import { addUserIDToLocalStorage, getLocalData } from '@/utils/utils';
 import { ThumbsDown, ThumbsUp } from 'lucide-react';
 import React, { useLayoutEffect } from 'react';
 import action from './action';
@@ -6,6 +6,7 @@ import DeleteComment from './delete-comment';
 import { useMutation } from '@tanstack/react-query';
 import { addLikeAction } from './like-action';
 import { Button } from '@/components/ui/button';
+import { ToolTipComp } from '@/components/ui/tooltip';
 
 type TLike = {
   like: string[];
@@ -39,14 +40,10 @@ const Like: React.FC<TLike> = ({
   });
 
   const handleLike = async (type: 'like' | 'dislike') => {
-    let tempId = '';
-    if (!userId) {
-      tempId = generateUUID();
-      localStorage.setItem('tempId', JSON.stringify(tempId.toString()));
-    }
+    const tempId = addUserIDToLocalStorage(userId || '');
     mutate({
       commentId: id,
-      userId: userId ? userId : tempId,
+      userId: userId || tempId,
       type,
     });
   };
@@ -59,31 +56,35 @@ const Like: React.FC<TLike> = ({
   return (
     <div className="flex items-end justify-between">
       <div className="-ml-1 flex items-center gap-2">
-        <div className="flex items-center">
-          <Button
-            size={'icon'}
-            className={`flex h-[30px] w-[30px] items-center justify-center rounded-full bg-transparent text-secondary-foreground hover:bg-accent ${like?.includes(userId || '') ? 'text-heading' : ''}`}
-            onClick={() => handleLike('like')}
-            disabled={id.includes('opt_')}
-          >
-            <ThumbsUp size={18} cursor="pointer" />
-          </Button>
-          <p>{like?.length}</p>
-        </div>
+        <ToolTipComp name="Like">
+          <div className="flex items-center">
+            <Button
+              size={'icon'}
+              className={`flex h-[30px] w-[30px] items-center justify-center rounded-full bg-transparent text-secondary-foreground hover:bg-accent ${like?.includes(userId || '') ? 'text-heading' : ''}`}
+              onClick={() => handleLike('like')}
+              disabled={id.includes('opt_')}
+            >
+              <ThumbsUp size={18} cursor="pointer" />
+            </Button>
+            <p>{like?.length}</p>
+          </div>
+        </ToolTipComp>
 
-        <div className="flex items-center">
-          <Button
-            size={'icon'}
-            className={`flex h-[30px] w-[30px] items-center justify-center rounded-full bg-transparent text-secondary-foreground hover:bg-accent ${
-              dislike?.includes(userId || '') ? 'text-heading' : ''
-            } `}
-            onClick={() => handleLike('dislike')}
-            disabled={id.includes('opt_')}
-          >
-            <ThumbsDown size={18} cursor="pointer" />
-          </Button>
-          <p>{dislike.length}</p>
-        </div>
+        <ToolTipComp name="Dislike">
+          <div className="flex items-center">
+            <Button
+              size={'icon'}
+              className={`flex h-[30px] w-[30px] items-center justify-center rounded-full bg-transparent text-secondary-foreground hover:bg-accent ${
+                dislike?.includes(userId || '') ? 'text-heading' : ''
+              } `}
+              onClick={() => handleLike('dislike')}
+              disabled={id.includes('opt_')}
+            >
+              <ThumbsDown size={18} cursor="pointer" />
+            </Button>
+            <p>{dislike.length}</p>
+          </div>
+        </ToolTipComp>
 
         <div className="flex items-center">
           <Button

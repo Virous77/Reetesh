@@ -1,0 +1,299 @@
+---
+title: 'Suspense and Error Boundary in React Explained'
+date: 'June 16 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://8qbgmple95w84kds.public.blob.vercel-storage.com/suspense-yBOtLdDbvQgRXhf99Uszne7F2xCNjN.png'
+about: ' Suspense and Error Boundary are two most important API in React which let you handle the loading state and error state of your application in more efficient way. Most developers are not aware of these two API and they end up writing a lot of boilerplate code to handle the loading and error state of their application.'
+tags:
+  [
+    'how suspense works in react',
+    'how error boundary works in react',
+    'what is suspense in react',
+    'what is error boundary in react',
+    'error boundary and suspense in react',
+    'how to use suspense in react',
+    'how to use error boundary in react',
+  ]
+related: 'frontend'
+---
+
+<TableContent title="Suspense and Error Boundary in React Explained" />
+
+Suspense and Error Boundary are two most important API in React which let you handle the loading state and error state of your application in more efficient way. Most developers are not aware of these two API and they end up writing a lot of boilerplate code to handle the loading and error state of their application.
+
+We can use Suspense to handle the loading state of our application and Error Boundary to handle the error state of our application. Let's understand how these two API works in React.
+
+## What is Suspense in React?
+
+Suspense in simple term "shows fallback content until the data is ready". Suspense is used to handle the loading state of our application. It allows you to show a loading spinner or any other content until the data is ready to be displayed.
+
+Now you must be thinking fetching data in component and wrapping it with Suspense will trigger the suspense to show fallback right? 🤔
+
+No, Suspense will only work with **Suspense-enabled** data sources. You can't just use `useEffect` for data fetch or any **event handler** to trigger the suspense.
+
+- **React.lazy** is a function that lets you render a dynamic import as a regular component.
+- Library like **React Query**, **Relay** and **SWR** are Suspense-enabled data sources.
+- `use` API is also Suspense-enabled.
+- **Next.JS** with server components is also Suspense-enabled.
+
+<SubHeadings>1) React.lazy with Suspense</SubHeadings>
+
+```tsx
+const Profile = React.lazy(() => import('./Profile'));
+
+function App() {
+  return (
+    <div>
+      <Suspense fallback={<Spinner />}>
+        <Profile />
+      </Suspense>
+    </div>
+  );
+}
+```
+
+Above code will show the Spinner component until the Profile component is loaded. Here `Profile` component is a Suspense-enabled data source. This is important to note that Suspense is not only limited to data fetching but also for code splitting. The common use case is to use Suspense with `React.lazy` to load components lazily.
+
+<SubHeadings>2) React Query with Suspense</SubHeadings>
+
+```tsx
+import { useSuspenseQuery } from '@tanstack/react-query';
+
+const Post = () => {
+  const fetchPost = async () => {
+    const response = await fetch(`https://jsonplaceholder.typicode.com/posts`);
+    const data = await response.json();
+    return data;
+  };
+
+  const { data: posts } = useSuspenseQuery({
+    queryKey: ['posts'],
+    queryFn: fetchPost,
+  });
+
+  return <ul>{JSON.stringify(posts)}</ul>;
+};
+
+function App() {
+  return (
+    <div>
+      <Suspense fallback={<Spinner />}>
+        <Post />
+      </Suspense>
+    </div>
+  );
+}
+```
+
+React Query provides a `useSuspenseQuery` hook which is Suspense-enabled. So we can simply warp our `Post` component with `Suspense` and show the Spinner component until the data is ready. This is best way to fetch data and colocate data as local to the component and handle the loading state with Suspense.
+
+<Advertise title="Turso Database with Drizzle ORM in Next.JS Application" />
+
+<SubHeadings>3) use API with Suspense</SubHeadings>
+
+<Tabs items={['Server Component', "Client Component"]}>
+
+    <Section slot="Server Component">
+
+```tsx
+const fetchPost = async () => {
+  const response = await fetch(`https://jsonplaceholder.typicode.com/posts`);
+  return response.json();
+};
+
+// server component
+const Page = async () => {
+  const postsPromise = fetchPost();
+
+  return (
+    <Suspense fallback={<Spinner />}>
+      <Post postsPromise={postsPromise} />
+    </Suspense>
+  );
+};
+
+//client component
+const Post = ({ postsPromise }) => {
+  // we are resolving the promise here
+  const posts = use(postsPromise);
+
+  return <ul>{JSON.stringify(posts)}</ul>;
+};
+```
+
+</Section>
+
+<Section slot="Client Component">
+
+```tsx
+'use client';
+import { use } from 'react';
+
+const Post = () => {
+  const fetchPost = async () => {
+    const response = await fetch(`https://jsonplaceholder.typicode.com/posts`);
+    return response.json();
+  };
+
+  // we are resolving the promise here
+  const posts = use(fetchPost());
+
+  return <ul>{JSON.stringify(posts)}</ul>;
+};
+
+function PostPage() {
+  return (
+    <div>
+      <Suspense fallback={<Spinner />}>
+        <Post />
+      </Suspense>
+    </div>
+  );
+}
+```
+
+</Section>
+
+</Tabs>
+
+The above code shows how to use Suspense with `use` API. We can use `use` API to resolve the promise and show the Spinner component until the data is ready.
+
+We can use `use` API in **Client Component** to resolve the promise and work with data while **Suspense** will handle the loading state. As you know we can't use Hooks or State in **Server Component8** but we can fetch data and pass that promise to client component where we can use `use` API to resolve the promise and work with data.
+
+<Callout emoji="💡" isRegular={false}>
+  When we use Server Component It's recommended to reslove the promise in server
+  component and pass the data to client compoent. And Promises created in Client
+  Components are recreated on every render. So We should avoid creating promises
+  in client component.
+</Callout>
+
+<SubHeadings>4) Next.JS with Server Components</SubHeadings>
+
+```tsx
+const fetchPost = async () => {
+  const response = await fetch(`https://jsonplaceholder.typicode.com/posts`);
+  return response.json();
+};
+
+const Post = async () => {
+  const posts = await fetchPost();
+
+  return (
+    <ul>
+      {posts.map((post) => (
+        <li key={post.id}>
+          <h2>{post.title}</h2>
+          <p>{post.body}</p>
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+// parent component
+import { Suspense } from 'react';
+import Post from './post';
+
+const page = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Post />
+    </Suspense>
+  );
+};
+
+export default page;
+```
+
+Next.JS Server Component is also Suspense-enabled. It's so easy and now i like to fetch my data in server component. Here both component `Post` and `page` are server components.
+
+> You can read more about Suspense deeply in [React Docs](https://react.dev/reference/react/Suspense). You can llok into how to work with multiple components with Suspense and how to handle the loading state of your application.
+
+<Separator />
+
+## What is Error Boundary in React?
+
+Error Boundary is a React component that catches JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of crashing the whole application.
+
+This is useful when you have a component that might throw an error and you want to handle that error gracefully. You can wrap that component with an Error Boundary and show a fallback UI when an error occurs.
+
+Good example is if you have a page where you have 3 components imported in **Parent Component** and one of the component throws an error then the whole page will crash. But if you wrap that component with an Error Boundary then only that component will crash and the rest of the page will work fine.
+
+When you use `Suspense` mostly you also gonna use `Error Boundary` to handle the error state of your application. This is a good practice to use both API together to handle the loading and error state of your application.
+
+```tsx
+import { ErrorBoundary } from 'react-error-boundary';
+
+const App = () => {
+  return (
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <Suspense fallback={<Spinner />}>
+        <Profile />
+      </Suspense>
+    </ErrorBoundary>
+  );
+};
+```
+
+This is the most common use case where you use `Error Boundary` with `Suspense`. You can wrap your `Suspense` component with `Error Boundary` and show the `ErrorFallback` component when an error occurs.
+
+Now handling the error state is done but showing appropriate message to the user is also important. You can create a `ErrorFallback` component to show the error message to the user.
+
+```tsx
+const ErrorFallback = ({ error, resetErrorBoundary }) => {
+  return (
+    <div>
+      <h1>Something went wrong!</h1>
+      <pre>{error.message}</pre>
+      <button onClick={resetErrorBoundary}>Try again</button>
+    </div>
+  );
+};
+
+const App = () => {
+  return (
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <Suspense fallback={<Spinner />}>
+        <Profile />
+      </Suspense>
+    </ErrorBoundary>
+  );
+};
+```
+
+In the above code, we have created a `ErrorFallback` component which takes `error` and `resetErrorBoundary` as props. We can show the error message to the user and also provide a button to try again. This is a good practice to show the error message to the user when an error occurs but again it's up to you how you want to show the error message to the user.
+
+<Callout emoji="" isRegular={false}>
+  All the `Suspense` enabled data sources are also `Error Boundary` enabled. So
+  you can use `Error Boundary` with `Suspense` to handle the error state of your
+  application.
+</Callout>
+
+We can use `withErrorBoundary` HOC to wrap our component with `Error Boundary` and show the `ErrorFallback` component when an error occurs.
+
+```tsx
+import { withErrorBoundary } from 'react-error-boundary';
+
+const Profile = ({ userpromises }) => {
+  const user = use(userpromises);
+
+  return <div>{user.name}</div>;
+};
+
+export default withErrorBoundary(Profile, {
+  FallbackComponent: ErrorFallback,
+});
+```
+
+This is how you can use `withErrorBoundary` HOC to wrap your component with `Error Boundary` and show the `ErrorFallback` component when an error occurs. Here instaed of wrapping the component with `Error Boundary` we are using `withErrorBoundary` HOC to wrap our component with `Error Boundary`.
+
+> You can read more about [Error Boundary](https://github.com/bvaughn/react-error-boundary?tab=readme-ov-file#react-error-boundary) in the official documentation. If you are using React Query they have their own Error Boundary to handle the error state of your application. You can read more about [React Query Error Boundary](https://tanstack.com/query/v4/docs/framework/react/guides/suspense#resetting-error-boundaries).
+
+<Separator />
+
+## Conclusion
+
+App states are important to handle in a more efficient way. `Suspense` is core API frpm React to handle the loading state of your application and `Error Boundary` is community built npm package to handle the error state of your application. Both API are important to handle the app states and it's a good practice to use both API together to handle the loading and error state of your application.
+
+I hope you have learned how to use `Suspense` and `Error Boundary` in your application. If you have any questions or feedback, feel free to comment below. I would love to hear from you. If there is any mistake in the article, please let me know. I will correct it. Thank you for reading. Happy coding! 🚀
