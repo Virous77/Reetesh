@@ -1,11 +1,11 @@
 'use client';
 
 import { TBlog } from '@/models/blog-comments';
-import CommentsItem from './comment-item';
+import CommentsItem, { commonFields } from './comment-item';
 import { usePathname } from 'next/navigation';
 import action, { createComment } from './action';
 import { useMutation } from '@tanstack/react-query';
-import { getLocalData } from '@/utils/utils';
+import { addUserIDToLocalStorage, getLocalData } from '@/utils/utils';
 import CommentForm from './comment-form';
 import React, { useOptimistic, startTransition } from 'react';
 
@@ -37,25 +37,18 @@ const CommentList = ({ data }: { data: TBlog[] }) => {
   const handleAddComment = (comment: TNewComment) => {
     if (!comment.comment || comment.comment.trim() === '')
       return alert('Comment is required');
+
     const id: string = getLocalData('tempId');
-    if (!id) {
-      const tempId = getLocalData('tempId');
-      localStorage.setItem('tempId', JSON.stringify(tempId));
-    }
+    const tempId = addUserIDToLocalStorage(id);
 
     startTransition(() =>
       addNewComment({
         comment: comment.comment,
-        children: [],
         _id: `opt_${Math.random().toString()}`,
-        userId: id,
+        userId: id || tempId,
         blogId: pathName.split('/')[2],
         parent: null,
-        like: [],
-        dislike: [],
-        isDeleted: false,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        ...commonFields,
       })
     );
     mutate({

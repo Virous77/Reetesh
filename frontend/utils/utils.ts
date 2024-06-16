@@ -135,3 +135,12 @@ export const slugify = (text: string) => {
   const newText = text.toLowerCase().split(' ');
   return newText.join('-');
 };
+
+export const addUserIDToLocalStorage = (id: string) => {
+  let tempId = '';
+  if (!id) {
+    tempId = generateUUID();
+    localStorage.setItem('tempId', JSON.stringify(tempId.toString()));
+  }
+  return tempId;
+};

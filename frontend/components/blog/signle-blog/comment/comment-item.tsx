@@ -1,6 +1,10 @@
 import CommentForm from './comment-form';
 import { TBlog } from '@/models/blog-comments';
-import { formateDate, getLocalData } from '@/utils/utils';
+import {
+  addUserIDToLocalStorage,
+  formateDate,
+  getLocalData,
+} from '@/utils/utils';
 import AuthorImage from '@/components/common/author-image';
 import { useMutation } from '@tanstack/react-query';
 import action, { createReplyComment } from './action';
@@ -22,6 +26,15 @@ const adminID = [
   '47256c97-2118-40da-9494-20ffa5dfb044',
   '286d1fb9-7d5b-473f-8e7d-d612bb5736cd',
 ];
+
+export const commonFields = {
+  children: [],
+  like: [],
+  dislike: [],
+  isDeleted: false,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+};
 
 const CommentsItem = ({ comment }: { comment: TBlog }) => {
   const [reply, setReply] = useState(false);
@@ -48,25 +61,18 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
   const handleSubmit = async (comment: TReplyComment) => {
     if (!comment.comment || comment.comment.trim() === '')
       return alert('Comment is required');
+
     const id: string = getLocalData('tempId');
-    if (!id) {
-      const tempId = getLocalData('tempId');
-      localStorage.setItem('tempId', JSON.stringify(tempId));
-    }
+    const tempId = addUserIDToLocalStorage(id);
 
     startTransition(() =>
       addNewComment({
         comment: comment.comment,
-        children: [],
         _id: `opt_${Math.random().toString()}`,
-        userId: id,
+        userId: id || tempId,
         blogId: pathName.split('/')[2],
         parent: comment.id,
-        like: [],
-        dislike: [],
-        isDeleted: false,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        ...commonFields,
       })
     );
     setReply(false);
