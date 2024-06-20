@@ -59,7 +59,7 @@ const restrictSpamComment = async (userId: string) => {
     await kv.set(`comment:${userId}`, user + 1, {
       ex: 300,
     });
-    return true;
+    return false;
   } else {
     await kv.set(`comment:${userId}`, 1, {
       ex: 300,
@@ -74,7 +74,6 @@ export const commonError = (error: unknown, message: string) => {
   } else if (error instanceof Error) {
     throw new Error(error.message);
   }
-
   throw new Error(message);
 };
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { generateUUID, getLocalData } from '@/utils/utils';
+import { addUserIDToLocalStorage, getLocalData } from '@/utils/utils';
 import { Eye } from 'lucide-react';
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -11,11 +11,7 @@ const Views = ({ slug }: { slug: string }) => {
     queryKey: [slug],
     queryFn: async () => {
       const id: string = getLocalData('tempId');
-      let tempId: string = '';
-      if (!id) {
-        tempId = generateUUID();
-        localStorage.setItem('tempId', JSON.stringify(tempId.toString()));
-      }
+      const tempId = addUserIDToLocalStorage(id);
       const views = addViewsAction({ blogId: slug, viewsId: id || tempId });
       return views;
     },
