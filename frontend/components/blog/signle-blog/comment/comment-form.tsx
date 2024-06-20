@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { FormEvent } from 'react';
 import { Textarea } from '@/components/ui/textarea';
+import { marked } from 'marked';
 
 type TComment = {
   comment: string;
@@ -20,7 +21,7 @@ const CommentForm = ({
     const comment = formData.get('comment') as string;
     if (!comment || comment.trim() === '') return alert('Comment is required');
 
-    handleAddComment({ comment, children: [] });
+    handleAddComment({ comment: marked.parse(comment) as any, children: [] });
     e.currentTarget.reset();
   };
   return (

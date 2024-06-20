@@ -4,6 +4,7 @@ import {
   addUserIDToLocalStorage,
   formateDate,
   getLocalData,
+  parseType,
 } from '@/utils/utils';
 import AuthorImage from '@/components/common/author-image';
 import { useMutation } from '@tanstack/react-query';
@@ -12,6 +13,7 @@ import { startTransition, useOptimistic, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Info } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import turndonw from 'turndown';
 
 const Like = dynamic(() => import('./like'));
 const CommentMarkdown = dynamic(() => import('./comment-markdown'));
@@ -40,6 +42,8 @@ export const commonFields = {
 const CommentsItem = ({ comment }: { comment: TBlog }) => {
   const [reply, setReply] = useState(false);
   const pathName = usePathname();
+  const turndownService = new turndonw();
+
   const [optimisticComment, addNewComment] = useOptimistic(
     comment,
     (state, newTodo: TBlog) => {
@@ -111,7 +115,13 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
           )}
           <div className="overflow-scroll">
             <div className="just-way box-fit prose-headings:font-cal prose prose-base prose-neutral dark:prose-invert prose-a:whitespace-nowrap prose-a:text-default prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-defaultMax prose-blockquote:font-light prose-img:rounded-lg">
-              <CommentMarkdown comment={optimisticComment.comment} />
+              <CommentMarkdown
+                comment={
+                  parseType(optimisticComment.createdAt)
+                    ? turndownService.turndown(optimisticComment.comment)
+                    : optimisticComment.comment
+                }
+              />
             </div>
 
             <div className="mt-2 flex flex-col">
