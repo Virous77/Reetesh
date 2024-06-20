@@ -8,6 +8,7 @@ SyntaxHighlighter.registerLanguage('jsx', jsx);
 const Code = ({ children }: { children: string }) => {
   useEffect(() => {
     const findParentSpan = () => {
+      if (typeof window === 'undefined') return;
       const codeElement = document.getElementById('code');
       if (codeElement) {
         const parentSpan = codeElement.closest('span');
@@ -17,7 +18,7 @@ const Code = ({ children }: { children: string }) => {
       }
     };
     findParentSpan();
-  }, []);
+  }, [children]);
 
   return (
     <SyntaxHighlighter
