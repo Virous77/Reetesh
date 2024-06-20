@@ -4,6 +4,8 @@ import Footer from '@/components/common/footer';
 import GithubStreak from '@/components/common/github-streak';
 import Recent from '@/components/recent/recent';
 
+export const revalidate = 36000;
+
 const Home = () => {
   return (
     <main className="relative m-auto grid-cols-2 items-start gap-5 px-4 sm:max-w-full md:grid md:max-w-[1050px] md:overflow-hidden">
