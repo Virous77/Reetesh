@@ -1,19 +1,9 @@
-'use client';
-
-import { useQuery } from '@tanstack/react-query';
 import { githubAction } from './action';
 import { formateDate } from '@/utils/utils';
 import { MoveDown } from 'lucide-react';
 
-const GithubStreak = () => {
-  const { data } = useQuery({
-    queryKey: ['github-streak'],
-    queryFn: async () => {
-      const stats = githubAction();
-      return stats;
-    },
-    enabled: true,
-  });
+const GithubStreak = async () => {
+  const data = await githubAction();
 
   return (
     <div className="relative flex h-fit w-full items-center justify-center rounded-lg border-2 pb-1 md:w-[90%]">
