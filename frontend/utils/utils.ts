@@ -142,3 +142,11 @@ export const addUserIDToLocalStorage = (id: string) => {
   }
   return tempId;
 };
+
+export const parseType = (date: string) => {
+  const getDateTime = new Date(date).getTime();
+  if (getDateTime > 1718909069444) {
+    return true;
+  }
+  return false;
+};

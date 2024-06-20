@@ -273,3 +273,8 @@ li code {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+.code-block {
+  display: flex !important;
+  align-items: center !important;
+}
