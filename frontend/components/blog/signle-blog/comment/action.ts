@@ -7,6 +7,7 @@ import blogComments, { TBlog } from '@/models/blog-comments';
 import CommentEmail from '@/components/email/blogComment-mail';
 import { Resend } from 'resend';
 import { createClient } from '@vercel/kv';
+import turndonw from 'turndown';
 
 const schema = z.object({
   blogId: z.string().min(1, { message: 'Blog id is required' }),
@@ -19,6 +20,7 @@ export default async function action(path: string) {
   revalidatePath(`/blog/${path}`);
 }
 
+const turndownService = new turndonw();
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const commentMail = async (
@@ -33,7 +35,7 @@ const commentMail = async (
     from: process.env.EMAIL!,
     to: process.env.SEND_TO!,
     subject: 'New  Blog Comment! 🥳',
-    react: CommentEmail({ comment, blogId }),
+    react: CommentEmail({ comment: turndownService.turndown(comment), blogId }),
   });
 
   if (!data.error) {
