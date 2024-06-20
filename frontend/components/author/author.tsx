@@ -1,4 +1,3 @@
-import GithubStreak from '../common/github-streak';
 import Social from '../social/social';
 import Tab from '../tab/tab';
 
@@ -20,7 +19,6 @@ const Author = () => {
       </div>
 
       <Tab />
-      <GithubStreak />
       <Social styles="mt-8 md:absolute left-0 bottom-12 z-10" />
     </section>
   );

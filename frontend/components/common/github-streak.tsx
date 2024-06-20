@@ -16,7 +16,17 @@ const GithubStreak = () => {
   });
 
   return (
-    <div className="mt-8 flex h-fit w-full items-center justify-center rounded-lg border-2 md:w-[90%]">
+    <div className="relative flex h-fit w-full items-center justify-center rounded-lg border-2 pb-1 md:w-[90%]">
+      <span
+        className="absolute me-2 rounded bg-accent px-2.5 py-0.5 text-[8px] font-medium"
+        style={{
+          right: '-10px',
+          bottom: '-2.3px',
+        }}
+      >
+        GITHUB
+      </span>
+
       <a
         className="-lg flex w-full items-start justify-between gap-2 px-2 py-4 md:p-4"
         href="https://github.com/virous77"
