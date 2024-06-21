@@ -114,7 +114,7 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
             <AuthorImage />
           )}
           <div className="overflow-scroll">
-            <div className="just-way box-fit prose-headings:font-cal prose prose-base prose-neutral dark:prose-invert prose-a:whitespace-nowrap prose-a:text-default prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-defaultMax prose-blockquote:font-light prose-img:rounded-lg">
+            <div className="just-way box-fit prose-headings:font-cal prose prose-base prose-neutral dark:prose-invert prose-a:text-default prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-defaultMax prose-blockquote:font-light prose-img:rounded-lg">
               <CommentMarkdown
                 comment={
                   parseType(optimisticComment.createdAt)
