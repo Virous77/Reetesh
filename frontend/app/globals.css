@@ -179,6 +179,10 @@ li code {
   background-color: transparent !important;
 }
 
+.just-way > div > p:first-of-type {
+  margin-top: 0px !important;
+}
+
 .figure figure {
   margin: 0 !important;
 }
