@@ -1,0 +1,226 @@
+---
+title: 'ZSA Server Action in Next.JS Apps'
+date: 'June 23 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://8qbgmple95w84kds.public.blob.vercel-storage.com/zsa-server-action-PB5d4JEoeX6PlYbixOglKcWKQTn45O.png'
+about: ' Server action has been a game chnager invention in react world and make it fully safe and seecure is its upto you how you use it. ZAS make handling server action in next.js apps very easy and secure.'
+tags:
+  [
+    'what is server action',
+    'how server action works',
+    'react server action',
+    'next.js server action',
+    'what is zsa',
+    'zsa in next.js',
+    'zsa server action',
+  ]
+related: 'common'
+---
+
+<TableContent title="ZSA Server Action in Next.JS Apps" />
+
+Server Action is a new concept in the React world. It is a way Client Components to call async functions executed on the server. This is a game changer since now we don't need create REST APIs for every async function we want to call on the server. This makes the codebase cleaner and easier to maintain. When we use Typescript with Server Action, we get the benefit of type checking and auto-completion. This makes the codebase more robust and less error-prone.
+
+But as mention above **"Client Components to call async functions executed on the server"**, It's act as endpoint for client side to call server side function. So it's very important to secure these Server Actions. We don't want to expose all Server Actions to all users. We want to define who can call a Server Action and what data they can access. This is where ZSA comes into play.
+
+## What is ZSA?
+
+ZSA (ZOD Server Actions) is a library that makes handling Server Actions in Next.js apps very easy and secure. It provides clean APIs to define and call Server Actions. We can validate the input data and return the output data. Also the error handling is very easy with ZSA. We can define procedures and callbacks to handle pre-action and post-action logic. ZSA is built on top of ZOD which is a TypeScript-first schema declaration and validation library. ZOD is very powerful and easy to use. ZSA uses ZOD to validate the input and output data of Server Actions.
+
+<SubHeadings>Key APIs of ZSA</SubHeadings>
+
+- **input** :- Input as name suggest, We can create **ZOD** schema for input data. This will help us to validate the input data. If the input data is not valid, ZSA will throw an error.
+- **output** :- Outpot is good edition to ZSA which help us to validate data beofre sending to client. We can create **ZOD** schema for output data. If the output data is not valid, ZSA will throw an error.
+- **handler** :- Handler is the function that will be executed when the Server Action is called. It is the function we will write our action logic we want to execute on the server.
+- **procedures** :- Procedure is the function that will be executed before the handler. It is the function we can write our pre-action logic like authentication, authorization, etc.
+- **callbacks** :- We get lifecycle of a server action. We can define callbacks for different stages of the lifecycle like **onStart**, **onSuccess**, etc.
+
+Now let's see how we can use ZSA in a Next.js app. I assume your Next.JS app is alreday setup and ready to kick off.
+
+<Separator />
+
+## How to use ZSA in Next.JS app?
+
+First, we need to install ZSA in our Next.js app. ZSA provide client side hook to call server action. We need to install ZSA in both client and server side.
+
+```bash
+yarn add zsa zod zsa-react
+# or
+npm install zsa zod zsa-react
+```
+
+We will explore multiple examples but for now lets create a simple form to create a new user using server action with ZSA.
+
+```ts
+'use server';
+
+import z from 'zod';
+import { createServerAction } from 'zsa';
+
+export const createUserAction = createServerAction()
+  .input(
+    z.object({
+      name: z
+        .string()
+        .min(2, { message: 'Name must be at least 2 characters.' }),
+    })
+  )
+  .output(z.object({ name: z.string() }))
+  .handler(async ({ input }) => {
+    // your action logic here
+    return {
+      name: 'Hello' + ' ' + input.name,
+    };
+  });
+```
+
+Above code is preety self explanatory. We are creating a Server Action to create a new user. We are validating the input data and returning the output data.
+
+now lets see how we can call this server action from client side using zsa hook.
+
+```tsx
+'use client';
+
+import { formAction } from '@/action/form-action';
+import { useServerAction } from 'zsa-react';
+
+const SimpleForm = () => {
+  const { isPending, isSuccess, data, execute, error, isError } =
+    useServerAction(formAction);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get('name') as string;
+    const res = await execute({ name });
+    // toasts can be added here
+  };
+
+  return (
+    <section>
+      <h1>Simple Form</h1>
+
+      <form onSubmit={handleSubmit}>
+        <input type="text" name="name" />
+        {isSuccess && <p>{data.name}</p>}
+        <button type="submit" disabled={isPending}>
+          {isPending ? 'Loading...' : 'Submit'}
+        </button>
+        {isError && <p>{error.fieldErrors && error.fieldErrors['name']}</p>}
+      </form>
+    </section>
+  );
+};
+
+export default SimpleForm;
+```
+
+As you can see how clean and easy to call server action from client side. We are using `useServerAction` hook to call server action. We are passing the action we want to call and getting the response from the server action. We can show loading spinner, success message, error message, etc. based on the response.
+
+<Advertise title="Suspense and Error Boundary in React Explained" />
+<Separator />
+
+<SubHeadings>FormData in ZSA</SubHeadings>
+
+You can use form `action` to call server action and pass `formData` in input and ZSA will take care of the rest.
+
+```ts
+// server change
+
+ .input(
+    z.object({
+      name: z
+        .string()
+        .min(2, { message: "Name must be at least 2 characters." }),
+    }),
+    {
+      type: "formData",
+    }
+  )
+
+  // client change
+  const { isPending, isSuccess, data, error, isError, executeFormAction } =
+    useServerAction(formAction);
+
+    <form action={executeFormAction}></form>
+```
+
+We change the data type of input to `formData` and pass `formData` in input. ZSA will take care of the rest. In clinet side insted of `execute` we are using `executeFormAction` to call server action. Also we are sing `action` instead of `onSubmit` in form.
+
+<Separator />
+
+## Procedures and Callbacks in ZSA
+
+Procedures and Callbacks both has there own use case and depend on your app need you can use them.
+
+Lets create a server action where we will validate user and then create a new user. and after creation we will send email to user.
+
+```ts
+'use server';
+
+import z from 'zod';
+import { createServerActionProcedure } from 'zsa';
+
+// create a procedure to validate user
+const authProcedure = createServerActionProcedure()
+  .input(
+    z.object({
+      name: z
+        .string()
+        .min(2, { message: 'Name must be at least 2 characters.' }),
+    })
+  )
+  .handler(async ({ request, input }) => {
+    // do something like check if user is authenticated
+    if (input.name !== 'Reetesh') throw new Error('Invalid user');
+    return {
+      isAuthenticated: true,
+    };
+  });
+
+export const formAction = authProcedure
+  .createServerAction()
+  // create a callback to send email to user
+  .onComplete((res) => {
+    if (res.isError) console.error(res.error);
+    if (res.status && res.status === 'success') {
+      // send email to user
+      console.log(res.data);
+    }
+  })
+  .output(z.object({ name: z.string() }))
+  .handler(async ({ input, ctx }) => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    return {
+      name: 'Hello' + ' ' + input.name,
+    };
+  });
+```
+
+In above code we are creating a procedure to validate user. We are checking if the user is authenticated. If the user is not authenticated, we are throwing an error. We are using this procedure in our Server Action to create a new user. We are also creating a callback to send an email to the user after the user is created.
+
+You can see how easy it is to define procedures and callbacks in ZSA. This makes it easy to define pre-action and post-action logic. We also get the `request` , `ctx`, `input`, `responseMeta` object in the handler function. This makes it easy to access `cookies`, `headers`, `query`, etc using **Request** object. while `ctx` is the context object which is shared between procedures and handler. We can set new **Headers** and **statuscode** using `responseMeta` object.
+
+<Callout emoji="💡" isRegular={true}>
+  There are many more features like adding **Timeouts** for server action or
+  using `Tanstack Query` with ZSA. Which makes it more powerful and easy to use.
+  We can get all the benefits of [Tanstack Query](https://tanstack.com/query/v5)
+  like caching, pagination, etc with ZSA. You can read more about ZSA in the
+  [official documentation](https://zsa.vercel.app/docs/introduction).
+
+You can get the source code for this article from the [Github](https://github.com/Virous77/blog-projects/tree/main/server-action-zsa)
+
+</Callout>
+
+<Separator />
+
+## Conclusion
+
+I like the Server Action concept and I am now using it in all of my Next.JS apps, In fact this blog is also using server action for creating comment for adding view count. It makes the codebase cleaner and easier to maintain and we get the benefit of type checking and auto-completion.
+
+ZSA is a good library which makes our server action more secure and extend the functionality of server action. When we work in real world apps we need to take care of lot of things like **authentication**, **authorization**, **validation**, **error handling**, etc. ZSA makes it easy to handle all these things. I recommend you to try ZSA in your Next.JS app and see how it can make your life easier.
+
+I hope you like this article. If you have any questions or feedback, feel free to leave a comment below. Thanks for reading! 👋
