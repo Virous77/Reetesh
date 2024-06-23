@@ -8,6 +8,7 @@ import CommentEmail from '@/components/email/blogComment-mail';
 import { Resend } from 'resend';
 import { createClient } from '@vercel/kv';
 import turndonw from 'turndown';
+import sanitizeHtml from 'sanitize-html';
 
 const schema = z.object({
   blogId: z.string().min(1, { message: 'Blog id is required' }),
@@ -83,17 +84,7 @@ type TInput = z.infer<typeof schema>;
 
 export const createComment = async (params: TInput) => {
   try {
-    const validate = schema.parse(params);
-    const shouldMail = await restrictSpamComment(validate.userId);
-
-    await dbConnect();
-    await blogComments.create({
-      ...validate,
-      parent: null,
-    });
-
-    commentMail(validate.comment, validate.blogId, shouldMail);
-
+    await commonAction(params);
     return 'Comment added successfully';
   } catch (error) {
     commonError(error, 'Failed to add comment');
@@ -102,22 +93,35 @@ export const createComment = async (params: TInput) => {
 
 export const createReplyComment = async (params: TInput) => {
   try {
-    const validate = schema.parse(params);
-    const shouldMail = await restrictSpamComment(validate.userId);
-
-    await dbConnect();
-    const newComment: TBlog = await blogComments.create({
-      ...validate,
-      parent: validate.parentId,
-    });
-    await blogComments.findByIdAndUpdate(params.parentId, {
-      $push: { children: newComment._id },
-    });
-
-    commentMail(validate.comment, validate.blogId, shouldMail);
-
+    await commonAction(params);
     return 'Comment added successfully';
   } catch (error) {
     commonError(error, 'Failed to add comment');
   }
+};
+
+const commonAction = async (params: TInput) => {
+  const { comment, ...rest } = schema.parse(params);
+  const shouldMail = await restrictSpamComment(rest.userId);
+
+  await dbConnect();
+  const newComment: TBlog = await blogComments.create({
+    ...rest,
+    parent: rest.parentId || null,
+    comment: sanitizeHtml(comment, {
+      allowedTags: false,
+      allowedAttributes: {
+        a: ['href'],
+        img: ['src', 'alt'],
+      },
+    }),
+  });
+
+  if (rest.parentId) {
+    await blogComments.findByIdAndUpdate(params.parentId, {
+      $push: { children: newComment._id },
+    });
+  }
+
+  commentMail(sanitizeHtml(comment), rest.blogId, shouldMail);
 };
