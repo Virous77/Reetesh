@@ -20,15 +20,15 @@ export const Pre = ({ children, ...props }: any) => {
   };
 
   return (
-    <div className="pre rounded border">
+    <div className="pre relative rounded border">
       <div
-        className="flex w-full items-center justify-between px-3 py-1 pb-3"
+        className="absolute z-10 flex items-center justify-end rounded-lg border bg-background px-3"
         style={{
-          marginTop: '5px',
-          borderBottom: '1px solid hsl(var(--border))',
+          top: '-20px',
+          right: '-1px',
         }}
       >
-        <span className="flex items-center gap-2 font-mono text-[14px] capitalize text-primary">
+        <span className="flex items-center gap-2 font-mono text-[13px] uppercase text-primary">
           <Icon name={props['data-language']?.toLowerCase()} />
           {props['data-language']}
         </span>
@@ -36,12 +36,12 @@ export const Pre = ({ children, ...props }: any) => {
         <ToolTipComp name="Copy">
           <Button
             size="icon"
-            className="bg-transparent text-secondary-foreground hover:bg-transparent"
+            className="w-fit bg-transparent pl-3 text-secondary-foreground hover:bg-transparent"
             aria-label="Copy to Clipboard"
             onClick={onClick}
             disabled={copied}
           >
-            {copied ? <CopyCheck size={20} /> : <Copy size={20} />}
+            {copied ? <CopyCheck size={19} /> : <Copy size={19} />}
           </Button>
         </ToolTipComp>
       </div>
