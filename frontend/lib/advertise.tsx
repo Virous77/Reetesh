@@ -20,7 +20,7 @@ const Advertise: React.FC<TAdvertise> = ({ title }) => {
 
   return (
     <div
-      className="mt-2 flex w-full items-center rounded border p-2"
+      className="mt-2 flex w-full items-center rounded border-2 p-2"
       style={{ justifyContent: 'end' }}
     >
       <div className="flex w-full flex-col items-center justify-between gap-3 md:flex-row md:items-end">
