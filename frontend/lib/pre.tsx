@@ -24,11 +24,11 @@ export const Pre = ({ children, ...props }: any) => {
       <div
         className="absolute z-10 flex items-center justify-end rounded-lg border bg-background px-3"
         style={{
-          top: '-20px',
+          top: '-24px',
           right: '-1px',
         }}
       >
-        <span className="flex items-center gap-2 font-mono text-[13px] uppercase text-primary">
+        <span className="mr-2 flex items-center gap-2 font-mono text-[13px] uppercase text-primary">
           <Icon name={props['data-language']?.toLowerCase()} />
           {props['data-language']}
         </span>
