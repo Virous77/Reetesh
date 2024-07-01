@@ -1,9 +1,11 @@
 import { allPosts } from '@/.contentlayer/generated';
 import { ExternalLink } from 'lucide-react';
 import React from 'react';
-import { BlogDetails, Projects } from '@/routes';
+import { BlogDetails } from '@/routes';
 import dbConnect from '@/db/mongoose';
 import projects, { TProject } from '@/models/projects';
+import { slugify } from 'markdown-to-jsx';
+import Link from 'next/link';
 
 const getLatestProjects = async () => {
   await dbConnect();
@@ -47,13 +49,14 @@ const Recent = async () => {
         <Common name="Projects" />
         <ul className="flex flex-col gap-2">
           <li className="underline underline-offset-4">
-            <Projects.Link
+            <Link
+              href={`/projects#${slugify(project.title)}`}
               className="flex items-center gap-2 opacity-90 hover:opacity-100"
-              aria-label="Visit all Projects"
+              aria-label={`Visit ${project.title}`}
             >
               {project.title}
               <ExternalLink size={20} />
-            </Projects.Link>
+            </Link>
           </li>
         </ul>
       </div>

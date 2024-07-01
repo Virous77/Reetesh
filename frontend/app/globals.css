@@ -280,3 +280,7 @@ li code {
   display: flex !important;
   align-items: center !important;
 }
+
+.project-heading:hover span {
+  display: block !important;
+}
