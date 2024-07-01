@@ -7,9 +7,9 @@ import {
 } from '@/components/ui/card';
 import { ToolTipComp } from '@/components/ui/tooltip';
 import { TSkill } from '@/models/skills';
+import { SkillId } from '@/routes';
 import { slugify } from '@/utils/utils';
 import Image from 'next/image';
-import Link from 'next/link';
 
 type TSkillList = {
   skills: TSkill[];
@@ -31,7 +31,7 @@ const SkillList: React.FC<TSkillList> = ({ skills, description, name }) => {
               {skills.map((skill) => (
                 <li key={skill._id}>
                   <ToolTipComp name={skill.name}>
-                    <Link href={`/skill/${slugify(skill.name)}`}>
+                    <SkillId.Link id={slugify(skill.name)}>
                       <Image
                         src={skill.icon}
                         alt={skill.name}
@@ -39,7 +39,7 @@ const SkillList: React.FC<TSkillList> = ({ skills, description, name }) => {
                         height={40}
                         className="cursor-pointer rounded-full"
                       />
-                    </Link>
+                    </SkillId.Link>
                   </ToolTipComp>
                 </li>
               ))}
