@@ -7,16 +7,21 @@ const defaultInfo = {
 };
 
 import * as RootRoute from '@/app/page.info';
+import * as ModalSkillIdRoute from '@/app/@modal/(.)skill/[id]/page.info';
 import * as BlogDetailsRoute from '@/app/blog/[id]/page.info';
 import * as BlogsRoute from '@/app/blogs/page.info';
 import * as ProjectsRoute from '@/app/projects/page.info';
+import * as SkillIdRoute from '@/app/skill/[id]/page.info';
 import * as SkillsRoute from '@/app/skills/page.info';
 
 export const Root = makeRoute('/', {
   ...defaultInfo,
   ...RootRoute.Route,
 });
-
+export const ModalSkillId = makeRoute('/@modal/(.)skill/[id]', {
+  ...defaultInfo,
+  ...ModalSkillIdRoute.Route,
+});
 export const BlogDetails = makeRoute('/blog/[id]', {
   ...defaultInfo,
   ...BlogDetailsRoute.Route,
@@ -28,6 +33,11 @@ export const Blogs = makeRoute('/blogs', {
 export const Projects = makeRoute('/projects', {
   ...defaultInfo,
   ...ProjectsRoute.Route,
+});
+
+export const SkillId = makeRoute('/skill/[id]', {
+  ...defaultInfo,
+  ...SkillIdRoute.Route,
 });
 export const Skills = makeRoute('/skills', {
   ...defaultInfo,
