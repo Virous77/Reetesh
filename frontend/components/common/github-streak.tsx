@@ -43,25 +43,27 @@ const GithubStreak = async () => {
 
         <div className="text-center">
           <div className="text-4xl font-bold">
-            {data?.stats.currentStreak.length || '00'}
+            {data?.stats.currentStreak.length || 0}
           </div>
           <div className="whitespace-nowrap text-[13px] font-bold md:text-sm">
             Current Streak
           </div>
-          <div className="mt-1 flex flex-col items-center text-xs text-muted-foreground">
-            <span className="font-sans">
-              {formateDate(
-                data?.stats.currentStreak.start || new Date().toString()
-              )}
-            </span>
-            <MoveDown size={14} className="mb-[2px] mt-[2px] h-2" />
+          {data.stats.currentStreak.length > 0 && (
+            <div className="mt-1 flex flex-col items-center text-xs text-muted-foreground">
+              <span className="font-sans">
+                {formateDate(
+                  data?.stats.currentStreak.start || new Date().toString()
+                )}
+              </span>
+              <MoveDown size={14} className="mb-[2px] mt-[2px] h-2" />
 
-            <span className="font-sans">
-              {formateDate(
-                data?.stats.currentStreak.end || new Date().toString()
-              )}
-            </span>
-          </div>
+              <span className="font-sans">
+                {formateDate(
+                  data?.stats.currentStreak.end || new Date().toString()
+                )}
+              </span>
+            </div>
+          )}
         </div>
 
         <div className="text-center">

@@ -5,6 +5,8 @@ import { Card, CardContent } from '../ui/card';
 import Image from 'next/image';
 import { TProject } from '@/models/projects';
 import { Projects } from '@/routes';
+import Link from 'next/link';
+import { slugify } from 'markdown-to-jsx';
 
 type TProjects = {
   projects: TProject[];
@@ -21,8 +23,17 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
         >
           <CardContent className="p-3">
             <>
-              <h3 className="mb-1 font-mono text-base text-heading md:text-[18px]">
-                {project.title}
+              <h3
+                className="project-heading mb-1 w-fit font-mono text-base text-heading md:text-[18px]"
+                id={slugify(project.title)}
+              >
+                <Link
+                  href={`#${slugify(project.title)}`}
+                  className="flex items-center gap-2"
+                >
+                  {project.title}
+                  <span className="hidden text-secondary-foreground">#</span>
+                </Link>
               </h3>
               {project?.develop && (
                 <span className="mb-1 flex items-center gap-2 text-[13px] font-bold uppercase text-default">
