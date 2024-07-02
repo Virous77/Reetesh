@@ -48,18 +48,22 @@ We have to structure our form in a way that it can work with server component an
 
 <SubHeadings> Form Schema </SubHeadings>
 
-Tanstack Form provides `createFormFactory` function which let us create form instance. We can create form schema and validation for server using `onServerValidate` function.
+Tanstack Form provides `formOptions` function which let us create default values which we can share to client and server actions both places. We can create form schema and validation for server using `createServerValidate`.
 
 ```tsx
 // form-factory.tsx
 
-import { createFormFactory } from '@tanstack/react-form';
+import { createServerValidate, formOptions } from '@tanstack/react-form/nextjs';
 
-const formFactory = createFormFactory({
+export const formOpts = formOptions({
   defaultValues: {
     firstName: '',
     age: 0,
   },
+});
+
+export const serverValidate = createServerValidate({
+  ...formOpts,
   onServerValidate({ value }) {
     if (value.age < 12) {
       return 'age | You must be at least 12 to sign up';
@@ -70,8 +74,6 @@ const formFactory = createFormFactory({
     }
   },
 });
-
-export default formFactory;
 ```
 
 Here we have created a form schema with default values and validation logic. We are using `onServerValidate` function to validate the form on server side. We are returning the error message if the validation fails.
@@ -89,8 +91,10 @@ We need to create a server action which will be used to validate the form on ser
 
 'use server';
 
-import formFactory from './form-factory';
-const initialState = formFactory.initialFormState.values!;
+import { ServerValidateError } from '@tanstack/react-form/nextjs';
+import { formOpts, serverValidate } from './form-factory';
+
+const initialState = formOpts?.defaultValues!;
 export type TResult = typeof initialState;
 
 const getFormData = (formData: FormData) => {
@@ -103,21 +107,27 @@ const getFormData = (formData: FormData) => {
   return result;
 };
 
-const action = async (prev: unknown, formData: FormData) => {
-  const res = await formFactory.validateFormData(formData);
-  if (res.errors && res.errors?.length > 0) return res;
+const formAction = async (prev: unknown, formData: FormData) => {
+  try {
+    await serverValidate(formData);
 
-  const data = getFormData(formData);
-  // Do your server side action here
-  console.log(data);
+    const data = getFormData(formData);
+    // Do something with the data
+    console.log(data);
+  } catch (error) {
+    if (error instanceof ServerValidateError) {
+      return error.formState;
+    }
+    throw error;
+  }
 
-  return res;
+  return formOpts?.defaultValues;
 };
 
-export default action;
+export default formAction;
 ```
 
-Here witch `action` function we are validating the form data and doing the server side action. We are using `formFactory.validateFormData` function to validate the form data.
+Here witch `formAction` function we are validating the form data and doing the server side action. We are using `serverValidate` function to validate the form data.
 
 We are extracting the form data from `formData` as formData contains some extra data which we don't need. We are using `getFormData` function to extract the form data.
 
@@ -137,19 +147,24 @@ With the above setup we are ready to use Tanstack Form with server action. Now w
 import {
   FormApi,
   mergeForm,
+  useForm,
   useTransform,
   ValidationError,
 } from '@tanstack/react-form';
 import action, { TResult } from './action';
 import { useFormState } from 'react-dom';
-import formFactory from './form-factory';
 import ButtonStatus from './button-status';
+import { zodValidator } from '@tanstack/zod-form-adapter';
+import { z } from 'zod';
+import { formOpts } from './form-factory';
+import { initialFormState } from '@tanstack/react-form/nextjs';
 
 const Form = () => {
-  const [state, setAction] = useFormState(action, formFactory.initialFormState);
+  const [state, setAction] = useFormState(action, initialFormState);
 
   // form instance
-  const { useStore, Subscribe, handleSubmit, Field } = formFactory.useForm({
+  const { useStore, Subscribe, handleSubmit, Field } = useForm({
+    ...formOpts,
     transform: useTransform(
       (baseForm: FormApi<any, any>) => mergeForm(baseForm, state),
       [state]
@@ -158,6 +173,7 @@ const Form = () => {
 
   // server side errors
   const formErrors = useStore((formState) => formState.errors);
+
   // we are extracting the server side errors from formErrors
   const serverErrors = formErrors.reduce((acc, curr) => {
     if (!curr) return acc;
@@ -167,7 +183,7 @@ const Form = () => {
   }, {} as TResult);
 
   return (
-    <section>
+    <section className="flex h-screen w-full flex-col items-center justify-center">
       <form action={setAction as never} onSubmit={() => handleSubmit()}>
         <div>
           <Field name="age">
@@ -176,6 +192,7 @@ const Form = () => {
                 <>
                   <input
                     name="age"
+                    id="age"
                     type="number"
                     value={field.state.value || ''}
                     onChange={(e) => field.handleChange(e.target.valueAsNumber)}
@@ -195,6 +212,7 @@ const Form = () => {
                   <input
                     name="firstName"
                     type="text"
+                    id="firstName"
                     value={field.state.value || ''}
                     onChange={(e) => field.handleChange(e.target.value)}
                   />
@@ -225,7 +243,6 @@ const ErrorText = ({
   children: React.ReactNode;
   error: ValidationError[];
 }) => {
-  console.log(error);
   return (
     <>
       {error.map((error) => (
@@ -241,13 +258,14 @@ Let's break down the above code:
 
 <Summary>
   <LI>
-    `useFormState` is hook provided by React which lets us work with server
+    `useActionState` is hook provided by React which lets us work with server
     actions forms. It allows us to update state based on the result of a form
     action.
   </LI>
   <LI>
-    We are using `formFactory.useForm` hook to get the form instance.
-    `useTransform` function to merge the form state with the server state.
+    We are using `useForm` hook to get the form instance. where we are passing
+    our default values and using `useTransform` function to merge the form state
+    with the server state.
   </LI>
   <LI>
     We are extracting the server side errors from `formErrors` and showing them
@@ -308,7 +326,7 @@ const Form = () => {
         <div>
           <Field
             name="age"
-            validatorAdapter={zodValidator}
+            validatorAdapter={zodValidator()}
             validators={{
               onChange: (value) => {
                 if (Number.isNaN(value.value)) return false;
@@ -335,7 +353,7 @@ const Form = () => {
 
           <Field
             name="firstName"
-            validatorAdapter={zodValidator}
+            validatorAdapter={zodValidator()}
             validators={{
               onChange: z.string().min(1, 'FirstName is required'),
             }}
