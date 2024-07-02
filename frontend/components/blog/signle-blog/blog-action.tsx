@@ -7,6 +7,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import action from './comment/action';
 import { getLocalData } from '@/utils/utils';
 import { ToolTipComp } from '@/components/ui/tooltip';
+import { startTransition, useOptimistic } from 'react';
 
 const BlogAction = ({
   blogId,
@@ -32,7 +33,11 @@ const BlogAction = ({
     },
   });
 
-  const { mutate, isPending, variables } = useMutation({
+  const [optimisticLike, setOptimisticLike] = useOptimistic(
+    data?.totalLike || 0
+  );
+
+  const { mutate, isPending } = useMutation({
     mutationFn: addBlogLikeAction,
     onSuccess: () => {
       refetch();
@@ -52,6 +57,9 @@ const BlogAction = ({
 
   const handleLike = () => {
     const viewId = getLocalData('tempId');
+    startTransition(() => {
+      setOptimisticLike((prev) => prev + 1);
+    });
     mutate({
       blogId,
       viewsId: viewId,
@@ -71,11 +79,7 @@ const BlogAction = ({
           className="flex w-[60px] items-center gap-2"
         >
           <ThumbsUp size={20} />
-          <span className="text-base">
-            {isPending
-              ? data && data?.totalLike + variables.like
-              : data?.totalLike || 0}
-          </span>
+          <span className="text-base">{optimisticLike}</span>
         </Button>
       </ToolTipComp>
 
