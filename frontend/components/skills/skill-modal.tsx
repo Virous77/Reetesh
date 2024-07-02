@@ -36,7 +36,7 @@ const SkillModal = ({
 
   return (
     <Credenza open={true} onOpenChange={handleOpenChange} defaultOpen={true}>
-      <CredenzaContent className="rounded-md px-3 pb-3 md:max-w-[700px] md:px-0 md:pb-0">
+      <CredenzaContent className="rounded-md px-3 pb-3 md:max-w-[700px] md:px-4 md:pb-4">
         <CredenzaHeader>
           <CredenzaTitle className="font-mono uppercase">
             {newName}
