@@ -83,7 +83,9 @@ const RootLayout = ({
         <ThemeProviderComp attribute="class" defaultTheme="dark">
           <Provider>
             {modal}
-            {children}
+            <div vaul-drawer-wrapper="" className="bg-background">
+              {children}
+            </div>
             <Analytics debug={false} />
             <SpeedInsights />
             <ThemeSwitcher />

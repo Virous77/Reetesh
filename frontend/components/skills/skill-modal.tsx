@@ -1,7 +1,14 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
+import {
+  Credenza,
+  CredenzaContent,
+  CredenzaHeader,
+  CredenzaTitle,
+} from '../ui/responsive-modal';
+import { useMediaQuery } from '@/lib/media-query';
+import { useState } from 'react';
 
 const SkillModal = ({
   children,
@@ -10,22 +17,34 @@ const SkillModal = ({
   children: React.ReactNode;
   name: string;
 }) => {
+  const [open, setOpen] = useState(false);
   const newName = name.split('-').join(' ');
   const router = useRouter();
+  const desktop = '(min-width: 768px)';
+  const isDesktop = useMediaQuery(desktop);
 
   const handleOpenChange = () => {
-    router.back();
+    setOpen(!open);
+    if (isDesktop) {
+      router.back();
+    } else {
+      if (open) {
+        router.back();
+      }
+    }
   };
 
   return (
-    <Dialog defaultOpen={true} open={true} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-[95%] rounded-md md:max-w-[700px]">
-        <DialogHeader>
-          <DialogTitle className="font-mono uppercase">{newName}</DialogTitle>
-        </DialogHeader>
+    <Credenza open={true} onOpenChange={handleOpenChange} defaultOpen={true}>
+      <CredenzaContent className="rounded-md px-3 pb-3 md:max-w-[700px] md:px-0 md:pb-0">
+        <CredenzaHeader>
+          <CredenzaTitle className="font-mono uppercase">
+            {newName}
+          </CredenzaTitle>
+        </CredenzaHeader>
         {children}
-      </DialogContent>
-    </Dialog>
+      </CredenzaContent>
+    </Credenza>
   );
 };
 
