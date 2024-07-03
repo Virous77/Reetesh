@@ -150,3 +150,12 @@ export const parseType = (date: string) => {
   }
   return false;
 };
+
+export const hexToRgb = (hex: string): number[] => {
+  hex = hex.replace('#', '');
+  const hexInt = parseInt(hex, 16);
+  const red = (hexInt >> 16) & 255;
+  const green = (hexInt >> 8) & 255;
+  const blue = hexInt & 255;
+  return [red, green, blue];
+};
