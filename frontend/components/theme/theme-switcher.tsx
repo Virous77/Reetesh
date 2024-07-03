@@ -29,6 +29,9 @@ const ThemeSwitcher = () => {
         size="icon"
         className="flex h-8 w-8 cursor-pointer items-center justify-center bg-transparent text-secondary-foreground hover:bg-transparent"
         onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+        name="theme-switcher"
+        title="Toggle theme"
+        aria-label="Toggle theme"
       >
         {theme === 'dark' ? (
           <Sun size={20} data-testid="sun" />
