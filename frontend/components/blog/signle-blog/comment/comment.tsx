@@ -32,7 +32,7 @@ const getComments = async ({ id }: { id: string }) => {
     .populate(createPopulateOptions(20))
     .lean();
 
-  return JSON.parse(JSON.stringify(comments));
+  return JSON.parse(JSON.stringify(comments)) as TBlog[];
 };
 
 export const Comment = async ({ slug }: { slug: string }) => {
@@ -41,15 +41,11 @@ export const Comment = async ({ slug }: { slug: string }) => {
   return (
     <section className="comment-section px-3 md:px-0">
       <span className="mb-3 inline-block h-[2px] w-full bg-accent"></span>
-      <div className="flex items-center justify-between md:w-[85%]">
-        <h2 className="pb-2 text-lg text-heading">
-          Comments ({data.length || 0})
-        </h2>
-        <span className="flex items-center text-[12px]">
-          <SquareM size={16} />
-          arkdown is supported.*
-        </span>
-      </div>
+
+      <h2 className="pb-2 text-lg text-heading">
+        Comments ({data.length || 0})
+      </h2>
+
       <CommentList data={data} />
       <span className="mb-3 inline-block h-[2px] w-full bg-accent"></span>
     </section>
