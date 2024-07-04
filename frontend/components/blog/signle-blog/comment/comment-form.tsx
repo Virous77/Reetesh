@@ -1,19 +1,21 @@
-'use client';
-
 import { Button } from '@/components/ui/button';
 import { FormEvent } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import { marked } from 'marked';
 
-type TComment = {
+export type TComment = {
   comment: string;
   children: any[];
 };
 
 const CommentForm = ({
   handleAddComment,
+  setComment,
+  currentComment,
 }: {
   handleAddComment: (e: TComment) => void;
+  setComment: React.Dispatch<React.SetStateAction<string>>;
+  currentComment: string;
 }) => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,6 +24,7 @@ const CommentForm = ({
     if (!comment || comment.trim() === '') return alert('Comment is required');
 
     handleAddComment({ comment: marked.parse(comment) as any, children: [] });
+    setComment('');
     e.currentTarget.reset();
   };
   return (
@@ -31,10 +34,15 @@ const CommentForm = ({
     >
       <Textarea
         placeholder="Your Comment"
-        aria-label="comment"
+        aria-label="comment input"
         required={true}
         className="max-h-[150px] min-h-[70px] py-6 text-base"
         name="comment"
+        value={currentComment}
+        onChange={(e) => setComment(e.target.value)}
+        style={{
+          whiteSpace: 'pre-wrap',
+        }}
       />
       <Button type="submit" className="w-full px-[30px] py-6 md:w-auto">
         Send

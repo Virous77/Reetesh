@@ -1,4 +1,3 @@
-import CommentForm from './comment-form';
 import { TBlog } from '@/models/blog-comments';
 import {
   addUserIDToLocalStorage,
@@ -14,6 +13,7 @@ import { usePathname } from 'next/navigation';
 import { Info } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import turndonw from 'turndown';
+import CommentTabs from './comment-tabs';
 
 const Like = dynamic(() => import('./like'));
 const CommentMarkdown = dynamic(() => import('./comment-markdown'));
@@ -146,7 +146,7 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
 
       <div className="mb-2 mt-2">
         {reply && (
-          <CommentForm
+          <CommentTabs
             handleAddComment={(e) => {
               handleSubmit({
                 id: optimisticComment._id,

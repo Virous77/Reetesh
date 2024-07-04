@@ -6,8 +6,8 @@ import { usePathname } from 'next/navigation';
 import action, { createComment } from './action';
 import { useMutation } from '@tanstack/react-query';
 import { addUserIDToLocalStorage, getLocalData } from '@/utils/utils';
-import CommentForm from './comment-form';
 import React, { useOptimistic, startTransition } from 'react';
+import CommentTabs from './comment-tabs';
 
 export type TNewComment = {
   comment: string;
@@ -61,7 +61,10 @@ const CommentList = ({ data }: { data: TBlog[] }) => {
 
   return (
     <React.Fragment>
-      <CommentForm handleAddComment={handleAddComment} />
+      <CommentTabs
+        handleAddComment={handleAddComment}
+        isComment={data.length > 0}
+      />
       {optimisticComment.length > 0 ? (
         <div className="no-scrollbar mt-3 max-h-[800px] overflow-y-scroll">
           {optimisticComment.map((comment, index) => (
