@@ -29,6 +29,12 @@ const sitemap = async () => {
       priority: 0.8,
       changeFrequency: 'weekly',
     },
+    {
+      url: `${URL}/privacy`,
+      lastModified: new Date(),
+      priority: 0.8,
+      changeFrequency: 'monthly',
+    },
   ];
 
   const allBlogs = blogs.map(({ slugAsParams, date }) => {
