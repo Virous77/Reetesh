@@ -56,7 +56,7 @@ yarn add @tanstack/react-query @tanstack/react-router @tanstack/router-vite-plug
 
 We need to add our Tanstack router vite plugin to the `vite.config.js` file. It helps to auto generate the routes and make the routes type-safe.
 
-```typescript
+```ts
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { TanStackRouterVite } from '@tanstack/router-vite-plugin';
@@ -69,13 +69,13 @@ export default defineConfig({
 
 Now since we have configured vite we can delete the `App.tsx` file and removed the code from `main.tsx` file and add the following code.
 
-```typescript
+```tsx
 // /src/main.tsx
 
-import ReactDOM from "react-dom/client";
-import { RouterProvider, createRouter } from "@tanstack/react-router";
-import { routeTree } from "./routeTree.gen";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ReactDOM from 'react-dom/client';
+import { RouterProvider, createRouter } from '@tanstack/react-router';
+import { routeTree } from './routeTree.gen';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient();
 
@@ -84,17 +84,17 @@ const router = createRouter({
   context: {
     queryClient,
   },
-  defaultPreload: "intent",
+  defaultPreload: 'intent',
   defaultPreloadStaleTime: 0,
 });
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface Register {
     router: typeof router;
   }
 }
 
-const rootElement = document.getElementById("root")!;
+const rootElement = document.getElementById('root')!;
 
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
@@ -118,13 +118,13 @@ we have declare a module to make it fully type-safe across the application. sinc
 
 we have to create a folder called `routes` within `src` directory and create a file called `__root.tsx` and add the following code.
 
-```typescript
+```tsx
 // /src/routes/__root.tsx
 
-import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import { QueryClient } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Outlet, createRootRouteWithContext } from '@tanstack/react-router';
+import { TanStackRouterDevtools } from '@tanstack/router-devtools';
+import { QueryClient } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -155,12 +155,12 @@ Now this is pretty much it, we have configured the Tanstack router with React Vi
 
 We can create a new file called `index.tsx` within the `routes` folder and add the following code.
 
-```typescript
+```tsx
 // /src/routes/index.tsx
 
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from '@tanstack/react-router';
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/')({
   component: Home,
 });
 
@@ -179,7 +179,7 @@ Tanstack router gives us good power to create routes with `createFileRoute` with
 
 To Fetch the data we can use the router loader API and since we have configured the `react-query` we can get the query client from the context and use it to fetch the data.
 
-```typescript
+```tsx
 const fetchPosts = async () => {
   return axios
     .get('https://jsonplaceholder.typicode.com/posts')
@@ -201,7 +201,7 @@ Here as you can see how simple it is to fetch the data with loader API and use i
 
 To use the data in the component we can use the API which is provided by `tanstack-router`.
 
-```typescript
+```tsx
 function Home() {
   const posts = Route.useLoaderData();
 
