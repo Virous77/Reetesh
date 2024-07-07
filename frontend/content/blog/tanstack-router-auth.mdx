@@ -1,0 +1,236 @@
+---
+title: 'Tanstack Router Private Routes Explained'
+date: 'July 07 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://8qbgmple95w84kds.public.blob.vercel-storage.com/tanstack-router-G8V7C9b9eskxGj8vGnchLjz84lw1xy.png'
+about: 'Tanstack router is a fully type-safe new Router for React apps with built-in data fetching capability and search params validation. We will see how to use it with React Vite app and React Query. We will also see how to setup private routes with Tanstack router.'
+tags:
+  [
+    'how to use tanstack router',
+    'tanstack router with react vite',
+    'tanstack router setup with react vite',
+    'tanstack router auth',
+    'tanstack router auth setup',
+    'tanstack router private routes',
+  ]
+related: 'frontend'
+---
+
+<TableContent title="Tanstack Router Private Routes Explained" />
+
+Tanstack router is a fully type-safe new Router for React apps with built-in data fetching capability and search params validation and so many other good features. I have already a blog on [Tanstack Router with Vite and React Query](https://reetesh.in/blog/tanstack-router-with-react-vite-app-and-react-query) where I have explained how to setup Tanstack router with React Vite app and React Query. In this blog, we will see how to setup private routes with Tanstack router.
+
+Private Routes is important for any application where we need to restrict the user to access some routes without authentication. There any many way for authenticate the user in React application like
+storing token in **Context API**, **localstorage**, **cookies** or using any third party library like **Auth0**, **Firebase** etc. We will focus on client side using localstorage to store the token and authenticate the user.
+
+> I recommend to read my previous blog on [Tanstack Router with Vite and React Query](https://reetesh.in/blog/tanstack-router-with-react-vite-app-and-react-query) before proceeding with this blog and setup the Tanstack router.
+
+## Setting up the Private Routes
+
+First, We need to create a **Context API** to manage the authentication state and store the token in **localstorage**. We will add all the authentication related code there and create a hook to access the authentication state and functions.
+
+```tsx
+// src/auth/index.tsx
+
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+
+export interface IAuthContext {
+  isAuthenticated: boolean;
+  login: (username: string) => Promise<void>;
+  logout: () => Promise<void>;
+  user: string | null;
+}
+
+const AuthContext = React.createContext<IAuthContext | null>(null);
+const key = 'authUser';
+
+const getLocalData = () => {
+  return localStorage.getItem(key) || null;
+};
+
+const setStoredUser = (user: string | null) => {
+  if (user) {
+    localStorage.setItem(key, user);
+  } else {
+    localStorage.removeItem(key);
+  }
+};
+
+export const AuthProviderContext = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [user, setUser] = useState<string | null>(getLocalData());
+  const isAuthenticated = !!user;
+
+  const logout = useCallback(async () => {
+    setStoredUser(null);
+    setUser(null);
+  }, []);
+
+  const login = useCallback(async (username: string) => {
+    setStoredUser(username);
+    setUser(username);
+  }, []);
+
+  useEffect(() => {
+    setUser(getLocalData());
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => useContext(AuthContext);
+```
+
+The code above is a simple **Context API** to manage the authentication state and store the token in localstorage. We have created a `AuthProviderContext` component to wrap the application with the authentication context. We have also created a `useAuth` hook to access the authentication state and functions.
+
+<Callout emoji="💡" isRegular={true}>
+  Now Obiviously, you can use any other method to store the token and
+  authenticate the user. I am using localstorage for simplicity. For a
+  production application, you should use a more secure method like **Cookies**
+  is a good option.
+</Callout>
+
+Now, If you have setup your Tanstack router following my previous blog, then in `main.tsx` file we need to wrap the `RouterProvider` component with `AuthProviderContext` component.
+
+```tsx
+// /src/main.tsx
+
+import ReactDOM from 'react-dom/client';
+import { RouterProvider, createRouter } from '@tanstack/react-router';
+import { routeTree } from './routeTree.gen';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AuthProviderContext, useAuth } from './auth';
+
+const queryClient = new QueryClient();
+
+const router = createRouter({
+  routeTree,
+  context: {
+    queryClient,
+    auth: undefined!, // auth context initial value
+  },
+  defaultPreload: 'intent',
+  defaultPreloadStaleTime: 0,
+});
+
+declare module '@tanstack/react-router' {
+  interface Register {
+    router: typeof router;
+  }
+}
+
+const Router = () => {
+  const auth = useAuth();
+  return <RouterProvider router={router} context={{ auth }} />;
+};
+
+const rootElement = document.getElementById('root')!;
+
+if (!rootElement.innerHTML) {
+  const root = ReactDOM.createRoot(rootElement);
+  root.render(
+    <QueryClientProvider client={queryClient}>
+      <AuthProviderContext>
+        <Router />
+      </AuthProviderContext>
+    </QueryClientProvider>
+  );
+}
+```
+
+In the code above, we have wrapped the `RouterProvider` component with `AuthProviderContext` component. We have also passed the `auth` context to the `RouterProvider` context. so we can access the `auth` context in our any routes for checking the authentication.
+
+Now we need to update our **Context Type** to keep TypeScript happy. For that we need to move in our `__root.tsx` file.
+
+```tsx
+// /src/routes/__root.tsx
+
+import { Outlet, createRootRouteWithContext } from '@tanstack/react-router';
+import { TanStackRouterDevtools } from '@tanstack/router-devtools';
+import { QueryClient } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import type { IAuthContext } from '../auth';
+
+export interface IRouterContext {
+  auth: IAuthContext;
+  queryClient: QueryClient;
+}
+
+export const Route = createRootRouteWithContext<IRouterContext>()({
+  component: RootComponent,
+});
+
+function RootComponent() {
+  return (
+    <>
+      <Outlet />
+      <ReactQueryDevtools buttonPosition="top-right" />
+      <TanStackRouterDevtools position="bottom-right" />
+    </>
+  );
+}
+```
+
+In the code above, we have added the `auth` context in the `IRouterContext` interface. Now we can access the `auth` context in our routes in type safe way.
+
+Now we are all set for creating our `Login Route` and `Private Route`. Tanstack router with file based route made its so easy to create type safe routes and authenticate the user before accessing the private routes content without any hassle.
+
+Since we are passing `auth` in context to `RouterProvider`, we can access the `auth` context in our routes. We can use the `auth` context to check if the user is authenticated or not.
+
+```tsx
+import { createFileRoute } from '@tanstack/react-router';
+
+export const Route = createFileRoute('/dashboard')({
+  beforeLoad: ({ context, location }) => {
+    if (!context.auth.isAuthenticated) {
+      throw redirect({
+        to: '/login',
+        search: {
+          redirect: location.href,
+        },
+      });
+    }
+  },
+  component: <main>Private Route</main>,
+});
+```
+
+Here we have created a private route `/dashboard` which will redirect to `/login` route if the user is not authenticated. We have used the `auth` context to check if the user is authenticated or not.
+
+Tanstack router `beforeLoad` as name suggest, it will run before loading the route and we can check the user authentication there and redirect the user to login route if not authenticated.
+
+<Advertise title="Suspense and Error Boundary in React Explained" />
+
+<Separator />
+
+## StackBlitz Project for Full Code
+
+Below with [Stack Blitz](https://stackblitz.com/) you can see the full code and play write there itself. You can see all the private routes are stating with `_auth` in the file name. You can see the `login.tsx` file where we have code for login user and store the token in localstorage.
+
+<StackBlitzProject
+  id="vitejs-vite-gd6is2"
+  file="src/routes/login.tsx"
+  repoUrl="https://github.com/Virous77/blog-projects/tree/main/tanstack-router-auth"
+/>
+
+> You can get the full code from my [GitHub Repository](https://github.com/Virous77/blog-projects/tree/main/tanstack-router-auth).
+
+Stack Blitz is a great tool to play with the code and see the output in real time. You can fork the project and play with the code.
+
+<Separator />
+
+## Conclusion
+
+Tanstack Router is best alternative for **React Router Dom** with so many good features and fully type safe and more light weight than **React Router Dom**. I have using it in my previous projects and I just loving it and also the Docs are very good and easy to understand.
+
+You can visit the [Tanstack Router Docs](https://tanstack.com/router/latest/docs/framework/react/comparison) for more information about how good Tanstack Router over React Router Dom. They have created a good comparison table between **React Router Dom** and **Tanstack Router**.
+
+I hope you understand how to setup private routes with Tanstack router and how to authenticate the user before accessing the private routes. If you have any question or suggestion, feel free to ask in the comment section below. I will be happy to help you. Happy Coding! 😊
