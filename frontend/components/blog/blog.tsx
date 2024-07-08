@@ -5,6 +5,7 @@ import { Post } from '@/.contentlayer/generated';
 import { formateDate } from '@/utils/utils';
 import CommandSearch from '../common/command-search';
 import { BlogDetails, Projects, Root } from '@/routes';
+import GoogleAdUnit from '../google-ads';
 
 type TBlog = {
   blogs: Post[];
@@ -31,45 +32,57 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
       </div>
 
       <ul className="grid grid-cols-1 items-start gap-4 pb-3 md:grid-cols-2">
-        {blogs.map((blog) => (
-          <li key={blog._id}>
-            <Card className="w-full border-none bg-transparent hover:bg-popover">
-              <CardContent className="p-3">
-                <Image
-                  src={blog.blogImage}
-                  alt={blog.title}
-                  height={0}
-                  className="max-h-[250px] min-h-[250px] w-full rounded"
-                  width={0}
-                  sizes="100vw"
-                />
+        {/* <GoogleAdUnit>
+          <ins
+            className="adsbygoogle"
+            style={{ display: 'block' }}
+            data-ad-format="fluid"
+            data-ad-layout-key="-60+c7+9-39+ic"
+            data-ad-client="ca-pub-3587869123201431"
+            data-ad-slot="6601193365"
+          ></ins>
+        </GoogleAdUnit> */}
+        <>
+          {blogs.map((blog, idx) => (
+            <li key={blog._id}>
+              <Card className="w-full border-none bg-transparent hover:bg-popover">
+                <CardContent className="p-3">
+                  <Image
+                    src={blog.blogImage}
+                    alt={blog.title}
+                    height={0}
+                    className="max-h-[250px] min-h-[250px] w-full rounded"
+                    width={0}
+                    sizes="100vw"
+                  />
 
-                <div className="mt-3 flex items-center gap-3">
-                  <span className="whitespace-nowrap font-mono text-[13px]">
-                    {formateDate(blog.date)}
-                  </span>
-                  <span className="h-[2px] w-full bg-default"></span>
-                </div>
-
-                <h1 className="my-5 truncate text-[20px] leading-[1.3]">
-                  {blog.title}
-                </h1>
-                <p className="-mt-2 text-[14px] tracking-wider text-muted-foreground">
-                  {blog.about}
-                </p>
-
-                <div className="mt-3 flex items-center gap-3">
-                  <span className="h-[2px] w-full bg-default"></span>
-                  <BlogDetails.Link id={blog.slugAsParams}>
-                    <span className="flex cursor-pointer items-center gap-2 whitespace-nowrap text-[13px] font-bold hover:underline hover:underline-offset-4">
-                      Read Full Blog <MoveRight />
+                  <div className="mt-3 flex items-center gap-3">
+                    <span className="whitespace-nowrap font-mono text-[13px]">
+                      {formateDate(blog.date)}
                     </span>
-                  </BlogDetails.Link>
-                </div>
-              </CardContent>
-            </Card>
-          </li>
-        ))}
+                    <span className="h-[2px] w-full bg-default"></span>
+                  </div>
+
+                  <h1 className="my-5 truncate text-[20px] leading-[1.3]">
+                    {blog.title}
+                  </h1>
+                  <p className="-mt-2 text-[14px] tracking-wider text-muted-foreground">
+                    {blog.about}
+                  </p>
+
+                  <div className="mt-3 flex items-center gap-3">
+                    <span className="h-[2px] w-full bg-default"></span>
+                    <BlogDetails.Link id={blog.slugAsParams}>
+                      <span className="flex cursor-pointer items-center gap-2 whitespace-nowrap text-[13px] font-bold hover:underline hover:underline-offset-4">
+                        Read Full Blog <MoveRight />
+                      </span>
+                    </BlogDetails.Link>
+                  </div>
+                </CardContent>
+              </Card>
+            </li>
+          ))}
+        </>
       </ul>
     </section>
   );
