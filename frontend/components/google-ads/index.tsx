@@ -1,7 +1,7 @@
 'use client';
 
-import React, {  ReactNode, useEffect } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
+import React, { ReactNode, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 declare global {
   interface Window {
@@ -17,14 +17,13 @@ const GoogleAdUnit = ({
   className?: string;
 }) => {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   useEffect(() => {
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch (err) {
       console.error(err);
     }
-  }, [pathname, searchParams]);
+  }, [pathname]);
   return <div className={className}>{children}</div>;
 };
 
