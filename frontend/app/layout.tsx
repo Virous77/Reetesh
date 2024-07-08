@@ -79,6 +79,11 @@ const RootLayout = ({
   gtag('config', 'G-XY0Y1HDGMT');
         `}
         </Script>
+        <Script
+          async
+          id="adsense"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3587869123201431"
+        />
       </head>
       <body className={`${montserrat.className}`}>
         <ThemeProviderComp attribute="class" defaultTheme="dark">
