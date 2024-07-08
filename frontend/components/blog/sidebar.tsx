@@ -29,9 +29,9 @@ const Sidebar = () => {
       />
       <CommonTab links={Links} type={false} />
 
-      <GoogleAdUnit className="mt-4 px-4 md:mt-[80px] md:px-0">
+      <GoogleAdUnit className="mt-4 !bg-background px-4 md:mt-[80px] md:px-0">
         <ins
-          className="adsbygoogle"
+          className="adsbygoogle max-w-[250px] md:max-w-full"
           style={{
             display: 'block',
           }}
