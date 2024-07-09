@@ -2,10 +2,8 @@ node_modules
 yarn.lock
 README.md
 tailwind.config.ts
-__test__
 package.json
 .next
 .contentlayer
 content
 public
-coverage

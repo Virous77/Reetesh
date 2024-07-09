@@ -1,13 +1,13 @@
 import { hexToRgb } from '@/utils/utils';
 import React, { useEffect, useRef, useState } from 'react';
 
-interface MousePosition {
+interface IMousePosition {
   x: number;
   y: number;
 }
 
-const MousePosition = (): MousePosition => {
-  const [mousePosition, setMousePosition] = useState<MousePosition>({
+const MousePosition = (): IMousePosition => {
+  const [mousePosition, setMousePosition] = useState<IMousePosition>({
     x: 0,
     y: 0,
   });

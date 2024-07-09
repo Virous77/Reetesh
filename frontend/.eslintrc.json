@@ -1,11 +1,8 @@
 {
   "extends": [
     "next/core-web-vitals",
-    "plugin:testing-library/react",
-    "plugin:jest-dom/recommended",
     "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended"
+    "plugin:react/recommended"
   ],
   "env": {
     "node": true,
@@ -13,13 +10,13 @@
     "browser": true,
     "es6": true
   },
-  "plugins": ["react", "react-hooks"],
+  "plugins": ["react"],
   "rules": {
-    "react/react-in-jsx-scope": "on",
+    "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
-    "eslint no-undef": "off",
-    "react-compiler/react-compiler": "error",
-    "react-hooks/exhaustive-deps": "off"
+    "no-undef": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "@typescript-eslint/explicit-function-return-type": "off"
   },
   "ignorePatterns": [
     "node_modules/",

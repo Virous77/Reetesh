@@ -1,8 +1,6 @@
 import dbConnect from '@/db/mongoose';
 import blogComments, { TBlog } from '@/models/blog-comments';
-import { SquareM } from 'lucide-react';
 import dynamic from 'next/dynamic';
-
 const CommentList = dynamic(() => import('./comment-list'), { ssr: false });
 
 type TPopulateOptions = {

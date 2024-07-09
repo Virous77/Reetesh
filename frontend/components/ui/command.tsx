@@ -25,11 +25,7 @@ Command.displayName = CommandPrimitive.displayName;
 
 interface CommandDialogProps extends DialogProps {}
 
-const CommandDialog = ({
-  children,
-  isActive,
-  ...props
-}: CommandDialogProps & { isActive?: boolean }) => {
+const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
   return (
     <Credenza {...props}>
       <CredenzaContent className="overflow-hidden rounded p-0 shadow-lg md:h-[500px] md:max-w-[700px]">
