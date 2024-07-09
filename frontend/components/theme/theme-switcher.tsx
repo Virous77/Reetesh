@@ -33,11 +33,7 @@ const ThemeSwitcher = () => {
         title="Toggle theme"
         aria-label="Toggle theme"
       >
-        {theme === 'dark' ? (
-          <Sun size={20} data-testid="sun" />
-        ) : (
-          <Moon size={20} data-testid="moon" />
-        )}
+        {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
       </Button>
     </div>
   );

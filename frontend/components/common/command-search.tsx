@@ -80,7 +80,7 @@ const CommandSearch: React.FC<TCommandSearch> = ({ blogs }) => {
           </kbd>
         </Button>
       </div>
-      <CommandDialog open={open} onOpenChange={setOpen} isActive={false}>
+      <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="Search Posts..." className="text-base" />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>

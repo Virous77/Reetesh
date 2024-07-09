@@ -39,10 +39,10 @@ const Privacy = () => {
         <div className="text-default">
           <p className="text-center">
             <strong>reetesh.in </strong>
-            ("I") provides this Privacy Policy to inform you of our policies and
-            procedures regarding the collection, use, and disclosure of personal
-            information we may receive from users of our website ("Site"),
-            accessible from{' '}
+            (&quot;I&quot;) provides this Privacy Policy to inform you of our
+            policies and procedures regarding the collection, use, and
+            disclosure of personal information we may receive from users of our
+            website (&quot;Site&quot;), accessible from{' '}
             <a
               className="font-bold text-blue-500 hover:underline"
               href="https://reetesh.in"
@@ -52,7 +52,7 @@ const Privacy = () => {
               reetesh.in
             </a>{' '}
             , and any other services offered by us in connection with our site
-            (collectively, the "Services").
+            (collectively, the &quot;Services&quot;).
           </p>
 
           <p className="mt-4 text-center">
@@ -119,7 +119,7 @@ const Privacy = () => {
           <BoxContent>
             You can choose to disable cookies through your individual browser
             options. More detailed information about cookie management with
-            specific web browsers can be found at the browsers' respective
+            specific web browsers can be found at the browsers respective
             websites.
           </BoxContent>
         </Box>

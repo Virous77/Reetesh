@@ -5,7 +5,6 @@ import Image from 'next/image';
 import errorImg from '@/public/error.svg';
 
 const GlobalError = ({
-  error,
   reset,
 }: {
   error: Error & { digest?: string };
