@@ -82,6 +82,8 @@ const RootLayout = ({
         <Script
           async
           id="adsense"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3587869123201431"
         />
       </head>

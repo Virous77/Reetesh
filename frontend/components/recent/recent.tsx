@@ -70,7 +70,7 @@ const Common = ({ name }: { name: string }) => {
   return (
     <div className="flex items-center gap-2">
       <span className="block h-[1px] w-10 bg-foreground opacity-50"></span>
-      <h3 className="mb-2 font-mono">{name}</h3>
+      <h3 className="mb-2 font-mono text-default">{name}</h3>
     </div>
   );
 };
