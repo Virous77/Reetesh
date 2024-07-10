@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 import { Montserrat } from 'next/font/google';
 import './globals.css';
 import ThemeProviderComp from '@/lib/theme-provider';

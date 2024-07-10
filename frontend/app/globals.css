@@ -289,3 +289,38 @@ li code {
 .project-heading:hover span {
   display: block !important;
 }
+
+[data-chars-id='s'] {
+  border-bottom: 2px solid rgb(186, 219, 39) !important;
+  background: rgb(202, 38, 1) !important;
+  padding: 1px 5px !important;
+  border-radius: 5px !important;
+}
+
+[data-chars-id='v'] {
+  border-bottom: 2px solid rgb(219 39 119 / 1) !important;
+  background: rgba(159, 18, 57, 0.5) !important;
+  padding: 1px 5px !important;
+  border-radius: 5px !important;
+}
+
+[data-chars-id='i'] {
+  border-bottom: 2px solid rgb(113, 62, 215) !important;
+  background: rgba(17, 200, 0, 0.5) !important;
+  padding: 1px 5px !important;
+  border-radius: 5px !important;
+}
+
+.dark [data-highlighted-line] {
+  background: rgb(41, 41, 41) !important;
+  font-weight: bold;
+  padding: 1px 10px !important;
+  width: fit-content !important;
+}
+
+[data-highlighted-line] {
+  background: rgb(75, 75, 75) !important;
+  font-weight: bold;
+  padding: 1px 10px !important;
+  width: fit-content !important;
+}
