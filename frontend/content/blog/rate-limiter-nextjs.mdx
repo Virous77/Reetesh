@@ -1,0 +1,282 @@
+---
+title: 'Rate Limiter for Next.JS API Routes Explained'
+date: 'July 10 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://8qbgmple95w84kds.public.blob.vercel-storage.com/rate-limiter-Yk0HdGsIbESIrwYex8KSKYoYpoJPxK.png'
+about: ' Rate limiting is a technique used to control the rate of traffic sent or received by a network. It is used to prevent abuse of the network and to ensure that the network is not overloaded. In this blog, we will see how to implement rate limiting for Next.JS API routes.'
+tags:
+  [
+    'rate limiter',
+    'rate limiter for next.js',
+    'rate limiter for next.js api routes',
+    'how rate limiter works',
+    'how to implement rate limiter',
+    'rate limiter with next.js',
+  ]
+related: 'common'
+---
+
+<TableContent title="Rate Limiter for Next.JS API Routes Explained" />
+
+[Rate limiting](https://en.wikipedia.org/wiki/Rate_limiting) is a technique used to control the rate of traffic sent or received by a network. It is used to prevent abuse of the network and to ensure that the network is not overloaded. It's important to implement rate limiting in your applications to prevent abuse and ensure that your services are available to all users.
+
+You encounter rate limiting every day when you use services like Twitter, Facebook, or Google. These services limit the number of requests you can make in a given time period to prevent abuse of their APIs. In this blog, we will see how to implement rate limiting for Next.JS API routes.
+
+## How Rate Limiter Works
+
+Rate limiting works by tracking the number of requests made by a client in a given time period. If the client exceeds the allowed number of requests, the server responds with an error message or a status code indicating that the client has exceeded the rate limit. The client can then retry the request after a certain amount of time has passed.
+
+There are several ways to implement rate limiting, such as:
+
+- **Token Bucket Algorithm**: In this algorithm, a token bucket is used to track the number of requests made by a client. The client is allowed to make a request only if there are tokens available in the bucket. The bucket is refilled at a constant rate, and tokens are added to the bucket at a fixed interval.
+
+- **Leaky Bucket Algorithm**: In this algorithm, a leaky bucket is used to track the number of requests made by a client. The bucket has a fixed capacity, and requests are added to the bucket at a fixed rate. If the bucket overflows, the requests are dropped.
+
+- **Sliding Window Algorithm**: In this algorithm, a sliding window is used to track the number of requests made by a client. The window has a fixed size, and requests are added to the window at a fixed rate. If the window is full, the requests are dropped.
+
+<Separator />
+
+## Token Bucket Algorithm Implementation
+
+The token bucket algorithm is a simple and effective way to implement rate limiting in your applications. We can implement it globally for all api or for specific api routes or user based.
+
+> I assume your next.JS app is ready with latest version(14.2.4) as of writing this blog. I'm using nextTick.JS with **App Router**.
+
+Lets implement rate limiter for globally where we can limit the requests for all users and all api routes.
+
+```js
+import { NextRequest } from 'next/server';
+
+// can store in redis or memcached
+let bucketSize = 10;
+let tokens = bucketSize;
+let lastRefill = Date.now();
+const refillRate = 1000;
+
+const refillTokens = () => {
+  const now = Date.now();
+  const timeElapsed = now - lastRefill;
+  const tokensToAdd = Math.floor(timeElapsed / refillRate);
+
+  if (tokensToAdd > 0) {
+    tokens = Math.min(bucketSize, tokens + tokensToAdd);
+    lastRefill = now;
+  }
+};
+
+export async function GET(req: NextRequest) {
+  refillTokens();
+
+  if (tokens > 0) {
+    tokens -= 1;
+    return Response.json(tokens, { status: 200 });
+  }
+
+  return Response.json({ message: 'Rate limit exceeded!' }, { status: 429 });
+}
+```
+
+Here above code is quite simple to understand we have two function `refillTokens` and `GET` function. `refillTokens` function is used to refill the tokens in the bucket and `GET` function route handlers which we use to create API routes in next.JS.
+
+In `GET` function we are checking if tokens are available in the bucket then we are decrementing the tokens and returning the response with status code 200. If tokens are not available then we are returning the response with status code 429.
+
+<Advertise title="use Hook in React and its use cases" />
+
+<Separator />
+### Rate Limiter based on User
+
+Now what if you want to implement rate limiter based on **USER** using same token bucket algorithm. Lets see how we can do that.
+
+```js
+import { NextRequest } from 'next/server';
+
+// can store in redis or memcached
+const bucketSize = 10;
+const refillRate = 1000;
+const userBuckets = {};
+
+const refillTokens = (userId: any) => {
+  const now = Date.now();
+  const bucket = userBuckets[userId];
+
+  const timeElapsed = now - bucket.lastRefill;
+  const tokensToAdd = Math.floor(timeElapsed / refillRate);
+
+  if (tokensToAdd > 0) {
+    bucket.tokens = Math.min(bucketSize, bucket.tokens + tokensToAdd);
+    bucket.lastRefill = now;
+  }
+};
+
+export async function GET(req: NextRequest) {
+  // it should be authenticated user id
+  const userId = req.nextUrl.searchParams.get('userId');
+
+  if (!userBuckets[userId]) {
+    userBuckets[userId] = { tokens: bucketSize, lastRefill: Date.now() };
+  }
+
+  refillTokens(userId);
+  const bucket = userBuckets[userId];
+
+  if (bucket.tokens > 0) {
+    bucket.tokens -= 1;
+    return Response.json({ tokens: bucket.tokens },{ status: 200,});
+  }
+
+  return Response.json({ message: 'Rate limit exceeded!' }, { status: 429,});
+}
+```
+
+The code is same as before but now we are maintaining the user based bucket in `userBuckets` object. We are checking if user is present in the `userBuckets` object then we are decrementing the tokens from the bucket. If user is not present then we are creating the bucket for the user and adding the tokens to the bucket.
+
+<Callout emoji="💡" isRegular={false}>
+  Now obviously in real world apps you will be using real authentication
+  mechanism to get the user id and then you can use that user id to implement
+  rate limiter based on user. Also here we are storing data in memory which is
+  not recommended for production apps. You can use **Redis** or **Memcached** to
+  store the data.
+</Callout>
+
+<Separator />
+
+## Window Sliding Algorithm Implementation
+
+The sliding window algorithm is another way to implement rate limiting in your applications. In this algorithm, we maintain a window of fixed size and track the number of requests made by a client in that window. If the window is full, the requests are dropped.
+
+```js
+import { NextRequest } from 'next/server';
+
+// can store in redis or memcached
+const windowSize = 60000;
+const maxRequests = 10;
+const userRequests = {};
+
+const cleanupOldRequests = (timestamps) => {
+  const now = Date.now();
+  return timestamps.filter((timestamp) => now - timestamp < windowSize);
+};
+
+export async function GET(req: NextRequest) {
+  const userId = req.nextUrl.searchParams.get("userId");
+
+  if (!userRequests[userId]) {
+    userRequests[userId] = [];
+  }
+
+  userRequests[userId] = cleanupOldRequests(userRequests[userId]);
+
+  if (userRequests[userId].length >= maxRequests) {
+    return Response.json({ message: "Rate limit exceeded!" }, { status: 429 });
+  }
+
+  userRequests[userId].push(Date.now());
+
+  return Response.json({ message: "Request successful!" }, { status: 200,});
+}
+```
+
+In the above code, we are maintaining a window of size 1 minute and allowing a maximum of 10 requests per window. We are storing the request timestamps in the `userRequests` object and cleaning up old requests before checking the rate limit.
+
+<Callout emoji="💡" isRegular={true}>
+  The sliding window algorithm is useful when you want to limit the number of
+  requests made by a client in a fixed time window. You can adjust the window
+  size and the maximum number of requests per window based on your requirements.
+</Callout>
+
+<Separator />
+
+### Rate Limiter based on IP Address
+
+Up until now we are using either rate limiter globally or **USER** based. but what if you want to rate limit based on **IP** address. The concept is same as **USER** based rate limiter but instead of **userId** we will use **IP** address as key.
+
+```js
+import { NextRequest } from 'next/server';
+import { headers } from "next/headers";
+
+
+// can store in redis or memcached
+const windowSize = 60000;
+const maxRequests = 10;
+const ipRequests = {};
+
+const cleanupOldRequests = (timestamps) => {
+  const now = Date.now();
+  return timestamps.filter((timestamp) => now - timestamp < windowSize);
+};
+
+const  getIP=() =>{
+  // depending on deployment environment you can use different headers.
+  // it can be different as well.
+  const forwardedFor = headers().get("x-forwarded-for");
+  const realIp = headers().get("x-real-ip");
+
+  if (forwardedFor) return forwardedFor.split(",")[0].trim();
+  if (realIp) return realIp.trim();
+  return null;
+}
+
+export async function GET(req: NextRequest) {
+  const ip = getIP();
+
+  if (!ipRequests[ip]) {
+    ipRequests[ip] = [];
+  }
+
+  ipRequests[ip] = cleanupOldRequests(ipRequests[ip]);
+
+  if (ipRequests[ip].length >= maxRequests) {
+    return Response.json({ message: "Rate limit exceeded!" }, { status: 429 });
+  }
+
+  ipRequests[ip].push(Date.now());
+
+  return Response.json({ message: "Request successful!" }, { status: 200,});
+}
+```
+
+In the above code, we are using `getIP` function to get the IP address of the client. We are storing the request timestamps in the `ipRequests` object and cleaning up old requests before checking the rate limit.
+
+<RateLimiter />
+
+<Callout emoji="💡" isRegular={true}
+paddingB="10px"
+>
+  You can do more aggressive rate limiting based on **IP** address by using
+  `middleware.ts` in next.JS. **middleware.ts** awlays run before the route
+  handlers. You can use **middleware.ts** to check the rate limit and block the
+  request before it reaches the route handlers.
+
+You can use [**@upstash/ratelimit**](https://upstash.com) to implement rate limiter for your next.JS application. **@upstash/ratelimit** is a simple and efficient rate limiter that you can use to protect your application from abuse.
+
+```js
+/// middleware.ts
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
+
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(10, '50 s'),
+});
+
+export default async function middleware(req) {
+  const { success } = await ratelimit.limit(req.ip);
+
+  return success
+    ? NextResponse.next()
+    : NextResponse.redirect(new URL('/rate-limit-exceeded'), request.url);
+}
+```
+
+</Callout>
+
+<Separator className="mt-8" />
+
+## Conclusion
+
+Rate limiting API Routes are important tp safeguard your application from abuse and implmenting it in efficient way is crucial. There are multiple things to consider while implementing rate limiter like **Token Bucket Algorithm**, **Leaky Bucket Algorithm**, **Sliding Window Algorithm** etc. You can choose the one which suits your application requirements.
+
+Recently I got attacked on my this site for **Comment** section where a person was posting spam comments. I had to implement rate limiter to prevent the spam comments. I used **Sliding Window Algorithm** to limit the number of comments a user can post in a certain time window. I used [**@vercel/kv**](https://vercel.com/docs/storage/vercel-kv) to store the data in **KV** store.
+
+I hope this blog helps you to understand how to implement rate limiting for Next.JS API routes. If you have any questions or feedback, feel free to leave a comment below. Happy coding! 🚀
