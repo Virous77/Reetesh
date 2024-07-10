@@ -98,7 +98,7 @@ export default makeSource({
       [
         rehypePrettyCode as any,
         {
-          theme: 'one-dark-pro',
+          theme: 'andromeeda',
         },
       ],
       [

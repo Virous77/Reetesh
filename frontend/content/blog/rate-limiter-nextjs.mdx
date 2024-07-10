@@ -275,7 +275,7 @@ export default async function middleware(req) {
 
 ## Conclusion
 
-Rate limiting API Routes are important tp safeguard your application from abuse and implmenting it in efficient way is crucial. There are multiple things to consider while implementing rate limiter like **Token Bucket Algorithm**, **Leaky Bucket Algorithm**, **Sliding Window Algorithm** etc. You can choose the one which suits your application requirements.
+Rate limiting API Routes are important to safeguard your application from abuse and implmenting it in efficient way is crucial. There are multiple things to consider while implementing rate limiter like **Token Bucket Algorithm**, **Leaky Bucket Algorithm**, **Sliding Window Algorithm** etc. You can choose the one which suits your application requirements.
 
 Recently I got attacked on my this site for **Comment** section where a person was posting spam comments. I had to implement rate limiter to prevent the spam comments. I used **Sliding Window Algorithm** to limit the number of comments a user can post in a certain time window. I used [**@vercel/kv**](https://vercel.com/docs/storage/vercel-kv) to store the data in **KV** store.
 
