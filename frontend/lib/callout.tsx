@@ -4,6 +4,7 @@ type TCallout = {
   emoji: string;
   children: React.ReactNode;
   isRegular?: boolean;
+  paddingB?: string;
 };
 
 const Callout: React.FC<TCallout> = (props) => {
@@ -22,7 +23,7 @@ const Callout: React.FC<TCallout> = (props) => {
       </span>
       <div
         className="w-full"
-        style={{ paddingLeft: '12px', paddingTop: '2px' }}
+        style={{ padding: '10px', paddingBottom: props.paddingB || '0px' }}
       >
         {props.children}
       </div>

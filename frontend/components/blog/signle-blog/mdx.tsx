@@ -18,6 +18,7 @@ import { ArrowRight } from 'lucide-react';
 import Summary, { LI } from '@/lib/summary';
 import Youtube from '@/lib/youtube';
 import StackBlitzProject from '@/lib/stackblitz-project';
+import RateLimiter from '@/components/contentd/rate-limiter';
 
 const components = {
   h1: ({ className, ...props }: any) => (
@@ -162,7 +163,9 @@ const components = {
   LI,
   Youtube,
   StackBlitzProject,
+  RateLimiter,
 };
+
 
 interface MdxProps {
   code: string;
