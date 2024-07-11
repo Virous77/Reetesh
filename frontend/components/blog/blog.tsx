@@ -43,7 +43,7 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
           ></ins>
         </GoogleAdUnit> */}
         <>
-          {blogs.map((blog, idx) => (
+          {blogs.map((blog) => (
             <li key={blog._id} className="group relative list-none">
               <Card className="h-full w-full">
                 <CardContent className="p-3">

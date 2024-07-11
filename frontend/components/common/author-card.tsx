@@ -1,6 +1,7 @@
 import Author from './author';
-import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader } from '../ui/card';
+import MainCard from '../ui/card-border';
+import ButtonGradient from '../ui/gradiant-button';
 
 type TMessage = {
   message: string;
@@ -8,27 +9,33 @@ type TMessage = {
 
 const AuthorCard: React.FC<TMessage> = ({ message }) => {
   return (
-    <Card className="mb-6 max-w-[440px] border bg-transparent from-[#111111] to-[#1f1f1f] p-2 pb-3 dark:border-none md:mb-0 dark:md:bg-gradient-to-r">
-      <CardHeader className="justify-between p-3">
-        <div className="flex items-center justify-between">
-          <Author />
+    <MainCard>
+      <Card className="max-w-[440px] border border-none bg-transparent from-[#111111] to-[#1f1f1f] p-2 px-0 pb-3 shadow-none dark:md:bg-gradient-to-r">
+        <CardHeader className="justify-between p-3">
+          <div className="flex items-center justify-between">
+            <Author />
 
-          <Button className="w-[80px] rounded-[30px] text-[13px]">
-            <a
-              href="https://twitter.com/imbitcoinb"
-              target="_blank"
-              referrerPolicy="no-referrer"
-              rel="noreferrer noopener"
+            <ButtonGradient
+              className="w-[80px] rounded-[30px] text-[13px]"
+              aria-label="Follow on Twitter"
+              title="Reetesh Kumar"
             >
-              Follow
-            </a>
-          </Button>
-        </div>
-      </CardHeader>
-      <CardContent className="mt-2 px-3 py-0 text-[13px] text-default">
-        <p>{message}</p>
-      </CardContent>
-    </Card>
+              <a
+                href="https://twitter.com/imbitcoinb"
+                target="_blank"
+                referrerPolicy="no-referrer"
+                rel="noreferrer noopener"
+              >
+                Follow
+              </a>
+            </ButtonGradient>
+          </div>
+        </CardHeader>
+        <CardContent className="mt-2 px-3 py-0 text-[13px] text-default">
+          <p>{message}</p>
+        </CardContent>
+      </Card>
+    </MainCard>
   );
 };
 

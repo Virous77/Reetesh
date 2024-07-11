@@ -3,7 +3,7 @@ import AuthorImage from './author-image';
 
 const Author = () => {
   return (
-    <div className="flex gap-5">
+    <div className="flex gap-3">
       <Root.Link aria-label="home">
         <AuthorImage />
       </Root.Link>
