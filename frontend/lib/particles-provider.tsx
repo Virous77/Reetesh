@@ -15,7 +15,7 @@ const ParticlesProvider = () => {
   return (
     <Particles
       className="absolute inset-0"
-      quantity={80}
+      quantity={50}
       ease={50}
       color={color}
     />

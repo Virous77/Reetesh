@@ -6,6 +6,7 @@ import { formateDate } from '@/utils/utils';
 import CommandSearch from '../common/command-search';
 import { BlogDetails, Projects, Root } from '@/routes';
 import GoogleAdUnit from '../google-ads';
+import BlogBorder from './blog-border';
 
 type TBlog = {
   blogs: Post[];
@@ -45,37 +46,39 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
         <>
           {blogs.map((blog) => (
             <li key={blog._id} className="group relative list-none">
-              <Card className="h-full w-full">
-                <CardContent className="p-3">
-                  <CardImage src={blog.blogImage} title={blog.title} />
+              <BlogBorder>
+                <Card className="h-full w-full border-none shadow">
+                  <CardContent className="border-none p-3 shadow">
+                    <CardImage src={blog.blogImage} title={blog.title} />
 
-                  <div className="mt-3 flex items-center gap-3">
-                    <span className="whitespace-nowrap font-mono text-[13px]">
-                      {formateDate(blog.date)}
-                    </span>
-                    <span className="h-[2px] w-full bg-default"></span>
-                  </div>
+                    <div className="mt-3 flex items-center gap-3">
+                      <span className="whitespace-nowrap font-mono text-[13px]">
+                        {formateDate(blog.date)}
+                      </span>
+                      <span className="h-[2px] w-full bg-default"></span>
+                    </div>
 
-                  <h1 className="my-5 truncate text-[20px] leading-[1.3]">
-                    {blog.title}
-                  </h1>
-                  <p className="-mt-2 text-[14px] tracking-wider text-muted-foreground">
-                    {blog.about}
-                  </p>
+                    <h1 className="my-5 truncate text-[20px] leading-[1.3]">
+                      {blog.title}
+                    </h1>
+                    <p className="-mt-2 text-[14px] tracking-wider text-muted-foreground">
+                      {blog.about}
+                    </p>
 
-                  <div className="mt-3 flex items-center gap-1">
-                    <span className="h-[2px] w-full bg-default"></span>
-                    <BlogDetails.Link id={blog.slugAsParams}>
-                      <p className="relative">
-                        <span className="relative z-10 flex cursor-pointer items-center gap-2 whitespace-nowrap px-2 text-[13px] font-bold transition-all group-hover:text-background">
-                          Read Full Post <MoveRight />
-                        </span>
-                        <span className="absolute bottom-0 left-0 z-0 h-0 w-full rounded bg-foreground transition-all group-hover:h-full" />
-                      </p>
-                    </BlogDetails.Link>
-                  </div>
-                </CardContent>
-              </Card>
+                    <div className="mt-3 flex items-center gap-1">
+                      <span className="h-[2px] w-full bg-default"></span>
+                      <BlogDetails.Link id={blog.slugAsParams}>
+                        <p className="relative">
+                          <span className="relative z-10 flex cursor-pointer items-center gap-2 whitespace-nowrap px-2 text-[13px] font-bold transition-all group-hover:text-background">
+                            Read Full Post <MoveRight />
+                          </span>
+                          <span className="absolute bottom-0 left-0 z-0 h-0 w-full rounded bg-foreground transition-all group-hover:h-full" />
+                        </p>
+                      </BlogDetails.Link>
+                    </div>
+                  </CardContent>
+                </Card>
+              </BlogBorder>
             </li>
           ))}
         </>

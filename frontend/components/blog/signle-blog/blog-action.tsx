@@ -77,6 +77,8 @@ const BlogAction = ({
           onClick={handleLike}
           disabled={isPending}
           className="flex w-[60px] items-center gap-2"
+          title="Like this post"
+          aria-label="Like this post"
         >
           <ThumbsUp size={20} />
           <span className="text-base">{optimisticLike}</span>
@@ -84,7 +86,12 @@ const BlogAction = ({
       </ToolTipComp>
 
       <ToolTipComp name="Comment">
-        <Button onClick={scrollToTarget} size="icon">
+        <Button
+          onClick={scrollToTarget}
+          size="icon"
+          title="Comment on this post"
+          aria-label="Comment on this post"
+        >
           <MessageSquareQuote size={20} />
         </Button>
       </ToolTipComp>

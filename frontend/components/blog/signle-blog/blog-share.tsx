@@ -86,6 +86,8 @@ const A: React.FC<{ children: ReactNode; url: string; name: string }> = ({
         target="_blank"
         rel="noopener noreferrer"
         className="relative flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full hover:bg-accent"
+        title={name}
+        aria-label={name}
       >
         {children}
       </a>
