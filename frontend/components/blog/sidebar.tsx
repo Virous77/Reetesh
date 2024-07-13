@@ -1,7 +1,6 @@
 import CommonTab from '../common/common-tab';
 import { Locate } from 'lucide-react';
 import AuthorCard from '../common/author-card';
-import GoogleAdUnit from '../google-ads';
 
 const Sidebar = () => {
   const Links = [

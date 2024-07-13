@@ -24,7 +24,7 @@ const components = {
   h1: ({ className, ...props }: any) => (
     <h1
       className={cn(
-        'heading mt-2 scroll-m-20 text-4xl font-bold tracking-tight',
+        'heading mt-2 scroll-m-[10px] text-4xl font-bold tracking-tight',
         className
       )}
       {...props}
@@ -33,7 +33,7 @@ const components = {
   h2: ({ className, ...props }: any) => (
     <h2
       className={cn(
-        'heading mt-10 scroll-m-20 pb-1 text-[26px] font-semibold tracking-tight first:mt-0',
+        'heading mt-10 scroll-m-[10px] pb-1 text-[26px] font-semibold tracking-tight first:mt-0',
         className
       )}
       {...props}
@@ -42,7 +42,7 @@ const components = {
   h3: ({ className, ...props }: any) => (
     <h3
       className={cn(
-        'heading mt-8 scroll-m-20 text-[22px] font-semibold tracking-tight',
+        'heading mt-8 scroll-m-[10px] text-[22px] font-semibold tracking-tight',
         className
       )}
       {...props}
@@ -51,7 +51,7 @@ const components = {
   h4: ({ className, ...props }: any) => (
     <h4
       className={cn(
-        'heading mt-8 scroll-m-20 text-[18px] font-semibold tracking-tight',
+        'heading mt-8 scroll-m-[10px] text-[18px] font-semibold tracking-tight',
         className
       )}
       {...props}
@@ -60,7 +60,7 @@ const components = {
   h5: ({ className, ...props }: any) => (
     <h5
       className={cn(
-        'heading mt-8 scroll-m-20 text-lg font-semibold tracking-tight',
+        'heading mt-8 scroll-m-[10px] text-lg font-semibold tracking-tight',
         className
       )}
       {...props}
@@ -69,7 +69,7 @@ const components = {
   h6: ({ className, ...props }: any) => (
     <h6
       className={cn(
-        'heading mt-8 scroll-m-20 text-base font-semibold tracking-tight',
+        'heading mt-8 scroll-m-[10px] text-base font-semibold tracking-tight',
         className
       )}
       {...props}
