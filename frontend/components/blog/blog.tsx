@@ -14,8 +14,8 @@ type TBlog = {
 
 const Blog: React.FC<TBlog> = ({ blogs }) => {
   return (
-    <section className="body relative h-fit p-2 md:h-full md:p-0 lg:overflow-scroll">
-      <div className="sticky top-0 z-50 flex items-center justify-between bg-background p-1 pl-2 md:p-0 md:pl-2">
+    <section className="body relative h-fit p-2 pt-0 md:h-full md:p-0 lg:overflow-scroll">
+      <header className="sticky top-0 z-50 flex items-center justify-between bg-background p-1 pl-2 pt-2 md:p-0 md:pl-2">
         <h1 className="my-2 hidden text-[18px] md:my-5 md:block md:text-[25px]">
           From My Blogs
         </h1>
@@ -30,7 +30,7 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
             <Home size={22} />
           </Root.Link>
         </div>
-      </div>
+      </header>
 
       <ul className="mt-3 grid grid-cols-1 items-stretch gap-4 pb-3 md:mt-0 md:grid-cols-2">
         {/* <GoogleAdUnit>
