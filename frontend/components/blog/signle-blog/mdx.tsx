@@ -166,7 +166,6 @@ const components = {
   RateLimiter,
 };
 
-
 interface MdxProps {
   code: string;
 }

@@ -99,8 +99,8 @@ const Privacy = () => {
             Our services may contain links to other websites, applications, and
             online services. If you choose to visit a third-party service or
             click on another third-party link, you will be directed to that
-            third party's website, application, or online service. The fact that
-            we link to a website or content is not an endorsement,
+            third party&apos;s website, application, or online service. The fact
+            that we link to a website or content is not an endorsement,
             authorization, or representation of our affiliation with that third
             party, nor is it an endorsement of their privacy or information
             security policies or practices. We do not exercise control over

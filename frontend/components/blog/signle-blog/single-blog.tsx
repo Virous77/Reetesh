@@ -22,7 +22,7 @@ type TSingleBlog = {
 const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
   return (
     <React.Fragment>
-      <div className="sticky left-0 top-0 z-10 mb-3 flex w-full items-center justify-between p-4 backdrop-blur dark:bg-[#111111]/60 md:hidden">
+      <header className="sticky left-0 top-0 z-10 mb-3 flex w-full items-center justify-between p-4 backdrop-blur dark:bg-[#111111]/60 md:hidden">
         <Author />
 
         <div className="flex items-center gap-3">
@@ -31,22 +31,23 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
           </Blogs.Link>
           <Social styles="" />
         </div>
-      </div>
+      </header>
 
       <div style={{ maxWidth: '750px', margin: 'auto' }}>
-        <section className="mb-8 mt-4 w-full">
-          <div className="mb-3 hidden items-center justify-between md:flex">
-            <Author />
+        <header className="mb-3 mt-4 hidden items-center justify-between md:flex">
+          <Author />
 
-            <div className="flex items-center gap-3">
-              <ToolTipComp name="All Blogs">
-                <Blogs.Link aria-label="Visit all Blogs">
-                  <Newspaper />
-                </Blogs.Link>
-              </ToolTipComp>
-              <Social styles="" />
-            </div>
+          <div className="flex items-center gap-3">
+            <ToolTipComp name="All Blogs">
+              <Blogs.Link aria-label="Visit all Blogs">
+                <Newspaper />
+              </Blogs.Link>
+            </ToolTipComp>
+            <Social styles="" />
           </div>
+        </header>
+
+        <section className="mb-8 w-full">
           <h1 className="m-auto -mb-1 mt-8 w-[90%] text-center text-[26px] font-bold leading-snug md:text-[32px]">
             {blog.title}
           </h1>

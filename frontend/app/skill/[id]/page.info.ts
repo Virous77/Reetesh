@@ -1,9 +1,8 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const Route = {
-  name: "SkillId",
+  name: 'SkillId',
   params: z.object({
     id: z.string(),
-  })
+  }),
 };
-
