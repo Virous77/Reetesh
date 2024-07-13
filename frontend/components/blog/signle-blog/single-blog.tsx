@@ -49,18 +49,18 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
         </BlogHeader>
 
         <section className="mb-8 w-full">
-          <h1 className="m-auto -mb-1 mt-8 w-[90%] text-center text-[26px] font-bold leading-snug md:text-[32px]">
+          <h1 className="m-auto -mb-1 mt-8 w-[90%] text-center text-[1.625rem] font-bold leading-snug md:text-[2rem]">
             {blog.title}
           </h1>
           <div className="m-2 mt-4 rounded border p-2 md:m-0 md:mt-[14px]">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <p className="text-small flex items-center justify-center gap-2 text-[14px] text-default md:text-base">
+                <p className="text-small flex items-center justify-center gap-2 text-[0.875rem] text-default md:text-base">
                   <CalendarDays size={20} /> {formateDate(blog.date)}
                 </p>
                 <Views slug={blog.slugAsParams} />
               </div>
-              <span className="flex items-center gap-2 text-[14px] capitalize text-default md:text-base">
+              <span className="flex items-center gap-2 text-[0.875rem] capitalize text-default md:text-base">
                 <BookOpenText size={20} />
                 {blog.readingTime.text}
               </span>

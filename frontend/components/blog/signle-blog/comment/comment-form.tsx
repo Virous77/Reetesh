@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Button } from '@/components/ui/button';
 import { FormEvent } from 'react';
 import { Textarea } from '@/components/ui/textarea';

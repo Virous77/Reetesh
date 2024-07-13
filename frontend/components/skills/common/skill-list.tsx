@@ -46,7 +46,7 @@ const SkillList: React.FC<TSkillList> = ({ skills, description, name }) => {
             </ul>
 
             {name === 'Others' && (
-              <span className="absolute -bottom-[12px] right-0 text-end text-[11px] text-default">
+              <span className="absolute -bottom-[12px] right-0 text-end text-xs text-default">
                 Click on Icon for more info*
               </span>
             )}

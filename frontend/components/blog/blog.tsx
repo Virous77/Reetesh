@@ -5,7 +5,6 @@ import { Post } from '@/.contentlayer/generated';
 import { formateDate } from '@/utils/utils';
 import CommandSearch from '../common/command-search';
 import { BlogDetails, Projects, Root } from '@/routes';
-import GoogleAdUnit from '../google-ads';
 import BlogBorder from './blog-border';
 
 type TBlog = {
@@ -16,7 +15,7 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
   return (
     <section className="body relative h-fit p-2 pt-0 md:h-full md:p-0 lg:overflow-scroll">
       <header className="sticky top-0 z-50 flex items-center justify-between bg-background p-1 pl-2 pt-2 md:p-0 md:pl-2">
-        <h1 className="my-2 hidden text-[18px] md:my-5 md:block md:text-[25px]">
+        <h1 className="my-2 hidden text-[1.125rem] md:my-5 md:block md:text-[1.563rem]">
           From My Blogs
         </h1>
         <CommandSearch blogs={blogs} />
@@ -52,16 +51,16 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
                     <CardImage src={blog.blogImage} title={blog.title} />
 
                     <div className="mt-3 flex items-center gap-3">
-                      <span className="whitespace-nowrap font-mono text-[13px]">
+                      <span className="whitespace-nowrap font-mono text-[0.813rem]">
                         {formateDate(blog.date)}
                       </span>
                       <span className="h-[2px] w-full bg-default"></span>
                     </div>
 
-                    <h1 className="my-5 truncate text-[20px] leading-[1.3]">
+                    <h1 className="my-5 truncate text-[1.25rem] leading-[1.3]">
                       {blog.title}
                     </h1>
-                    <p className="-mt-2 text-[14px] tracking-wider text-muted-foreground">
+                    <p className="-mt-2 text-[0.875rem] tracking-wider text-muted-foreground">
                       {blog.about}
                     </p>
 
@@ -69,7 +68,7 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
                       <span className="h-[2px] w-full bg-default"></span>
                       <BlogDetails.Link id={blog.slugAsParams}>
                         <p className="relative">
-                          <span className="relative z-10 flex cursor-pointer items-center gap-2 whitespace-nowrap px-2 text-[13px] font-bold transition-all group-hover:text-background">
+                          <span className="relative z-10 flex cursor-pointer items-center gap-2 whitespace-nowrap px-2 text-[0.813rem] font-bold transition-all group-hover:text-background">
                             Read Full Post <MoveRight />
                           </span>
                           <span className="absolute bottom-0 left-0 z-0 h-0 w-full rounded bg-foreground transition-all group-hover:h-full" />

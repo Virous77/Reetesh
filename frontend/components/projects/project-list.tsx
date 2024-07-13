@@ -23,7 +23,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
             <CardContent className="p-3">
               <>
                 <h3
-                  className="project-heading mb-1 w-fit font-mono text-base text-heading md:text-[18px]"
+                  className="project-heading mb-1 w-fit font-mono text-base text-heading md:text-[1.125rem]"
                   id={slugify(project.title)}
                 >
                   <Link
@@ -35,12 +35,12 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
                   </Link>
                 </h3>
                 {project?.develop && (
-                  <span className="mb-1 flex items-center gap-2 text-[13px] font-bold uppercase text-default">
+                  <span className="mb-1 flex items-center gap-2 text-[0.813rem] font-bold uppercase text-default">
                     <CalendarDays size={17} />
                     {project.develop}
                   </span>
                 )}
-                <span className="mb-3 mt-4 block whitespace-pre-wrap text-[14px] leading-5 text-default">
+                <span className="mb-3 mt-4 block whitespace-pre-wrap text-[0.875rem] leading-5 text-default">
                   {parse(project.desc)}
                 </span>
 
@@ -58,7 +58,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
                   {project.tags?.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-md bg-muted px-2 py-1 text-[12px] capitalize"
+                      className="rounded-md bg-muted px-2 py-1 text-xs capitalize"
                     >
                       {tag}
                     </span>
@@ -68,7 +68,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
                 <div className="mt-4 flex items-center justify-center gap-5">
                   <a
                     href={project.projectLink}
-                    className="flex items-center gap-2 text-[13px] font-bold text-default underline underline-offset-4 hover:text-defaultMax"
+                    className="flex items-center gap-2 text-[0.813rem] font-bold text-default underline underline-offset-4 hover:text-defaultMax"
                     target="_blank"
                     referrerPolicy="no-referrer"
                     rel="noreferrer noopener"
@@ -78,7 +78,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
 
                   <a
                     href={project.codeLink}
-                    className="flex items-center gap-2 text-[13px] font-bold text-default underline underline-offset-4 hover:text-defaultMax"
+                    className="flex items-center gap-2 text-[0.813rem] font-bold text-default underline underline-offset-4 hover:text-defaultMax"
                     target="_blank"
                     referrerPolicy="no-referrer"
                     rel="noreferrer noopener"
@@ -94,7 +94,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
       ))}
       {isActive && (
         <Projects.Link
-          className="flex cursor-pointer items-center gap-2 text-[14px] text-primary"
+          className="flex cursor-pointer items-center gap-2 text-[0.875rem] text-primary"
           aria-label="Visit all Projects"
         >
           Visit all Projects <MoveRight size={19} />

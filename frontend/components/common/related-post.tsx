@@ -28,7 +28,7 @@ const RelatedPost = ({ relatedBlogs }: { relatedBlogs: Post[] }) => {
                   className="rounded-t-[25px]"
                   style={{ width: '100%', height: '220px' }}
                 />
-                <h1 className="mt-2 p-2 pt-0 text-[18px] font-[500]">
+                <h1 className="mt-2 p-2 pt-0 text-[1.125rem] font-[500]">
                   {post.title}
                 </h1>
               </BlogDetails.Link>

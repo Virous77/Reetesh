@@ -18,7 +18,7 @@ const Tab = () => {
               }
               referrerPolicy={tab === 'Resume' ? 'no-referrer' : 'origin'}
               rel={tab === 'Resume' ? 'noopener noreferrer' : ''}
-              className="flex w-fit cursor-pointer items-center gap-3 text-[16px] leading-[1.1]"
+              className="flex w-fit cursor-pointer items-center gap-3 text-base leading-[1.1]"
               aria-label={
                 tab === 'Resume' ? 'Reetesh Resume' : 'Visit all Projects'
               }

@@ -28,7 +28,7 @@ export const Pre = ({ children, ...props }: any) => {
           right: '-1px',
         }}
       >
-        <span className="mr-2 flex items-center gap-2 font-mono text-[13px] uppercase text-primary">
+        <span className="mr-2 flex items-center gap-2 font-mono text-xs uppercase text-primary">
           <Icon name={props['data-language']?.toLowerCase()} />
           {props['data-language']}
         </span>

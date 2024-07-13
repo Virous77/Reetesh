@@ -27,7 +27,7 @@ const GithubStreak = async () => {
           <div className="text-4xl font-bold">
             {data?.stats.totalContributions || '0000'}
           </div>
-          <div className="whitespace-nowrap text-[13px] md:text-sm">
+          <div className="whitespace-nowrap text-xs md:text-sm">
             Total Contributions
           </div>
           <div className="mt-1 flex flex-col items-center text-xs text-muted-foreground">
@@ -45,7 +45,7 @@ const GithubStreak = async () => {
           <div className="text-4xl font-bold">
             {data?.stats.currentStreak.length || 0}
           </div>
-          <div className="whitespace-nowrap text-[13px] font-bold md:text-sm">
+          <div className="whitespace-nowrap text-xs font-bold md:text-sm">
             Current Streak
           </div>
           {data.stats.currentStreak.length > 0 && (
@@ -70,7 +70,7 @@ const GithubStreak = async () => {
           <div className="text-4xl font-bold">
             {data?.stats.longestStreak.length || 92}
           </div>
-          <div className="whitespace-nowrap text-[13px] md:text-sm">
+          <div className="whitespace-nowrap text-xs md:text-sm">
             Longest Streak
           </div>
           <div className="mt-1 flex flex-col items-center text-xs text-muted-foreground">

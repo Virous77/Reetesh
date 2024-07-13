@@ -26,7 +26,9 @@ const Advertise: React.FC<TAdvertise> = ({ title }) => {
       <div className="flex w-full flex-col items-center justify-between gap-3 md:flex-row md:items-end">
         <div>
           <h1 className="text-center text-xl capitalize">{title}</h1>
-          <p className="whitespace-normal text-center text-[14px]">{about}</p>
+          <p className="whitespace-normal text-center text-[0.875rem]">
+            {about}
+          </p>
           <BlogDetails.Link
             className="inline-block w-full text-center"
             id={slugAsParams}
