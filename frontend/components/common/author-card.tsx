@@ -16,7 +16,7 @@ const AuthorCard: React.FC<TMessage> = ({ message }) => {
             <Author />
 
             <ButtonGradient
-              className="w-[80px] rounded-[30px] text-[13px]"
+              className="w-[80px] rounded-[30px] text-[0.813rem]"
               aria-label="Follow on Twitter"
               title="Reetesh Kumar"
             >
@@ -31,7 +31,7 @@ const AuthorCard: React.FC<TMessage> = ({ message }) => {
             </ButtonGradient>
           </div>
         </CardHeader>
-        <CardContent className="mt-2 px-3 py-0 text-[13px] text-default">
+        <CardContent className="mt-2 px-3 py-0 text-[0.813rem] text-default">
           <p>{message}</p>
         </CardContent>
       </Card>

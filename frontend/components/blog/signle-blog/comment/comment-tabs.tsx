@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import React, { useState } from 'react';
 import Preview from './preview';
@@ -19,14 +20,14 @@ const CommentTabs: React.FC<TCommentTabs> = ({
     <Tabs defaultValue="comment" className="w-full">
       <div className="flex items-end justify-between md:w-[85%]">
         <TabsList className="grid w-fit grid-cols-2">
-          <TabsTrigger value="comment" className="text-[13px]">
+          <TabsTrigger value="comment" className="text-[0.813rem]">
             Comment
           </TabsTrigger>
-          <TabsTrigger value="preview" className="text-[13px]">
+          <TabsTrigger value="preview" className="text-[0.813rem]">
             Preview
           </TabsTrigger>
         </TabsList>
-        <span className="flex items-center text-[10px] md:text-xs">
+        <span className="flex items-center text-[0.625rem] md:text-xs">
           <SquareM size={16} />
           arkdown is supported.*
         </span>

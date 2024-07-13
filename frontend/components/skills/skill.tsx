@@ -17,7 +17,7 @@ const Skill: React.FC<TSkills> = ({ skills, componentType }) => {
       {componentType === 'main' && (
         <section className="m-auto flex items-center justify-center p-4 md:w-[60%] md:p-0">
           <div className="relative">
-            <h2 className="text-center text-[25px] tracking-widest">
+            <h2 className="text-center text-[1.563rem] tracking-widest">
               My Skills
             </h2>
 

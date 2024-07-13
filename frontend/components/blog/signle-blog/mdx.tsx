@@ -33,7 +33,7 @@ const components = {
   h2: ({ className, ...props }: any) => (
     <h2
       className={cn(
-        'heading mt-10 scroll-m-[10px] pb-1 text-[26px] font-semibold tracking-tight first:mt-0',
+        'heading mt-10 scroll-m-[10px] pb-1 text-[1.625rem] font-semibold tracking-tight first:mt-0',
         className
       )}
       {...props}
@@ -42,7 +42,7 @@ const components = {
   h3: ({ className, ...props }: any) => (
     <h3
       className={cn(
-        'heading mt-8 scroll-m-[10px] text-[22px] font-semibold tracking-tight',
+        'heading mt-8 scroll-m-[10px] text-[1.375rem] font-semibold tracking-tight',
         className
       )}
       {...props}
@@ -51,7 +51,7 @@ const components = {
   h4: ({ className, ...props }: any) => (
     <h4
       className={cn(
-        'heading mt-8 scroll-m-[10px] text-[18px] font-semibold tracking-tight',
+        'heading mt-8 scroll-m-[10px] text-[1.125rem] font-semibold tracking-tight',
         className
       )}
       {...props}

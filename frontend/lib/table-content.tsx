@@ -60,7 +60,7 @@ const TableContent = ({ title }: { title: string }) => {
                 <Link
                   href={`#${slugify(heading.title)}`}
                   style={{ textDecoration: 'none' }}
-                  className="text-[15px] text-primary"
+                  className="text-base text-primary"
                 >
                   {heading.title}
                 </Link>

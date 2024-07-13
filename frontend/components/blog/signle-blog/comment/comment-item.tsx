@@ -95,7 +95,7 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
       className={`mt-2 ${comment.children.length > 0 ? 'border-l-2' : 'border-none'} p-2 pl-3 pr-0`}
     >
       {optimisticComment.isDeleted ? (
-        <div className="flex items-center gap-2 rounded-md bg-accent p-2 text-[15px] text-default">
+        <div className="flex items-center gap-2 rounded-md bg-accent p-2 text-[0.938rem] text-default">
           <Info size={18} />
           <p>Comment has been deleted</p>
         </div>
@@ -106,7 +106,7 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
         >
           {!adminID.includes(optimisticComment.userId.toLowerCase()) ? (
             <div className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-gray-200">
-              <span className="text-[18px] font-bold text-heading">
+              <span className="text-[1.125rem] font-bold text-heading">
                 {optimisticComment.userId.slice(0, 2)}
               </span>
             </div>
@@ -136,7 +136,7 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
                   reply={reply}
                 />
               )}
-              <p className="text-[12px] text-default">
+              <p className="text-xs text-default">
                 {formateDate(optimisticComment.createdAt)}
               </p>
             </div>

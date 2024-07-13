@@ -49,7 +49,7 @@ const BlogMain = ({ blogId, url, title }: TBlogAction) => {
 
         <A url={`https://wa.me/?text=${url}`} name="Whatsapp">
           <MessageCircle />
-          <p className="absolute left-[13.5px] top-[15px] flex h-3 w-3 items-center justify-center text-[7px]">
+          <p className="absolute left-[13.5px] top-[15px] flex h-3 w-3 items-center justify-center text-[0.44rem]">
             W
           </p>
         </A>

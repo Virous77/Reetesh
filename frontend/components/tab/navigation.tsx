@@ -5,13 +5,13 @@ const Navigation = () => {
   return (
     <div className="mt-5 flex items-center gap-7">
       <Blogs.Link aria-label="Visit all Blogs">
-        <span className="flex cursor-pointer items-center gap-2 font-mono text-[13px]">
+        <span className="flex cursor-pointer items-center gap-2 font-mono text-[0.813rem]">
           <FileText size={17} /> Blogs
         </span>
       </Blogs.Link>
 
       <Skills.Link>
-        <span className="flex cursor-pointer items-center gap-2 font-mono text-[13px]">
+        <span className="flex cursor-pointer items-center gap-2 font-mono text-[0.813rem]">
           <Target size={17} /> Skills
         </span>
       </Skills.Link>
