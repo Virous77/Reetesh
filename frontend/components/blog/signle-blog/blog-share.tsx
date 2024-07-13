@@ -3,6 +3,7 @@ import { Linkedin, Facebook, MessageCircle } from 'lucide-react';
 import BlogAction from './blog-action';
 import { XIcon } from '@/utils/icons/x';
 import { ToolTipComp } from '@/components/ui/tooltip';
+import { BlogShareMotion } from './blog-header';
 
 type TBlogAction = {
   title: string;
@@ -12,28 +13,19 @@ type TBlogAction = {
 
 const BlogShare: React.FC<TBlogAction> = ({ title, url, blogId }) => {
   return (
-    <section className="fixed left-5 top-[90px] z-10 h-fit w-fit rounded-lg bg-background p-3 max-[1226px]:hidden">
-      <BlogMain title={title} url={url} blogId={blogId} isMobile={false} />
-    </section>
+    <BlogShareMotion>
+      <BlogMain title={title} url={url} blogId={blogId} />
+    </BlogShareMotion>
   );
 };
 
 export default BlogShare;
 
-type TBlogMain = TBlogAction & {
-  isMobile: boolean;
-};
-
-const BlogMain = ({ blogId, url, title, isMobile }: TBlogMain) => {
+const BlogMain = ({ blogId, url, title }: TBlogAction) => {
   return (
-    <div
-      className={`${isMobile ? 'flex w-full items-center justify-between' : 'flex-col'} gap-2`}
-    >
-      <BlogAction blogId={blogId} isMobile={isMobile} />
-      {!isMobile && <h2 className="pl-2 text-xl">Share Post</h2>}
-      <div
-        className={`${isMobile ? 'mt-0' : 'mt-1'} flex flex-wrap items-center gap-1 md:gap-2`}
-      >
+    <div className="flex w-full items-center gap-2">
+      <BlogAction blogId={blogId} />
+      <div className="flex items-center gap-2">
         <A
           url={`https://www.facebook.com/sharer/sharer.php?u=${url}`}
           name="Facebook"
@@ -66,14 +58,6 @@ const BlogMain = ({ blogId, url, title, isMobile }: TBlogMain) => {
   );
 };
 
-export const BlogShareMobile = ({ blogId, url, title }: TBlogAction) => {
-  return (
-    <section className="mt-4 min-[1226px]:hidden">
-      <BlogMain blogId={blogId} url={url} title={title} isMobile={true} />
-    </section>
-  );
-};
-
 const A: React.FC<{ children: ReactNode; url: string; name: string }> = ({
   children,
   url,
@@ -85,7 +69,7 @@ const A: React.FC<{ children: ReactNode; url: string; name: string }> = ({
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="relative flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full hover:bg-accent"
+        className="relative flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
         title={name}
         aria-label={name}
       >

@@ -9,13 +9,7 @@ import { getLocalData } from '@/utils/utils';
 import { ToolTipComp } from '@/components/ui/tooltip';
 import { startTransition, useOptimistic } from 'react';
 
-const BlogAction = ({
-  blogId,
-  isMobile,
-}: {
-  blogId: string;
-  isMobile: boolean;
-}) => {
+const BlogAction = ({ blogId }: { blogId: string }) => {
   const { data, refetch } = useQuery({
     queryKey: [`like-${blogId}`],
     queryFn: async () => {
@@ -68,15 +62,13 @@ const BlogAction = ({
   };
 
   return (
-    <div
-      className={`${isMobile ? 'mb-0 pl-0' : 'mb-4 pl-2'} flex items-center gap-3`}
-    >
+    <div className="mb-0 flex items-center gap-2 pl-0">
       <ToolTipComp name="Like">
         <Button
           size="icon"
           onClick={handleLike}
           disabled={isPending}
-          className="flex w-[60px] items-center gap-2"
+          className="flex w-[60px] items-center gap-2 rounded-full"
           title="Like this post"
           aria-label="Like this post"
         >
@@ -91,6 +83,7 @@ const BlogAction = ({
           size="icon"
           title="Comment on this post"
           aria-label="Comment on this post"
+          className="rounded-full"
         >
           <MessageSquareQuote size={20} />
         </Button>

@@ -3,12 +3,6 @@
 import React, { ReactNode, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
-declare global {
-  interface Window {
-    adsbygoogle?: any | any[];
-  }
-}
-
 const GoogleAdUnit = ({
   children,
   className,
@@ -19,7 +13,11 @@ const GoogleAdUnit = ({
   const pathname = usePathname();
   useEffect(() => {
     try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      if (typeof window === 'undefined') return;
+      const adsbygoogle = (window as any).adsbygoogle || [];
+      if (adsbygoogle && !adsbygoogle.loaded) {
+        adsbygoogle.push({});
+      }
     } catch (err) {
       console.error(err);
     }

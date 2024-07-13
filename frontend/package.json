@@ -33,6 +33,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "contentlayer": "^0.3.4",
+    "framer-motion": "^11.3.2",
     "html-react-parser": "^5.1.10",
     "lucide-react": "^0.402.0",
     "markdown-to-jsx": "^7.4.7",

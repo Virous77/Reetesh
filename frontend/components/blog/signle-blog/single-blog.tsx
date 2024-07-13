@@ -10,9 +10,10 @@ import ReadMore from './read-more';
 import RelatedPost from '@/components/common/related-post';
 import { formateDate } from '@/utils/utils';
 import { Blogs } from '@/routes';
-import BlogShare, { BlogShareMobile } from './blog-share';
+import BlogShare from './blog-share';
 import { ToolTipComp } from '@/components/ui/tooltip';
 import React from 'react';
+import BlogHeader from './blog-header';
 
 type TSingleBlog = {
   blog: Post;
@@ -22,7 +23,7 @@ type TSingleBlog = {
 const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
   return (
     <React.Fragment>
-      <header className="sticky left-0 top-0 z-10 mb-3 flex w-full items-center justify-between p-4 backdrop-blur dark:bg-[#111111]/60 md:hidden">
+      <BlogHeader className="sticky left-0 top-0 z-20 mb-3 flex w-full items-center justify-between p-4 backdrop-blur dark:bg-[#111111]/60 md:hidden">
         <Author />
 
         <div className="flex items-center gap-3">
@@ -31,10 +32,10 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
           </Blogs.Link>
           <Social styles="" />
         </div>
-      </header>
+      </BlogHeader>
 
       <div style={{ maxWidth: '750px', margin: 'auto' }}>
-        <header className="mb-3 mt-4 hidden items-center justify-between md:flex">
+        <BlogHeader className="sticky top-0 z-20 mb-3 hidden items-center justify-between bg-background py-3 md:flex">
           <Author />
 
           <div className="flex items-center gap-3">
@@ -45,13 +46,13 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
             </ToolTipComp>
             <Social styles="" />
           </div>
-        </header>
+        </BlogHeader>
 
         <section className="mb-8 w-full">
           <h1 className="m-auto -mb-1 mt-8 w-[90%] text-center text-[26px] font-bold leading-snug md:text-[32px]">
             {blog.title}
           </h1>
-          <div className="m-2 mt-3 rounded border p-2 md:m-0 md:mt-[14px]">
+          <div className="m-2 mt-4 rounded border p-2 md:m-0 md:mt-[14px]">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <p className="text-small flex items-center justify-center gap-2 text-[14px] text-default md:text-base">
@@ -64,12 +65,6 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
                 {blog.readingTime.text}
               </span>
             </div>
-
-            <BlogShareMobile
-              blogId={blog.slugAsParams}
-              title={blog.title}
-              url={`https://reetesh.in/blog/${blog.slug}`}
-            />
           </div>
         </section>
 
