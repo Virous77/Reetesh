@@ -3,6 +3,10 @@ import SingleBlog from '@/components/blog/signle-blog/single-blog';
 import { commonMetaData } from '@/utils/utils';
 import { redirect } from 'next/navigation';
 import { Merriweather } from 'next/font/google';
+import {
+  BlogPageReadTracker,
+  PageTransitionMotion,
+} from '@/components/common/motion';
 
 const merriweather = Merriweather({
   subsets: ['latin'],
@@ -51,9 +55,10 @@ const SingleBlogPage = async ({
   if (!blog) return redirect('/blogs');
 
   return (
-    <main className={`relative ${merriweather.className}`}>
+    <PageTransitionMotion className={`relative ${merriweather.className}`}>
+      <BlogPageReadTracker className="progress-bar" />
       <SingleBlog blog={blog} relatedBlogs={relatedBlogs.slice(0, 5)} />
-    </main>
+    </PageTransitionMotion>
   );
 };
 

@@ -17,7 +17,7 @@ export const generateMetadata = async () => {
 
 const Privacy = () => {
   return (
-    <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <main className="fade-in-out mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <section className="relative h-[360px]">
         <h1
           className="absolute bottom-[160px] z-10 whitespace-nowrap text-center text-3xl font-extrabold tracking-tight sm:text-4xl md:bottom-32"

@@ -1,6 +1,11 @@
 'use client';
 import { useRef, useState } from 'react';
-import { motion, useMotionValueEvent, useScroll } from 'framer-motion';
+import {
+  motion,
+  useMotionValueEvent,
+  useScroll,
+  useSpring,
+} from 'framer-motion';
 
 const useCommonHook = () => {
   const [isHidden, setIsHidden] = useState(false);
@@ -91,5 +96,35 @@ export const BlogShareMotion = ({
         ></button>
       )}
     </motion.section>
+  );
+};
+
+export const BlogPageReadTracker = ({ className }: { className: string }) => {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 40,
+    restDelta: 0.001,
+  });
+  return <motion.div className={className} style={{ scaleX }} />;
+};
+
+export const PageTransitionMotion = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className: string;
+}) => {
+  return (
+    <motion.main
+      className={className}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      {children}
+    </motion.main>
   );
 };
