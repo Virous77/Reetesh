@@ -3,7 +3,7 @@ import { Linkedin, Facebook, MessageCircle } from 'lucide-react';
 import BlogAction from './blog-action';
 import { XIcon } from '@/utils/icons/x';
 import { ToolTipComp } from '@/components/ui/tooltip';
-import { BlogShareMotion } from './blog-header';
+import { BlogShareMotion } from '@/components/common/motion';
 
 type TBlogAction = {
   title: string;

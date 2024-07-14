@@ -324,3 +324,27 @@ li code {
   padding: 1px 10px !important;
   width: fit-content !important;
 }
+
+.fade-in-out {
+  animation: fadeInOut 0.4s forwards;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.progress-bar {
+  background: hsl(var(--heading));
+  height: 3px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform-origin: 0%;
+  z-index: 50;
+}

@@ -13,7 +13,7 @@ import { Blogs } from '@/routes';
 import BlogShare from './blog-share';
 import { ToolTipComp } from '@/components/ui/tooltip';
 import React from 'react';
-import BlogHeader from './blog-header';
+import BlogHeader from '@/components/common/motion';
 
 type TSingleBlog = {
   blog: Post;
@@ -35,7 +35,7 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
       </BlogHeader>
 
       <div style={{ maxWidth: '750px', margin: 'auto' }}>
-        <BlogHeader className="sticky top-0 z-20 mb-3 hidden items-center justify-between bg-background py-3 md:flex">
+        <BlogHeader className="sticky top-0 z-20 mb-3 hidden items-center justify-between py-3 backdrop-blur dark:bg-[#111111]/60 md:flex">
           <Author />
 
           <div className="flex items-center gap-3">
