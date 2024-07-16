@@ -55,7 +55,9 @@ const SingleBlogPage = async ({
   if (!blog) return redirect('/blogs');
 
   return (
-    <PageTransitionMotion className={`relative ${merriweather.className}`}>
+    <PageTransitionMotion
+      className={`relative ${merriweather.className}`}
+    >
       <BlogPageReadTracker className="progress-bar" />
       <SingleBlog blog={blog} relatedBlogs={relatedBlogs.slice(0, 5)} />
     </PageTransitionMotion>
