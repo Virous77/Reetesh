@@ -45,3 +45,26 @@ export const ToolTipComp = ({
     </TooltipProvider>
   );
 };
+
+export const ToolTipLink = ({
+  children,
+  name,
+  duration = 400,
+}: {
+  children: React.ReactNode;
+  name: string | React.ReactNode;
+  duration?: number;
+}) => {
+  return (
+    <TooltipProvider delayDuration={duration}>
+      <Tooltip>
+        <TooltipTrigger asChild>{children}</TooltipTrigger>
+        <TooltipContent
+          className={cn('h-fit max-w-64 rounded-[20px] p-3 text-white shadow')}
+        >
+          {name}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+};
