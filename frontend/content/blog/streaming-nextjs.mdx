@@ -1,0 +1,105 @@
+---
+title: 'Streaming Components in Next.js using Suspense'
+date: 'July 16 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://8qbgmple95w84kds.public.blob.vercel-storage.com/streaming-nextjs-JfrhfGSffBJfCR2prGFNzUAYVQgKmp.png'
+about: ' Streaming in Next.js is a new feature that allows you to render your page incrementally. This means that you can start rendering your page without waiting for the entire page to be generated on the server. This can help improve the performance of your application by reducing the time it takes to load your page.'
+tags:
+  [
+    'streaming in nextjs',
+    'what is streaming in nextjs',
+    'how to stream in nextjs',
+    'how streaming works in nextjs',
+    'nextjs streaming',
+    'nextjs streaming ui',
+    'streamin using suspense in nextjs',
+  ]
+related: 'common'
+---
+
+<TableContent title="Streaming UI in Next.js using Suspense" />
+
+Streaming in Next.js is a new feature that allows you to render your page incrementally. This means that you can start rendering your page without waiting for the entire page to be generated on the server. This can help improve the performance of your application by reducing the time it takes to load your page.
+
+This feature is particularly useful for pages that have a lot of content or that take a long time to generate. By streaming your page, you can start rendering the parts of the page that are ready while the rest of the page is still being generated. This is also helpful for SEO as it allows search engines to start indexing your page sooner.
+
+## How streaming works?
+
+Streaming in Next.js works by breaking your page into smaller chunks and sending them to the client as they are ready. When we visit a page that is being streamed, Next.JS will send the initial HTML to the client, and then it will send the rest of the page in chunks as they are generated on the server.
+
+React treat components as a **chunk** of UI that can be rendered independently. **Suspense** is a React feature that allows you to suspend rendering while data is being fetched. This means you can render a fallback UI while waiting for the data to load. Suspense is a powerful API that can be used to improve the performance of your application if we use it correctly.
+
+## Streaming using Suspense in Next.js
+
+Streaming in Next.JS can be done using the `Suspense` component. The `Suspense` component allows you to suspend rendering while data is being fetched. This means you can start rendering your page without waiting for the entire page to be generated on the server.
+
+```tsx
+import { Suspense } from 'react';
+
+const HomePage = () => {
+  const Loading = () => <div>Loading...</div>;
+  return (
+    <main>
+      <Suspense fallback={<Loading />}>
+        <FastComponent />
+      </Suspense>
+
+      <Suspense fallback={<Loading />}>
+        <MidFastComponent />
+      </Suspense>
+
+      <Suspense fallback={<Loading />}>
+        <SlowComponent />
+      </Suspense>
+    </main>
+  );
+};
+
+const SlowComponent = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 4000));
+  return <div>Slow Component</div>;
+};
+
+// "use client"
+const FastComponent = () => {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <h1>Fast Component</h1>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+      <p>Count: {count}</p>
+    </div>
+  );
+};
+
+const MidFastComponent = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+  return <div>Mid Fast Component</div>;
+};
+```
+
+In the above example, we have three components: `FastComponent`, `MidFastComponent`, and `SlowComponent`. The `FastComponent` is rendered immediately, while the `MidFastComponent` and `SlowComponent` is rendered after 2 and 4 seconds respectively.
+
+Here, we have wrapped each component in a `Suspense` component and provided a `fallback` prop that will be rendered while the component is being fetched. This works beacuse as soon as page render Recat will start rendering the components and if any component is not ready it will show the fallback UI until the component is ready.
+
+> Wrapping each component in their own `Suspense` component is important because it allows each component to be fetched independently. This means that if one component is slow to fetch, it won't block the rendering of the other components.
+
+And this is pretty much how you can use `Suspense` to stream your page in Next.js. You need to wrap your components in `Suspense` and provide a `fallback` prop that will be rendered while the component is being fetched.
+
+<Callout emoji="" isRegular={true}>
+  I have already written a post on **React Suspense and ErrorBoundary**. There
+  are few caveats related to **Suspense** which i have explained in the post.
+  You can check the post to learn more about Suspense and ErrorBoundary in
+  React.
+</Callout>
+<Advertise title="Suspense and Error Boundary in React Explained" />
+
+## Conclusion
+
+Streaming is a good feature specially for the pages that have a lot of content or that take a long time to generate. By streaming your page, you can start rendering the parts of the page that are ready while the rest of the page is still being generated. This is also gives us all benfits of SEO as it allows search engines to start indexing your page sooner.
+
+Understanding **Suspense** and **Streaming** in Next.js can help you improve the performance of your application and provides a better user experience to your users. You can check the official documentation of [**React Docs**](https://react.dev/reference/react/Suspense) and [**Next.js Docs**](https://nextjs.org/docs/app/building-your-application/routing/loading-ui-and-streaming) to learn more about Suspense and Streaming.
+
+I hope you find this post helpful. If you have any questions or feedback, feel free to leave a comment below. Happy coding! 🚀
