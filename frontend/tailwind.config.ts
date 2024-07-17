@@ -65,6 +65,9 @@ module.exports = {
           DEFAULT: 'hsl(var(--heading))',
         },
       },
+      screens: {
+        mobile350: { max: '350px' },
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',

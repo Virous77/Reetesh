@@ -21,7 +21,7 @@ const Sidebar = () => {
     },
   ];
   return (
-    <section className="md:pt-[60px]">
+    <section className="top-0 md:pt-[4.8rem] lg:sticky">
       <AuthorCard
         message="I write about my journey as a Full-Stack developer. I
           love writing what i have learned and sharing my knowledge with others."

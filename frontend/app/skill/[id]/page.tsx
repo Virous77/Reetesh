@@ -51,7 +51,7 @@ const SingleSkillPage = async ({ params }: { params: { id: string } }) => {
   }
   return (
     <main className="fade-in-out l-template relative flex h-fit flex-col items-start gap-4 pb-4 md:grid md:h-screen md:p-[30px] md:pb-0 md:pt-0">
-      <div>
+      <div className="h-full overflow-scroll">
         <div className="mt-10 px-3 md:mt-16 md:px-0">
           <SkillInfo name={params.id} componentType="page" />
         </div>
