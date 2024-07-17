@@ -166,11 +166,9 @@ li code {
 }
 
 .just-way pre {
-  margin: 5px !important;
   padding: 5px !important;
   border-radius: 5px !important;
   background-color: #292929 !important;
-  width: fit-content !important;
 }
 
 .dark .just-way pre {
