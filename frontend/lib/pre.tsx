@@ -1,9 +1,7 @@
 'use client';
 import { useRef, useState } from 'react';
-import { Copy, CopyCheck } from 'lucide-react';
 import { Icon } from './icons';
-import { ToolTipComp } from '@/components/ui/tooltip';
-import { Button } from '@/components/ui/button';
+import CopyComp from './copy';
 
 export const Pre = ({ children, ...props }: any) => {
   const preRef = useRef<HTMLPreElement>(null);
@@ -32,18 +30,11 @@ export const Pre = ({ children, ...props }: any) => {
           <Icon name={props['data-language']?.toLowerCase()} />
           {props['data-language']}
         </span>
-
-        <ToolTipComp name="Copy">
-          <Button
-            size="icon"
-            className="w-fit bg-transparent pl-3 text-secondary-foreground hover:bg-transparent"
-            aria-label="Copy to Clipboard"
-            onClick={onClick}
-            disabled={copied}
-          >
-            {copied ? <CopyCheck size={19} /> : <Copy size={19} />}
-          </Button>
-        </ToolTipComp>
+        <CopyComp
+          onClick={onClick}
+          isActive={copied}
+          className="w-fit bg-transparent pl-3 text-secondary-foreground hover:bg-transparent"
+        />
       </div>
       <pre {...props} ref={preRef}>
         {children}

@@ -1,12 +1,14 @@
 import React from 'react';
 import Markdown from 'markdown-to-jsx';
 import Code from './code';
+import { A } from '@/lib/a';
 
 const CommentMarkdown = ({ comment }: { comment: string }) => {
   return (
     <Markdown
       options={{
         overrides: {
+          a: A,
           code: {
             component: Code,
           },

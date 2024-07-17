@@ -1,3 +1,4 @@
+import CommentCopy from '@/lib/comment-copy';
 import { useEffect } from 'react';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import jsx from 'react-syntax-highlighter/dist/esm/languages/prism/jsx';
@@ -21,14 +22,17 @@ const Code = ({ children }: { children: string }) => {
   }, [children]);
 
   return (
-    <SyntaxHighlighter
-      language={'jsx'}
-      style={materialDark}
-      key={children}
-      id="code"
-    >
-      {children}
-    </SyntaxHighlighter>
+    <div className="relative">
+      <SyntaxHighlighter
+        language={'jsx'}
+        style={materialDark}
+        key={children}
+        id="code"
+      >
+        {children}
+      </SyntaxHighlighter>
+      <CommentCopy code={children} />
+    </div>
   );
 };
 
