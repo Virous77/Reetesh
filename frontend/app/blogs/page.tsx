@@ -8,7 +8,7 @@ const BlogPage = async () => {
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
   return (
-    <main className="fade-in-out l-template relative flex h-fit flex-col items-start gap-4 pb-4 md:grid md:h-screen md:p-[30px] md:pb-0 md:pt-0">
+    <main className="fade-in-out l-template relative flex h-fit flex-col items-start gap-4 pb-4 md:grid md:px-[30px] md:py-[30px] md:pb-20 md:pt-0 lg:pb-5">
       <Blog blogs={blogs} />
       <Sidebar />
     </main>

@@ -21,7 +21,7 @@ const Sidebar = ({ name }: { name: string }) => {
     },
   ];
   return (
-    <section className="md:pt-[60px]">
+    <section className="sticky top-0 md:pt-[60px]">
       <AuthorCard message="Learning new skills and mastering them is my passion. I am always eager to learn new things and share my knowledge with others. What I have learned so far about my each skill is shared here." />
       <CommonTab links={Links} type={false} />
     </section>
