@@ -191,7 +191,7 @@ li code {
 }
 
 .callout code {
-  color: black !important;
+  color: black;
 }
 
 .callout div {
@@ -202,15 +202,35 @@ li code {
   color: black !important;
 }
 
-.callout a {
-  color: black !important;
-}
-
 .callout figure {
   margin-bottom: 0px !important;
   background-color: #191919 !important;
   border-radius: 5px;
 }
+
+.callout a {
+  color: black !important;
+}
+
+.dark .tooltip-visit a {
+  color: white !important;
+  font-weight: bold !important;
+}
+
+.tooltip-visit a {
+  color: black !important;
+  font-weight: bold !important;
+}
+
+.tooltip-visit a:hover {
+  scale: 1.1;
+  transition: all 0.3s ease-in-out;
+}
+
+.tooltip-visit p {
+  font-size: 0.75rem !important;
+}
+
 .layout {
   display: grid;
   grid-template-columns: 250px 1fr 250px;
