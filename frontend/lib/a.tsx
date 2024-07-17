@@ -4,6 +4,8 @@
 import { ToolTipLink } from '@/components/ui/tooltip';
 import React, { useState } from 'react';
 import { useMediaQuery } from './media-query';
+import { useTheme } from 'next-themes';
+import { ArrowUpRight } from 'lucide-react';
 
 type TDetails = {
   title: string | null;
@@ -16,6 +18,7 @@ const desktop = '(min-width: 768px)';
 
 export const A = ({ children, ...props }: any) => {
   const isDesktop = useMediaQuery(desktop);
+  const { theme } = useTheme();
   const [open, setOpen] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [details, setDetails] = useState<TDetails[] | []>([]);
@@ -42,7 +45,6 @@ export const A = ({ children, ...props }: any) => {
         ...prev,
         { title: 'error', description: null, image: null, key: href },
       ]);
-      console.error(error);
       setIsLoading(false);
     }
   };
@@ -65,8 +67,12 @@ export const A = ({ children, ...props }: any) => {
         >
           <a
             {...props}
-            className="font-medium underline underline-offset-4"
+            className="font-bold underline underline-offset-4"
+            style={{
+              color: theme === 'dark' ? '#ffffff' : '#000000',
+            }}
             onClick={(e) => {
+              handleHover(props.href);
               e.preventDefault();
             }}
             onMouseEnter={(e) => {
@@ -94,7 +100,7 @@ const Content = ({
   open: string;
 }) => {
   return (
-    <div className="h-full w-full">
+    <div className="tooltip-visit h-full w-full">
       {isLoading ? (
         <p className="m-0 w-full p-0 text-center text-foreground">Loading...</p>
       ) : (
@@ -132,7 +138,7 @@ const Content = ({
                   title={currentLink.title || ''}
                   aria-label={currentLink.title || ''}
                   onError={(e) => {
-                    e.currentTarget.src = '/favicon.ico';
+                    e.currentTarget.style.display = 'none';
                   }}
                   className="mt-3 h-32 w-full object-cover shadow"
                   style={{
@@ -173,7 +179,7 @@ const VisitLink = ({ href }: { href: string }) => {
       title="content link"
       aria-label="visit link"
     >
-      Visit to learn more
+      Visit to read more <ArrowUpRight size={18} className="mt-1" />
     </a>
   );
 };

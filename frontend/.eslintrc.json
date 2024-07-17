@@ -16,7 +16,17 @@
     "react/prop-types": "off",
     "no-undef": "off",
     "react-hooks/exhaustive-deps": "off",
-    "@typescript-eslint/explicit-function-return-type": "off"
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "args": "after-used",
+        "caughtErrors": "all",
+        "ignoreRestSiblings": false,
+        "reportUsedIgnorePattern": false
+      }
+    ]
   },
   "ignorePatterns": [
     "node_modules/",
