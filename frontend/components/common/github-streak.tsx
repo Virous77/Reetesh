@@ -6,7 +6,7 @@ const GithubStreak = async () => {
   const data = await githubAction();
 
   return (
-    <div className="relative flex h-fit w-full items-center justify-center overflow-y-scroll rounded-lg border-2 pb-1 md:w-[90%]">
+    <div className="relative flex h-fit w-full items-center justify-center overflow-y-scroll rounded-lg border-2 pb-1 md:w-[90%] md:overflow-y-hidden">
       <span
         className="absolute me-2 rounded bg-accent px-2.5 py-0.5 text-[8px] font-medium"
         style={{
