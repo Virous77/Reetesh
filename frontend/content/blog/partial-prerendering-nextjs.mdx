@@ -1,0 +1,102 @@
+---
+title: 'Partial Prerendering in Next.js explained'
+date: 'July 22 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://8qbgmple95w84kds.public.blob.vercel-storage.com/partial-prerendering-fDsM6nqCu3QRDTWrqVRBTARVps8P4d.png'
+about: 'Partial Prerendering in Next.js is kind of Streaming but with a twist. In Partial Prerendering, We can cache the prerendered parts of the page and serve them to the client as they are ready. This new feature is still in experimental phase and not all the deployment platforms support this feature.'
+tags:
+  [
+    'partial prerendering in nextjs',
+    'what is partial prerendering in nextjs',
+    'how to stream in nextjs',
+    'how partial prerendering works in nextjs',
+    'nextjs partial prerendering',
+    'nextjs partial prerendering ui',
+    'partial prerendering using suspense in nextjs',
+  ]
+related: 'common'
+---
+
+<TableContent title="Partial Prerendering in Next.js explained" />
+
+Partial Prerendering in Next.js is kind of **Streaming** but with a twist. In Partial Prerendering, We can cache the prerendered parts of the page and serve them to the client as they are ready. This means that we can start rendering the parts of the page that are ready while the rest of the page is still being generated on server parllely and stream them to the client once they are ready.
+
+The currnet way when we build a application in Next.js, Either pages are fully static or dynamic. But we know that in apage not all the contents are dynamic, some parts of the page are static and can be prerendered and served to the client as soon as page load. This is where Partial Prerendering comes into play.
+
+As we have disscussed in the previous post about [**Streaming Components in Next.js**](https://reetesh.in/blog/streaming-components-in-next.js-using-suspense), how important **Suspense** is in streaming the components. In Partial Prerendering, when we pass the fallback UI to the Suspense component, The fallback component will be cache and served to the client as soon as page load with the help of [**Vercel**](https://vercel.com) ultra fast low latency edge network.
+
+> Partial Prerendering is a new feature and still in experimental phase so chances are there not all the deployment platforms support this feature. But **Vercel** is one of the first to support this feature.
+
+<Advertise title="Streaming Components in Next.js using Suspense" />
+
+## How to enable Partial Prerendering in Next.js
+
+Partial Prerendering was introduce in **Next.js 14** and can be enabled by adding the following configuration in your `next.config.js` file.
+
+```js
+// next.config.js
+
+const nextConfig = {
+  experimental: {
+    ppr: true,
+  },
+};
+```
+
+Once you have added this configuration, You can start writing your components and wrap them with `Suspense` component to enable Partial Prerendering in your Next.js application.
+
+```tsx
+import { Suspense } from 'react';
+
+const PostPage = ({ params: { id } }: { params: { id: string } }) => {
+  return (
+    <main>
+      <h1>Partial Prerendering in Next.js</h1>
+      <Suspense fallback={<PostSkeleton />}>
+        <Post id={params.id} />
+      </Suspense>
+    </main>
+  );
+};
+
+const Post = async ({ id }: { id: string }) => {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
+  const post = await res.json();
+
+  return (
+    <div>
+      <h1>{post.title}</h1>
+      <p>{post.body}</p>
+    </div>
+  );
+};
+
+const PostSkeleton = () => {
+  return (
+    <div>
+      <h1>Loading...</h1>
+      <p>Loading...</p>
+    </div>
+  );
+};
+```
+
+In the above example, we have a `HomePage` component that renders a `Post` component. The `Post` component fetches the post data from an API and renders it. We have wrapped the `Post` component in a `Suspense` component and provided a `fallback` prop that will be rendered while the component is being fetched.
+
+Here Next.js on build time will prerender the `PostSkeleton` component and serve it to the client as soon as the page load. Once the `Post` component is ready, Next.js will stream it to the client and replace the `PostSkeleton` component with the `Post` component.
+
+<Callout emoji="" isRegular={true}>
+  The good thing about Partial Prerendering is we get the benfits of `SSR`,
+  `CSR`, `RSC`, `ISR` and `Streaming` all in one. We can optimize the page load
+  time and provide a better user experience to the users. This is also help in
+  SEO as it alows **Fast FCP** and **FID** which are the key metrics for SEO.
+</Callout>
+
+## Conclusion
+
+Partial Prerendering is going forword once stable will be a game changer and will open new doors to architect the application in way where we can get best out of all the rendering strategies. This will help in improving the performance of the application and provide a better user experience to the users.
+
+You can check the official demo app which was built by the Next.js team to showcase the Partial Prerendering feature here [**Partial Prerendering Demo**](https://www.partialprerendering.com/). As you can see in the demo, how the page is being rendered and how the parts of the page are being streamed to the client.
+
+I hope this post helps you understand what is Partial Prerendering in Next.js and how you can enable it in your Next.js application. If you have any questions or feedback, feel free to comment below. Happy coding! 🚀
