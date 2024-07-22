@@ -49,6 +49,8 @@ export const commonMetaData = ({
       card: 'summary_large_image',
       creator: '@imbitcoinb',
       images: image,
+      title: name,
+      description: desc,
     },
     robots: 'index, follow',
     alternates: {
