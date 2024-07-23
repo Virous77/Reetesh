@@ -10,14 +10,14 @@ interface ShineBorderProps {
   children: React.ReactNode;
 }
 
-export default function ShineBorder({
+const ShineBorder = ({
   borderRadius = 8,
   borderWidth = 1,
   duration = 50,
   color = '#000000',
   className,
   children,
-}: ShineBorderProps) {
+}: ShineBorderProps) => {
   return (
     <div
       style={
@@ -42,4 +42,6 @@ export default function ShineBorder({
       {children}
     </div>
   );
-}
+};
+
+export default ShineBorder;

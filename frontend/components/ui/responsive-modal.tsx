@@ -2,7 +2,6 @@
 'use client';
 
 import * as React from 'react';
-
 import { cn } from '@/lib/utils';
 import { useMediaQuery } from '@/lib/media-query';
 import {
@@ -81,7 +80,11 @@ const CredenzaContent = ({ className, children, ...props }: CredenzaProps) => {
   const CredenzaContent = isDesktop ? DialogContent : DrawerContent;
 
   return (
-    <CredenzaContent className={className} {...props}>
+    <CredenzaContent
+      className={className}
+      {...props}
+      onOpenAutoFocus={(e) => e.preventDefault()}
+    >
       {children}
     </CredenzaContent>
   );

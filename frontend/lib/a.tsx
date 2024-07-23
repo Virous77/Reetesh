@@ -26,8 +26,6 @@ export const A = ({ children, ...props }: any) => {
   const handleHover = async (href: string) => {
     setOpen(href);
     if (href.includes('mailto:')) return;
-    if (href[0] === '#') return;
-
     try {
       const isCached =
         details.length > 0 && details.find((item) => item.key === href);
@@ -72,11 +70,16 @@ export const A = ({ children, ...props }: any) => {
               color: theme === 'dark' ? '#ffffff' : '#000000',
             }}
             onClick={(e) => {
+              if (props.href[0] === '#') {
+                return scrollY > 0 && scroll(0, 0);
+              }
+
               handleHover(props.href);
               e.preventDefault();
             }}
             onMouseEnter={(e) => {
               e.preventDefault();
+              if (props.href[0] === '#') return;
               handleHover(props.href);
             }}
           >

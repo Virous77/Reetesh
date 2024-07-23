@@ -60,7 +60,6 @@ export const GET = async (req: NextRequest) => {
     key: url,
   };
 
-  //expiry for 2 days
   await kv.set(`preview:${url}`, JSON.stringify(dataObj), {
     ex: 345600,
   });
