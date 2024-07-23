@@ -140,36 +140,8 @@ const Privacy = () => {
         </Box>
 
         <Box>
-          <BoxTitle>Information Collected by Third Parties</BoxTitle>
-          <BoxSubTitle>Google Ads</BoxSubTitle>
-          <BoxContent>
-            We use Google Ads to serve ads on our Site. Google Ads may collect
-            information such as your IP address, browser type, operating system,
-            the web page you visited before accessing our Site, pages of our
-            Site that you visit, time spent on those pages, links you click, and
-            other statistics. Google Ads uses cookies and other technologies to
-            collect this information.
-          </BoxContent>
-
-          <BoxContent>
-            For more details on how Google uses your data, please visit the
-            <a
-              href="https://policies.google.com/privacy"
-              className="font-bold text-blue-500 hover:underline"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Google Privacy Policy"
-              title="Google Privacy Policy"
-            >
-              {' '}
-              Google Privacy Policy.
-            </a>
-          </BoxContent>
-        </Box>
-
-        <Box>
           <p>
-            <strong>Last Updated : </strong> July, 07 2024
+            <strong>Last Updated : </strong> July, 24 2024
           </p>
         </Box>
       </section>
