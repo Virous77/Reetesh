@@ -27,19 +27,6 @@ const Sidebar = () => {
           love writing what i have learned and sharing my knowledge with others."
       />
       <CommonTab links={Links} type={false} />
-
-      {/* <GoogleAdUnit className="mt-4 !bg-background px-4 md:mt-[80px] md:px-0">
-        <ins
-          className="adsbygoogle max-w-[300px] !bg-background md:max-w-full"
-          style={{
-            display: 'block',
-          }}
-          data-ad-client="ca-pub-3587869123201431"
-          data-ad-slot="3598791356"
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        ></ins>
-      </GoogleAdUnit> */}
     </section>
   );
 };

@@ -32,55 +32,43 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
       </header>
 
       <ul className="mt-3 grid grid-cols-1 items-stretch gap-4 pb-3 md:mt-0 md:grid-cols-2">
-        {/* <GoogleAdUnit>
-          <ins
-            className="adsbygoogle"
-            style={{ display: 'block' }}
-            data-ad-format="fluid"
-            data-ad-layout-key="-60+c7+9-39+ic"
-            data-ad-client="ca-pub-3587869123201431"
-            data-ad-slot="6601193365"
-          ></ins>
-        </GoogleAdUnit> */}
-        <>
-          {blogs.map((blog) => (
-            <li key={blog._id} className="group relative list-none">
-              <BlogBorder>
-                <Card className="h-full w-full border-none shadow">
-                  <CardContent className="border-none p-3 shadow">
-                    <CardImage src={blog.blogImage} title={blog.title} />
+        {blogs.map((blog) => (
+          <li key={blog._id} className="group relative list-none">
+            <BlogBorder>
+              <Card className="h-full w-full border-none shadow">
+                <CardContent className="border-none p-3 shadow">
+                  <CardImage src={blog.blogImage} title={blog.title} />
 
-                    <div className="mt-3 flex items-center gap-3">
-                      <span className="whitespace-nowrap font-mono text-[0.813rem]">
-                        {formateDate(blog.date)}
-                      </span>
-                      <span className="h-[2px] w-full bg-default"></span>
-                    </div>
+                  <div className="mt-3 flex items-center gap-3">
+                    <span className="whitespace-nowrap font-mono text-[0.813rem]">
+                      {formateDate(blog.date)}
+                    </span>
+                    <span className="h-[2px] w-full bg-default"></span>
+                  </div>
 
-                    <h1 className="my-5 truncate text-[1.25rem] leading-[1.3]">
-                      {blog.title}
-                    </h1>
-                    <p className="-mt-2 text-[0.875rem] tracking-wider text-muted-foreground">
-                      {blog.about}
-                    </p>
+                  <h1 className="my-5 truncate text-[1.25rem] leading-[1.3]">
+                    {blog.title}
+                  </h1>
+                  <p className="-mt-2 text-[0.875rem] tracking-wider text-muted-foreground">
+                    {blog.about}
+                  </p>
 
-                    <div className="mt-3 flex items-center gap-1">
-                      <span className="h-[2px] w-full bg-default"></span>
-                      <BlogDetails.Link id={blog.slugAsParams}>
-                        <p className="relative">
-                          <span className="relative z-10 flex cursor-pointer items-center gap-2 whitespace-nowrap px-2 text-[0.813rem] font-bold transition-all group-hover:text-background">
-                            Read Full Post <MoveRight />
-                          </span>
-                          <span className="absolute bottom-0 left-0 z-0 h-0 w-full rounded bg-foreground transition-all group-hover:h-full" />
-                        </p>
-                      </BlogDetails.Link>
-                    </div>
-                  </CardContent>
-                </Card>
-              </BlogBorder>
-            </li>
-          ))}
-        </>
+                  <div className="mt-3 flex items-center gap-1">
+                    <span className="h-[2px] w-full bg-default"></span>
+                    <BlogDetails.Link id={blog.slugAsParams}>
+                      <p className="relative">
+                        <span className="relative z-10 flex cursor-pointer items-center gap-2 whitespace-nowrap px-2 text-[0.813rem] font-bold transition-all group-hover:text-background">
+                          Read Full Post <MoveRight />
+                        </span>
+                        <span className="absolute bottom-0 left-0 z-0 h-0 w-full rounded bg-foreground transition-all group-hover:h-full" />
+                      </p>
+                    </BlogDetails.Link>
+                  </div>
+                </CardContent>
+              </Card>
+            </BlogBorder>
+          </li>
+        ))}
       </ul>
     </section>
   );

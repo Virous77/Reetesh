@@ -5,7 +5,6 @@ import ThemeProviderComp from '@/lib/theme-provider';
 import ThemeSwitcher from '@/components/theme/theme-switcher';
 import { commonMetaData } from '@/utils/utils';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import Script from 'next/script';
 import { Provider } from '@/lib/reactQuery-provider';
 import { Analytics } from '@vercel/analytics/react';
 
@@ -51,7 +50,6 @@ const RootLayout = ({
           name="google-site-verification"
           content="ymnya5tVzcP4bwvG455V0AZC282mwI4Iy3mnS3uBTD0"
         />
-        <meta name="google-adsense-account" content="ca-pub-3587869123201431" />
         <meta name="googlebot" content="index, follow" />
         <link
           rel="apple-touch-icon"
@@ -71,22 +69,6 @@ const RootLayout = ({
           href="/favicon-16x16.png"
         />
         <link rel="preconnect" href="https://res.cloudinary.com" />
-        <Script strategy="beforeInteractive" id="google-analytics">
-          {`
-            window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-XY0Y1HDGMT');
-        `}
-        </Script>
-        <Script
-          async
-          id="adsense"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3587869123201431"
-        />
       </head>
       <body className={`${montserrat.className}`}>
         <ThemeProviderComp attribute="class" defaultTheme="dark">
