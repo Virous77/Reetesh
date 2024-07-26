@@ -89,6 +89,9 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
       parentId: comment.parentId,
     });
   };
+  const commentContent = parseType(optimisticComment.createdAt)
+    ? turndownService.turndown(optimisticComment.comment)
+    : optimisticComment.comment;
 
   return (
     <div
@@ -116,11 +119,8 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
           <div className="overflow-scroll">
             <div className="just-way box-fit prose-headings:font-cal prose prose-base prose-neutral dark:prose-invert prose-a:text-default prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-defaultMax prose-blockquote:font-light prose-img:rounded-lg">
               <CommentMarkdown
-                comment={
-                  parseType(optimisticComment.createdAt)
-                    ? turndownService.turndown(optimisticComment.comment)
-                    : optimisticComment.comment
-                }
+                comment={commentContent}
+                isCode={commentContent.includes('```')}
               />
             </div>
 
