@@ -37,7 +37,7 @@ const CommentForm = ({
         placeholder="Your Comment"
         aria-label="comment input"
         required={true}
-        className="max-h-[150px] min-h-[70px] py-6 text-base"
+        className="min-h-[70px] py-6 text-base"
         name="comment"
         value={currentComment}
         onChange={(e) => setComment(e.target.value)}
