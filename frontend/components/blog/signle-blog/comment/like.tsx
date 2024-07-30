@@ -1,4 +1,4 @@
-import { addUserIDToLocalStorage, getLocalData } from '@/utils/utils';
+import { addUserIDToLocalStorage, adminID, getLocalData } from '@/utils/utils';
 import { ThumbsDown, ThumbsUp } from 'lucide-react';
 import React, { useLayoutEffect } from 'react';
 import action from './action';
@@ -97,7 +97,7 @@ const Like: React.FC<TLike> = ({
           </Button>
         </div>
       </div>
-      {blogUserId === userId && (
+      {(blogUserId === userId || adminID.includes(userId || '')) && (
         <DeleteComment commentId={id} userId={userId} blogId={blogId} />
       )}
     </div>

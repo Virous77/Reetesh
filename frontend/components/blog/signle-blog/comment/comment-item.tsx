@@ -1,6 +1,7 @@
 import { TBlog } from '@/models/blog-comments';
 import {
   addUserIDToLocalStorage,
+  adminID,
   formateDate,
   getLocalData,
   parseType,
@@ -23,12 +24,6 @@ type TReplyComment = {
   comment: string;
   parentId?: string;
 };
-
-const adminID = [
-  '47256c97-2118-40da-9494-20ffa5dfb044',
-  '286d1fb9-7d5b-473f-8e7d-d612bb5736cd',
-  '2ba06f50-1304-4dc8-b090-d615b96d743c',
-];
 
 export const commonFields = {
   children: [],

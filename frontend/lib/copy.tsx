@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { ToolTipComp } from '@/components/ui/tooltip';
 import { Copy, CopyCheck } from 'lucide-react';
+import { cn } from './utils';
 
 type TCopy = {
   onClick: () => void;
@@ -13,7 +14,10 @@ const CopyComp: React.FC<TCopy> = ({ onClick, isActive, className }) => {
     <ToolTipComp name="Copy">
       <Button
         size="icon"
-        className={className}
+        className={cn(className)}
+        style={{
+          cursor: 'copy',
+        }}
         aria-label="Copy to Clipboard"
         onClick={onClick}
         disabled={isActive}
