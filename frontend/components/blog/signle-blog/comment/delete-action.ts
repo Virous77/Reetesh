@@ -4,6 +4,7 @@ import dbConnect from '@/db/mongoose';
 import blogComments, { TBlog } from '@/models/blog-comments';
 import z from 'zod';
 import { commonError } from './action';
+import { adminID } from '@/utils/utils';
 
 const schema = z.object({
   commentId: z.string().min(1, { message: 'Comment id is required' }),
@@ -21,8 +22,11 @@ export const deleteCommentAction = async (input: z.infer<typeof schema>) => {
     if (!findComment) {
       throw new Error('Comment not found');
     }
-    if (findComment.userId !== validate.userId) {
-      throw new Error('You are not authorized to delete this comment');
+
+    if (!adminID.includes(validate.userId)) {
+      if (findComment.userId !== validate.userId) {
+        throw new Error('You are not authorized to delete this comment');
+      }
     }
 
     if (findComment.parent) {
