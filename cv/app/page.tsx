@@ -146,7 +146,7 @@ const CV = () => {
                 className=" m-0 border-none p-0 shadow-none"
               >
                 <CardHeader className=" m-0 p-0">
-                  <div className="flex items-center justify-between gap-x-2 text-base">
+                  <div className="flex items-start justify-between gap-x-2 text-base">
                     <h3 className="inline-flex items-center justify-center gap-x-1 font-semibold leading-none">
                       <a className="hover:underline" href={work.link}>
                         {work.company}
@@ -164,7 +164,7 @@ const CV = () => {
                         ))}
                       </span>
                     </h3>
-                    <div className="text-sm tabular-nums text-gray-500">
+                    <div className="text-sm tabular-nums text-gray-500 text-nowrap">
                       {work.start} - {work.end}
                     </div>
                   </div>
@@ -175,6 +175,9 @@ const CV = () => {
                 </CardHeader>
                 <CardContent className="m-0 mt-3 p-0 font-mono text-xs">
                   {work.description}
+                </CardContent>
+                <CardContent className="m-0 mt-3 p-0 font-mono text-xs">
+                  {work.subDescription}
                 </CardContent>
               </Card>
             );
@@ -189,7 +192,7 @@ const CV = () => {
                 className=" m-0 border-none p-0 shadow-none"
               >
                 <CardHeader className=" m-0 p-0">
-                  <div className="flex items-center justify-between gap-x-2 text-base">
+                  <div className="flex items-start justify-between gap-x-2 text-base">
                     <h3 className="font-semibold md:leading-none">
                       {education.school}
                     </h3>
@@ -216,7 +219,7 @@ const CV = () => {
 
         <Section className="print-force-new-page scroll-mb-16">
           <h2 className="text-xl font-bold">Projects</h2>
-          <div className="-mx-3 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 print:grid-cols-3 print:gap-2">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 print:grid-cols-3 print:gap-2">
             {RESUME_DATA.projects.map((project) => {
               return (
                 <ProjectCard
