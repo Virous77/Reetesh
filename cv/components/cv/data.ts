@@ -1,3 +1,4 @@
+import { Link2 } from "lucide-react";
 import { GitHubIcon, LinkedInIcon, XIcon } from "./icon";
 
 export const RESUME_DATA = {
@@ -6,9 +7,9 @@ export const RESUME_DATA = {
   location: "Ahmedabad, India",
   locationLink: "https://www.google.com/maps/place/ahmedabad    ",
   about:
-    "Full Stack Engineer who builds products for the web with a focus on user experience.",
+    "I specialize in creating exceptional and user-friendly digital experiences for the web.",
   summary:
-    "As a Full Stack Engineer, I thrive on crafting dynamic web applications fueled by cutting-edge technologies. My journey is marked by a diverse portfolio of projects, each addressing unique challenges with innovative solutions. My passion lies in sculpting user-centric experiences that resonate with all audiences, ensuring accessibility and ease of use at every turn.",
+    "As a Full Stack Engineer, I thrive on crafting dynamic web applications fueled by cutting-edge technologies. I am passionate about building scalable, high-quality software solutions that deliver value to users. I like to work on projects that challenge me and allow me to grow as a developer.",
   avatarUrl: "https://avatars.githubusercontent.com/u/101452588?v=4",
   personalWebsiteUrl: "https://reetesh.in",
   contact: {
@@ -30,6 +31,11 @@ export const RESUME_DATA = {
         url: "https://x.com/imbitcoinb",
         icon: XIcon,
       },
+      {
+        name: "Website",
+        url: "https://reetesh.in",
+        icon: Link2,
+      },
     ],
   },
   education: [
@@ -47,10 +53,12 @@ export const RESUME_DATA = {
       badges: [],
       title: "Full Stack Developer",
       logo: GitHubIcon,
-      start: "2023",
+      start: "Feb 2023",
       end: "Present",
       description:
-        "I have help to built multiple DApps and geospatial visualization related project. My main work is mostly about working on web3 related projects.",
+        "I am working as a Full Stack Developer at Inara Consultancy Services. I am responsible for developing and maintaining web applications for clients. I work closely with the design team to implement user-friendly interfaces and ensure that the applications meet the client's requirements.",
+      subDescription:
+        "I have built several web applications related to geospatial visualization, e-commerce, and multiple DAPPs on ethereum and solana blockchain.",
     },
   ],
   skills: [
@@ -64,9 +72,9 @@ export const RESUME_DATA = {
     "tRPC",
     "MongoDB",
     "PostgreSQL",
-    "Bun",
     "Anchor",
     "Docker",
+    "TailwindCSS",
   ],
   projects: [
     {
