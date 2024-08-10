@@ -46,7 +46,7 @@ const GithubStreak = async () => {
             {data?.stats.currentStreak.length || 0}
           </div>
           <div className="whitespace-nowrap text-xs font-bold md:text-sm">
-            Current Streak
+            Current Streaks
           </div>
           {data.stats.currentStreak.length > 0 && (
             <div className="mt-1 flex flex-col items-center text-xs text-muted-foreground">
@@ -71,7 +71,7 @@ const GithubStreak = async () => {
             {data?.stats.longestStreak.length || 92}
           </div>
           <div className="whitespace-nowrap text-xs md:text-sm">
-            Longest Streak
+            Longest Streaks
           </div>
           <div className="mt-1 flex flex-col items-center text-xs text-muted-foreground">
             <span className="font-sans">
