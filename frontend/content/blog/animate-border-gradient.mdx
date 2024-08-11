@@ -1,0 +1,129 @@
+---
+title: 'Button Gradient Border Animation with CSS'
+date: 'Aug 11 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://8qbgmple95w84kds.public.blob.vercel-storage.com/gradient-border-button-cN7wZ8P2YzOOt0IPOSHbzO7ItIVVDX.png'
+about: 'Gradient border animation is a cool way to make your buttons stand out. Using CSS we can easily create a gradient border animation for buttons.'
+tags:
+  [
+    'how to rotate gradient border',
+    'border gradient animation',
+    '360 degree gradient border',
+    'gradient border animation',
+    'gradient border animation css',
+  ]
+related: 'frontend'
+---
+
+<TableContent title="Button Gradient Border Animation with CSS" />
+
+Gradient border animation is a exciting way to make your buttons stand out. It is a good way to make your buttons more interactive and engaging. There are many scenario where you can use gradient border animation like hover effect, click effect, etc. Depending on the app design, we always try to make our buttons more interactive and engaging.
+
+It colud be a bit tricky to create a gradient border animation as we can't rotate the border of an element directly. But we can create a gradient border animation using a pseudo element and rotate it.
+
+It was also a learning experience for me to create this gradient border animation. It took me few hours to figure out how to create a gradient border animation. But once I figured it out, it was a fun experience to create this animation. I'm basically rotating border 360 degree using CSS animation.
+
+<Separator />
+
+## How to create a gradient border animation
+
+I'm going to use `React` component to create a button with gradient border animation. You can use this code in any other framework or vanilla HTML/CSS as well.
+
+I'm also using [**Tailwind CSS**](https://tailwindcss.com/) for some styling along with plain CSS. Tailwind make it easy to style the components with utility classes.
+
+Here is the component with basic html structure and some tailwind classes.
+
+```jsx
+import React from 'react';
+
+const GradientBorderButton = () => {
+  return (
+    <button className="btn relative flex cursor-pointer items-center justify-center overflow-hidden rounded-[100px] border-none p-[1px]">
+      <span className="btnSpan relative z-[1] w-full rounded-[100px] bg-black p-4 text-base text-[#fff] backdrop-blur-[40px]">
+        Button
+      </span>
+    </button>
+  );
+};
+
+export default GradientBorderButton;
+```
+
+You must be wondering why I'm using a `span` inside the button. Since we are going to use a pseudo element to create a gradient border animation, we need to have a child element which will be on top of the button and hiding background of the button and showing the gradient border only.
+
+Now let's add the CSS for the button.
+
+```css
+@property --animate-duration {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@property --Color {
+  syntax: '<color>';
+  initial-value: #4afd71;
+}
+
+@keyframes rotate {
+  0% {
+    --animate-duration: 0deg;
+    --Color: #4afd71;
+  }
+  100% {
+    --animate-duration: 360deg;
+    --Color: #4afd71;
+  }
+}
+
+.btn:after,
+.btn:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  height: 100%;
+  border-radius: calc(100px + 1.5px);
+  background-size: 100% 100%;
+  background-position: 0px 0px;
+  background-image: conic-gradient(
+    from var(--animate-duration) at 50% 50%,
+    #ffff 0%,
+    #ffff 20%,
+    var(--Color) 50%,
+    var(--Color) 66%,
+    #ffff 100%
+  );
+  animation: rotate 3s infinite linear;
+}
+
+.btn:before {
+  animation: rotate 3s infinite linear;
+  filter: blur(20px);
+}
+```
+
+The above CSS code is for the button with gradient border animation. I'm using `conic-gradient` to create a gradient border animation. I'm also using `@property` to define custom properties for the animation. Psuedo elements `:before` and `:after` are used to create the gradient border animation.
+
+I'm using `@keyframes` to rotate the gradient border 360 degree. I'm also using `filter: blur(20px)` to create a glow effect on the border.
+
+You can also customize the gradient border animation by changing the values of `--animate-duration` and `--Color`. You can also change the duration of the animation by changing the value of `animation` property.
+
+You can adjust `width` and `height` of the button to make it bigger or smaller. You can also adjust the `border-radius` to make the button more rounded or less rounded. So it is pretty much customizable.
+
+<GradientBorderButton />
+
+You can build on top of this code to create more interactive and engaging gradient border animations. You can create reusable components for gradient border animations and use them in your projects.
+
+<Separator />
+
+## Conclusion
+
+It was good experience for me to learn how to create a gradient border animation. First i thoufht it would be difficult to create a gradient border animation but once I figured it out, it was fun to create this animation.
+
+I have added the link for the showing button animation in that box corner. You can click on that and get the source code from the github.
+
+I hope you like this gradient border animation. Let me know if you have any questions or suggestions in the comments below. Happy Coding! 🚀

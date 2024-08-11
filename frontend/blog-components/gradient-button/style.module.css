@@ -1,0 +1,61 @@
+@property --animation-duration {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@property --Color {
+  syntax: '<color>';
+  initial-value: hsl(var(--heading));
+}
+
+@keyframes rotate {
+  0% {
+    --animation-duration: 0deg;
+    --Color: hsl(var(--heading));
+  }
+  100% {
+    --animation-duration: 360deg;
+    --Color: hsl(var(--heading));
+  }
+}
+
+.btn {
+  border-radius: 100px;
+  padding: 1.3px;
+  width: 100%;
+}
+
+.btn:after,
+.btn:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  height: 100%;
+  border-radius: calc(100px + 1.5px);
+  background-size: 100% 100%;
+  background-position: 0px 0px;
+  background-image: conic-gradient(
+    from var(--animation-duration) at 50% 50%,
+    hsl(var(--primary)) 0%,
+    hsl(var(--primary)) 20%,
+    var(--Color) 40%,
+    var(--Color) 66%,
+    hsl(var(--primary)) 100%
+  );
+  animation: rotate 3s infinite linear;
+}
+
+.btn:before {
+  animation: rotate 3s infinite linear;
+  filter: blur(20px);
+}
+
+.btnSpan {
+  padding: 16px;
+  border-radius: 100px;
+  width: 100%;
+}
