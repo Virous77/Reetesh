@@ -162,7 +162,3 @@ const BoxTitle = ({ children }: { children: React.ReactNode }) => {
 const BoxContent = ({ children }: { children: React.ReactNode }) => {
   return <p className="mt-2 text-default">{children}</p>;
 };
-
-const BoxSubTitle = ({ children }: { children: React.ReactNode }) => {
-  return <h3 className="mt-4 text-lg font-bold">{children}</h3>;
-};
