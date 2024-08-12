@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 
 type TUserRequests = {
   [userId: string]: number[];
@@ -53,14 +53,24 @@ const RateLimiter = () => {
   }, [userRequests['test']?.length]);
 
   return (
-    <section className="flex flex-col gap-1 rounded border-2 px-5 py-3">
+    <section
+      className="flex flex-col gap-1 rounded border-2"
+      style={{
+        padding: '12px 20px',
+      }}
+    >
       <div>
         <h1 className="mb-0 text-xl leading-none">⚙️ Rate Limiter Example</h1>
         <p className="mb-0 mt-0 pt-4 text-sm text-default">
           1 minute window with 10 requests allowed. Click the button to test the
           rate limiter.
         </p>
-        <p className="mt-0 pt-[5px] text-sm font-bold text-default">
+        <p
+          className="mt-0 text-sm font-bold text-default"
+          style={{
+            paddingTop: '5px',
+          }}
+        >
           (Testing with client side only, not a real rate limiter. But code is
           same for server side too expect the state management.)
         </p>
