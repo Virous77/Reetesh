@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unknown-property */
 import { Montserrat } from 'next/font/google';
 import './globals.css';
 import ThemeProviderComp from '@/lib/theme-provider';
@@ -7,6 +6,7 @@ import { commonMetaData } from '@/utils/utils';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Provider } from '@/lib/reactQuery-provider';
 import { Analytics } from '@vercel/analytics/react';
+import ESC from '@/components/common/esc';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -80,6 +80,7 @@ const RootLayout = ({
             <Analytics debug={false} />
             <SpeedInsights />
             <ThemeSwitcher />
+            <ESC />
           </Provider>
         </ThemeProviderComp>
       </body>
