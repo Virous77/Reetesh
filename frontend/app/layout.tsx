@@ -6,7 +6,7 @@ import { commonMetaData } from '@/utils/utils';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Provider } from '@/lib/reactQuery-provider';
 import { Analytics } from '@vercel/analytics/react';
-import ESC from '@/components/common/esc';
+import Accessibility from '@/components/common/accessibility';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -80,7 +80,7 @@ const RootLayout = ({
             <Analytics debug={false} />
             <SpeedInsights />
             <ThemeSwitcher />
-            <ESC />
+            <Accessibility />
           </Provider>
         </ThemeProviderComp>
       </body>

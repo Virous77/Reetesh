@@ -63,6 +63,14 @@ const CommandSearch: React.FC<TCommandSearch> = ({ blogs }) => {
     return () => document.removeEventListener('keydown', down);
   }, []);
 
+  useEffect(() => {
+    const isCommandOpen = getLocalData('commandOpen');
+    if (isCommandOpen) {
+      setOpen(true);
+      localStorage.removeItem('commandOpen');
+    }
+  }, []);
+
   return (
     <React.Fragment>
       <div>
