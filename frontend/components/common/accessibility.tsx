@@ -1,5 +1,6 @@
 'use client';
 
+import { getLocalData } from '@/utils/utils';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -8,32 +9,43 @@ const Accessibility = () => {
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
+      const localData = getLocalData('commandOpen');
       const key = e.key.toLowerCase();
-      if (key === 'escape') {
-        router.back();
+      const masterKey = e.metaKey || e.ctrlKey;
+
+      if (localData === 0) {
+        if (key === 'escape') {
+          router.back();
+        }
       }
 
-      if (key === 'b') {
+      if (key === 'b' && masterKey) {
+        e.preventDefault();
         router.push('/blogs');
       }
 
-      if (key === 'h') {
+      if (key === 'h' && masterKey) {
+        e.preventDefault();
         router.push('/');
       }
 
-      if (key === 'p') {
+      if (key === 'p' && masterKey) {
+        e.preventDefault();
         router.push('/projects');
       }
 
-      if (key === 's') {
+      if (key === 's' && masterKey) {
+        e.preventDefault();
         router.push('/skills');
       }
 
-      if (key === 'u') {
+      if (key === 'u' && masterKey) {
+        e.preventDefault();
         router.replace('https://ui.reetesh.in');
       }
 
-      if (key === 'c') {
+      if (key === 'c' && masterKey) {
+        e.preventDefault();
         router.replace('https://cv.reetesh.in');
       }
 
