@@ -55,7 +55,8 @@ const CommandSearch: React.FC<TCommandSearch> = ({ blogs }) => {
     const down = (e: KeyboardEvent) => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        setOpen((open) => !open);
+        setOpen(true);
+        localStorage.setItem('commandOpen', JSON.stringify('true'));
       }
     };
 
@@ -67,7 +68,6 @@ const CommandSearch: React.FC<TCommandSearch> = ({ blogs }) => {
     const isCommandOpen = getLocalData('commandOpen');
     if (isCommandOpen) {
       setOpen(true);
-      localStorage.removeItem('commandOpen');
     }
   }, []);
 
@@ -76,7 +76,10 @@ const CommandSearch: React.FC<TCommandSearch> = ({ blogs }) => {
       <div>
         <Button
           className="flex cursor-pointer items-center gap-10 rounded border bg-transparent p-2 pr-6 transition-colors duration-200 ease-in-out hover:bg-accent md:pr-2"
-          onClick={() => setOpen(true)}
+          onClick={() => {
+            setOpen(!open);
+            localStorage.setItem('commandOpen', JSON.stringify('true'));
+          }}
         >
           <span className="flex items-center gap-2">
             <Search size={16} className="text-muted-foreground" />
@@ -90,7 +93,17 @@ const CommandSearch: React.FC<TCommandSearch> = ({ blogs }) => {
           </kbd>
         </Button>
       </div>
-      <CommandDialog open={open} onOpenChange={setOpen}>
+      <CommandDialog
+        open={open}
+        onOpenChange={() => {
+          setOpen(!open);
+          setTimeout(() => {
+            if (open) {
+              localStorage.removeItem('commandOpen');
+            }
+          }, 1000);
+        }}
+      >
         <CommandInput
           placeholder="Search Posts..."
           className="text-base"
@@ -107,6 +120,7 @@ const CommandSearch: React.FC<TCommandSearch> = ({ blogs }) => {
                   onSelect={() => {
                     handleRecentSearch(item);
                     router.push(`/blog/${slugify(item)}`);
+                    localStorage.removeItem('commandOpen');
                   }}
                 >
                   <div className="flex items-center gap-3">
