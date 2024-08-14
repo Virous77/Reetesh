@@ -44,7 +44,7 @@ const Accessibility = () => {
         router.replace('https://ui.reetesh.in');
       }
 
-      if (key === 'c' && masterKey) {
+      if (key === 'm' && masterKey) {
         e.preventDefault();
         router.replace('https://cv.reetesh.in');
       }
