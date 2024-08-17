@@ -12,11 +12,11 @@ const SkillInfo: React.FC<TSkillInfo> = async ({ name, componentType }) => {
   );
   return (
     <section>
-      <h2
-        className={`mb-4 text-center text-2xl font-bold ${componentType === 'page' ? 'uppercase' : 'capitalize'} text-heading underline underline-offset-4`}
+      <h1
+        className={`mb-4 text-center text-2xl font-semibold ${componentType === 'page' ? 'uppercase' : 'capitalize'} text-heading underline underline-offset-4`}
       >
         {componentType === 'page' ? name : 'About'}
-      </h2>
+      </h1>
       <p className="mt-2 text-center">{content?.description}</p>
       <p className="mt-3 text-center">{content?.features}</p>
     </section>
