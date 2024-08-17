@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Social from '../social/social';
 import { ReactNode } from 'react';
+import { cn } from '@/lib/utils';
 
 type TLink = {
   name: string;
@@ -37,9 +38,10 @@ const CommonTab: React.FC<TCommonTab> = ({ links, type = true }) => {
                 <span className="block h-[1px] w-10 bg-foreground opacity-50"></span>
               )}
               <span
-                className={`${
-                  link.icon ? 'opacity-100' : 'opacity-50'
-                } hover:opacity-100`}
+                className={cn(
+                  link.icon ? 'font-semibold opacity-100' : 'opacity-50',
+                  'hover:opacity-100'
+                )}
               >
                 {link.name}
               </span>

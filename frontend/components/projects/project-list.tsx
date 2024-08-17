@@ -28,14 +28,14 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
                 >
                   <Link
                     href={`#${slugify(project.title)}`}
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 font-semibold"
                   >
                     {project.title}
                     <span className="hidden text-secondary-foreground">#</span>
                   </Link>
                 </h3>
                 {project?.develop && (
-                  <span className="mb-1 flex items-center gap-2 text-[0.813rem] font-bold uppercase text-default">
+                  <span className="mb-1 flex items-center gap-2 text-[0.813rem] font-semibold uppercase text-default">
                     <CalendarDays size={17} />
                     {project.develop}
                   </span>

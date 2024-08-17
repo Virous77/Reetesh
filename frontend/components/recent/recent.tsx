@@ -25,7 +25,7 @@ const Recent = async () => {
   return (
     <div className="mb-10 mt-12 flex flex-col gap-8 md:mb-0 md:mt-0">
       <div>
-        <h2 className="mb-4 text-2xl font-bold">Recent Activity</h2>
+        <h2 className="mb-4 text-2xl font-semibold">Recent Activity</h2>
         <div>
           <Common name="Blogs" />
           <ul className="flex flex-col gap-2">
@@ -70,7 +70,7 @@ const Common = ({ name }: { name: string }) => {
   return (
     <div className="flex items-center gap-2">
       <span className="block h-[1px] w-10 bg-foreground opacity-50"></span>
-      <h3 className="mb-2 font-mono text-default">{name}</h3>
+      <h3 className="mb-2 font-mono font-medium text-default">{name}</h3>
     </div>
   );
 };

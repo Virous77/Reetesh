@@ -15,7 +15,7 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
   return (
     <section className="body relative h-fit p-2 pt-0 md:h-full md:p-0 lg:overflow-scroll">
       <header className="sticky top-0 z-50 flex items-center justify-between bg-background p-1 pl-2 pt-2 md:p-0 md:pl-2">
-        <h1 className="my-2 hidden text-[1.125rem] md:my-5 md:block md:text-[1.563rem]">
+        <h1 className="my-2 hidden text-[1.125rem] font-semibold md:my-5 md:block md:text-[1.563rem]">
           From My Blogs
         </h1>
         <CommandSearch blogs={blogs} />
