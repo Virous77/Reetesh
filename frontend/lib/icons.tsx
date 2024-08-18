@@ -260,7 +260,7 @@ export const icons: IconType = {
       <>
         <path
           fill="none"
-          stroke-width="10"
+          strokeWidth="10"
           d="M15 5h178a10 10 0 0 1 10 10v98a10 10 0 0 1-10 10H15a10 10 0 0 1-10-10V15A10 10 0 0 1 15 5z"
         />
         <path d="M30 98V30h20l20 25 20-25h20v68H90V59L70 84 50 59v39H30zm125 0-30-33h20V30h20v35h20l-30 33z" />
@@ -272,7 +272,7 @@ export const icons: IconType = {
       <>
         <path
           fill="none"
-          stroke-width="10"
+          strokeWidth="10"
           d="M15 5h178a10 10 0 0 1 10 10v98a10 10 0 0 1-10 10H15a10 10 0 0 1-10-10V15A10 10 0 0 1 15 5z"
         />
         <path d="M30 98V30h20l20 25 20-25h20v68H90V59L70 84 50 59v39H30zm125 0-30-33h20V30h20v35h20l-30 33z" />
