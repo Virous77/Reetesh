@@ -7,6 +7,7 @@ import {
   useScroll,
   useSpring,
 } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 const useCommonHook = () => {
   const [isHidden, setIsHidden] = useState(false);
@@ -163,5 +164,29 @@ export const TableContentList = ({
     >
       {children}
     </motion.li>
+  );
+};
+
+export const GithubCard = ({
+  children,
+  styleTypeInitial,
+  styleTypeAnimate,
+  className,
+}: {
+  children: ReactNode;
+  styleTypeInitial: {};
+  styleTypeAnimate: {};
+  className?: string;
+}) => {
+  return (
+    <motion.div
+      className={cn(className)}
+      initial={{ opacity: 0, ...styleTypeInitial }}
+      whileInView={{ opacity: 1, ...styleTypeAnimate }}
+      transition={{ duration: 3, type: 'spring', bounce: 0.5 }}
+      viewport={{ once: true }}
+    >
+      {children}
+    </motion.div>
   );
 };

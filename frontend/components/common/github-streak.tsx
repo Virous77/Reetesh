@@ -1,6 +1,7 @@
 import { githubAction } from './action';
 import { formateDate } from '@/utils/utils';
 import { MoveDown } from 'lucide-react';
+import { GithubCard } from './motion';
 
 const GithubStreak = async () => {
   const data = await githubAction();
@@ -23,7 +24,11 @@ const GithubStreak = async () => {
         target="_blank"
         rel="noreferrer"
       >
-        <div className="text-center">
+        <GithubCard
+          className="text-center"
+          styleTypeAnimate={{ y: 0 }}
+          styleTypeInitial={{ y: 100 }}
+        >
           <div className="text-4xl font-bold">
             {data?.stats.totalContributions || '0000'}
           </div>
@@ -39,9 +44,13 @@ const GithubStreak = async () => {
             <MoveDown size={14} className="mb-[2px] mt-[2px] h-2" />
             <span className="font-sans">Present</span>
           </div>
-        </div>
+        </GithubCard>
 
-        <div className="text-center">
+        <GithubCard
+          className="text-center"
+          styleTypeAnimate={{ y: 0 }}
+          styleTypeInitial={{ y: -100 }}
+        >
           <div className="text-4xl font-bold">
             {data?.stats.currentStreak.length || 0}
           </div>
@@ -64,9 +73,13 @@ const GithubStreak = async () => {
               </span>
             </div>
           )}
-        </div>
+        </GithubCard>
 
-        <div className="text-center">
+        <GithubCard
+          className="text-center"
+          styleTypeAnimate={{ y: 0 }}
+          styleTypeInitial={{ y: 100 }}
+        >
           <div className="text-4xl font-bold">
             {data?.stats.longestStreak.length || 92}
           </div>
@@ -86,7 +99,7 @@ const GithubStreak = async () => {
               )}
             </span>
           </div>
-        </div>
+        </GithubCard>
       </a>
     </div>
   );
