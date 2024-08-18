@@ -1,5 +1,6 @@
 'use client';
-import { useRef, useState } from 'react';
+
+import { ReactNode, useRef, useState } from 'react';
 import {
   motion,
   useMotionValueEvent,
@@ -126,5 +127,41 @@ export const PageTransitionMotion = ({
     >
       {children}
     </motion.main>
+  );
+};
+
+export const AdvertiseParent = ({ children }: { children: ReactNode }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.5 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.5 }}
+      transition={{ duration: 1.5, type: 'spring', bounce: 0.4 }}
+      className="mt-2 flex w-full items-center rounded border-2 p-2"
+      style={{ justifyContent: 'end' }}
+      viewport={{ once: true }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+export const TableContentList = ({
+  children,
+  index,
+}: {
+  children: ReactNode;
+  index: number;
+}) => {
+  const duration = 0.5 + index * 0.1;
+  return (
+    <motion.li
+      key={index}
+      initial={{ x: -130, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ duration }}
+    >
+      {children}
+    </motion.li>
   );
 };

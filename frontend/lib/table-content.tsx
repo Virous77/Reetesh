@@ -1,4 +1,5 @@
 import { allPosts } from '@/.contentlayer/generated';
+import { TableContentList } from '@/components/common/motion';
 import {
   Accordion,
   AccordionContent,
@@ -56,7 +57,7 @@ const TableContent = ({ title }: { title: string }) => {
             }}
           >
             {headings.map((heading, index) => (
-              <li key={index}>
+              <TableContentList index={index}>
                 <Link
                   href={`#${slugify(heading.title)}`}
                   style={{ textDecoration: 'none' }}
@@ -64,7 +65,7 @@ const TableContent = ({ title }: { title: string }) => {
                 >
                   {heading.title}
                 </Link>
-              </li>
+              </TableContentList>
             ))}
           </ul>
         </AccordionContent>

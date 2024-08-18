@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import React from 'react';
 import { allPosts } from '@/.contentlayer/generated';
-import { notFound } from 'next/navigation';
 import { BlogDetails } from '@/routes';
+import { AdvertiseParent } from '@/components/common/motion';
 
 type TAdvertise = {
   title: string;
@@ -13,16 +13,11 @@ const Advertise: React.FC<TAdvertise> = ({ title }) => {
     (post) => post.title.toLowerCase() === title.toLowerCase()
   );
 
-  if (!post) {
-    return notFound();
-  }
+  if (!post) return null;
   const { about, blogImage, slugAsParams } = post;
 
   return (
-    <div
-      className="mt-2 flex w-full items-center rounded border-2 p-2"
-      style={{ justifyContent: 'end' }}
-    >
+    <AdvertiseParent>
       <div className="flex w-full flex-col items-center justify-between gap-3 md:flex-row md:items-end">
         <div>
           <h1 className="text-center text-xl capitalize">{title}</h1>
@@ -46,7 +41,7 @@ const Advertise: React.FC<TAdvertise> = ({ title }) => {
           style={{ marginTop: '5px', marginBottom: '10px' }}
         />
       </div>
-    </div>
+    </AdvertiseParent>
   );
 };
 
