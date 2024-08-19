@@ -1,0 +1,102 @@
+---
+title: 'Contentlayer with Next.JS latest App Router'
+date: 'Aug 19 2024'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://8qbgmple95w84kds.public.blob.vercel-storage.com/contentlayer-IIlphageX9n3qoI4hUochjSf5KGJ22.png'
+about: 'Contentlayer is a content management framework designed for modern web development like Next.JS. It provide end to end type safety and hot reload support for your content.'
+tags:
+  [
+    'how to use contentlayer',
+    'contentlayer with next.js',
+    'contentlayer with next.js latest app router',
+    'mdx and md files with contentlayer',
+    'blog content with contentlayer',
+  ]
+related: 'frontend'
+---
+
+<TableContent title="Contentlayer with Next.JS latest App Router" />
+
+[Contentlayer](https://contentlayer.dev/) is a content management framework designed for modern web where we get the power of type safety and hot reload support for our content. It is designed to scale with your content and provide a seamless developer experience. Also It's quite nicely configurable.
+
+I personally use `Contentlayer` for my this blog and I just love it. I like to to write my blog in `MDX` and contentlayer make it so easy to organize and manage my content. I get fully type safety and to make posts more readable with integrating packages like `rehype`, `remark` it make it more powerful. I can easily add custom React Components in my `MDX` files and it's just amazing.
+
+It build all the contnet on build times and provide a `JSON` file which we can use to get the content. It helps to reduce the JS bundle size and make the app faster. Even the syntax highlighting we get on build time. It's just amazing✨.
+
+But as you know the main package is not maintain now and it won't work well with latest Next.JS versions and even got issue with few `remark` packages. Contentlayer still used by many developers and it's a great tool. I was in search of a way to uprgade it with latest Next.JS version and I found a way to do it. I will share the steps to do it.
+
+<Separator />
+
+## Contentlayer2 by Timothy
+
+Timothy has created a new package called [Contentlayer2](https://github.com/timlrx/contentlayer2) which is a fork of `Contentlayer` and it's working well with latest Next.JS version. he put good effort to make it work with latest Next.JS version and also fixed the issue with `remark` packages. It's a great work by him.
+
+The transition is so smooth as it is fork of original `Contentlayer` so if you are using `Contentlayer` then you can easily upgrade to `Contentlayer2`.
+
+```bash
+yarn remove contentlayer next-contentlayer
+#and
+yarn add contentlayer2 next-contentlayer2
+```
+
+So we just removed old packages and added new packages. Now we need to update the `contentlayer.config.js` file. The configuration is same as `Contentlayer` we just has to update the `import` statement.
+
+```ts /contentlayer2/#i /contentlayer/#v
+import { defineDocumentType, makeSource } from 'contentlayer/source-files';
+//to
+import { defineDocumentType, makeSource } from 'contentlayer2/source-files';
+```
+
+Now we just need to updated our `MDX` component import statement for `next-contentlayer`.
+
+```ts /next-contentlayer2/#i /next-contentlayer/#v
+import { useMDXComponent } from 'next-contentlayer/hooks';
+//to
+import { useMDXComponent } from 'next-contentlayer2/hooks';
+```
+
+With just this change we just updated the `Contentlayer` to `Contentlayer2`. Now we can use it with latest Next.JS version. You can now upgrade your `remark` and `rehype` packages to latest version and it will work well. If you are using `remark-gfm` you have to updated it to latest version.
+
+<Advertise title="Streaming Components in Next.js using Suspense" />
+
+<Separator />
+
+## Few Caveats to keep in mind
+
+- If you are using `remark-gfm` then you have to update it to latest version.
+- Try to upgrade all the `remark` and `rehype` packages to latest version if you get any issue related to it.
+- If you are getting any error related to `Error: Cannot read properties of undefined (reading 'A')` then update your dev script `"dev": "next dev --turbo",` and run the dev server again.
+- `--turbo` flag affect your live reload issue for `mdx` or `md` file i was getting this and not able to get any help for it yet.
+
+Alternatively you can use `contentlayer` build command `npx contentlayer2 build` to build when you change content. It will build the content and you can see the changes in your app. You should also update dev server to fix this issue as if you delete your `.contentlayer` file and run dev server as mention above with `--turbo` flag it won't build the contnet which cause app crash.
+
+To fix that issue you update dev server command to below command.
+
+```bash
+"dev": "npx contentlayer2 build && next dev --turbo",
+```
+
+## Next and React RC versions
+
+Contentlayer2 works well with `React 19` and `Next.js 15`. I have tested it with these versions and it's working well. If you are using these versions then you can use `Contentlayer2` without any issue if you have already upgraded to `Contentlayer2` as mentioned above.
+
+To use Next.JS and React RC versions you can update your package using below command.
+
+```bash
+yarn add next@rc react@rc react-dom@rc
+```
+
+This will install the latest RC versions of `Next.JS` and `React`. You can now use `Contentlayer2` with these versions.
+
+> Keep in mind that RC version are not stable and it's not recommended to use in production. You can use it for testing purpose and to check the compatibility of your app with latest versions.
+
+<Separator />
+
+## Conclusion
+
+Contentlayer is a great tool for managing content for Next.JS apps and it's great to see that it's still maintained by the community. I was bit worried when I saw that it's not maintained anymore but thanks to [Timothy](https://github.com/timlrx) for creating `Contentlayer2` and making it work with latest Next.JS version.
+
+As you reading this blog you can see the amount of customization we can do with `MDX` and `Contentlayer`. It's a great tool for managing content and I highly recommend it for your Next.JS apps. If you are new and wanna try it then you can check the [official Example](https://github.com/contentlayerdev/next-contentlayer-example) and just update the packages to `Contentlayer2` and you are good to go.
+
+I hope this article help you to upgrade your `Contentlayer` to `Contentlayer2` and make it work with latest Next.JS version. Let me know if you have any questions or suggestions in the comments below. Happy Coding! 🚀
