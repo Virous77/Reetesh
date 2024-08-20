@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useRef, useState } from 'react';
+import React, { ReactNode, useRef, useState } from 'react';
 import {
   motion,
   useMotionValueEvent,
@@ -188,5 +188,42 @@ export const GithubCard = ({
     >
       {children}
     </motion.div>
+  );
+};
+
+export const LiveDot = () => {
+  const circleVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+  };
+
+  return (
+    <div className="absolute left-[6px] top-[5.8px] flex items-center justify-center space-x-2">
+      {[...Array(1)].map((_, index) => (
+        <motion.div
+          key={index}
+          className="h-3 w-3 rounded-full bg-heading"
+          variants={circleVariants}
+          initial="hidden"
+          animate="visible"
+          transition={{
+            duration: 0.9,
+            delay: index * 0.2,
+            repeat: Infinity,
+            repeatType: 'reverse',
+          }}
+        ></motion.div>
+      ))}
+      <div className="absolute left-[-8px] h-3 w-3 rounded-full bg-heading opacity-50" />
+    </div>
+  );
+};
+
+export const LiveDotComp = ({ children }: { children: ReactNode }) => {
+  return (
+    <div className="relative">
+      <LiveDot />
+      {children}
+    </div>
   );
 };
