@@ -5,6 +5,7 @@ import { Root } from '@/routes';
 import FrontendSkill from './frontend-skill';
 import BackendSkill from './backend-skill';
 import OthersSkill from './others-skill';
+import { cn } from '@/lib/utils';
 
 type TSkills = {
   skills: TSkill[];
@@ -50,7 +51,13 @@ const Skill: React.FC<TSkills> = ({ skills, componentType }) => {
         </section>
       )}
 
-      <div className="skill-list mt-6 items-start gap-3 px-3 md:px-8">
+      <div
+        className={cn(
+          'mt-6 gap-3 px-3 md:px-8',
+          componentType === 'main' && 'skill-list items-start',
+          componentType === 'reusable' && 'flex flex-col gap-3'
+        )}
+      >
         <FrontendSkill
           skills={skills
             .filter((skill) => skill.skillType === 'frontend')

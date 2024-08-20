@@ -7,6 +7,10 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Provider } from '@/lib/reactQuery-provider';
 import { Analytics } from '@vercel/analytics/react';
 import Accessibility from '@/components/common/accessibility';
+import dynamic from 'next/dynamic';
+const MenuComp = dynamic(() => import('@/components/common/menu'), {
+  ssr: false,
+});
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -81,6 +85,7 @@ const RootLayout = ({
             <SpeedInsights />
             <ThemeSwitcher />
             <Accessibility />
+            <MenuComp />
           </Provider>
         </ThemeProviderComp>
       </body>

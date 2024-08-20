@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Social from '../social/social';
 import { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
+import { LiveDotComp } from './motion';
 
 type TLink = {
   name: string;
@@ -33,7 +34,7 @@ const CommonTab: React.FC<TCommonTab> = ({ links, type = true }) => {
               aria-label={link.name}
             >
               {link.icon ? (
-                <span>{link.icon}</span>
+                <LiveDotComp>{link.icon}</LiveDotComp>
               ) : (
                 <span className="block h-[1px] w-10 bg-foreground opacity-50"></span>
               )}
