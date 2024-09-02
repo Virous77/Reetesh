@@ -96,7 +96,7 @@ const CommandSearch: React.FC<TCommandSearch> = ({ blogs }) => {
       <CommandDialog
         open={open}
         onOpenChange={() => {
-          setOpen(!open);
+          setOpen(false);
           setTimeout(() => {
             if (open) {
               localStorage.removeItem('commandOpen');
