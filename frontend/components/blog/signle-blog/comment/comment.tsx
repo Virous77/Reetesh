@@ -24,7 +24,8 @@ const createPopulateOptions = (depth: number): TPopulateOptions => {
 const getComments = async ({ id }: { id: string }) => {
   await dbConnect();
 
-  const comments: TBlog[] = await blogComments
+  // TODO: Add types
+  const comments: any[] = await blogComments
     .find({ blogId: id, parent: null })
     .sort({ createdAt: -1 })
     .populate(createPopulateOptions(20))
