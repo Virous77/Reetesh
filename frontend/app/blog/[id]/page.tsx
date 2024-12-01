@@ -22,11 +22,12 @@ export const generateStaticParams = async () => {
   }));
 };
 
-export const generateMetadata = async ({
-  params,
-}: {
-  params: { id: string };
-}) => {
+export const generateMetadata = async (
+  props: {
+    params: Promise<{ id: string }>;
+  }
+) => {
+  const params = await props.params;
   const blog = allPosts.find((post) => post.slugAsParams === params.id);
 
   const metaData = commonMetaData({
@@ -41,11 +42,17 @@ export const generateMetadata = async ({
   };
 };
 
-const SingleBlogPage = async ({
-  params: { id },
-}: {
-  params: { id: string };
-}) => {
+const SingleBlogPage = async (
+  props: {
+    params: Promise<{ id: string }>;
+  }
+) => {
+  const params = await props.params;
+
+  const {
+    id
+  } = params;
+
   const blog = allPosts.find((post) => post.slugAsParams === id);
   const relatedBlogs =
     allPosts.filter(

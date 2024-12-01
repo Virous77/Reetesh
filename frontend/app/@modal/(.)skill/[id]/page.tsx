@@ -5,7 +5,8 @@ import dynamic from 'next/dynamic';
 const SkillModal = dynamic(() => import('@/components/skills/skill-modal'));
 const SkillInfo = dynamic(() => import('@/app/skill/[id]/skill-info'));
 
-const SkillModalPage = ({ params }: { params: { id: string } }) => {
+const SkillModalPage = async (props: { params: Promise<{ id: string }> }) => {
+  const params = await props.params;
   if (!params.id) {
     return redirect('/skills');
   }

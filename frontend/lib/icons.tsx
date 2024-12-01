@@ -1,5 +1,7 @@
 import { cn } from './utils';
 
+import type { JSX } from "react";
+
 type IconName =
   | 'typescript'
   | 'javascript'
