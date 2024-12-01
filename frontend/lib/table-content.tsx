@@ -57,7 +57,7 @@ const TableContent = ({ title }: { title: string }) => {
             }}
           >
             {headings.map((heading, index) => (
-              <TableContentList index={index}>
+              <TableContentList index={index} key={index}>
                 <Link
                   href={`#${slugify(heading.title)}`}
                   style={{ textDecoration: 'none' }}

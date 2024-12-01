@@ -8,9 +8,7 @@ import { Provider } from '@/lib/reactQuery-provider';
 import { Analytics } from '@vercel/analytics/react';
 import Accessibility from '@/components/common/accessibility';
 import dynamic from 'next/dynamic';
-const MenuComp = dynamic(() => import('@/components/common/menu'), {
-  ssr: false,
-});
+import MenuProvider from '@/lib/menu-provider';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -77,15 +75,16 @@ const RootLayout = ({
       <body className={`${montserrat.className}`}>
         <ThemeProviderComp attribute="class" defaultTheme="dark">
           <Provider>
-            {modal}
-            <div vaul-drawer-wrapper="" className="bg-background">
-              {children}
-            </div>
-            <Analytics debug={false} />
-            <SpeedInsights />
-            <ThemeSwitcher />
-            <Accessibility />
-            <MenuComp />
+            <MenuProvider>
+              {modal}
+              <div vaul-drawer-wrapper="" className="bg-background">
+                {children}
+              </div>
+              <Analytics debug={false} />
+              <SpeedInsights />
+              <ThemeSwitcher />
+              <Accessibility />
+            </MenuProvider>
           </Provider>
         </ThemeProviderComp>
       </body>

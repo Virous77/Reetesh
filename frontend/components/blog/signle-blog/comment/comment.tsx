@@ -1,7 +1,6 @@
 import dbConnect from '@/db/mongoose';
 import blogComments, { TBlog } from '@/models/blog-comments';
-import dynamic from 'next/dynamic';
-const CommentList = dynamic(() => import('./comment-list'), { ssr: false });
+import CommentProvider from './comment-provider';
 
 type TPopulateOptions = {
   path: string;
@@ -45,7 +44,7 @@ export const Comment = async ({ slug }: { slug: string }) => {
         Comments ({data.length || 0})
       </h2>
 
-      <CommentList data={data} />
+      <CommentProvider data={data} />
       <span className="mb-3 inline-block h-[2px] w-full bg-accent"></span>
     </section>
   );

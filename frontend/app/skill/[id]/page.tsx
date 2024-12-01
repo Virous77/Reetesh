@@ -17,11 +17,12 @@ export const generateStaticParams = async () => {
   }));
 };
 
-export const generateMetadata = async ({
-  params,
-}: {
-  params: { id: string };
-}) => {
+export const generateMetadata = async (
+  props: {
+    params: Promise<{ id: string }>;
+  }
+) => {
+  const params = await props.params;
   const newName = params.id
     .split('-')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -44,7 +45,8 @@ const getSkills = async () => {
   return skillLists;
 };
 
-const SingleSkillPage = async ({ params }: { params: { id: string } }) => {
+const SingleSkillPage = async (props: { params: Promise<{ id: string }> }) => {
+  const params = await props.params;
   const skills = await getSkills();
   if (!params.id) {
     return redirect('/skills');
