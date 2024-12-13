@@ -1,14 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import {
-  Credenza,
-  CredenzaContent,
-  CredenzaHeader,
-  CredenzaTitle,
-} from '../ui/responsive-modal';
 import { useMediaQuery } from '@/lib/media-query';
 import { useState } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 
 const SkillModal = ({
   children,
@@ -35,16 +30,14 @@ const SkillModal = ({
   };
 
   return (
-    <Credenza open={true} onOpenChange={handleOpenChange} defaultOpen={true}>
-      <CredenzaContent className="rounded-md bg-background px-3 pb-3 md:max-w-[700px] md:px-4 md:pb-4">
-        <CredenzaHeader>
-          <CredenzaTitle className="font-mono uppercase">
-            {newName}
-          </CredenzaTitle>
-        </CredenzaHeader>
+    <Dialog open={true} onOpenChange={handleOpenChange} defaultOpen={true}>
+      <DialogContent className="w-[95%] rounded-md bg-background px-3 pb-3 md:max-w-[700px] md:px-4 md:pb-4">
+        <DialogHeader>
+          <DialogTitle className="font-mono uppercase">{newName}</DialogTitle>
+        </DialogHeader>
         {children}
-      </CredenzaContent>
-    </Credenza>
+      </DialogContent>
+    </Dialog>
   );
 };
 

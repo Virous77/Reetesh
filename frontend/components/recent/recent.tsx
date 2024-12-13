@@ -5,7 +5,7 @@ import { BlogDetails } from '@/routes';
 import dbConnect from '@/db/mongoose';
 import projects, { TProject } from '@/models/projects';
 import { slugify } from 'markdown-to-jsx';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 
 const getLatestProjects = async () => {
   await dbConnect();

@@ -1,9 +1,8 @@
-/* eslint-disable no-unused-vars */
 'use client';
 
 import * as React from 'react';
+
 import { cn } from '@/lib/utils';
-import { useMediaQuery } from '@/lib/media-query';
 import {
   Dialog,
   DialogClose,
@@ -24,6 +23,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
+import { useMediaQuery } from '@/lib/media-query';
 
 interface BaseProps {
   children: React.ReactNode;
@@ -32,7 +32,6 @@ interface BaseProps {
 interface RootCredenzaProps extends BaseProps {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
-  defaultOpen?: boolean;
 }
 
 interface CredenzaProps extends BaseProps {
@@ -42,15 +41,11 @@ interface CredenzaProps extends BaseProps {
 
 const desktop = '(min-width: 768px)';
 
-const Credenza = ({ children, defaultOpen, ...props }: RootCredenzaProps) => {
+const Credenza = ({ children, ...props }: RootCredenzaProps) => {
   const isDesktop = useMediaQuery(desktop);
   const Credenza = isDesktop ? Dialog : Drawer;
 
-  return (
-    <Credenza defaultOpen={defaultOpen} {...props}>
-      {children}
-    </Credenza>
-  );
+  return <Credenza {...props}>{children}</Credenza>;
 };
 
 const CredenzaTrigger = ({ className, children, ...props }: CredenzaProps) => {
@@ -80,11 +75,7 @@ const CredenzaContent = ({ className, children, ...props }: CredenzaProps) => {
   const CredenzaContent = isDesktop ? DialogContent : DrawerContent;
 
   return (
-    <CredenzaContent
-      className={className}
-      {...props}
-      onOpenAutoFocus={(e) => e.preventDefault()}
-    >
+    <CredenzaContent className={className} {...props}>
       {children}
     </CredenzaContent>
   );

@@ -7,8 +7,8 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Provider } from '@/lib/reactQuery-provider';
 import { Analytics } from '@vercel/analytics/react';
 import Accessibility from '@/components/common/accessibility';
-import dynamic from 'next/dynamic';
 import MenuProvider from '@/lib/menu-provider';
+import { ViewTransitions } from 'next-view-transitions';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -46,49 +46,51 @@ const RootLayout = ({
   modal: React.ReactNode;
 }) => {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <meta
-          name="google-site-verification"
-          content="ymnya5tVzcP4bwvG455V0AZC282mwI4Iy3mnS3uBTD0"
-        />
-        <meta name="googlebot" content="index, follow" />
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/apple-touch-icon.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon-16x16.png"
-        />
-        <link rel="preconnect" href="https://res.cloudinary.com" />
-      </head>
-      <body className={`${montserrat.className}`}>
-        <ThemeProviderComp attribute="class" defaultTheme="dark">
-          <Provider>
-            <MenuProvider>
-              {modal}
-              <div vaul-drawer-wrapper="" className="bg-background">
-                {children}
-              </div>
-              <Analytics debug={false} />
-              <SpeedInsights />
-              <ThemeSwitcher />
-              <Accessibility />
-            </MenuProvider>
-          </Provider>
-        </ThemeProviderComp>
-      </body>
-    </html>
+    <ViewTransitions>
+      <html lang="en" suppressHydrationWarning>
+        <head>
+          <meta
+            name="google-site-verification"
+            content="ymnya5tVzcP4bwvG455V0AZC282mwI4Iy3mnS3uBTD0"
+          />
+          <meta name="googlebot" content="index, follow" />
+          <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/apple-touch-icon.png"
+          />
+          <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/favicon-32x32.png"
+          />
+          <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/favicon-16x16.png"
+          />
+          <link rel="preconnect" href="https://res.cloudinary.com" />
+        </head>
+        <body className={`${montserrat.className}`}>
+          <ThemeProviderComp attribute="class" defaultTheme="dark">
+            <Provider>
+              <MenuProvider>
+                {modal}
+                <div vaul-drawer-wrapper="" className="bg-background">
+                  {children}
+                </div>
+                <Analytics debug={false} />
+                <SpeedInsights />
+                <ThemeSwitcher />
+                <Accessibility />
+              </MenuProvider>
+            </Provider>
+          </ThemeProviderComp>
+        </body>
+      </html>
+    </ViewTransitions>
   );
 };
 

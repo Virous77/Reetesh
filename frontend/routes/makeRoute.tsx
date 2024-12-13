@@ -3,7 +3,7 @@ Derived from: https://www.flightcontrol.dev/blog/fix-nextjs-routing-to-have-full
 */
 import { z } from 'zod';
 import queryString from 'query-string';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 
 type LinkProps = Parameters<typeof Link>[0];
 
