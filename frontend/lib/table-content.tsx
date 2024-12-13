@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { slugify } from '@/utils/utils';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 
 const TableContent = ({ title }: { title: string }) => {
   const currentPost = allPosts.find((post) => post.title === title);

@@ -5,7 +5,7 @@ import { Card, CardContent } from '../ui/card';
 import Image from 'next/image';
 import { TProject } from '@/models/projects';
 import { Projects } from '@/routes';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { slugify } from 'markdown-to-jsx';
 import { Separator } from '../ui/separator';
 
