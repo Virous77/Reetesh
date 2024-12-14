@@ -21,9 +21,9 @@ const ThemeSwitcher = () => {
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       >
         {theme === "dark" ? (
-          <Sun size={20} data-testid="sun" />
+          <Sun size={20} aria-label="light" />
         ) : (
-          <Moon size={20} data-testid="moon" />
+          <Moon size={20} aria-label="dark" />
         )}
       </div>
     </div>
