@@ -9,6 +9,7 @@ import { Analytics } from '@vercel/analytics/react';
 import Accessibility from '@/components/common/accessibility';
 import MenuProvider from '@/lib/menu-provider';
 import { ViewTransitions } from 'next-view-transitions';
+import NextTopLoader from 'nextjs-toploader';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -75,6 +76,17 @@ const RootLayout = ({
         </head>
         <body className={`${montserrat.className}`}>
           <ThemeProviderComp attribute="class" defaultTheme="dark">
+            <NextTopLoader
+              color="#e21d49"
+              initialPosition={0.08}
+              crawlSpeed={200}
+              height={3}
+              crawl={true}
+              showSpinner={false}
+              easing="ease"
+              speed={200}
+              shadow="0 0 10px #e21d49,0 0 5px #e21d49"
+            />
             <Provider>
               <MenuProvider>
                 {modal}
