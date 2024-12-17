@@ -30,16 +30,16 @@ const GithubStreak = async () => {
           styleTypeInitial={{ y: 100 }}
         >
           <div className="text-4xl font-bold">
-            {data?.stats.totalContributions || '0000'}
+            {data?.stats?.totalContributions || '1712'}
           </div>
           <div className="whitespace-nowrap text-xs md:text-sm">
             Total Contributions
           </div>
           <div className="mt-1 flex flex-col items-center text-xs text-muted-foreground">
             <span className="font-sans">
-              {formateDate(
-                data?.stats.firstContribution || new Date().toString()
-              )}
+              {data?.stats?.firstContribution
+                ? formateDate(data?.stats?.firstContribution)
+                : 'Mar 12, 2022'}
             </span>
             <MoveDown size={14} className="mb-[2px] mt-[2px] h-2" />
             <span className="font-sans">Present</span>
@@ -52,7 +52,7 @@ const GithubStreak = async () => {
           styleTypeInitial={{ y: -100 }}
         >
           <div className="text-4xl font-bold">
-            {data?.stats.currentStreak.length || 0}
+            {data?.stats.currentStreak?.length || 0}
           </div>
           <div className="whitespace-nowrap text-xs font-bold md:text-sm">
             Current Streaks
@@ -60,16 +60,16 @@ const GithubStreak = async () => {
 
           <div className="mt-1 flex flex-col items-center text-xs text-muted-foreground">
             <span className="font-sans">
-              {formateDate(
-                data?.stats.currentStreak.start || new Date().toString()
-              )}
+              {data?.stats.currentStreak?.start
+                ? formateDate(data?.stats.currentStreak?.start)
+                : 'Nov 23, 2023'}
             </span>
             <MoveDown size={14} className="mb-[2px] mt-[2px] h-2" />
 
             <span className="font-sans">
-              {formateDate(
-                data?.stats.currentStreak.end || new Date().toString()
-              )}
+              {data?.stats.currentStreak?.end
+                ? formateDate(data?.stats.currentStreak?.end)
+                : 'Feb 22, 2024'}
             </span>
           </div>
         </GithubCard>
@@ -80,7 +80,7 @@ const GithubStreak = async () => {
           styleTypeInitial={{ y: 100 }}
         >
           <div className="text-4xl font-bold">
-            {data?.stats.longestStreak.length || 92}
+            {data?.stats.longestStreak?.length || 92}
           </div>
           <div className="whitespace-nowrap text-xs md:text-sm">
             Longest Streaks
@@ -88,13 +88,13 @@ const GithubStreak = async () => {
           <div className="mt-1 flex flex-col items-center text-xs text-muted-foreground">
             <span className="font-sans">
               {formateDate(
-                data?.stats.longestStreak.start || new Date().toString()
+                data?.stats.longestStreak?.start || new Date().toString()
               )}
             </span>
             <MoveDown size={14} className="mb-[2px] mt-[2px] h-2" />
             <span className="font-sans">
               {formateDate(
-                data?.stats.longestStreak.end || new Date().toString()
+                data?.stats.longestStreak?.end || new Date().toString()
               )}
             </span>
           </div>
