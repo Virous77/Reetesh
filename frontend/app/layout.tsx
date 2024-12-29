@@ -90,9 +90,7 @@ const RootLayout = ({
             <Provider>
               <MenuProvider>
                 {modal}
-                <div vaul-drawer-wrapper="" className="bg-background">
-                  {children}
-                </div>
+                {children}
                 <Analytics debug={false} />
                 <SpeedInsights />
                 <ThemeSwitcher />
