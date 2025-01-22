@@ -3,7 +3,6 @@ import './globals.css';
 import ThemeProviderComp from '@/lib/theme-provider';
 import ThemeSwitcher from '@/components/theme/theme-switcher';
 import { commonMetaData } from '@/utils/utils';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Provider } from '@/lib/reactQuery-provider';
 import { Analytics } from '@vercel/analytics/react';
 import Accessibility from '@/components/common/accessibility';
@@ -92,7 +91,6 @@ const RootLayout = ({
                 {modal}
                 {children}
                 <Analytics debug={false} />
-                <SpeedInsights />
                 <ThemeSwitcher />
                 <Accessibility />
               </MenuProvider>
