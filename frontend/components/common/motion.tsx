@@ -64,7 +64,7 @@ export const BlogShareMotion = ({
   const { isHidden, setIsHidden } = useCommonHook();
   return (
     <motion.section
-      className={`fixed bottom-0 z-10 mb-4 w-fit -translate-x-1/2 -translate-y-1/2 transform rounded-full border p-2 shadow-2xl backdrop-blur dark:bg-[#111111]/60 ${isHidden ? 'pt-4' : 'pt-2'}`}
+      className={`fixed bottom-0 z-10 mb-4 w-fit rounded-full border p-2 shadow-2xl backdrop-blur-sm dark:bg-[#111111]/60 ${isHidden ? 'pt-4' : 'pt-2'}`}
       style={{
         left: '50%',
       }}
@@ -91,7 +91,7 @@ export const BlogShareMotion = ({
           aria-label="show share"
           aria-hidden="true"
           onClick={() => setIsHidden(false)}
-          className="absolute top-[5px] h-2 w-[60px] -translate-x-1/2 -translate-y-1/2 transform cursor-pointer rounded-full bg-gradient-to-r from-[#515050] to-[#828282] duration-500"
+          className="absolute top-[5px] h-2 w-[60px] -translate-x-1/2 -translate-y-1/2 transform cursor-pointer rounded-full bg-linear-to-r from-[#515050] to-[#828282] duration-500"
           style={{
             left: '50%',
           }}
@@ -198,11 +198,11 @@ export const LiveDot = () => {
   };
 
   return (
-    <div className="absolute left-[6px] top-[5.8px] flex items-center justify-center space-x-2">
+    <div className="absolute top-[6px] left-[6px] flex items-center justify-center space-x-2">
       {[...Array(1)].map((_, index) => (
         <motion.div
           key={index}
-          className="h-3 w-3 rounded-full bg-heading"
+          className="bg-heading h-3 w-3 rounded-full"
           variants={circleVariants}
           initial="hidden"
           animate="visible"
@@ -214,7 +214,7 @@ export const LiveDot = () => {
           }}
         ></motion.div>
       ))}
-      <div className="absolute left-[-8px] h-3 w-3 rounded-full bg-heading opacity-50" />
+      <div className="bg-heading absolute left-[-0.7px] h-3 w-3 rounded-full opacity-50" />
     </div>
   );
 };

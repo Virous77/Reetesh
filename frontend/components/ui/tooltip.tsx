@@ -60,7 +60,7 @@ export const ToolTipLink = ({
       <Tooltip>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
         <TooltipContent
-          className={cn('h-fit max-w-64 rounded-[20px] p-3 text-white shadow')}
+          className={cn('h-fit max-w-64 rounded-[20px] p-3 text-white shadow-sm')}
         >
           {name}
         </TooltipContent>

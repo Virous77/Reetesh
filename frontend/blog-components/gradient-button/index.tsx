@@ -21,7 +21,7 @@ const GradientBorderButton = ({ width = '200px' }: { width?: string }) => {
           <span
             className={cn(
               styles.btnSpan,
-              'relative z-[1] w-full bg-background text-base text-[#fff] backdrop-blur-[40px]'
+              'bg-background text-primary relative z-[1] w-full text-base backdrop-blur-[40px]'
             )}
           >
             Button
@@ -30,7 +30,7 @@ const GradientBorderButton = ({ width = '200px' }: { width?: string }) => {
       </div>
 
       <a
-        className="absolute bottom-0 right-0 z-10 text-xs"
+        className="absolute right-0 bottom-0 z-10 text-xs"
         href="https://github.com/Virous77/Reetesh/tree/main/frontend/blog-components/gradient-button/index.tsx"
         target="_blank"
         rel="noopener noreferrer"

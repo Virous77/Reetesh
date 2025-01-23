@@ -9,7 +9,7 @@ type TPreview = {
 const Preview: React.FC<TPreview> = ({ comment, isComment }) => {
   return (
     <div
-      className={`just-way prose-headings:font-cal prose prose-base prose-neutral ${isComment ? 'mb-[18px]' : 'mb-[14px]'} rounded-lg border p-2 dark:prose-invert prose-a:text-default prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-defaultMax prose-blockquote:font-light prose-img:rounded-lg`}
+      className={`just-way prose-headings:font-cal prose prose-base prose-neutral ${isComment ? 'mb-[18px]' : 'mb-[14px]'} rounded-lg border p-2 dark:prose-invert prose-a:text-default prose-a:underline prose-a:underline-offset-4 prose-a:hover:text-defaultMax prose-blockquote:font-light prose-img:rounded-lg`}
     >
       {comment ? (
         <CommentMarkdown comment={comment} isCode={comment.includes('```')} />

@@ -56,7 +56,6 @@ const CommandSearch: React.FC<TCommandSearch> = ({ blogs }) => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen(true);
-        localStorage.setItem('commandOpen', JSON.stringify('true'));
       }
     };
 
@@ -64,30 +63,22 @@ const CommandSearch: React.FC<TCommandSearch> = ({ blogs }) => {
     return () => document.removeEventListener('keydown', down);
   }, []);
 
-  useEffect(() => {
-    const isCommandOpen = getLocalData('commandOpen');
-    if (isCommandOpen) {
-      setOpen(true);
-    }
-  }, []);
-
   return (
     <React.Fragment>
       <div>
         <Button
-          className="flex cursor-pointer items-center gap-10 rounded border bg-transparent p-2 pr-6 transition-colors duration-200 ease-in-out hover:bg-accent md:pr-2"
+          className="hover:bg-accent flex cursor-pointer items-center gap-10 rounded border bg-transparent p-2 pr-6 transition-colors duration-200 ease-in-out md:pr-2"
           onClick={() => {
             setOpen(!open);
-            localStorage.setItem('commandOpen', JSON.stringify('true'));
           }}
         >
           <span className="flex items-center gap-2">
             <Search size={16} className="text-muted-foreground" />
-            <p className="text-[0.875rem] text-muted-foreground">
+            <p className="text-muted-foreground text-[0.875rem]">
               Search Posts
             </p>
           </span>
-          <kbd className="pointer-events-none hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] text-sm font-medium text-muted-foreground opacity-100 md:inline-flex">
+          <kbd className="bg-muted text-muted-foreground pointer-events-none hidden h-5 items-center gap-1 rounded border px-1.5 font-mono text-sm text-[10px] font-medium opacity-100 select-none md:inline-flex">
             <span className="text-xs">⌘</span>
             <span className="text-[0.625rem]">K</span>
           </kbd>
@@ -97,11 +88,6 @@ const CommandSearch: React.FC<TCommandSearch> = ({ blogs }) => {
         open={open}
         onOpenChange={() => {
           setOpen(false);
-          setTimeout(() => {
-            if (open) {
-              localStorage.removeItem('commandOpen');
-            }
-          }, 1000);
         }}
       >
         <CommandInput
@@ -120,7 +106,6 @@ const CommandSearch: React.FC<TCommandSearch> = ({ blogs }) => {
                   onSelect={() => {
                     handleRecentSearch(item);
                     router.push(`/blog/${slugify(item)}`);
-                    localStorage.removeItem('commandOpen');
                   }}
                 >
                   <div className="flex items-center gap-3">
