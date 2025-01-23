@@ -1,6 +1,5 @@
 'use client';
 
-import { getLocalData } from '@/utils/utils';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -9,15 +8,8 @@ const Accessibility = () => {
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      const localData = getLocalData('commandOpen');
       const key = e.key.toLowerCase();
       const masterKey = e.metaKey || e.ctrlKey;
-
-      if (localData === 0) {
-        if (key === 'escape') {
-          router.back();
-        }
-      }
 
       if (key === 'b' && masterKey) {
         e.preventDefault();
@@ -52,7 +44,6 @@ const Accessibility = () => {
       if (key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         router.push('/blogs');
-        localStorage.setItem('commandOpen', JSON.stringify('true'));
       }
     };
 

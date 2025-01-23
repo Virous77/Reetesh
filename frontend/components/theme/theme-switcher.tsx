@@ -23,7 +23,7 @@ const ThemeSwitcher = () => {
         pathName.includes('/blog') || pathName.includes('/learn')
           ? 'bottom-5'
           : 'top-3'
-      } z-[101]`}
+      } z-101`}
     >
       <Button
         size="icon"

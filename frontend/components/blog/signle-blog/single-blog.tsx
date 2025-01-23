@@ -23,7 +23,7 @@ type TSingleBlog = {
 const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
   return (
     <React.Fragment>
-      <BlogHeader className="sticky left-0 top-0 z-20 mb-3 flex w-full items-center justify-between p-4 backdrop-blur dark:bg-[#111111]/60 md:hidden">
+      <BlogHeader className="sticky left-0 top-0 z-20 mb-3 flex w-full items-center justify-between p-4 backdrop-blur-sm dark:bg-[#111111]/60 md:hidden">
         <Author />
 
         <div className="flex items-center gap-3">
@@ -35,7 +35,7 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
       </BlogHeader>
 
       <div style={{ maxWidth: '750px', margin: 'auto' }}>
-        <BlogHeader className="sticky top-0 z-20 mb-3 hidden items-center justify-between py-3 backdrop-blur dark:bg-[#111111]/60 md:flex">
+        <BlogHeader className="sticky top-0 z-20 mb-3 hidden items-center justify-between py-3 backdrop-blur-sm dark:bg-[#111111]/60 md:flex">
           <Author />
 
           <div className="flex items-center gap-3">
@@ -68,7 +68,7 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
           </div>
         </section>
 
-        <section className="box-fit prose-headings:font-cal prose prose-base prose-neutral mt-6 dark:prose-invert prose-a:whitespace-nowrap prose-a:text-default prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-defaultMax prose-blockquote:font-light prose-th:p-0 prose-img:mb-0 prose-img:mt-0">
+        <section className="box-fit prose-headings:font-cal prose prose-base prose-neutral mt-6 dark:prose-invert prose-a:whitespace-nowrap prose-a:text-default prose-a:underline prose-a:underline-offset-4 prose-a:hover:text-defaultMax prose-blockquote:font-light prose-th:p-0 prose-img:mb-0 prose-img:mt-0">
           <Mdx code={blog.body.code} />
         </section>
 

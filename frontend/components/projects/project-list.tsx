@@ -19,7 +19,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
     <ul className="flex flex-col gap-2">
       {projects?.map((project) => (
         <li key={project._id}>
-          <Card className="to-[#1f1f1f]shadow-lg m-1 h-fit border from-[#111111] dark:border-none dark:bg-gradient-to-r dark:shadow-none">
+          <Card className="to-[#1f1f1f]shadow-lg m-1 h-fit border from-[#111111] dark:border-none dark:bg-linear-to-r dark:shadow-none">
             <CardContent className="p-3">
               <>
                 <h3

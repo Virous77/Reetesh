@@ -10,7 +10,7 @@ type TMessage = {
 const AuthorCard: React.FC<TMessage> = ({ message }) => {
   return (
     <MainCard>
-      <Card className="border border-none bg-transparent from-[#111111] to-[#1f1f1f] p-2 px-0 pb-3 shadow-none dark:md:bg-gradient-to-r lg:max-w-[440px]">
+      <Card className="border border-none bg-transparent from-[#111111] to-[#1f1f1f] p-2 px-0 pb-3 shadow-none dark:md:bg-linear-to-r lg:max-w-[440px]">
         <CardHeader className="justify-between p-3">
           <div className="flex items-center justify-between">
             <Author />

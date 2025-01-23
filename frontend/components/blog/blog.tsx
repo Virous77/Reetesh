@@ -35,8 +35,8 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
         {blogs.map((blog) => (
           <li key={blog._id} className="group relative list-none">
             <BlogBorder>
-              <Card className="h-full w-full border-none shadow">
-                <CardContent className="border-none p-3 shadow">
+              <Card className="h-full w-full border-none shadow-sm">
+                <CardContent className="border-none p-3 shadow-sm">
                   <CardImage src={blog.blogImage} title={blog.title} />
 
                   <div className="mt-3 flex items-center gap-3">
@@ -78,7 +78,7 @@ export default Blog;
 
 const CardImage = ({ src, title }: { src: string; title: string }) => {
   return (
-    <div className="z-[1] h-full w-full overflow-hidden transition-all duration-300 group-hover:rounded-sm">
+    <div className="z-1 h-full w-full overflow-hidden transition-all duration-300 group-hover:rounded-sm">
       <Image
         src={src}
         alt={title}

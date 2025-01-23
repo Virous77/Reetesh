@@ -16,7 +16,7 @@ export const generateMetadata = async () => {
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className="fade-in-out from-[#111111] to-[#1f1f1f] pt-6 dark:bg-gradient-to-r">
+    <main className="fade-in-out from-[#111111] to-[#1f1f1f] pt-6 dark:bg-linear-to-r">
       {children}
     </main>
   );

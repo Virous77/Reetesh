@@ -293,13 +293,13 @@ const LoginForm = () => {
 
     return (
     <form onSubmit={handleSubmit} className=" flex flex-col gap-3">
-      <Label htmlFor="email">Email</Label>
-      <Input id="email" name="email" type="email" />
-      <Label htmlFor="password">Password</Label>
-      <Input id="password" name="password" type="password" />
-      <Button type="submit" className="w-full">
+      <label htmlFor="email">Email</label>
+      <input id="email" name="email" type="email" />
+      <label htmlFor="password">Password</label>
+      <input id="password" name="password" type="password" />
+      <button type="submit" className="w-full">
         <span>Login</span>
-      </Button>
+      </button>
     </form>
     )};
 
@@ -419,9 +419,9 @@ const RegisterPage = () => {
 
     return (
     <form onSubmit={handleSubmit}>
-     <label htmlFor="name">Name</abel>
+     <label htmlFor="name">Name</label>
       <input id="name" name="name" type="text" />
-      <label htmlFor="email">Email</abel>
+      <label htmlFor="email">Email</label>
       <input id="email" name="email" type="email" />
       <label htmlFor="password">Password</label>
       <input id="password" name="password" type="password" />

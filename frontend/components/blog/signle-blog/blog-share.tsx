@@ -49,7 +49,7 @@ const BlogMain = ({ blogId, url, title }: TBlogAction) => {
 
         <A url={`https://wa.me/?text=${url}`} name="Whatsapp">
           <MessageCircle />
-          <p className="absolute left-[13.5px] top-[15px] flex h-3 w-3 items-center justify-center text-[0.44rem]">
+          <p className="absolute top-[15px] left-[13.5px] flex h-3 w-3 items-center justify-center text-[0.44rem]">
             W
           </p>
         </A>
@@ -69,7 +69,7 @@ const A: React.FC<{ children: ReactNode; url: string; name: string }> = ({
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="relative flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+        className="bg-primary text-primary-foreground hover:bg-primary/90 relative flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full"
         title={name}
         aria-label={name}
       >

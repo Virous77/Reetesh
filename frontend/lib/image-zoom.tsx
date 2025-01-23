@@ -1,4 +1,10 @@
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import Image from 'next/image';
 import { ReactNode, useState } from 'react';
 
@@ -15,8 +21,11 @@ const ImageZoom = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{children}</DialogTrigger>
+      <DialogHeader>
+        <DialogTitle>{name}</DialogTitle>
+      </DialogHeader>
       <DialogContent
-        className="flex h-full max-w-full items-center justify-center bg-background p-0"
+        className="bg-background flex h-full max-w-full items-center justify-center p-0"
         isCloseShown={false}
         onClick={() => setOpen(false)}
         style={{ cursor: 'zoom-out' }}
