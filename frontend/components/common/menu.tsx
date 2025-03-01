@@ -21,8 +21,8 @@ const MenuComp = () => {
       className={cn(
         'fixed z-50 flex h-6 w-6 rounded-full lg:hidden',
         isBlog
-          ? 'bottom-14 right-4 md:bottom-[23px] md:right-12'
-          : 'bottom-4 right-4',
+          ? 'right-4 bottom-14 md:right-12 md:bottom-[23px]'
+          : 'right-4 bottom-4',
         isHidden && 'hidden'
       )}
     >

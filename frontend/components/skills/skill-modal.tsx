@@ -31,7 +31,7 @@ const SkillModal = ({
 
   return (
     <Dialog open={true} onOpenChange={handleOpenChange} defaultOpen={true}>
-      <DialogContent className="w-[95%] rounded-md bg-background px-3 pb-3 md:max-w-[700px] md:px-4 md:pb-4">
+      <DialogContent className="bg-background w-[95%] rounded-md px-3 pb-3 md:max-w-[700px] md:px-4 md:pb-4">
         <DialogHeader>
           <DialogTitle className="font-mono uppercase">{newName}</DialogTitle>
         </DialogHeader>

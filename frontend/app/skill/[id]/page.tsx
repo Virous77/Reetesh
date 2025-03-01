@@ -17,11 +17,9 @@ export const generateStaticParams = async () => {
   }));
 };
 
-export const generateMetadata = async (
-  props: {
-    params: Promise<{ id: string }>;
-  }
-) => {
+export const generateMetadata = async (props: {
+  params: Promise<{ id: string }>;
+}) => {
   const params = await props.params;
   const newName = params.id
     .split('-')
@@ -52,7 +50,7 @@ const SingleSkillPage = async (props: { params: Promise<{ id: string }> }) => {
     return redirect('/skills');
   }
   return (
-    <main className="fade-in-out l-template relative flex flex-col items-start gap-4 pb-4 md:grid md:p-[30px] md:pb-0 md:pt-0">
+    <main className="fade-in-out l-template relative flex flex-col items-start gap-4 pb-4 md:grid md:p-[30px] md:pt-0 md:pb-0">
       <div className="h-full overflow-scroll">
         <div className="mt-10 px-3 md:mt-16 md:px-0">
           <SkillInfo name={params.id} componentType="page" />

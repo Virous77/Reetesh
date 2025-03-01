@@ -11,7 +11,7 @@ const MyProjects: React.FC<TMyProjects> = ({ projects }) => {
   return (
     <section className="body h-fit md:h-full lg:overflow-y-scroll">
       <div className="mt-10 flex flex-col items-center">
-        <header className="fixed left-0 top-0 z-10 flex w-full items-center justify-between bg-background p-1 md:static md:block md:bg-transparent md:text-center">
+        <header className="bg-background fixed top-0 left-0 z-10 flex w-full items-center justify-between p-1 md:static md:block md:bg-transparent md:text-center">
           <h1 className="p-2 text-center text-[1.125rem] font-semibold tracking-widest md:p-0 md:text-[1.563rem]">
             My Projects
           </h1>
@@ -23,7 +23,7 @@ const MyProjects: React.FC<TMyProjects> = ({ projects }) => {
           </Root.Link>
         </header>
 
-        <p className="mb-10 mt-2 w-[95%] text-center text-[15px] text-default md:w-[60%]">
+        <p className="text-default mt-2 mb-10 w-[95%] text-center text-[15px] md:w-[60%]">
           Welcome to my Projects Page, a curated showcase of the diverse array
           of applications I&apos;ve crafted on my coding journey. Each project
           reflects not only technical proficiency but also a passion for

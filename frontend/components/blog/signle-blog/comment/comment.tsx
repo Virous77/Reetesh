@@ -38,14 +38,14 @@ export const Comment = async ({ slug }: { slug: string }) => {
 
   return (
     <section className="comment-section px-3 md:px-0">
-      <span className="mb-3 inline-block h-[2px] w-full bg-accent"></span>
+      <span className="bg-accent mb-3 inline-block h-[2px] w-full"></span>
 
-      <h2 className="pb-2 text-lg text-heading">
+      <h2 className="text-heading pb-2 text-lg">
         Comments ({data.length || 0})
       </h2>
 
       <CommentProvider data={data} />
-      <span className="mb-3 inline-block h-[2px] w-full bg-accent"></span>
+      <span className="bg-accent mb-3 inline-block h-[2px] w-full"></span>
     </section>
   );
 };

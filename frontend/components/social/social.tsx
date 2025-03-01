@@ -15,7 +15,7 @@ const Social: React.FC<TSocial> = ({ styles }) => {
             target="_blank"
             rel="noreferrer noopener"
             key={idx}
-            className="text-default transition-colors duration-200 hover:text-defaultMax"
+            className="text-default hover:text-defaultMax transition-colors duration-200"
             referrerPolicy="no-referrer"
             aria-label={social.title}
           >

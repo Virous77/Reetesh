@@ -36,7 +36,7 @@ const CommonTab: React.FC<TCommonTab> = ({ links, type = true }) => {
               {link.icon ? (
                 <LiveDotComp>{link.icon}</LiveDotComp>
               ) : (
-                <span className="block h-[1px] w-10 bg-foreground opacity-50"></span>
+                <span className="bg-foreground block h-[1px] w-10 opacity-50"></span>
               )}
               <span
                 className={cn(

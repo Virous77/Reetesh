@@ -7,7 +7,7 @@ const ButtonGradient = ({ ...props }: ButtonProps) => {
       <Button
         {...props}
         className={cn(
-          'h-10 w-full rounded-full bg-transparent px-8 font-semibold text-foreground backdrop-blur-xl hover:bg-background',
+          'text-foreground hover:bg-background h-10 w-full rounded-full bg-transparent px-8 font-semibold backdrop-blur-xl',
           props.className
         )}
       />

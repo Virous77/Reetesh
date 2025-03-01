@@ -23,7 +23,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
             <CardContent className="p-3">
               <>
                 <h3
-                  className="project-heading mb-1 w-fit font-mono text-base text-heading md:text-[1.125rem]"
+                  className="project-heading text-heading mb-1 w-fit font-mono text-base md:text-[1.125rem]"
                   id={slugify(project.title)}
                 >
                   <Link
@@ -31,16 +31,16 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
                     className="flex items-center gap-2 font-semibold"
                   >
                     {project.title}
-                    <span className="hidden text-secondary-foreground">#</span>
+                    <span className="text-secondary-foreground hidden">#</span>
                   </Link>
                 </h3>
                 {project?.develop && (
-                  <span className="mb-1 flex items-center gap-2 text-[0.813rem] font-semibold uppercase text-default">
+                  <span className="text-default mb-1 flex items-center gap-2 text-[0.813rem] font-semibold uppercase">
                     <CalendarDays size={17} />
                     {project.develop}
                   </span>
                 )}
-                <span className="mb-3 mt-4 block whitespace-pre-wrap text-[0.875rem] leading-5 text-default">
+                <span className="text-default mt-4 mb-3 block text-[0.875rem] leading-5 whitespace-pre-wrap">
                   {parse(project.desc)}
                 </span>
 
@@ -58,7 +58,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
                   {project.tags?.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-md bg-muted px-2 py-1 text-xs capitalize"
+                      className="bg-muted rounded-md px-2 py-1 text-xs capitalize"
                     >
                       {tag}
                     </span>
@@ -68,7 +68,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
                 <div className="mt-4 flex items-center justify-center gap-5">
                   <a
                     href={project.projectLink}
-                    className="flex items-center gap-2 text-[0.813rem] font-bold text-default underline underline-offset-4 hover:text-defaultMax"
+                    className="text-default hover:text-defaultMax flex items-center gap-2 text-[0.813rem] font-bold underline underline-offset-4"
                     target="_blank"
                     referrerPolicy="no-referrer"
                     rel="noreferrer noopener"
@@ -78,7 +78,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
 
                   <a
                     href={project.codeLink}
-                    className="flex items-center gap-2 text-[0.813rem] font-bold text-default underline underline-offset-4 hover:text-defaultMax"
+                    className="text-default hover:text-defaultMax flex items-center gap-2 text-[0.813rem] font-bold underline underline-offset-4"
                     target="_blank"
                     referrerPolicy="no-referrer"
                     rel="noreferrer noopener"
@@ -94,7 +94,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
       ))}
       {isActive && (
         <Projects.Link
-          className="flex cursor-pointer items-center gap-2 text-[0.875rem] text-primary"
+          className="text-primary flex cursor-pointer items-center gap-2 text-[0.875rem]"
           aria-label="Visit all Projects"
         >
           Visit all Projects <MoveRight size={19} />

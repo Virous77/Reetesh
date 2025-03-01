@@ -23,7 +23,7 @@ const Skill: React.FC<TSkills> = ({ skills, componentType }) => {
             </h1>
 
             <div className="mt-6 flex flex-col items-center gap-3">
-              <p className="text-center tracking-wider text-default">
+              <p className="text-default text-center tracking-wider">
                 I am a seasoned developer with a strong proficiency in a
                 versatile set of technologies. Having extensively worked with
                 React, Next.js, Node.js, Express, MongoDB, TypeScript, GraphQL,
@@ -31,7 +31,7 @@ const Skill: React.FC<TSkills> = ({ skills, componentType }) => {
                 wealth of experience to the table.
               </p>
 
-              <p className="text-center tracking-wider text-default">
+              <p className="text-default text-center tracking-wider">
                 My commitment to innovation extends to the realm of React,
                 Next.js, Node.js, TypeScript and GraphQL, where I&apos;ve
                 leveraged these technologies to enhance project efficiency and
@@ -40,7 +40,7 @@ const Skill: React.FC<TSkills> = ({ skills, componentType }) => {
                 application deployment and orchestration.
               </p>
 
-              <p className="text-center tracking-wider text-default">
+              <p className="text-default text-center tracking-wider">
                 Delving into blockchain technologies, I&apos;ve worked
                 extensively with Solidity and Anchor, contributing to the
                 development of decentralized applications (DApps) and exploring

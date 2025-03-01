@@ -22,11 +22,9 @@ export const generateStaticParams = async () => {
   }));
 };
 
-export const generateMetadata = async (
-  props: {
-    params: Promise<{ id: string }>;
-  }
-) => {
+export const generateMetadata = async (props: {
+  params: Promise<{ id: string }>;
+}) => {
   const params = await props.params;
   const blog = allPosts.find((post) => post.slugAsParams === params.id);
 
@@ -42,16 +40,10 @@ export const generateMetadata = async (
   };
 };
 
-const SingleBlogPage = async (
-  props: {
-    params: Promise<{ id: string }>;
-  }
-) => {
+const SingleBlogPage = async (props: { params: Promise<{ id: string }> }) => {
   const params = await props.params;
 
-  const {
-    id
-  } = params;
+  const { id } = params;
 
   const blog = allPosts.find((post) => post.slugAsParams === id);
   const relatedBlogs =
@@ -62,9 +54,7 @@ const SingleBlogPage = async (
   if (!blog) return redirect('/blogs');
 
   return (
-    <PageTransitionMotion
-      className={`relative ${merriweather.className}`}
-    >
+    <PageTransitionMotion className={`relative ${merriweather.className}`}>
       <BlogPageReadTracker className="progress-bar" />
       <SingleBlog blog={blog} relatedBlogs={relatedBlogs.slice(0, 5)} />
     </PageTransitionMotion>

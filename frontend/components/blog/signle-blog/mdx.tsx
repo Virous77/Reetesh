@@ -78,10 +78,7 @@ const components = {
   ),
   a: A,
   p: ({ className, ...props }: any) => (
-    <p
-      className={cn('leading-7 not-first:mt-6', className)}
-      {...props}
-    />
+    <p className={cn('leading-7 not-first:mt-6', className)} {...props} />
   ),
   ul: ({ className, ...props }: any) => (
     <ul
@@ -117,7 +114,7 @@ const components = {
   ),
   tr: ({ className, ...props }: React.HTMLAttributes<HTMLTableRowElement>) => (
     <tr
-      className={cn('m-0 border-t p-0 even:bg-muted', className)}
+      className={cn('even:bg-muted m-0 border-t p-0', className)}
       {...props}
     />
   ),

@@ -72,7 +72,7 @@ const CommentList = ({ data }: { data: TBlog[] }) => {
           ))}
         </div>
       ) : (
-        <p className="pb-2 pt-4 text-center">No comments yet</p>
+        <p className="pt-4 pb-2 text-center">No comments yet</p>
       )}
     </React.Fragment>
   );

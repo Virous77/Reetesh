@@ -90,10 +90,10 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
 
   return (
     <div
-      className={`mt-2 ${comment.children.length > 0 ? 'border-l-2' : 'border-none'} p-2 pl-3 pr-0`}
+      className={`mt-2 ${comment.children.length > 0 ? 'border-l-2' : 'border-none'} p-2 pr-0 pl-3`}
     >
       {optimisticComment.isDeleted ? (
-        <div className="flex items-center gap-2 rounded-md bg-accent p-2 text-[0.938rem] text-default">
+        <div className="bg-accent text-default flex items-center gap-2 rounded-md p-2 text-[0.938rem]">
           <Info size={18} />
           <p>Comment has been deleted</p>
         </div>
@@ -104,7 +104,7 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
         >
           {!adminID.includes(optimisticComment.userId.toLowerCase()) ? (
             <div className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-gray-200">
-              <span className="text-[1.125rem] font-bold text-heading">
+              <span className="text-heading text-[1.125rem] font-bold">
                 {optimisticComment.userId.slice(0, 2)}
               </span>
             </div>
@@ -131,7 +131,7 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
                   reply={reply}
                 />
               )}
-              <p className="text-xs text-default">
+              <p className="text-default text-xs">
                 {formateDate(optimisticComment.createdAt)}
               </p>
             </div>
@@ -139,7 +139,7 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
         </div>
       )}
 
-      <div className="mb-2 mt-2">
+      <div className="mt-2 mb-2">
         {reply && (
           <CommentTabs
             handleAddComment={(e) => {
