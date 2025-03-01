@@ -16,7 +16,7 @@ const Callout: React.FC<TCallout> = (props) => {
       }}
     >
       <span
-        className="absolute flex h-[40px] w-[40px] items-center justify-center rounded-full bg-background text-[1.25rem]"
+        className="bg-background absolute flex h-[40px] w-[40px] items-center justify-center rounded-full text-[1.25rem]"
         style={{ left: '-20px', top: '-10px' }}
       >
         {props.emoji || <CircleAlert size={20} />}

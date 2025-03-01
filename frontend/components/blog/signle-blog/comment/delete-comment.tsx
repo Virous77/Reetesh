@@ -36,7 +36,7 @@ const DeleteComment: React.FC<TDeleteComment> = ({
       <Button
         size="icon"
         disabled={isPending || commentId.includes('opt_')}
-        className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full bg-transparent text-secondary-foreground hover:bg-accent"
+        className="text-secondary-foreground hover:bg-accent flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full bg-transparent"
         onClick={handleDelete}
       >
         <Trash2 size={18} />

@@ -7,8 +7,8 @@ const RelatedPost = ({ relatedBlogs }: { relatedBlogs: Post[] }) => {
   const posts = relatedBlogs;
 
   return (
-    <section className="w-full rounded-[30px] bg-accent p-3 py-5 md:mb-6 md:p-5">
-      <h1 className="text-xl text-heading underline underline-offset-4">
+    <section className="bg-accent w-full rounded-[30px] p-3 py-5 md:mb-6 md:p-5">
+      <h1 className="text-heading text-xl underline underline-offset-4">
         Related Posts
       </h1>
       <div className="mt-4 grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 lg:grid-cols-3">

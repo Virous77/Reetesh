@@ -27,7 +27,7 @@ const ThemeSwitcher = () => {
     >
       <Button
         size="icon"
-        className="flex h-8 w-8 cursor-pointer items-center justify-center bg-transparent text-secondary-foreground hover:bg-transparent"
+        className="text-secondary-foreground flex h-8 w-8 cursor-pointer items-center justify-center bg-transparent hover:bg-transparent"
         onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
         name="theme-switcher"
         title="Toggle theme"

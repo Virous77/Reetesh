@@ -38,13 +38,13 @@ const TableContent = ({ title }: { title: string }) => {
     <Accordion
       type="single"
       collapsible
-      className="rounded-lg bg-accent pl-4"
+      className="bg-accent rounded-lg pl-4"
       style={{ paddingLeft: '1rem' }}
     >
       <AccordionItem value="item-1" className="border-b-0">
         <AccordionTrigger
           isActive={false}
-          className="font-serif text-base uppercase text-default"
+          className="text-default font-serif text-base uppercase"
         >
           Table of Content
         </AccordionTrigger>
@@ -61,7 +61,7 @@ const TableContent = ({ title }: { title: string }) => {
                 <Link
                   href={`#${slugify(heading.title)}`}
                   style={{ textDecoration: 'none' }}
-                  className="text-base text-primary"
+                  className="text-primary text-base"
                 >
                   {heading.title}
                 </Link>

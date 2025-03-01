@@ -15,9 +15,9 @@ const MainCard = ({ children }: { children: React.ReactNode }) => {
   };
 
   const Container = ({ children }: { children: React.ReactNode }) => (
-    <div className="relative mx-auto mb-3 w-[97%] rounded-lg border border-dashed border-zinc-300 px-4 dark:border-zinc-800 sm:px-6 md:mb-0 md:w-full md:px-8">
-      <div className="absolute left-0 top-4 -z-0 h-px w-full bg-zinc-400 dark:bg-zinc-700 sm:top-6 md:top-8"></div>
-      <div className="absolute bottom-4 left-0 z-0 h-px w-full bg-zinc-400 dark:bg-zinc-700 sm:bottom-6 md:bottom-8"></div>
+    <div className="relative mx-auto mb-3 w-[97%] rounded-lg border border-dashed border-zinc-300 px-4 sm:px-6 md:mb-0 md:w-full md:px-8 dark:border-zinc-800">
+      <div className="absolute top-4 left-0 -z-0 h-px w-full bg-zinc-400 sm:top-6 md:top-8 dark:bg-zinc-700"></div>
+      <div className="absolute bottom-4 left-0 z-0 h-px w-full bg-zinc-400 sm:bottom-6 md:bottom-8 dark:bg-zinc-700"></div>
       <div className="relative w-full border-x border-zinc-400 dark:border-zinc-700">
         <Ellipses />
         <div className="relative z-20 mx-auto py-8">{children}</div>

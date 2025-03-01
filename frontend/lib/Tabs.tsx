@@ -20,7 +20,7 @@ const Tabs = ({ children, items }: { children: any; items: string[] }) => {
         {items.map((item, index) => (
           <Button
             onClick={() => setActiveTab(index)}
-            className={`m-2 cursor-pointer whitespace-nowrap rounded bg-transparent p-2 hover:bg-accent ${activeTab === index ? 'text-heading underline underline-offset-4' : 'text-secondary-foreground'}`}
+            className={`hover:bg-accent m-2 cursor-pointer rounded bg-transparent p-2 whitespace-nowrap ${activeTab === index ? 'text-heading underline underline-offset-4' : 'text-secondary-foreground'}`}
             key={index}
           >
             {item}

@@ -60,7 +60,7 @@ const Like: React.FC<TLike> = ({
           <div className="flex items-center">
             <Button
               size={'icon'}
-              className={`flex h-[30px] w-[30px] items-center justify-center rounded-full bg-transparent text-secondary-foreground hover:bg-accent ${like?.includes(userId || '') ? 'text-heading' : ''}`}
+              className={`text-secondary-foreground hover:bg-accent flex h-[30px] w-[30px] items-center justify-center rounded-full bg-transparent ${like?.includes(userId || '') ? 'text-heading' : ''}`}
               onClick={() => handleLike('like')}
               disabled={id.includes('opt_')}
             >
@@ -74,7 +74,7 @@ const Like: React.FC<TLike> = ({
           <div className="flex items-center">
             <Button
               size={'icon'}
-              className={`flex h-[30px] w-[30px] items-center justify-center rounded-full bg-transparent text-secondary-foreground hover:bg-accent ${
+              className={`text-secondary-foreground hover:bg-accent flex h-[30px] w-[30px] items-center justify-center rounded-full bg-transparent ${
                 dislike?.includes(userId || '') ? 'text-heading' : ''
               } `}
               onClick={() => handleLike('dislike')}
@@ -89,7 +89,7 @@ const Like: React.FC<TLike> = ({
         <div className="flex items-center">
           <Button
             size={'icon'}
-            className="flex h-[30px] w-[55px] cursor-pointer items-center justify-center rounded-full bg-transparent text-[15px] text-secondary-foreground hover:bg-accent"
+            className="text-secondary-foreground hover:bg-accent flex h-[30px] w-[55px] cursor-pointer items-center justify-center rounded-full bg-transparent text-[15px]"
             onClick={onClick}
             disabled={id.includes('opt_')}
           >

@@ -14,7 +14,7 @@ type TBlog = {
 const Blog: React.FC<TBlog> = ({ blogs }) => {
   return (
     <section className="body relative h-fit p-2 pt-0 md:h-full md:p-0 lg:overflow-scroll">
-      <header className="sticky top-0 z-50 flex items-center justify-between bg-background p-1 pl-2 pt-2 md:p-0 md:pl-2">
+      <header className="bg-background sticky top-0 z-50 flex items-center justify-between p-1 pt-2 pl-2 md:p-0 md:pl-2">
         <h1 className="my-2 hidden text-[1.125rem] font-semibold md:my-5 md:block md:text-[1.563rem]">
           From My Blogs
         </h1>
@@ -40,27 +40,27 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
                   <CardImage src={blog.blogImage} title={blog.title} />
 
                   <div className="mt-3 flex items-center gap-3">
-                    <span className="whitespace-nowrap font-mono text-[0.813rem]">
+                    <span className="font-mono text-[0.813rem] whitespace-nowrap">
                       {formateDate(blog.date)}
                     </span>
-                    <span className="h-[2px] w-full bg-default"></span>
+                    <span className="bg-default h-[2px] w-full"></span>
                   </div>
 
                   <h1 className="my-5 truncate text-[1.25rem] leading-[1.3]">
                     {blog.title}
                   </h1>
-                  <p className="-mt-2 text-[0.875rem] tracking-wider text-muted-foreground">
+                  <p className="text-muted-foreground -mt-2 text-[0.875rem] tracking-wider">
                     {blog.about}
                   </p>
 
                   <div className="mt-3 flex items-center gap-1">
-                    <span className="h-[2px] w-full bg-default"></span>
+                    <span className="bg-default h-[2px] w-full"></span>
                     <BlogDetails.Link id={blog.slugAsParams}>
                       <p className="relative">
-                        <span className="relative z-10 flex cursor-pointer items-center gap-2 whitespace-nowrap px-2 text-[0.813rem] font-bold transition-all group-hover:text-background">
+                        <span className="group-hover:text-background relative z-10 flex cursor-pointer items-center gap-2 px-2 text-[0.813rem] font-bold whitespace-nowrap transition-all">
                           Read Full Post <MoveRight />
                         </span>
-                        <span className="absolute bottom-0 left-0 z-0 h-0 w-full rounded bg-foreground transition-all group-hover:h-full" />
+                        <span className="bg-foreground absolute bottom-0 left-0 z-0 h-0 w-full rounded transition-all group-hover:h-full" />
                       </p>
                     </BlogDetails.Link>
                   </div>

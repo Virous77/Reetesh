@@ -20,7 +20,7 @@ const Privacy = () => {
     <main className="fade-in-out mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <section className="relative h-[360px]">
         <h1
-          className="absolute bottom-[160px] z-10 whitespace-nowrap text-center text-3xl font-extrabold tracking-tight sm:text-4xl md:bottom-32"
+          className="absolute bottom-[160px] z-10 text-center text-3xl font-extrabold tracking-tight whitespace-nowrap sm:text-4xl md:bottom-32"
           style={{
             transform: 'translate(-50%, -50%)',
             left: '50%',
@@ -160,5 +160,5 @@ const BoxTitle = ({ children }: { children: React.ReactNode }) => {
 };
 
 const BoxContent = ({ children }: { children: React.ReactNode }) => {
-  return <p className="mt-2 text-default">{children}</p>;
+  return <p className="text-default mt-2">{children}</p>;
 };

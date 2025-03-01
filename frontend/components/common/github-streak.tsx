@@ -9,7 +9,7 @@ const GithubStreak = async () => {
   return (
     <div className="relative flex h-fit w-full items-center justify-center overflow-y-scroll rounded-lg border-2 pb-1 md:w-[90%] md:overflow-y-hidden">
       <span
-        className="absolute me-2 rounded bg-accent px-2.5 py-0.5 text-[8px] font-medium"
+        className="bg-accent absolute me-2 rounded px-2.5 py-0.5 text-[8px] font-medium"
         style={{
           right: '-10px',
           bottom: '-2.3px',
@@ -32,16 +32,16 @@ const GithubStreak = async () => {
           <div className="text-4xl font-bold">
             {data?.stats?.totalContributions || '1712'}
           </div>
-          <div className="whitespace-nowrap text-xs md:text-sm">
+          <div className="text-xs whitespace-nowrap md:text-sm">
             Total Contributions
           </div>
-          <div className="mt-1 flex flex-col items-center text-xs text-muted-foreground">
+          <div className="text-muted-foreground mt-1 flex flex-col items-center text-xs">
             <span className="font-sans">
               {data?.stats?.firstContribution
                 ? formateDate(data?.stats?.firstContribution)
                 : 'Mar 12, 2022'}
             </span>
-            <MoveDown size={14} className="mb-[2px] mt-[2px] h-2" />
+            <MoveDown size={14} className="mt-[2px] mb-[2px] h-2" />
             <span className="font-sans">Present</span>
           </div>
         </GithubCard>
@@ -54,17 +54,17 @@ const GithubStreak = async () => {
           <div className="text-4xl font-bold">
             {data?.stats.currentStreak?.length || 0}
           </div>
-          <div className="whitespace-nowrap text-xs font-bold md:text-sm">
+          <div className="text-xs font-bold whitespace-nowrap md:text-sm">
             Current Streaks
           </div>
 
-          <div className="mt-1 flex flex-col items-center text-xs text-muted-foreground">
+          <div className="text-muted-foreground mt-1 flex flex-col items-center text-xs">
             <span className="font-sans">
               {data?.stats.currentStreak?.start
                 ? formateDate(data?.stats.currentStreak?.start)
                 : 'Nov 23, 2023'}
             </span>
-            <MoveDown size={14} className="mb-[2px] mt-[2px] h-2" />
+            <MoveDown size={14} className="mt-[2px] mb-[2px] h-2" />
 
             <span className="font-sans">
               {data?.stats.currentStreak?.end
@@ -82,16 +82,16 @@ const GithubStreak = async () => {
           <div className="text-4xl font-bold">
             {data?.stats.longestStreak?.length || 92}
           </div>
-          <div className="whitespace-nowrap text-xs md:text-sm">
+          <div className="text-xs whitespace-nowrap md:text-sm">
             Longest Streaks
           </div>
-          <div className="mt-1 flex flex-col items-center text-xs text-muted-foreground">
+          <div className="text-muted-foreground mt-1 flex flex-col items-center text-xs">
             <span className="font-sans">
               {formateDate(
                 data?.stats.longestStreak?.start || new Date().toString()
               )}
             </span>
-            <MoveDown size={14} className="mb-[2px] mt-[2px] h-2" />
+            <MoveDown size={14} className="mt-[2px] mb-[2px] h-2" />
             <span className="font-sans">
               {formateDate(
                 data?.stats.longestStreak?.end || new Date().toString()

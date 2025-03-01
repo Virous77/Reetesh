@@ -105,7 +105,7 @@ const Content = ({
   return (
     <div className="tooltip-visit h-full w-full">
       {isLoading ? (
-        <p className="m-0 w-full p-0 text-center text-foreground">Loading...</p>
+        <p className="text-foreground m-0 w-full p-0 text-center">Loading...</p>
       ) : (
         <React.Fragment>
           {currentLink?.title === 'error' ? (
@@ -123,7 +123,7 @@ const Content = ({
             </div>
           ) : (
             <div>
-              <h3 className="mb-1 mt-0 text-base font-semibold">
+              <h3 className="mt-0 mb-1 text-base font-semibold">
                 {currentLink?.title}
               </h3>
               <p
@@ -178,7 +178,7 @@ const VisitLink = ({ href }: { href: string }) => {
       href={href}
       target="_blank"
       rel="noreferrer"
-      className="mt-2 flex items-center justify-center font-medium text-foreground underline underline-offset-4"
+      className="text-foreground mt-2 flex items-center justify-center font-medium underline underline-offset-4"
       title="content link"
       aria-label="visit link"
     >

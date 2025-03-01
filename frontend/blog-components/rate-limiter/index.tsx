@@ -61,12 +61,12 @@ const RateLimiter = () => {
     >
       <div>
         <h1 className="mb-0 text-xl leading-none">⚙️ Rate Limiter Example</h1>
-        <p className="mb-0 mt-0 pt-4 text-sm text-default">
+        <p className="text-default mt-0 mb-0 pt-4 text-sm">
           1 minute window with 10 requests allowed. Click the button to test the
           rate limiter.
         </p>
         <p
-          className="mt-0 text-sm font-bold text-default"
+          className="text-default mt-0 text-sm font-bold"
           style={{
             paddingTop: '5px',
           }}
