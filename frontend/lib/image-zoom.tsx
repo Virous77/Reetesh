@@ -5,7 +5,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import Image from 'next/image';
 import { ReactNode, useState } from 'react';
 
 const ImageZoom = ({
@@ -30,7 +29,7 @@ const ImageZoom = ({
         onClick={() => setOpen(false)}
         style={{ cursor: 'zoom-out' }}
       >
-        <Image
+        <img
           height={0}
           width={0}
           sizes="100vw"

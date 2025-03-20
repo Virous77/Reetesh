@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React from 'react';
 import { allPosts } from '@/.contentlayer/generated';
 import { BlogDetails } from '@/routes';
@@ -32,7 +31,7 @@ const Advertise: React.FC<TAdvertise> = ({ title }) => {
             Read Full Post
           </BlogDetails.Link>
         </div>
-        <Image
+        <img
           width={300}
           height={200}
           alt={title}

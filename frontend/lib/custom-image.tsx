@@ -1,11 +1,10 @@
 'use client';
-import Image from 'next/image';
 import ImageZoom from './image-zoom';
 
 const CustomImage = ({ ...props }: any) => {
   return (
     <ImageZoom image={props.src} name={props.alt}>
-      <Image
+      <img
         {...props}
         width={0}
         alt="content picture"

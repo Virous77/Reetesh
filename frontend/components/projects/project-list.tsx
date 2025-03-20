@@ -2,7 +2,6 @@ import { CalendarDays, Code, Link2, MoveRight } from 'lucide-react';
 import parse from 'html-react-parser';
 import React from 'react';
 import { Card, CardContent } from '../ui/card';
-import Image from 'next/image';
 import { TProject } from '@/models/projects';
 import { Projects } from '@/routes';
 import { Link } from 'next-view-transitions';
@@ -44,7 +43,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
                   {parse(project.desc)}
                 </span>
 
-                <Image
+                <img
                   src={project.images}
                   alt={project.title}
                   height={100}
