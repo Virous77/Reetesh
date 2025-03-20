@@ -9,7 +9,6 @@ import { ToolTipComp } from '@/components/ui/tooltip';
 import { TSkill } from '@/models/skills';
 import { SkillId } from '@/routes';
 import { slugify } from '@/utils/utils';
-import Image from 'next/image';
 
 type TSkillList = {
   skills: TSkill[];
@@ -32,7 +31,7 @@ const SkillList: React.FC<TSkillList> = ({ skills, description, name }) => {
                 <li key={skill._id}>
                   <ToolTipComp name={skill.name}>
                     <SkillId.Link id={slugify(skill.name)}>
-                      <Image
+                      <img
                         src={skill.icon}
                         alt={skill.name}
                         width={40}

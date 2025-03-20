@@ -1,6 +1,5 @@
 import { Home, LibrarySquare, MoveRight } from 'lucide-react';
 import { Card, CardContent } from '../ui/card';
-import Image from 'next/image';
 import { Post } from '@/.contentlayer/generated';
 import { formateDate } from '@/utils/utils';
 import CommandSearch from '../common/command-search';
@@ -79,7 +78,7 @@ export default Blog;
 const CardImage = ({ src, title }: { src: string; title: string }) => {
   return (
     <div className="z-1 h-full w-full overflow-hidden transition-all duration-300 group-hover:rounded-sm">
-      <Image
+      <img
         src={src}
         alt={title}
         height={0}
