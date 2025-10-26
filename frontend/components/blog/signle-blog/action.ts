@@ -44,7 +44,7 @@ export const addViewsAction = async (params: z.infer<typeof schema>) => {
     }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      throw new Error(error.errors[0].message);
+      throw new Error(error.message);
     }
     throw new Error('Failed to add views');
   }
@@ -88,7 +88,7 @@ export const addBlogLikeAction = async (params: TAddBlogLikeAction) => {
     }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      throw new Error(error.errors[0].message);
+      throw new Error(error.message);
     }
     throw new Error('Failed to add like');
   }

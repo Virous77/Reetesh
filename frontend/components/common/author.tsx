@@ -1,12 +1,12 @@
-import { Root } from '@/routes';
 import AuthorImage from './author-image';
+import { Link } from 'next-view-transitions';
 
 const Author = () => {
   return (
     <div className="flex gap-3">
-      <Root.Link aria-label="home">
+      <Link href="/" aria-label="home">
         <AuthorImage />
-      </Root.Link>
+      </Link>
       <div className="flex flex-col items-start justify-center gap-1">
         <span className="mobile350:text-sm text-base leading-none font-semibold whitespace-nowrap">
           Reetesh Kumar

@@ -1,11 +1,11 @@
 import Social from '../social/social';
 import { Home } from 'lucide-react';
 import { TSkill } from '@/models/skills';
-import { Root } from '@/routes';
 import FrontendSkill from './frontend-skill';
 import BackendSkill from './backend-skill';
 import OthersSkill from './others-skill';
 import { cn } from '@/lib/utils';
+import { Link } from 'next-view-transitions';
 
 type TSkills = {
   skills: TSkill[];
@@ -78,9 +78,9 @@ const Skill: React.FC<TSkills> = ({ skills, componentType }) => {
       {componentType === 'main' && (
         <section className="flex flex-col items-center justify-center gap-5">
           <Social styles=" mt-6 justify-center" />
-          <Root.Link aria-label="home">
+          <Link href="/" aria-label="home">
             <Home className="text-primary" />
-          </Root.Link>
+          </Link>
         </section>
       )}
     </div>
