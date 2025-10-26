@@ -1,6 +1,6 @@
 import { Post } from '@/.contentlayer/generated';
 import { Card, CardContent } from '../ui/card';
-import { BlogDetails } from '@/routes';
+import { Link } from 'next-view-transitions';
 
 const RelatedPost = ({ relatedBlogs }: { relatedBlogs: Post[] }) => {
   const posts = relatedBlogs;
@@ -17,7 +17,7 @@ const RelatedPost = ({ relatedBlogs }: { relatedBlogs: Post[] }) => {
             className="rounded-[25px] transition-all duration-700 hover:scale-105"
           >
             <CardContent className="m-0 h-fit w-full p-0">
-              <BlogDetails.Link id={post.slugAsParams}>
+              <Link id={post.slugAsParams} href={`/blog/${post.slugAsParams}`}>
                 <img
                   alt="blog thumbnail"
                   src={post.blogImage}
@@ -30,7 +30,7 @@ const RelatedPost = ({ relatedBlogs }: { relatedBlogs: Post[] }) => {
                 <h1 className="mt-2 p-2 pt-0 text-[1.125rem] font-[500]">
                   {post.title}
                 </h1>
-              </BlogDetails.Link>
+              </Link>
             </CardContent>
           </Card>
         ))}

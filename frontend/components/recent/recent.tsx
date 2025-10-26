@@ -1,7 +1,5 @@
 import { allPosts } from '@/.contentlayer/generated';
 import { ExternalLink } from 'lucide-react';
-import React from 'react';
-import { BlogDetails } from '@/routes';
 import dbConnect from '@/db/mongoose';
 import projects, { TProject } from '@/models/projects';
 import { slugify } from 'markdown-to-jsx';
@@ -31,14 +29,15 @@ const Recent = async () => {
           <ul className="flex flex-col gap-2">
             {posts.map((post) => (
               <li key={post.slug} className="underline underline-offset-4">
-                <BlogDetails.Link
+                <Link
+                  href={`/blog/${post.slugAsParams}`}
                   id={post.slugAsParams}
                   className="flex items-center gap-2 opacity-90 hover:opacity-100"
                   aria-label={`Visit ${post.title}`}
                 >
                   {post.title}
                   <ExternalLink size={20} className="hidden md:block" />
-                </BlogDetails.Link>
+                </Link>
               </li>
             ))}
           </ul>

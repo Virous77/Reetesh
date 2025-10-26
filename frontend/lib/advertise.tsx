@@ -1,7 +1,7 @@
 import React from 'react';
 import { allPosts } from '@/.contentlayer/generated';
-import { BlogDetails } from '@/routes';
 import { AdvertiseParent } from '@/components/common/motion';
+import { Link } from 'next-view-transitions';
 
 type TAdvertise = {
   title: string;
@@ -23,13 +23,14 @@ const Advertise: React.FC<TAdvertise> = ({ title }) => {
           <p className="text-center text-[0.875rem] whitespace-normal">
             {about}
           </p>
-          <BlogDetails.Link
+          <Link
+            href={`/blog/${slugAsParams}`}
             className="inline-block w-full text-center"
             id={slugAsParams}
             aria-label={`Read full post ${title}`}
           >
             Read Full Post
-          </BlogDetails.Link>
+          </Link>
         </div>
         <img
           width={300}

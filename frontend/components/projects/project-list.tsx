@@ -3,7 +3,6 @@ import parse from 'html-react-parser';
 import React from 'react';
 import { Card, CardContent } from '../ui/card';
 import { TProject } from '@/models/projects';
-import { Projects } from '@/routes';
 import { Link } from 'next-view-transitions';
 import { slugify } from 'markdown-to-jsx';
 import { Separator } from '../ui/separator';
@@ -92,12 +91,13 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
         </li>
       ))}
       {isActive && (
-        <Projects.Link
+        <Link
+          href="/projects"
           className="text-primary flex cursor-pointer items-center gap-2 text-[0.875rem]"
           aria-label="Visit all Projects"
         >
           Visit all Projects <MoveRight size={19} />
-        </Projects.Link>
+        </Link>
       )}
     </ul>
   );

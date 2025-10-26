@@ -3,8 +3,8 @@ import { Card, CardContent } from '../ui/card';
 import { Post } from '@/.contentlayer/generated';
 import { formateDate } from '@/utils/utils';
 import CommandSearch from '../common/command-search';
-import { BlogDetails, Projects, Root } from '@/routes';
 import BlogBorder from './blog-border';
+import { Link } from 'next-view-transitions';
 
 type TBlog = {
   blogs: Post[];
@@ -20,13 +20,13 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
         <CommandSearch blogs={blogs} />
 
         <div className="flex items-center gap-4 pr-2 md:hidden">
-          <Projects.Link aria-label="Visit Projects Page">
+          <Link href="/projects" aria-label="Visit Projects Page">
             <LibrarySquare size={22} />
-          </Projects.Link>
+          </Link>
 
-          <Root.Link aria-label="Visit Home Page">
+          <Link href="/" aria-label="Visit Home Page">
             <Home size={22} />
-          </Root.Link>
+          </Link>
         </div>
       </header>
 
@@ -54,14 +54,17 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
 
                   <div className="mt-3 flex items-center gap-1">
                     <span className="bg-default h-[2px] w-full"></span>
-                    <BlogDetails.Link id={blog.slugAsParams}>
+                    <Link
+                      href={`/blog/${blog.slugAsParams}`}
+                      id={blog.slugAsParams}
+                    >
                       <p className="relative">
                         <span className="group-hover:text-background relative z-10 flex cursor-pointer items-center gap-2 px-2 text-[0.813rem] font-bold whitespace-nowrap transition-all">
                           Read Full Post <MoveRight />
                         </span>
                         <span className="bg-foreground absolute bottom-0 left-0 z-0 h-0 w-full rounded transition-all group-hover:h-full" />
                       </p>
-                    </BlogDetails.Link>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>

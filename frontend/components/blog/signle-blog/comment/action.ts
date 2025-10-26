@@ -73,7 +73,7 @@ const restrictSpamComment = async (userId: string) => {
 
 export const commonError = async (error: unknown, message: string) => {
   if (error instanceof z.ZodError) {
-    throw new Error(error.errors[0].message);
+    throw new Error(error.message);
   } else if (error instanceof Error) {
     throw new Error(error.message);
   }
