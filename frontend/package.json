@@ -4,11 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "prebuild": "next telemetry disable",
+    "prebuild": "npx contentlayer2 build",
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "next lint",
-    "post-build": "npx contentlayer2 build",
     "prettier": "npx prettier --write .",
     "dr:build": "npx declarative-routing build",
     "dr:build:watch": "npx declarative-routing build --watch"
