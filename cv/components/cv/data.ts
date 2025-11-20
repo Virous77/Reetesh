@@ -64,17 +64,17 @@ export const RESUME_DATA = {
   skills: [
     "JavaScript",
     "TypeScript",
-    "Solidity",
-    "Rust",
     "React/Next.js",
     "Node.js",
+    "PostgreSQL",
+    "MongoDB",
     "GraphQL",
     "tRPC",
-    "MongoDB",
-    "PostgreSQL",
+    "Solidity",
     "Anchor",
     "Docker",
     "TailwindCSS",
+    "Kafka",
   ],
   projects: [
     {
@@ -96,6 +96,28 @@ export const RESUME_DATA = {
       },
     },
     {
+      title: "Tracker - Portfolio & Expense",
+      techStack: [
+        "NextJS",
+        "Typescript",
+        "MongoDB",
+        "Prisma",
+        "TailwindCSS",
+        "zustand",
+        "zerodha",
+        "coingecko",
+        "Recharts",
+        "redis",
+      ],
+      description:
+        "My personal project to track my portfolio and expenses in one place. It fetches data from Zerodha and Coingecko API to show my investment portfolio and also tracks my daily expenses.",
+      logo: GitHubIcon,
+      link: {
+        label: "portfolio.reetesh.in",
+        href: "https://portfolio.reetesh.in",
+      },
+    },
+    {
       title: "Charity DApp",
       techStack: [
         "Side Project",
@@ -110,24 +132,6 @@ export const RESUME_DATA = {
       link: {
         label: "charity-next-dapp.vercel.app/",
         href: "https://charity-next-dapp.vercel.app/",
-      },
-    },
-    {
-      title: "Graze - A food Marketplace",
-      techStack: [
-        "Side Project",
-        "React",
-        "Javascript",
-        "Firebase",
-        "Stripe",
-        "Node.JS",
-      ],
-      description:
-        "A food marketplace where user can order food from multiple restaurants. User can also add their own restaurant and start selling. ",
-      logo: GitHubIcon,
-      link: {
-        label: "graze-food-app.onrender.com",
-        href: "https://graze-food-app.onrender.com",
       },
     },
     {
@@ -149,43 +153,41 @@ export const RESUME_DATA = {
       },
     },
     {
-      title: "Bankway",
-      techStack: [
-        "Side Project",
-        "React",
-        "Typescript",
-        "MongoDB",
-        "GraphQL",
-        "Apollo",
-        "Node.JS",
-        "PWA",
-      ],
-      description:
-        "A banking app where user can track their daily spend in a very easy way with support of PWA.",
-      logo: GitHubIcon,
-      link: {
-        label: "bankway.netlify.app",
-        href: "https://bankway.netlify.app",
-      },
-    },
-    {
-      title: "ChatX",
+      title: "Globe Graph",
       techStack: [
         "Side Project",
         "NextJS",
         "Typescript",
-        "Node.JS",
+        "Shadcn",
         "TailwindCSS",
-        "MongoDB",
         "TanStack Query",
-        "PWA",
+        "geo",
+        "worldbank API",
       ],
       description:
-        "A App which bit different from their name, here user can post their thoughts and other user can comment on that.",
+        "A App which shows various statistics of countries in different graphs where we can visualize data selecting multiple countries and year.",
       logo: GitHubIcon,
       link: {
-        label: "chatxe.vercel.app",
-        href: "https://chatxe.vercel.app",
+        label: "globe-graph.vercel.app",
+        href: "https://globe-graph.vercel.app/",
+      },
+    },
+    {
+      title: "Graze - A food Marketplace",
+      techStack: [
+        "Side Project",
+        "React",
+        "Javascript",
+        "Firebase",
+        "Stripe",
+        "Node.JS",
+      ],
+      description:
+        "A food marketplace where user can order food from multiple restaurants. User can also add their own restaurant and start selling. ",
+      logo: GitHubIcon,
+      link: {
+        label: "graze-food-app.onrender.com",
+        href: "https://graze-food-app.onrender.com",
       },
     },
   ],
