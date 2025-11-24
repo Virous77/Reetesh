@@ -5,6 +5,7 @@ import Author from '@/components/author/author';
 import Footer from '@/components/common/footer';
 import GithubStreak from '@/components/common/github-streak';
 import Recent from '@/components/recent/recent';
+import GrainOverlay from '@/components/ui/grain-overlay';
 import React from 'react';
 
 const Home = () => {
@@ -19,6 +20,7 @@ const Home = () => {
           <Footer />
         </section>
       </main>
+      <GrainOverlay/>
     </React.Fragment>
   );
 };
