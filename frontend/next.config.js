@@ -2,12 +2,7 @@ const { withContentlayer } = require('next-contentlayer2');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  experimental: {
-    reactCompiler: true,
-  },
+  reactCompiler: true,
   reactStrictMode: true,
   images: {
     remotePatterns: [
