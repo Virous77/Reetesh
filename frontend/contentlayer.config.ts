@@ -29,9 +29,16 @@ const computedFields: ComputedFields = {
         )
       ) {
         return 'docker-the-complete-guide-to-build-and-deploy-your-application';
-      } else {
-        return doc.title.toLowerCase().replace(/ /g, '-');
       }
+
+      if (
+        doc.title.includes(
+          'Agentic Coding: Why AI-Powered Development is the Present and Future'
+        )
+      ) {
+        return 'agentic-coding-why-ai-powered-development-is-the-present-and-future';
+      }
+      return doc.title.toLowerCase().replace(/ /g, '-');
     },
   },
 };
