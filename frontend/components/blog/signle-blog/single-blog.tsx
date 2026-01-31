@@ -79,7 +79,7 @@ const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
       <Footer />
       <BlogShare
         title={blog.title}
-        url={`https://reetesh.in/blog/${blog.slug}`}
+        url={`https://reetesh.in/blog/${blog.slugAsParams}`}
         blogId={blog.slugAsParams}
       />
     </React.Fragment>
