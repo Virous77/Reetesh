@@ -38,6 +38,11 @@ const computedFields: ComputedFields = {
       ) {
         return 'agentic-coding-why-ai-powered-development-is-the-present-and-future';
       }
+
+      if (doc.title.includes('Claude Code vs OpenCode - Which AI Coding Assistant Should You Use?')) {
+        return 'claude-code-vs-opencode-which-ai-coding-assistant-should-you-use';
+      }
+
       return doc.title.toLowerCase().replace(/ /g, '-');
     },
   },
