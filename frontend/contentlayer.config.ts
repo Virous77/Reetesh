@@ -18,33 +18,15 @@ const computedFields: ComputedFields = {
 
   slug: {
     type: 'string',
-    resolve: (doc) => `/${doc.title.toLowerCase().replace(/ /g, '-')}`,
+    resolve: (doc) => {
+      const params = doc.manualURL ?? doc.title.toLowerCase().replace(/ /g, '-');
+      return `/${params}`;
+    },
   },
   slugAsParams: {
     type: 'string',
-    resolve: (doc) => {
-      if (
-        doc.title.includes(
-          'Docker - The Complete Guide to Build and Deploy your Application'
-        )
-      ) {
-        return 'docker-the-complete-guide-to-build-and-deploy-your-application';
-      }
-
-      if (
-        doc.title.includes(
-          'Agentic Coding: Why AI-Powered Development is the Present and Future'
-        )
-      ) {
-        return 'agentic-coding-why-ai-powered-development-is-the-present-and-future';
-      }
-
-      if (doc.title.includes('Claude Code vs OpenCode - Which AI Coding Assistant Should You Use?')) {
-        return 'claude-code-vs-opencode-which-ai-coding-assistant-should-you-use';
-      }
-
-      return doc.title.toLowerCase().replace(/ /g, '-');
-    },
+    resolve: (doc) =>
+      doc.manualURL ?? doc.title.toLowerCase().replace(/ /g, '-'),
   },
 };
 
@@ -84,6 +66,10 @@ export const Post = defineDocumentType(() => ({
     related: {
       type: 'string',
       required: true,
+    },
+    manualURL: {
+      type: 'string',
+      required: false,
     },
   },
   computedFields,
