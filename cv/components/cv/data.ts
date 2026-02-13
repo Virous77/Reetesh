@@ -91,8 +91,8 @@ export const RESUME_DATA = {
         "I took inspiration from the Nike official site and tried to build the core functionality of the site and match the UI as much as i can.",
       logo: GitHubIcon,
       link: {
-        label: "nikeway.netlify.app",
-        href: "https://nikeway.netlify.app",
+        label: "nikee-1.onrender.com",
+        href: "https://nikee-1.onrender.com/",
       },
     },
     {
