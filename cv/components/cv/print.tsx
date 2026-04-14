@@ -49,18 +49,6 @@ const Print = () => {
       >
         Download
       </Button>
-
-      <span className=" flex items-center   gap-1 text-xs">
-        &copy;
-        <a
-          href="https://jarocki.me/"
-          referrerPolicy="no-referrer"
-          target="_blank"
-          className=" hover:underline hover:underline-offset-4 "
-        >
-          Bartosz Jarocki
-        </a>
-      </span>
     </footer>
   );
 };
