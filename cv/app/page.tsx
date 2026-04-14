@@ -59,7 +59,7 @@ const CV = () => {
         <div className="flex items-center justify-between">
           <div className="flex-1 space-y-1.5">
             <h1 className="text-2xl font-bold">{RESUME_DATA.name}</h1>
-            <p className="max-w-md font-mono text-sm text-default">
+            <p className="max-w-lg font-mono text-sm leading-relaxed text-default">
               {RESUME_DATA.about}
             </p>
             <p className="max-w-md items-center font-mono text-xs text-default">
@@ -132,7 +132,7 @@ const CV = () => {
         </div>
         <Section>
           <h2 className="text-xl font-bold">About</h2>
-          <p className="font-mono text-sm text-default ">
+          <p className="font-mono text-sm leading-relaxed text-default">
             {RESUME_DATA.summary}
           </p>
         </Section>
@@ -173,10 +173,10 @@ const CV = () => {
                     {work.title}
                   </h4>
                 </CardHeader>
-                <CardContent className="m-0 mt-3 p-0 font-mono text-xs">
+                <CardContent className="m-0 mt-3 p-0 font-mono text-xs leading-relaxed">
                   {work.description}
                 </CardContent>
-                <CardContent className="m-0 mt-3 p-0 font-mono text-xs">
+                <CardContent className="m-0 mt-2 p-0 font-mono text-xs leading-relaxed text-gray-600">
                   {work.subDescription}
                 </CardContent>
               </Card>
@@ -219,7 +219,7 @@ const CV = () => {
 
         <Section className="print-force-new-page scroll-mb-16">
           <h2 className="text-xl font-bold">Projects</h2>
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 print:grid-cols-3 print:gap-2">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 print:grid-cols-3 print:gap-2">
             {RESUME_DATA.projects.map((project) => {
               return (
                 <ProjectCard
