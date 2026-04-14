@@ -1,3 +1,5 @@
+'use client';
+
 import { socials } from '@/utils/utils';
 import { ToolTipComp } from '../ui/tooltip';
 
