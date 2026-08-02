@@ -1,0 +1,16 @@
+<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Claude Code">
+  <g stroke="#CC785C" stroke-width="3.3" stroke-linecap="round">
+    <line x1="24" y1="21" x2="24" y2="4.5" transform="rotate(0 24 24)"/>
+    <line x1="24" y1="21" x2="24" y2="4.5" transform="rotate(30 24 24)"/>
+    <line x1="24" y1="21" x2="24" y2="4.5" transform="rotate(60 24 24)"/>
+    <line x1="24" y1="21" x2="24" y2="4.5" transform="rotate(90 24 24)"/>
+    <line x1="24" y1="21" x2="24" y2="4.5" transform="rotate(120 24 24)"/>
+    <line x1="24" y1="21" x2="24" y2="4.5" transform="rotate(150 24 24)"/>
+    <line x1="24" y1="21" x2="24" y2="4.5" transform="rotate(180 24 24)"/>
+    <line x1="24" y1="21" x2="24" y2="4.5" transform="rotate(210 24 24)"/>
+    <line x1="24" y1="21" x2="24" y2="4.5" transform="rotate(240 24 24)"/>
+    <line x1="24" y1="21" x2="24" y2="4.5" transform="rotate(270 24 24)"/>
+    <line x1="24" y1="21" x2="24" y2="4.5" transform="rotate(300 24 24)"/>
+    <line x1="24" y1="21" x2="24" y2="4.5" transform="rotate(330 24 24)"/>
+  </g>
+</svg>

@@ -172,4 +172,46 @@ export const skillsInfo = [
     features:
       ' Now to build React projects i use Vite and it make development faster.',
   },
+  {
+    name: 'nest.js',
+    description:
+      ' Nest.js I picked up when I needed more structure for larger Node.js APIs. Coming from Express, I liked how Nest brings a proper modular architecture, dependency injection and TypeScript first design out of the box. It feels like Angular but for the backend and it makes big codebases much easier to maintain.',
+    features:
+      ' The module system and decorators keep the code very organized. I like the built in support for guards, interceptors and pipes which keep the request pipeline clean. It works great with both REST and GraphQL so I can pick whatever the project needs.',
+  },
+  {
+    name: 'postgres',
+    description:
+      ' Postgres is my go to relational database. After working with NoSQL for a while, I really came to appreciate Postgres for its strong consistency, powerful querying and how far you can go with just SQL. It is rock solid for anything that needs real relations and transactions.',
+    features:
+      ' I love features like JSONB which give me the flexibility of NoSQL right inside a relational database, along with proper indexing, CTEs and window functions. Paired with an ORM like Prisma or Drizzle it is a joy to work with.',
+  },
+  {
+    name: 'aws',
+    description:
+      ' AWS is where I deploy and run most of my production workloads. I started with the basics like EC2 and S3 and slowly got comfortable with more services as projects demanded. The breadth is huge but once you understand the core building blocks it becomes very powerful.',
+    features:
+      ' For most apps I reach for S3, EC2, Lambda, CloudFront and RDS. I like how the services compose together and how far the free tier takes you while you are still learning.',
+  },
+  {
+    name: 'cursor',
+    description:
+      ' Cursor was my first proper AI native editor. Being a VS Code fork it felt instantly familiar, but the deep AI integration changed how I write code day to day. Inline edits, codebase aware chat and quick refactors save me a lot of time.',
+    features:
+      ' I use it mostly for quick edits, understanding unfamiliar code and generating boilerplate. Keeping myself in the loop for review, it is a great productivity boost without giving up control.',
+  },
+  {
+    name: 'claude code',
+    description:
+      ' Claude Code is the agentic coding tool I lean on for bigger, multi step tasks. Running right in the terminal, it can read the whole codebase, make changes across files and run commands, which makes it feel like a real pair programmer rather than just autocomplete.',
+    features:
+      ' I use it for refactors, writing tests, debugging and shipping whole features while I review the diffs. The agentic workflow really shines when a task spans many files. I wrote more about agentic coding on my blog.',
+  },
+  {
+    name: 'opencode',
+    description:
+      ' OpenCode is the open source, terminal based AI coding agent I like to experiment with. Being model agnostic, I can plug in different providers, and it is a great way to understand how agentic coding tools actually work under the hood.',
+    features:
+      ' I like that it is open source and runs in the terminal like Claude Code. It is my pick when I want flexibility over which model powers the agent.',
+  },
 ];

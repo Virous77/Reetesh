@@ -9,6 +9,7 @@ const BackendSkill: React.FC<TBackendSkill> = ({ skills }) => {
   return (
     <SkillList
       skills={skills}
+      index="02"
       name="Backend"
       description=" I build robust and scalable backend systems using modern
             technologies. I prioritize performance, security, and seamless

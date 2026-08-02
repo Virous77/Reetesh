@@ -9,11 +9,12 @@ const OthersSkill: React.FC<TOthersSkill> = ({ skills }) => {
   return (
     <SkillList
       skills={skills}
-      description=" I have experience working with a variety of technologies, tools, and
-            platforms. I am always eager to learn new technologies and expand my
-            skill set. I am proficient in using these technologies to solve
-            complex problems."
-      name="Others"
+      index="03"
+      name="DevOps & Tooling"
+      description=" From containerising apps to shipping them on the cloud, these are the
+            tools I use to build, deploy and run software reliably. I care about
+            reproducible environments, smooth pipelines and infrastructure that
+            just works."
     />
   );
 };
