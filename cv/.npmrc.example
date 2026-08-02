@@ -1,0 +1,77 @@
+# ============================================================================
+# .npmrc.example — supply-chain / security hardening for npm
+# ----------------------------------------------------------------------------
+# This project uses pnpm (see pnpm-workspace.yaml). This file documents the
+# equivalent npm settings in case a contributor uses npm or the project ever
+# migrates. To use it: copy to `.npmrc` and adjust as needed.
+#
+#   cp .npmrc.example .npmrc
+#
+# Do NOT put auth tokens (_authToken) in a committed .npmrc. Keep secrets in
+# your user-level ~/.npmrc or in CI environment variables.
+# ============================================================================
+
+# --- Supply-chain cooldown -------------------------------------------------
+# Only install versions published more than N DAYS ago, so a freshly-published
+# (potentially compromised) release is ignored until it has had time to be
+# vetted / yanked. NOTE: npm counts in DAYS; pnpm's minimumReleaseAge is in
+# MINUTES. 15 days here == minimumReleaseAge: 21600 in pnpm-workspace.yaml.
+min-release-age=15
+
+# npm has NO per-package cooldown exclude (pnpm's minimumReleaseAgeExclude has
+# no npm equivalent). To let a fresh CVE patch through, relax the cooldown for
+# a single command via the CLI (cli overrides this file):
+#     npm install next@16.2.4 --min-release-age=0
+#
+# Alternatively pin an absolute cutoff date instead of a rolling window.
+# If both are set, `before` wins. Leave commented unless you need it:
+# before=2026-07-17
+
+# --- Lockfile integrity ----------------------------------------------------
+# Always read/write package-lock.json (never install without a lockfile).
+package-lock=true
+
+# Pin exact versions on `npm install <pkg>` (writes "1.2.3", not "^1.2.3"),
+# so nothing silently drifts to a newer minor/patch on the next resolve.
+save-exact=true
+
+# Keep the registry-resolved URL out of the lockfile so a hijacked registry
+# mirror can't pin a poisoned tarball location into your lock.
+omit-lockfile-registry-resolved=true
+
+# --- Registry pinning ------------------------------------------------------
+# Force the canonical public registry; blocks accidental installs from a
+# misconfigured or malicious mirror.
+registry=https://registry.npmjs.org/
+
+# --- Vulnerability auditing ------------------------------------------------
+# Run `npm audit` automatically during install and treat this level+ as the
+# failure threshold for `npm audit`.
+audit=true
+audit-level=high
+
+# --- Build-script control --------------------------------------------------
+# Lifecycle scripts (postinstall etc.) are the #1 supply-chain execution
+# vector. npm only offers an ALL-OR-NOTHING switch — it has no per-package
+# allowlist like pnpm's `allowBuilds`. Enabling this blocks EVERY package's
+# install scripts, which will break native builds (sharp, ...). If you turn it
+# on, rebuild trusted packages manually (e.g. `npm rebuild sharp`).
+# Left OFF by default so the project still builds; flip on for max lockdown.
+# ignore-scripts=true
+
+# --- Correctness guards ----------------------------------------------------
+# Fail install if an installed engine (Node/npm) doesn't satisfy "engines".
+engine-strict=true
+
+# Fail on unresolvable peer dependencies instead of silently installing a
+# possibly-incompatible tree.
+strict-peer-deps=true
+
+# ============================================================================
+# Reminders (behaviour, not config):
+#   * Use `npm ci` in CI — strict install straight from package-lock.json that
+#     fails if the lock is out of sync. This is npm's frozen-lockfile and the
+#     equivalent of pnpm's preferFrozenLockfile.
+#   * Keep dependency `overrides` in package.json (npm reads them there); pnpm
+#     keeps them in pnpm-workspace.yaml.
+# ============================================================================

@@ -1,0 +1,71 @@
+# Supply-chain cooldown: never install a version published in the last 15 days.
+# 15 days = 15 * 24 * 60 = 21600 minutes. pnpm resolves to the newest version
+# that is at least this old, so freshly-published (potentially compromised)
+# releases are ignored until they've had time to be vetted / yanked.
+minimumReleaseAge: 21600
+# Packages exempted from the cooldown (e.g. if you ever need an urgent hotfix).
+# The Next.js framework packages are pinned to exact versions in package.json,
+# so exempting them lets a fresh security patch land without waiting out the
+# 15-day window. The lockfile still pins whatever actually gets resolved.
+minimumReleaseAgeExclude:
+  - next
+  - '@next/*'
+  - eslint-config-next
+  - postcss
+  # Forced below via `overrides` to patched CVE releases that are still inside
+  # the cooldown window; exempt so the security pin can actually resolve.
+  - brace-expansion
+
+# Prefer the lockfile: pnpm install uses exactly what's in pnpm-lock.yaml and
+# only re-resolves when the lockfile is out of sync with package.json.
+# (This is pnpm's default; pinned here to make the intent explicit.)
+preferFrozenLockfile: true
+
+# Security overrides: force patched versions of vulnerable transitive deps
+# without pulling in breaking major bumps. Overrides for packages not present
+# in the tree are simply ignored, so this list is also forward-looking.
+overrides:
+  minimatch@<3.1.3: ^3.1.5
+  flatted@<3.4.0: ^3.4.2
+  brace-expansion@<1.1.17: ^1.1.17
+  brace-expansion@>=4.0.0 <5.0.8: ^5.0.8
+  postcss@<8.5.18: ^8.5.18
+  sharp@<0.35.0: ^0.35.0
+  ajv@<6.14.0: ^6.15.0
+  diff@<4.0.4: ^4.0.4
+  lodash@<4.17.24: ^4.18.1
+  # GHSA-67mh-4wv8-2f99: esbuild dev-server SSRF. Transitive via
+  # contentlayer2>mdx-bundler (build-time only). Fixed in the 0.25.x line.
+  esbuild@<0.25.0: ^0.25.0
+  # GHSA-w5hq-g745-h8pq: uuid missing buffer bounds check (v3/v5/v6 with buf).
+  # Transitive via contentlayer2>mdx-bundler; patched in 11.1.1+.
+  uuid@<11.1.1: ^11.1.1
+
+# Allow build scripts only for trusted first-party/build tooling. Every other
+# package's install scripts (the #1 supply-chain execution vector) stay blocked.
+allowBuilds:
+  sharp: true
+  unrs-resolver: true
+  esbuild: true
+  '@tailwindcss/oxide': true
+  lightningcss: true
+  # Blocked: neither install script is needed to build a static site.
+  # contentlayer2's CLI build (`contentlayer2 build`) does not depend on its
+  # own postinstall; protobufjs's postinstall is CLI codegen (pulled in only
+  # by @opentelemetry exporters, unused at build time). Blocking = safer.
+  contentlayer2: false
+  protobufjs: false
+
+# Documented risk-acceptance for two advisories that CANNOT be fixed by a
+# version bump: both live under contentlayer2 > @effect-ts/otel@0.15.1, which is
+# unmaintained (last published 2023) and hard peer-requires OpenTelemetry 1.x,
+# while the fixes exist only in otel 2.x. Forcing 2.x breaks `contentlayer build`.
+# They are build-time-only (contentlayer CLI telemetry, never shipped to the
+# browser) and not exploitable without a live OTLP/Jaeger collector receiving
+# malformed headers - which a static content build never runs.
+# Scoped to these exact GHSAs only; any NEW advisory will still surface.
+# Durable fix = migrate off the deprecated contentlayer2. Re-audit these dates.
+auditConfig:
+  ignoreGhsas:
+    - GHSA-8988-4f7v-96qf   # @opentelemetry/core: unbounded memory in W3C Baggage (moderate)
+    - GHSA-45rx-2jwx-cxfr   # @opentelemetry/propagator-jaeger: DoS via malformed Jaeger header (high)
