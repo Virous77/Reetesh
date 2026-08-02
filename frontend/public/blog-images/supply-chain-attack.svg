@@ -1,0 +1,121 @@
+<svg width="1200" height="620" viewBox="0 0 1200 620" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Supply Chain Attacks - Secure your installs">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="620" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0a0e1a"/>
+      <stop offset="1" stop-color="#0d1526"/>
+    </linearGradient>
+    <linearGradient id="teal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#67e8f9"/>
+      <stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+    <linearGradient id="purple" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a78bfa"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="shieldFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#101a2e"/>
+      <stop offset="1" stop-color="#0b1220"/>
+    </linearGradient>
+    <linearGradient id="title" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#cbd5e1"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.42" r="0.55">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="620" fill="url(#bg)"/>
+  <rect width="1200" height="620" fill="url(#glow)"/>
+
+  <!-- faint dotted grid -->
+  <g fill="#1b2740" opacity="0.5">
+    <g id="row">
+      <circle cx="60" cy="60" r="1.6"/><circle cx="120" cy="60" r="1.6"/><circle cx="180" cy="60" r="1.6"/><circle cx="240" cy="60" r="1.6"/><circle cx="300" cy="60" r="1.6"/><circle cx="360" cy="60" r="1.6"/><circle cx="420" cy="60" r="1.6"/><circle cx="480" cy="60" r="1.6"/><circle cx="540" cy="60" r="1.6"/><circle cx="600" cy="60" r="1.6"/><circle cx="660" cy="60" r="1.6"/><circle cx="720" cy="60" r="1.6"/><circle cx="780" cy="60" r="1.6"/><circle cx="840" cy="60" r="1.6"/><circle cx="900" cy="60" r="1.6"/><circle cx="960" cy="60" r="1.6"/><circle cx="1020" cy="60" r="1.6"/><circle cx="1080" cy="60" r="1.6"/><circle cx="1140" cy="60" r="1.6"/>
+    </g>
+    <use href="#row" y="60"/><use href="#row" y="120"/><use href="#row" y="180"/><use href="#row" y="240"/><use href="#row" y="300"/><use href="#row" y="360"/><use href="#row" y="420"/><use href="#row" y="480"/>
+  </g>
+
+  <!-- ===== Central emblem: shield holding a package cube, flanked by chain links ===== -->
+  <g filter="url(#soft)">
+
+    <!-- left chain link (teal, intact = protected) -->
+    <g transform="translate(392 232)" stroke="url(#teal)" stroke-width="11" fill="none" stroke-linecap="round">
+      <rect x="-34" y="-19" width="68" height="38" rx="19"/>
+      <rect x="14" y="-19" width="68" height="38" rx="19" opacity="0.6"/>
+    </g>
+
+    <!-- right chain link (purple) -->
+    <g transform="translate(808 232)" stroke="url(#purple)" stroke-width="11" fill="none" stroke-linecap="round">
+      <rect x="-34" y="-19" width="68" height="38" rx="19"/>
+      <rect x="-82" y="-19" width="68" height="38" rx="19" opacity="0.6"/>
+    </g>
+
+    <!-- shield -->
+    <path d="M600 150
+             C 640 168, 686 178, 726 180
+             C 726 262, 712 322, 600 372
+             C 488 322, 474 262, 474 180
+             C 514 178, 560 168, 600 150 Z"
+          fill="url(#shieldFill)" stroke="url(#teal)" stroke-width="4"/>
+    <path d="M600 150
+             C 640 168, 686 178, 726 180
+             C 726 262, 712 322, 600 372
+             C 488 322, 474 262, 474 180
+             C 514 178, 560 168, 600 150 Z"
+          fill="none" stroke="#0a0e1a" stroke-width="1.5" opacity="0.4"/>
+
+    <!-- package cube inside shield -->
+    <g transform="translate(600 244)">
+      <!-- cube -->
+      <path d="M0 -52 L46 -26 L46 26 L0 52 L-46 26 L-46 -26 Z" fill="#0e1830" stroke="url(#purple)" stroke-width="3.5"/>
+      <path d="M0 -52 L46 -26 L0 0 L-46 -26 Z" fill="#16233f" stroke="url(#purple)" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M-46 -26 L0 0 L0 52" fill="none" stroke="url(#teal)" stroke-width="3.5" opacity="0.9"/>
+      <path d="M46 -26 L0 0" fill="none" stroke="url(#teal)" stroke-width="3.5" opacity="0.9"/>
+      <!-- padlock on the cube face -->
+      <g transform="translate(0 20)">
+        <rect x="-15" y="0" width="30" height="22" rx="4" fill="url(#teal)"/>
+        <path d="M-8 0 v-6 a8 8 0 0 1 16 0 v6" fill="none" stroke="url(#teal)" stroke-width="4"/>
+        <circle cx="0" cy="10" r="3.4" fill="#0a0e1a"/>
+        <rect x="-1.6" y="10" width="3.2" height="7" rx="1.6" fill="#0a0e1a"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- ===== Title ===== -->
+  <text x="600" y="452" text-anchor="middle"
+        font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
+        font-size="72" font-weight="800" letter-spacing="1" fill="url(#title)">Supply Chain Attacks</text>
+
+  <!-- subtitle -->
+  <text x="600" y="498" text-anchor="middle"
+        font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
+        font-size="25" font-weight="500" letter-spacing="3" fill="#8aa0c0">A DEVELOPER SURVIVAL GUIDE</text>
+
+  <!-- terminal chip -->
+  <g transform="translate(600 548)">
+    <rect x="-192" y="-24" width="384" height="48" rx="12" fill="#0e1728" stroke="#1e2c47" stroke-width="1.5"/>
+    <circle cx="-168" cy="0" r="5" fill="#ff5f56"/>
+    <circle cx="-150" cy="0" r="5" fill="#ffbd2e"/>
+    <circle cx="-132" cy="0" r="5" fill="#27c93f"/>
+    <text x="-104" y="6" font-family="'SF Mono','Menlo',Consolas,monospace" font-size="20" font-weight="500" fill="#cbd5e1">$ pnpm install</text>
+    <text x="70" y="6" font-family="'SF Mono','Menlo',Consolas,monospace" font-size="18" font-weight="600" fill="#22d3ee">safely</text>
+    <path d="M150 -6 l6 8 l12 -16" fill="none" stroke="#27c93f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- ===== REETESH badge (bottom-left, matching reference) ===== -->
+  <g transform="translate(0 552)">
+    <rect x="0" y="0" width="150" height="68" fill="#05070d"/>
+    <!-- small mark -->
+    <g transform="translate(30 34)" stroke="#e8edf5" stroke-width="2" fill="none">
+      <path d="M-7 -8 c 6 -3, 12 3, 7 8 c 5 -1, 8 4, 4 8" stroke-linecap="round"/>
+      <circle cx="1" cy="0" r="1.4" fill="#e8edf5" stroke="none"/>
+    </g>
+    <text x="52" y="40" font-family="Georgia, 'Times New Roman', serif" font-size="18" letter-spacing="3" fill="#e8edf5">REETESH</text>
+  </g>
+</svg>

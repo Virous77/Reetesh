@@ -14,6 +14,8 @@ type IconName =
   | 'ts'
   | 'mdx'
   | 'text'
+  | 'conf'
+  | 'ini'
   | 'md';
 type IconType = {
   [key: string]: {
@@ -309,6 +311,9 @@ export const icons: IconType = {
     ),
   },
 };
+
+// `.npmrc` and other config files use `ini` fences — reuse the config gear icon.
+icons.ini = icons.conf;
 
 export const Icon = ({
   name,

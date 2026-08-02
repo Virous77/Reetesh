@@ -1,0 +1,325 @@
+---
+title: 'One npm install Away from Disaster: A Developer Guide to Supply Chain Attacks'
+date: 'Aug 02 2026'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: '/blog-images/supply-chain-attack.svg'
+about: 'Supply chain attacks are exploding in the age of AI agentic tooling. Learn how a single compromised npm package can drain your crypto wallet or wipe your machine, and the exact configs and best practices every developer needs to install packages safely.'
+tags:
+  [
+    'supply chain attack',
+    'npm supply chain attack',
+    'how to prevent supply chain attack',
+    'npm security best practices',
+    'pnpm minimumReleaseAge',
+    'compromised npm package',
+    'developer security best practices',
+    'ai agentic tooling security',
+  ]
+related: 'common'
+manualURL: 'one-npm-install-away-from-disaster-a-developer-guide-to-supply-chain-attacks'
+---
+
+<TableContent title="One npm install Away from Disaster: A Developer Guide to Supply Chain Attacks" />
+
+You run `npm install`. One command. A few seconds later hundreds of packages, most of which you have never heard of, are sitting on your machine with permission to run code. Any one of them can read your `~/.ssh` keys, grab your `.env` secrets, sign a transaction from your decentralised wallet, or `rm -rf` your home directory. And you approved all of it by pressing Enter.
+
+That is the uncomfortable truth about a **supply chain attack**. You are not attacked directly. Instead an attacker poisons something you trust, a package, a maintainer account, a build step, and lets your own tooling deliver the payload for them.
+
+This used to be rare. In 2025 and 2026 it is a weekly headline. And the reason it is getting worse right now is **AI agentic tooling**. We have agents installing dependencies, running build scripts, and executing commands with far less human review than before. The blast radius has never been bigger.
+
+In this guide I will break down how these attacks actually work, walk through real incidents, and then show you the exact config I use, the same `pnpm-workspace.yaml` and `.npmrc` settings that ship with this very website, to make installing packages dramatically safer.
+
+<Callout emoji="⚠️" isRegular={false}>
+  This is not fear-mongering. Every mitigation here is something you can copy
+  into your project today in about ten minutes. Security that is annoying to use
+  gets turned off, so everything below is designed to be set-and-forget.
+</Callout>
+
+<Separator />
+
+## What is a Supply Chain Attack, Really?
+
+Your app is your code plus everyone else's code. A modern JavaScript project easily pulls in **1,000+ transitive dependencies**. You did not choose most of them. You chose a framework, and it chose a router, which chose a parser, which chose a tiny string utility maintained by one person in their spare time.
+
+A supply chain attack targets any weak link in that chain instead of your app directly. The common entry points are:
+
+- **Install scripts** — a package runs a `postinstall` script the moment it lands on your disk. No import needed. No app code executed. Just `npm install` and it runs.
+- **Compromised maintainer accounts** — an attacker phishes or steals the credentials of a legit package owner, then publishes a malicious version under a name millions already trust.
+- **Typosquatting** — `react-dom` vs `reactdom`, `lodash` vs `1odash`. One typo (or one hallucinated package name from an AI agent) and you install the attacker's copy.
+- **Dependency confusion** — you have a private internal package `@company/auth`. An attacker publishes a public `@company/auth` with a higher version number, and your resolver happily grabs the public malicious one.
+- **Self-replicating worms** — the newest and scariest class. A compromised package steals the developer's npm token, then uses it to auto-publish malicious versions of every other package that developer maintains. It spreads on its own.
+
+The payload is usually one of three things: **steal secrets** (env vars, SSH keys, npm/cloud tokens, browser wallet data), **drain crypto** (swap wallet addresses in the clipboard or in-page, or sign transactions directly), or **destroy** (wipe files, encrypt for ransom, brick the machine).
+
+<Separator />
+
+## This Actually Happens, Here Are the Receipts
+
+If you think this is theoretical, here is a short and very much non-exhaustive history:
+
+- **event-stream (2018)** — a hugely popular package. A new "helpful" maintainer took over, then slipped in code that targeted a specific Bitcoin wallet app to steal funds. Millions of downloads before it was caught.
+- **ua-parser-js (2021)** — maintainer account hijacked. The compromised version installed a crypto miner and a password stealer. This one library was a dependency of thousands of projects.
+- **node-ipc (2022)** — the maintainer himself added code that wiped files on machines geolocated to certain countries. A trusted dependency turning into malware overnight, by the author's own hand.
+- **The chalk / debug compromise (2025)** — a maintainer got phished and attackers published malicious versions of some of the most-downloaded packages on npm (`chalk`, `debug`, and friends), together representing **billions of weekly downloads**. The payload hijacked crypto transactions in the browser.
+- **Self-replicating npm worms (2025-2026)** — malware that harvests the victim's npm token and automatically republishes itself into every package that developer owns, spreading across the registry without human help.
+
+Notice the pattern. These are not sketchy no-name packages. They are the popular, boring, "of course I trust it" dependencies at the very bottom of your tree. That is exactly why they are targeted.
+
+<Callout emoji="💡" isRegular={true}>
+  The most dangerous dependency is not the one you audited. It is the tiny
+  transitive one five levels deep that you did not even know was installed.
+</Callout>
+
+<Separator />
+
+## Why AI Agentic Tooling Pours Fuel on the Fire
+
+We are living through a shift where coding agents write, install, and run code semi-autonomously. I am a huge fan of agentic coding, but it changes the threat model in three concrete ways:
+
+1. **Less human review at install time.** When you tell an agent "add auth to this app", it may run `npm install some-package` and execute its build scripts before you have even read the package name. The human-in-the-loop pause that used to catch typos is gone.
+2. **Package hallucination.** LLMs sometimes invent package names that do not exist. Attackers watch for popular hallucinated names and pre-register them with malware. This is called **slopsquatting**, and the agent installs the trap for you.
+3. **Agents run with your full permissions.** An agent on your dev machine has your shell, your env, your git credentials, your cloud CLIs already logged in, and your browser wallet a click away. A malicious `postinstall` triggered inside an agent session inherits all of it.
+
+The fix is not "stop using agents". The fix is to make the environment they run in **hardened by default**, so that even a compromised package hits a wall. That is what the rest of this guide is about.
+
+<Advertise title="Agentic Coding: Why AI-Powered Development is the Present and Future" />
+
+<Separator />
+
+## The Single Biggest Fix: Kill Install Scripts
+
+If you do only one thing from this article, do this.
+
+Lifecycle scripts (`preinstall`, `install`, `postinstall`) are the **number one supply-chain execution vector**. They run automatically, with no import, the instant a package is written to disk. A compromised package does not need you to use it. It just needs you to install it.
+
+Both npm and pnpm let you block these scripts. pnpm does it the right way, blocked by default with a per-package allowlist. Here is how you allow only the trusted native packages that genuinely need to compile, and block everything else:
+
+```yaml
+# pnpm-workspace.yaml
+
+# Allow build scripts only for trusted first-party/build tooling. Every other
+# package's install scripts (the #1 supply-chain execution vector) stay blocked.
+allowBuilds:
+  sharp: true
+  unrs-resolver: true
+  esbuild: true
+  '@tailwindcss/oxide': true
+  lightningcss: true
+```
+
+Anything not on that list can be published tomorrow with a malicious `postinstall`, and it simply will not run. That is a massive amount of protection for one block of config.
+
+On npm the equivalent is blunter, it is all-or-nothing via `ignore-scripts=true`, which will break native builds like `sharp`. If you turn it on you then have to `npm rebuild sharp esbuild` manually for the trusted ones:
+
+```ini
+# .npmrc
+
+# Lifecycle scripts are the #1 supply-chain execution vector. npm only offers
+# an ALL-OR-NOTHING switch (no per-package allowlist like pnpm's allowBuilds).
+# ignore-scripts=true
+```
+
+<Callout emoji="🔒" isRegular={false}>
+  This is exactly why I lean on pnpm. `allowBuilds` gives you a surgical
+  allowlist instead of npm's on/off switch. You keep your native builds working
+  while blocking every unknown package from executing code at install time.
+</Callout>
+
+<Separator />
+
+## The Cooldown: Never Install Something Published 5 Minutes Ago
+
+Here is a beautiful, underused idea: **most malicious releases are caught and yanked within days.** So if you simply refuse to install any version published in, say, the last 15 days, you dodge the entire window during which fresh malware is live.
+
+pnpm calls this `minimumReleaseAge` (in minutes). It resolves to the newest version that is at least that old, ignoring anything fresher:
+
+```yaml
+# pnpm-workspace.yaml
+
+# Supply-chain cooldown: never install a version published in the last 15 days.
+# 15 days = 15 * 24 * 60 = 21600 minutes. pnpm resolves to the newest version
+# that is at least this old, so freshly-published (potentially compromised)
+# releases are ignored until they've had time to be vetted / yanked.
+minimumReleaseAge: 21600
+
+# Packages exempted from the cooldown (e.g. an urgent security hotfix).
+minimumReleaseAgeExclude:
+  - next
+  - '@next/*'
+  - eslint-config-next
+```
+
+The `minimumReleaseAgeExclude` list matters. When a real CVE patch drops, you do not want to wait 15 days for it. So you exempt the framework packages you pin and trust, and let their security fixes land immediately while everything else stays in cooldown.
+
+npm has a similar setting but it counts in **days** and has no per-package exclude:
+
+```ini
+# .npmrc
+
+# Only install versions published more than N DAYS ago. NOTE: npm counts in
+# DAYS; pnpm's minimumReleaseAge is in MINUTES. 15 days == 21600 in pnpm.
+min-release-age=15
+
+# npm has no per-package exclude. To let a fresh CVE patch through, relax the
+# cooldown for a single command via the CLI (cli overrides the file):
+#   npm install next@16.2.4 --min-release-age=0
+```
+
+<Callout emoji="⏳" isRegular={true}>
+  Think about it, when the chalk/debug worm went out, the malicious versions
+  were live for a few hours before being pulled. A cooldown window means your
+  machine would never even have seen them.
+</Callout>
+
+<Separator />
+
+## Trust the Lockfile, Pin Everything
+
+A lockfile is your source of truth. It records the exact version and integrity hash of every single package in your tree. If you install from it strictly, an attacker cannot swap in a different tarball without you noticing a hash mismatch.
+
+The rules are simple: **always commit your lockfile, always install from it in CI, and never let versions silently drift.**
+
+```yaml
+# pnpm-workspace.yaml
+
+# Prefer the lockfile: pnpm install uses exactly what's in pnpm-lock.yaml and
+# only re-resolves when the lockfile is out of sync with package.json.
+preferFrozenLockfile: true
+```
+
+```ini
+# .npmrc
+
+# Always read/write the lockfile; never install without one.
+package-lock=true
+
+# Pin exact versions on install (writes "1.2.3", not "^1.2.3") so nothing
+# drifts to a newer minor/patch on the next resolve.
+save-exact=true
+
+# Keep the registry-resolved URL out of the lockfile so a hijacked registry
+# mirror can't pin a poisoned tarball location into your lock.
+omit-lockfile-registry-resolved=true
+```
+
+And in CI, use the strict, non-negotiable install command. This is the single most important habit in the whole article for teams:
+
+```bash
+# CI: strict install straight from the lockfile. Fails if the lock is out of
+# sync with package.json instead of "fixing" it silently.
+pnpm install --frozen-lockfile
+# npm equivalent:
+npm ci
+```
+
+The `^` in `^1.2.3` means "any compatible newer version". That is the exact gap an attacker publishes a malicious `1.2.4` into. Pinning exact versions plus a frozen lockfile closes that gap. Your dependencies stop being a moving target.
+
+<Separator />
+
+## Force-Patch Vulnerable Transitive Deps with Overrides
+
+Sometimes the vulnerable package is buried five levels deep and you cannot bump it directly, it belongs to some dependency's dependency. This is where **overrides** save you. You force a patched version across the whole tree without waiting for the intermediate package to update:
+
+```yaml
+# pnpm-workspace.yaml
+
+# Security overrides: force patched versions of vulnerable transitive deps
+# without pulling in breaking major bumps. Overrides for packages not present
+# in the tree are simply ignored, so this list is also forward-looking.
+overrides:
+  minimatch@<3.1.3: ^3.1.5
+  brace-expansion@<1.1.17: ^1.1.17
+  postcss@<8.5.18: ^8.5.18
+  # GHSA-67mh-4wv8-2f99: esbuild dev-server SSRF (build-time only).
+  esbuild@<0.25.0: ^0.25.0
+```
+
+npm reads overrides from the `"overrides"` key in `package.json` instead of the workspace file, but the idea is identical. Pair this with automated auditing so you find out what to override in the first place:
+
+```ini
+# .npmrc
+
+# Run `npm audit` during install and fail on this severity or above.
+audit=true
+audit-level=high
+```
+
+<Callout emoji="📖" isRegular={true}>
+  Overrides are also documentation. When I pin a package to a patched version I
+  leave a comment with the GHSA advisory ID and why. Future me (and any AI agent
+  reading the file) instantly understands the intent instead of "fixing" it back
+  to broken.
+</Callout>
+
+<Separator />
+
+## Pin Your Registry and Watch for Confusion Attacks
+
+Two quieter but important settings. First, force the canonical public registry so a misconfigured or malicious mirror cannot serve you poisoned tarballs:
+
+```ini
+# .npmrc
+
+# Force the canonical public registry; blocks accidental installs from a
+# misconfigured or malicious mirror.
+registry=https://registry.npmjs.org/
+```
+
+Second, if your company uses private scoped packages (`@company/*`), be aware of **dependency confusion**. Always scope your private packages, and make sure your resolver is configured to fetch that scope only from your private registry, never the public one. Otherwise an attacker publishing a higher-versioned public `@company/thing` can hijack your install.
+
+And a hard rule for secrets: **never commit auth tokens in a project `.npmrc`.** Keep `_authToken` in your user-level `~/.npmrc` or in CI environment variables. A token in a committed file is a token in your git history forever.
+
+<Separator />
+
+## Everyday Habits That Cost You Nothing
+
+Config gets you most of the way. The rest is muscle memory:
+
+- **Read the package name before you install it.** Especially when an AI agent suggests one. Check the download count, the last publish date, the repo link. A "utility" with 40 weekly downloads and no GitHub is a red flag.
+- **Fewer dependencies is more security.** Every package is attack surface. Do you really need a library for `left-pad`? Sometimes ten lines of your own code beats a dependency you now have to trust forever.
+- **Turn on 2FA on your npm account.** If you publish packages, this is the difference between "my account got phished" and "the attacker hit a wall". Use granular access tokens, not classic ones.
+- **Commit and review your lockfile changes.** A PR that adds one feature but changes 200 lines of lockfile deserves a second look. Tools like Socket or a lockfile diff review catch surprise dependencies.
+- **Keep secrets out of reach.** Do not leave long-lived cloud tokens and wallet keys sitting in plaintext `.env` files that any `postinstall` can read. Use a secrets manager or your OS keychain.
+- **Sandbox your AI agents.** Run agentic tooling in a container, a VM, or at minimum a dedicated user account without access to your wallet, your SSH keys, or your production credentials. If a poisoned install fires inside that box, it hits a wall instead of your real machine.
+
+<Callout emoji="🤖" isRegular={false}>
+  My rule for the AI era: assume every install could be hostile and design the
+  environment so that assumption does not matter. Blocked scripts, a release
+  cooldown, a frozen lockfile, and a sandbox mean a compromised package has
+  almost nowhere to go.
+</Callout>
+
+<Separator />
+
+## Your Copy-Paste Checklist
+
+Here is the whole strategy on one page. Drop the config into your project and adopt the habits:
+
+**Config (do this once):**
+
+1. Block install scripts by default, allowlist only trusted native builds (`allowBuilds` in pnpm).
+2. Add a release cooldown so fresh releases are ignored for ~15 days (`minimumReleaseAge`).
+3. Prefer the frozen lockfile (`preferFrozenLockfile` / `npm ci`) and pin exact versions (`save-exact`).
+4. Force-patch vulnerable transitive deps with `overrides`, commented with their advisory IDs.
+5. Pin the registry, enable `audit`, and keep auth tokens out of committed files.
+
+**Habits (do this always):**
+
+6. Read every package name before installing, doubly so when an agent suggests it.
+7. Minimise dependencies, review lockfile diffs, and enable 2FA if you publish.
+8. Sandbox agentic tooling away from your wallet, keys, and production secrets.
+
+The two files that power all of this on my own site are a `pnpm-workspace.yaml` and a `.npmrc.example`. They are boring, they sit there quietly, and they turn a `npm install` from a leap of faith into something with real guardrails.
+
+<Separator />
+
+## Conclusion
+
+Supply chain attacks work because trust is the whole point of a package registry, we install other people's code so we do not have to write it ourselves. That trust is not going away, and honestly it should not. What has to change is the assumption that trust means "run anything, anytime, with full permissions".
+
+In the age of AI agents installing and running code on our behalf, that assumption is a liability. The good news is that defending yourself is not exotic. It is a handful of config lines and a few habits: **block install scripts, wait out a cooldown, pin your lockfile, patch through overrides, and sandbox your agents.** None of it slows you down day to day, and together it means a compromised package, even one of the popular ones, hits a wall instead of your wallet.
+
+Set it up once. Let it protect you every single install after that.
+
+If this helped, or if you have your own hardening tricks I should add, drop a comment below. Stay safe out there and happy (secure) coding! 🔐
