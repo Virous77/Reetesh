@@ -40,14 +40,14 @@ const RelatedPost = ({ relatedBlogs }: { relatedBlogs: Post[] }) => {
               aria-label={post.title}
               className="group border-border/70 bg-card/60 hover:border-heading/40 flex h-full flex-col overflow-hidden rounded-2xl border backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_-20px_rgba(0,0,0,0.6)]"
             >
-              <div className="relative aspect-[16/9] overflow-hidden">
+              <div className="relative aspect-video overflow-hidden">
                 <img
                   alt={post.title}
                   src={post.blogImage}
                   loading="lazy"
                   className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.06]"
                 />
-                <span className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/0 to-black/0 opacity-70 transition-opacity duration-300 group-hover:opacity-90" />
+                <span className="absolute inset-0 bg-linear-to-t from-black/45 via-black/0 to-black/0 opacity-70 transition-opacity duration-300 group-hover:opacity-90" />
                 <span className="text-defaultMax absolute top-3 right-3 flex h-8 w-8 translate-y-1 items-center justify-center rounded-full bg-black/45 opacity-0 backdrop-blur-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
                   <ArrowUpRight className="h-4 w-4" />
                 </span>

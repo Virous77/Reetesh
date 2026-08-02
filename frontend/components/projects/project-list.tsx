@@ -40,7 +40,7 @@ const ProjectList: React.FC<TProjects> = ({ projects, isActive }) => {
                     loading="lazy"
                     className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.06]"
                   />
-                  <span className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/0 to-black/0 opacity-70 transition-opacity duration-300 group-hover:opacity-90" />
+                  <span className="absolute inset-0 bg-linear-to-t from-black/55 via-black/0 to-black/0 opacity-70 transition-opacity duration-300 group-hover:opacity-90" />
                   <span className="text-defaultMax absolute top-3 right-3 flex h-8 w-8 translate-y-1 items-center justify-center rounded-full bg-black/45 opacity-0 backdrop-blur-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
                     <ArrowUpRight className="h-4 w-4" />
                   </span>

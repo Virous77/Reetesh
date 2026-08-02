@@ -45,14 +45,14 @@ const SkillList: React.FC<TSkillList> = ({
               style={{ animationDelay: `${Math.min(i * 35, 315)}ms` }}
               className="animate-in fade-in group/tile border-border/60 bg-background/40 hover:border-heading/50 hover:bg-accent flex items-center gap-2.5 rounded-xl border px-2.5 py-2.5 duration-500 fill-mode-both hover:-translate-y-0.5 hover:shadow-[0_10px_28px_-14px_rgba(0,0,0,0.55)] motion-safe:transition-all motion-safe:duration-300"
             >
-              <span className="ring-border/50 bg-background/70 group-hover/tile:ring-heading/40 flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg ring-1 transition duration-300">
+              {/* w-fit lets wide wordmark logos (e.g. OpenCode) stay legible; square logos keep the 36px slot via min-w */}
+              <span className="ring-border/50 bg-background/70 group-hover/tile:ring-heading/40 flex h-9 w-fit min-w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg px-1 ring-1 transition duration-300">
                 <img
                   src={skill.icon}
                   alt={skill.name}
-                  width={24}
                   height={24}
                   loading="lazy"
-                  className="h-6 w-6 object-contain transition-transform duration-300 group-hover/tile:scale-110"
+                  className="h-6 w-auto max-w-20 object-contain transition-transform duration-300 group-hover/tile:scale-110"
                 />
               </span>
               <span className="text-default group-hover/tile:text-defaultMax min-w-0 flex-1 truncate text-[13px] font-medium capitalize transition-colors">
