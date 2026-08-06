@@ -1,0 +1,111 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Why AI loves Tailwind and shadcn/ui">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0a0e1a"/>
+      <stop offset="1" stop-color="#0d1526"/>
+    </linearGradient>
+    <linearGradient id="tw" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7dd3fc"/>
+      <stop offset="1" stop-color="#38bdf8"/>
+    </linearGradient>
+    <linearGradient id="node" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#12203a"/>
+      <stop offset="1" stop-color="#0c1626"/>
+    </linearGradient>
+    <linearGradient id="title" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#cbd5e1"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.34" r="0.5">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.15"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- faint dotted grid -->
+  <g fill="#1b2740" opacity="0.5">
+    <g id="row">
+      <circle cx="60" cy="60" r="1.6"/><circle cx="120" cy="60" r="1.6"/><circle cx="180" cy="60" r="1.6"/><circle cx="240" cy="60" r="1.6"/><circle cx="300" cy="60" r="1.6"/><circle cx="360" cy="60" r="1.6"/><circle cx="420" cy="60" r="1.6"/><circle cx="480" cy="60" r="1.6"/><circle cx="540" cy="60" r="1.6"/><circle cx="600" cy="60" r="1.6"/><circle cx="660" cy="60" r="1.6"/><circle cx="720" cy="60" r="1.6"/><circle cx="780" cy="60" r="1.6"/><circle cx="840" cy="60" r="1.6"/><circle cx="900" cy="60" r="1.6"/><circle cx="960" cy="60" r="1.6"/><circle cx="1020" cy="60" r="1.6"/><circle cx="1080" cy="60" r="1.6"/><circle cx="1140" cy="60" r="1.6"/>
+    </g>
+    <use href="#row" y="60"/><use href="#row" y="120"/><use href="#row" y="180"/><use href="#row" y="240"/>
+  </g>
+
+  <!-- ===== center row: AI  <3  Tailwind + shadcn ===== -->
+  <!-- connecting lines -->
+  <g stroke-width="2.4" fill="none" opacity="0.85">
+    <path d="M470 175 L360 175" stroke="url(#tw)"/>
+    <path d="M470 265 L360 265" stroke="#a78bfa"/>
+  </g>
+
+  <!-- AI node (left) -->
+  <g filter="url(#soft)" transform="translate(300 220)">
+    <rect x="-70" y="-52" width="140" height="104" rx="24" fill="url(#node)" stroke="url(#tw)" stroke-width="3"/>
+    <!-- spark/AI mark -->
+    <g stroke="#7dd3fc" stroke-width="4" stroke-linecap="round">
+      <line x1="0" y1="-26" x2="0" y2="26"/>
+      <line x1="-26" y1="0" x2="26" y2="0"/>
+      <line x1="-18" y1="-18" x2="18" y2="18"/>
+      <line x1="18" y1="-18" x2="-18" y2="18"/>
+    </g>
+    <circle cx="0" cy="0" r="5" fill="#7dd3fc"/>
+    <text x="0" y="44" text-anchor="middle" font-family="'Segoe UI',Roboto,Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="2" fill="#8aa0c0">AI</text>
+  </g>
+
+  <!-- heart between -->
+  <g transform="translate(415 220)">
+    <path d="M0 -6 C -6 -18, -24 -12, -24 2 C -24 14, -6 22, 0 30 C 6 22, 24 14, 24 2 C 24 -12, 6 -18, 0 -6 Z" fill="#f43f5e"/>
+  </g>
+
+  <!-- Tailwind card (right top) -->
+  <g filter="url(#soft)" transform="translate(500 138)">
+    <rect x="0" y="0" width="380" height="74" rx="16" fill="url(#node)" stroke="url(#tw)" stroke-width="2.4"/>
+    <!-- tailwind wave mark -->
+    <g transform="translate(38 37)">
+      <path d="M-18 4 C -12 -8, -4 -8, 2 -2 C 6 2, 10 4, 16 2 C 10 14, 2 14, -4 8 C -8 4, -12 2, -18 4 Z" fill="#38bdf8"/>
+      <path d="M-4 12 C 2 0, 10 0, 16 6 C 20 10, 24 12, 30 10 C 24 22, 16 22, 10 16 C 6 12, 2 10, -4 12 Z" fill="#38bdf8" opacity="0.75"/>
+    </g>
+    <text x="78" y="34" font-family="'Segoe UI',Roboto,Arial,sans-serif" font-size="19" font-weight="700" fill="#e6edf6">Tailwind CSS</text>
+    <text x="78" y="55" font-family="'SF Mono',Menlo,monospace" font-size="12.5" fill="#7dd3fc">flex  gap-2  p-4  rounded-lg</text>
+  </g>
+
+  <!-- shadcn card (right bottom) -->
+  <g filter="url(#soft)" transform="translate(500 228)">
+    <rect x="0" y="0" width="380" height="74" rx="16" fill="url(#node)" stroke="#a78bfa" stroke-width="2.4"/>
+    <!-- shadcn mark: slash in rounded square -->
+    <g transform="translate(38 37)">
+      <rect x="-18" y="-18" width="36" height="36" rx="9" fill="none" stroke="#a78bfa" stroke-width="2.6"/>
+      <line x1="-6" y1="9" x2="8" y2="-9" stroke="#a78bfa" stroke-width="2.6" stroke-linecap="round"/>
+    </g>
+    <text x="78" y="34" font-family="'Segoe UI',Roboto,Arial,sans-serif" font-size="19" font-weight="700" fill="#e6edf6">shadcn/ui</text>
+    <text x="78" y="55" font-family="'SF Mono',Menlo,monospace" font-size="12.5" fill="#c4b5fd">&lt;Button variant="outline" /&gt;</text>
+  </g>
+
+  <!-- ===== Title ===== -->
+  <text x="600" y="452" text-anchor="middle"
+        font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
+        font-size="56" font-weight="800" letter-spacing="0.5" fill="url(#title)">Why AI Loves Tailwind</text>
+  <text x="600" y="510" text-anchor="middle"
+        font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
+        font-size="56" font-weight="800" letter-spacing="0.5" fill="url(#title)">&amp; shadcn/ui</text>
+
+  <text x="600" y="556" text-anchor="middle"
+        font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
+        font-size="20" font-weight="500" letter-spacing="3.5" fill="#8aa0c0">A MATCH MADE IN TRAINING DATA</text>
+
+  <!-- ===== REETESH badge (bottom-left) ===== -->
+  <g transform="translate(0 562)">
+    <rect x="0" y="0" width="150" height="68" fill="#05070d"/>
+    <g transform="translate(30 34)" stroke="#e8edf5" stroke-width="2" fill="none">
+      <path d="M-7 -8 c 6 -3, 12 3, 7 8 c 5 -1, 8 4, 4 8" stroke-linecap="round"/>
+      <circle cx="1" cy="0" r="1.4" fill="#e8edf5" stroke="none"/>
+    </g>
+    <text x="52" y="40" font-family="Georgia, 'Times New Roman', serif" font-size="18" letter-spacing="3" fill="#e8edf5">REETESH</text>
+  </g>
+</svg>
