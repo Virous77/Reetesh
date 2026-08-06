@@ -5,7 +5,8 @@
   "packageManager": "pnpm@11.18.0",
   "scripts": {
     "dev": "next dev --turbopack",
-    "prebuild": "npx contentlayer2 build",
+    "og:images": "node scripts/generate-og-images.mjs",
+    "prebuild": "node scripts/generate-og-images.mjs && npx contentlayer2 build",
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "next lint",

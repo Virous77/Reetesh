@@ -40,6 +40,24 @@ export const commonMetaData = ({
   url: string;
   keywords: string[];
 }) => {
+  // Scrapers (LinkedIn, X, Facebook, WhatsApp) need an absolute URL and a
+  // raster format. SVG is never rendered by any of them.
+  const imageUrl = image.startsWith('http')
+    ? image
+    : `https://reetesh.in${image}`;
+
+  // Only the 1200x630 social cards under /blog-images are a known size, and
+  // declaring width/height/type is what makes LinkedIn and WhatsApp commit to
+  // the large card instead of falling back to a thumbnail.
+  const isSocialCard = imageUrl.includes('/blog-images/');
+  const ogImage = {
+    url: imageUrl,
+    alt: name,
+    ...(isSocialCard
+      ? { width: 1200, height: 630, type: 'image/png' as const }
+      : {}),
+  };
+
   return {
     metadataBase: new URL('https://reetesh.in'),
     title: name
@@ -55,7 +73,7 @@ export const commonMetaData = ({
     twitter: {
       card: 'summary_large_image',
       creator: '@imbitcoinb',
-      images: image,
+      images: [imageUrl],
       title: name,
       description: desc,
     },
@@ -72,13 +90,9 @@ export const commonMetaData = ({
       title: name,
       description: desc,
       siteName: 'Reetesh Kumar',
-      images: [
-        {
-          url: image,
-        },
-      ],
+      images: [ogImage],
     },
-    assets: image,
+    assets: imageUrl,
     keywords: [
       'nextjs',
       'react',
