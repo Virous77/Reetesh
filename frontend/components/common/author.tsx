@@ -12,7 +12,7 @@ const Author = () => {
           Reetesh Kumar
         </span>
         <span className="text-default block text-xs tracking-tight">
-          @iMBitcoinB
+          @reetesheth
         </span>
       </div>
     </div>

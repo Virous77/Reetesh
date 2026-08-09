@@ -10,7 +10,7 @@ export const socials = [
   },
   {
     name: XIcon,
-    url: 'https://twitter.com/imbitcoinb',
+    url: 'https://twitter.com/reetesheth',
     title: 'Twitter',
   },
   {
@@ -72,7 +72,7 @@ export const commonMetaData = ({
     ],
     twitter: {
       card: 'summary_large_image',
-      creator: '@imbitcoinb',
+      creator: '@reetesheth',
       images: [imageUrl],
       title: name,
       description: desc,

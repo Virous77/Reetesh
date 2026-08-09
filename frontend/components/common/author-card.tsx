@@ -21,7 +21,7 @@ const AuthorCard: React.FC<TMessage> = ({ message }) => {
               title="Reetesh Kumar"
             >
               <a
-                href="https://twitter.com/imbitcoinb"
+                href="https://twitter.com/reetesheth"
                 target="_blank"
                 referrerPolicy="no-referrer"
                 rel="noreferrer noopener"

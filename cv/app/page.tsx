@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   ],
   twitter: {
     card: "summary_large_image",
-    creator: "@imbitcoinb",
+    creator: "@reetesheth",
     images: `${RESUME_DATA.avatarUrl}`,
   },
   robots: "index, follow",
