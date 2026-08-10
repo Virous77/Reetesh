@@ -9,6 +9,7 @@ import Accessibility from '@/components/common/accessibility';
 import MenuProvider from '@/lib/menu-provider';
 import { ViewTransitions } from 'next-view-transitions';
 import NextTopLoader from 'nextjs-toploader';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -73,8 +74,12 @@ const RootLayout = ({
           />
           <link rel="preconnect" href="https://res.cloudinary.com" />
         </head>
-        <body className={`${montserrat.className}`}>
-          <ThemeProviderComp attribute="class" defaultTheme="dark">
+        <body className={`${montserrat.className} antialiased`}>
+          <ThemeProviderComp
+            attribute="class"
+            defaultTheme="dark"
+            disableTransitionOnChange
+          >
             <NextTopLoader
               color="#e21d49"
               initialPosition={0.08}
@@ -91,7 +96,9 @@ const RootLayout = ({
                 {modal}
                 {children}
                 <Analytics debug={false} />
-                <ThemeSwitcher />
+                <TooltipProvider>
+                  <ThemeSwitcher />
+                </TooltipProvider>
                 <Accessibility />
               </MenuProvider>
             </Provider>
