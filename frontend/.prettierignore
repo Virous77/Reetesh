@@ -1,7 +1,6 @@
 node_modules
 yarn.lock
 README.md
-tailwind.config.ts
 package.json
 .next
 .contentlayer
