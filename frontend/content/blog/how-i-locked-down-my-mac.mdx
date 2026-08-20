@@ -1,0 +1,174 @@
+---
+title: 'I Got My Mac Compromised and My Wallet Drained: Here is How I Locked It Down'
+date: 'Aug 20 2026'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://8qbgmple95w84kds.public.blob.vercel-storage.com/macos-security.png'
+about: 'After my Mac got compromised, my local data wiped and my crypto wallet drained, I went deep on macOS security. This is the complete, practical hardening guide I wish I had followed first: built-in settings, the free Objective-See tools, verification commands, and wallet safety.'
+tags:
+  [
+    'macos security',
+    'how to secure macbook',
+    'lulu firewall',
+    'blockblock knockknock',
+    'objective-see tools',
+    'mac malware protection',
+    'filevault gatekeeper',
+    'crypto wallet security',
+  ]
+related: 'common'
+manualURL: 'i-got-my-mac-compromised-and-my-wallet-drained-heres-how-i-locked-it-down'
+---
+
+<TableContent title="I Got My Mac Compromised and My Wallet Drained: Here is How I Locked It Down" />
+
+I'll be honest with you, this one isn't a tutorial I wrote from curiosity. It's one I wrote from pain.
+
+One morning in June, I discovered my Mac had been compromised. By the time I understood what was happening, my local data was gone and, worse, my crypto wallet had been drained. If you've never watched a balance you worked for vanish because of something running silently on your own machine, I hope you never do. It's a gut-punch, and the helplessness afterwards is its own kind of awful.
+
+Once the anger wore off, I did the only useful thing left: I went deep on macOS security and rebuilt my setup properly. This post is everything I learned, the guide I desperately wish I'd followed _before_ instead of after. If you're a developer with anything valuable on your machine (and a crypto wallet counts double), please don't wait for your own June morning.
+
+<Callout emoji="⚠️" isRegular={false}>
+  There's a comforting myth that "Macs don't get malware." That myth cost me
+  real money. macOS is hardened, yes, but it is absolutely targeted, especially
+  developers and anyone holding crypto. Treat your machine like it holds
+  something worth stealing, because it does.
+</Callout>
+
+<Separator />
+
+## Step 1: Lock Down the Built-In Stuff (The Free Wins Everyone Skips)
+
+Before any third-party tools, macOS ships with strong protections. The problem is that not all of them are on by default, or people flip them off for convenience and forget. Start here, because these are the highest-leverage minutes you'll spend.
+
+Turn these on (mostly under **System Settings → Privacy & Security**):
+
+- **FileVault** — full-disk encryption. Without it, someone with physical access reads your drive trivially. Non-negotiable.
+- **Firewall** — blocks unsolicited inbound connections. On.
+- **Gatekeeper** — only allow apps from the App Store and identified developers. Don't disable it to run random software.
+- **Lockdown Mode** — if you're a high-value target (and holding crypto makes you one), it dramatically cuts your attack surface.
+- **Automatic updates** — most real-world compromises exploit _known_, already-patched holes. Auto-update closes them.
+- **Require password immediately** after sleep/screensaver, and set a short lock timer.
+- **Find My Mac** — so a lost or stolen machine can be locked or wiped remotely.
+
+Now, don't just trust the toggles, **verify** them from the terminal. This is the part I love, because it turns "I think it's on" into "I know it's on":
+
+```bash
+# FileVault (disk encryption) — you want: "FileVault is On."
+fdesetup status
+
+# Gatekeeper — you want: "assessments enabled"
+spctl --status
+
+# System Integrity Protection — you want: "enabled"
+csrutil status
+
+# Application firewall — you want: "State = 1" (enabled)
+sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate
+```
+
+If any of those come back off, fix them before you read another line. Seriously.
+
+<Separator />
+
+## Step 2: The Objective-See Toolkit (The Free Tools That Would Have Saved Me)
+
+Here's the part that actually changed how safe I feel. Patrick Wardle runs a project called [**Objective-See**](https://objective-see.org/index.html), a set of free, open-source Mac security tools built specifically for the threats macOS users actually face. Had these been running in June, I'd very likely have caught the intrusion in the act. Install them:
+
+- **LuLu** — a free firewall that alerts you whenever an app tries to make an _outbound_ connection to a new server. This is huge. Malware has to phone home to exfiltrate your data or receive commands, and LuLu makes it ask permission first. A random process trying to reach an unknown server is exactly the "wait, what is that?" moment that stops a breach.
+- **BlockBlock** — monitors the common **persistence** locations (the places malware installs itself to survive reboots) and alerts you the instant something tries to embed itself. Most malware _must_ persist; BlockBlock catches it doing so.
+- **KnockKnock** — scans your whole system for anything persistently installed and set to auto-run, then flags what's unknown or suspicious. It's the tool you run to answer "is something _already_ hiding on here?"
+- **OverSight** — alerts you whenever your **microphone or webcam** is accessed, so spyware can't watch or listen silently.
+- **RansomWhere?** — watches for the rapid file-encryption behaviour that signals ransomware and stops it early.
+- **ReiKey** — detects keyboard "event taps," the mechanism keyloggers use to capture what you type (including, yes, passwords and seed phrases).
+
+<Callout emoji="🛡️" isRegular={true}>
+  If you only install two things, make them LuLu and BlockBlock. LuLu catches
+  malware trying to talk to the outside world; BlockBlock catches it trying to
+  dig in. Between "can't phone home" and "can't persist," you've broken most of
+  the attack chain. (If you want a paid, more powerful firewall, Little Snitch is
+  the gold standard, but LuLu is free and excellent.)
+</Callout>
+
+<Separator />
+
+## Step 3: Hunt For What's Already Hiding
+
+Prevention is great, but you should also _audit_ what's currently on your machine, because if you've ever run something sketchy, the damage may already be done. These commands are how I now do a periodic sweep:
+
+```bash
+# Persistence hot-spots: launch agents & daemons.
+# Malware loves to drop a .plist here to auto-start. Read every entry.
+ls -la ~/Library/LaunchAgents /Library/LaunchAgents /Library/LaunchDaemons
+
+# Everything currently registered to run in the background
+launchctl list
+
+# What's listening for / holding network connections right now
+sudo lsof -i -P | grep -i LISTEN
+
+# Login items that start when you log in
+# (System Settings → General → Login Items also shows these)
+osascript -e 'tell application "System Events" to get the name of every login item'
+```
+
+Go through the launch agents and daemons line by line. Anything you don't recognise, look it up. A legit tool's `.plist` will point to a known app; a random-named binary in a weird path is a red flag. KnockKnock (above) automates a lot of this, but knowing the manual commands means you're never fully dependent on a tool.
+
+Also audit your **browser extensions** and your **login items** ruthlessly. A malicious browser extension is one of the most common ways a crypto wallet gets drained, it can quietly read pages, swap addresses, or hijack your clipboard. Remove everything you don't actively use and trust.
+
+<Separator />
+
+## Step 4: The Wallet Lesson (Learned the Hard Way)
+
+This is the section I'd tattoo on my past self's arm. If you hold crypto, the rules change, because you're not defending data anymore, you're defending _bearer assets_ that vanish the instant they move.
+
+- **Use a hardware wallet.** Keys that never touch an internet-connected machine can't be stolen by software on that machine. This one change would likely have saved me.
+- **Never, ever store your seed phrase digitally.** Not in a note, not in a screenshot, not in a password manager, not in a "temporary" text file. Malware scans for exactly these. Write it on paper (or steel) and keep it offline.
+- **Beware the clipboard.** A common drainer just watches your clipboard and swaps a copied wallet address for the attacker's. **Always verify the first and last characters** of an address after pasting, every single time.
+- **Use a dedicated browser profile (or device) for crypto.** No random extensions, no sketchy sites, no reused sessions. Isolation limits the blast radius.
+- **Approve, don't blind-sign.** Read what a transaction actually does before you sign. Revoke old token approvals you no longer need.
+
+I learned every one of these in reverse. Learn them the easy way.
+
+<Separator />
+
+## Step 5: The Human Layer (Where Breaches Actually Start)
+
+Tools matter, but most compromises start with a habit, not a zero-day. The unglamorous stuff is what actually keeps you safe:
+
+- **A password manager + hardware 2FA.** Unique passwords everywhere, and a hardware key or passkeys for anything important. This kills credential-stuffing and most phishing.
+- **Stop running pirated / cracked software.** On macOS, "free" versions of paid apps are a _classic_ malware delivery vector. That saved $60 can cost you your whole machine. (I can't say for certain this was my vector, but I've cut it out entirely.)
+- **Verify what you download.** Get apps from the official source, and check signatures/checksums when they're provided. Don't run installers from links you didn't seek out.
+- **Mind your dependencies.** As a developer, `npm install` is a doorway straight past all your OS protections, a malicious package runs with _your_ permissions. This deserves its own discipline, which is exactly why I wrote a whole guide on it.
+- **Back up properly.** Time Machine _plus_ an offsite/cloud backup. If ransomware or a wipe hits, backups turn a catastrophe into an afternoon. I lost local data precisely because I got lazy here.
+- **Least privilege.** Don't run day-to-day as an admin if you can avoid it, and be stingy with the permissions you grant apps in Privacy & Security.
+
+<Advertise title="One npm install Away from Disaster: A Developer Guide to Supply Chain Attacks" />
+
+<Separator />
+
+## A Simple Monthly Checklist
+
+Security isn't a one-time setup, it's a rhythm. Here's the quick sweep I now run once a month:
+
+1. Run the four verification commands, confirm FileVault, Gatekeeper, SIP and the firewall are all still on.
+2. Open **KnockKnock** and review anything new or unknown.
+3. Skim launch agents/daemons and login items for anything unfamiliar.
+4. Audit browser extensions, remove what you don't use.
+5. Confirm macOS and your apps are fully updated.
+6. Check your backups actually ran and can be restored.
+7. Revoke stale token approvals on your wallet.
+
+Ten minutes. Compared to what a breach costs, it's the best-value time you'll spend all month.
+
+<Separator />
+
+## Conclusion
+
+I'd love to tell you I was hacked by some genius nation-state exploit. The truth is almost certainly more boring: something ran on my machine that shouldn't have, it phoned home, and it took what it could reach, because I had none of the guardrails above in place. No outbound firewall to question it. No persistence monitor to flag it. My seed phrase reachable. Lazy backups.
+
+Every single one of those gaps is closeable in an afternoon. **Turn on the built-in protections and verify them. Install LuLu and BlockBlock. Audit what's already running. Get your seed phrase offline and onto a hardware wallet. Fix your habits and your backups.** None of it is hard. It's just easy to postpone, right up until the morning you can't.
+
+Don't wait for your June morning. Do the boring afternoon now.
+
+If this helped even one person avoid what I went through, it was worth writing. Stay safe out there, and if you've got hardening tips of your own, drop them in the comments. 🔒
