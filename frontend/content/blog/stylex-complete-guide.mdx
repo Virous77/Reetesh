@@ -1,0 +1,1128 @@
+---
+title: 'StyleX: The Complete Guide to Compile-Time CSS-in-JS'
+date: 'Aug 26 2026'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://8qbgmple95w84kds.public.blob.vercel-storage.com/stylex-guide.png'
+about: 'StyleX is Meta styling system for the web, the one behind Facebook and Instagram. You write styles in JavaScript, a compiler turns them into atomic CSS, and nothing runs in the browser. Here is a complete, example-heavy guide to it.'
+tags:
+  [
+    'stylex',
+    'stylex tutorial',
+    'stylex guide',
+    'css in js',
+    'atomic css',
+    'stylex vs tailwind',
+    'stylex nextjs setup',
+    'stylex theming',
+    'meta stylex',
+    'migrate tailwind to stylex',
+  ]
+related: 'frontend'
+manualURL: 'stylex-complete-guide-compile-time-css-in-js'
+---
+
+<TableContent title="StyleX: The Complete Guide to Compile-Time CSS-in-JS" />
+
+Every few years the frontend world reopens the same argument: where should styles live? In a stylesheet, in a class attribute, or right next to the markup? We went from BEM to CSS Modules to styled-components to Tailwind, and every one of them traded one problem for another.
+
+[**StyleX**](https://stylexjs.com/) is Meta's answer, and it is not a new experiment. It is the styling system behind facebook.com and instagram.com, running on some of the largest React codebases on the planet. It was open-sourced in late 2023 and has been quietly picking up serious adopters ever since.
+
+The pitch is simple: **you write styles in JavaScript, a compiler turns them into atomic CSS at build time, and nothing ships to the browser except a plain stylesheet.** You get the co-location and type-safety of CSS-in-JS with the runtime cost of a `.css` file, which is to say, zero.
+
+<Callout emoji="🏢" isRegular={false}>
+  This is not a toy. Besides pretty much every web surface at Meta (plus the
+  FB/IG Quest apps via RSD), the [StyleX team keeps a running
+  list](https://x.com/stylexjs/status/2068834315870638158) that now includes
+  **Figma, Linear, Snowflake, HubSpot, Polar, Mixcloud**, with **Canva**
+  migrating off CSS Modules, and **Cursor** and **Clerk** migrating too.
+</Callout>
+
+This guide walks through the whole thing, from the mental model to setup, styling, theming, the newer APIs most people have not seen yet, and what it takes to move over from Tailwind. Everything here is against **StyleX v0.19**, the current release.
+
+<Separator />
+
+## The Problem StyleX Is Actually Solving
+
+To understand why StyleX looks the way it does, it helps to name what is wrong with everything else. Each of the three dominant approaches is genuinely good at something, and each pays for it somewhere.
+
+<SubHeadings>Runtime CSS-in-JS (styled-components, Emotion)</SubHeadings>
+
+Beautiful DX. You colocate styles, you interpolate props, life is good. The catch is that your users pay for it. Style objects get serialised, hashed, and injected into the document **while React renders**. That work happens on every navigation, on every theme change, on low-end phones. styled-components has also entered maintenance mode, which is why [Linear moved off it](https://www.skovhus.dev/blog/moving-linear-from-styled-components-to-stylex).
+
+<SubHeadings>CSS Modules</SubHeadings>
+
+Zero runtime, scoped class names, genuinely solid. But your styles live in a second file, composition across component boundaries is awkward, and there is no type safety on the values you write. The cascade and specificity are still yours to manage.
+
+<SubHeadings>Utility CSS (Tailwind)</SubHeadings>
+
+Fast to write, small output, everything in one place. But utility classes are **strings**, and strings do not compose reliably. When a parent passes `"p-4"` and the child already has `"p-2"`, which one wins? Whichever the CSS file happened to define later. Tools like `tailwind-merge` exist purely to patch that hole. There is also no way to say "this component accepts colour overrides but not layout overrides".
+
+<SubHeadings>What StyleX does differently</SubHeadings>
+
+StyleX takes the atomic idea from Tailwind, the co-location from CSS-in-JS, and the zero-runtime from CSS Modules, then adds the piece nobody else has: **deterministic, type-safe merging**. Styles are typed JavaScript values, not strings, so the compiler can guarantee that the last style applied wins, every single time, regardless of source order in the CSS file.
+
+<Callout emoji="⚛️" isRegular={true}>
+  StyleX is not React-only. It works with any framework that puts markup in JS,
+  Preact, Solid, Qwik, Svelte, Vue, and there is a `stylex.attrs` API
+  specifically for frameworks that want `class` instead of `className`.
+</Callout>
+
+<Separator />
+
+## The Mental Model: Atomic CSS, Generated For You
+
+This is the one idea you need before anything else clicks.
+
+When you write this:
+
+```tsx
+const styles = stylex.create({
+  card: {
+    display: 'flex',
+    color: 'red',
+    padding: 8,
+  },
+  banner: {
+    display: 'flex',
+    color: 'blue',
+    padding: 8,
+  },
+});
+```
+
+StyleX does **not** generate `.card` and `.banner`. It generates one class per unique property-value pair:
+
+```css
+.x78zum5 {
+  display: flex;
+}
+.x1e2nbdu {
+  color: red;
+}
+.xe8ttls {
+  padding: 8px;
+}
+.xju2f9n {
+  color: blue;
+}
+```
+
+`styles.card` becomes `"x78zum5 x1e2nbdu xe8ttls"` and `styles.banner` becomes `"x78zum5 xju2f9n xe8ttls"`. The `display: flex` and `padding: 8px` rules are written **once** and shared by both.
+
+And here is the part that makes "zero runtime" concrete. Given a component like this:
+
+```tsx
+export const Card = () => <div {...stylex.props(styles.card)} />;
+```
+
+the compiler emits this:
+
+```tsx
+export const Card = () => <div className="x78zum5 x1e2nbdu xe8ttls" />;
+```
+
+The `create` call is gone. The `props` call is gone. The style objects are gone. What ships is a string literal and a stylesheet, which is exactly what you would have written by hand, except you did not have to name anything.
+
+Two consequences fall out of this, and they are the whole value proposition:
+
+- **Your CSS bundle plateaus.** There are only so many property-value pairs a design system actually uses. Once `display: flex` exists in the output, the thousandth component that needs it adds zero bytes. This is the entire reason Meta built it: their CSS stops growing even as the codebase does not.
+
+- **Merging becomes solvable.** Because each declaration is its own class, StyleX can compute at compile time which class should win and simply _not emit_ the losing one. No specificity, no `!important`, no cascade archaeology.
+
+<Callout emoji="💡" isRegular={false}>
+  This is the same trick Tailwind uses, except you never type the class names.
+  You write normal CSS properties in normal JavaScript objects and the compiler
+  handles atomisation, deduplication and conflict resolution. Think of it as
+  "Tailwind's output with CSS-in-JS's authoring experience".
+</Callout>
+
+<Separator />
+
+## Setting It Up
+
+The fastest path is the scaffolder, which supports Next.js, Vite, Webpack, Rspack, esbuild, React Router, Waku and more:
+
+```bash
+npx create-stylex-app my-app
+```
+
+For an existing project, StyleX needs two things: the runtime package, and a compiler in your build pipeline. Here is the full Next.js setup, which is the one most people will want. The [docs cover every other bundler](https://stylexjs.com/docs/learn/installation) too.
+
+```bash
+# runtime
+npm install --save @stylexjs/stylex
+
+# compiler + linting
+npm install --save-dev @stylexjs/babel-plugin @stylexjs/postcss-plugin @stylexjs/eslint-plugin
+```
+
+Then three config files:
+
+<Tabs items={["babel.config.js", "postcss.config.js", "app/globals.css"]}>
+  <Section slot="babel.config.js">
+    ```js
+    // babel.config.js
+
+    const path = require('path');
+    const dev = process.env.NODE_ENV !== 'production';
+
+    module.exports = {
+      presets: ['next/babel'],
+      plugins: [
+        [
+          '@stylexjs/babel-plugin',
+          {
+            dev,
+            runtimeInjection: false,
+            enableInlinedConditionalMerge: true,
+            treeshakeCompensation: true,
+            aliases: { '@/*': [path.join(__dirname, '*')] },
+            // required for themes and variables
+            unstable_moduleResolution: { type: 'commonJS' },
+          },
+        ],
+      ],
+    };
+    ```
+
+  </Section>
+
+  <Section slot="postcss.config.js">
+    ```js
+    // postcss.config.js
+
+    const babelConfig = require('./babel.config');
+
+    module.exports = {
+      plugins: {
+        '@stylexjs/postcss-plugin': {
+          include: [
+            'src/**/*.{js,jsx,ts,tsx}',
+            'app/**/*.{js,jsx,ts,tsx}',
+            'components/**/*.{js,jsx,ts,tsx}',
+          ],
+          babelConfig: {
+            babelrc: false,
+            parserOpts: { plugins: ['typescript', 'jsx'] },
+            plugins: babelConfig.plugins,
+          },
+          useCSSLayers: true,
+        },
+        autoprefixer: {},
+      },
+    };
+    ```
+
+  </Section>
+
+  <Section slot="app/globals.css">
+    ```css
+    /* app/globals.css */
+
+    @layer resets {
+      * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+      }
+    }
+
+    /* StyleX injects all generated CSS here */
+    @stylex;
+    ```
+
+  </Section>
+</Tabs>
+
+Four things worth calling out:
+
+- **`@stylex;`** is the injection point. The PostCSS plugin scans your `include` globs, collects every style it finds, and writes the generated atomic CSS at that spot in your stylesheet.
+- **`unstable_moduleResolution`** sounds scary but it is required the moment you use variables or themes. Turn it on now.
+- **`useCSSLayers: true`** wraps output in `@layer`, which keeps StyleX from fighting with any other CSS you still have around. Very useful mid-migration.
+- **You do not touch `next.config.js`.** Next.js picks both config files up on its own. Since Next.js 16.0.3 that works under Webpack *and* Turbopack, so check your version if the CSS mysteriously fails to appear.
+
+<Callout emoji="⚙️" isRegular={true}>
+  Install the [ESLint plugin](https://stylexjs.com/docs/api/configuration/eslint-plugin).
+  StyleX has real constraints (styles must be statically analysable) and the
+  linter tells you at write time instead of letting the compiler fail at build
+  time. It also autofixes property sorting and things like `gap`.
+</Callout>
+
+<Advertise title="Why AI Loves Tailwind and shadcn/ui" />
+
+<Separator />
+
+## Defining Styles with create
+
+Everything starts here. `create` takes an object of "namespaces", each one an object of CSS properties in camelCase.
+
+```tsx
+import * as stylex from '@stylexjs/stylex';
+
+const styles = stylex.create({
+  base: {
+    fontSize: 16,
+    lineHeight: 1.5,
+    color: 'rgb(60,60,60)',
+  },
+  highlighted: {
+    color: 'rebeccapurple',
+  },
+});
+```
+
+Numbers get `px` appended where that makes sense, exactly like React inline styles. The namespace names (`base`, `highlighted`) are arbitrary and local to the file.
+
+<SubHeadings>The constraints you have to respect</SubHeadings>
+
+Because StyleX compiles ahead of time, every style object must be **statically analysable**. That means only these are allowed:
+
+- Plain object literals, string literals, number literals, array literals
+- `null` and `undefined`
+- Simple expressions and constants that resolve to the above
+- Arrow functions, but only for dynamic styles (more on those later)
+
+And these are **not** allowed:
+
+- Function calls, other than StyleX's own functions
+- Values imported from other modules, except CSS variables from a `.stylex.js` file
+- Object spreads like `{ ...someStyle }`
+
+This is the trade you are making. In exchange for zero runtime, you give up arbitrary JavaScript inside style definitions. In practice it bites far less often than you would expect, and the linter catches it instantly.
+
+<SubHeadings>Pseudo-classes are nested values, not nested selectors</SubHeadings>
+
+This is the part that feels strange for about ten minutes and then feels obviously correct. Instead of nesting a selector, you nest **the value**:
+
+```tsx
+const styles = stylex.create({
+  button: {
+    backgroundColor: {
+      default: 'lightblue',
+      ':hover': 'blue',
+      ':active': 'darkblue',
+    },
+  },
+});
+```
+
+Read it as: "the background colour of this button is lightblue, except on hover, except while active." The `default` key is required whenever you use conditions. If you want nothing in the default case, use `null`.
+
+Why value-first instead of selector-first? Because it makes merging trivial. When two style objects both set `backgroundColor`, StyleX replaces the whole set of conditions at once, so you can never end up with the base colour from one object and the hover colour from another. That entire category of bug just does not exist.
+
+<SubHeadings>Media queries work the same way</SubHeadings>
+
+```tsx
+const styles = stylex.create({
+  base: {
+    width: {
+      default: 800,
+      '@media (max-width: 800px)': '100%',
+      '@media (min-width: 1540px)': 1366,
+    },
+  },
+});
+```
+
+`@supports` works exactly the same way.
+
+<SubHeadings>Combining conditions</SubHeadings>
+
+Conditions nest as deep as you need:
+
+```tsx
+const styles = stylex.create({
+  button: {
+    transform: {
+      default: 'scale(1)',
+      ':hover': {
+        default: null,
+        '@media (hover: hover)': 'scale(1.1)',
+      },
+      ':active': 'scale(0.9)',
+    },
+  },
+});
+```
+
+That reads as "grow on hover, but only on devices that actually have hover, and shrink while pressed." Writing this in plain CSS means a media query wrapping a hover rule and hoping specificity works out.
+
+<SubHeadings>Pseudo-elements</SubHeadings>
+
+Pseudo-elements are the exception: they are **top-level keys** in a namespace, not nested values, because they are separate elements rather than states.
+
+```tsx
+const styles = stylex.create({
+  input: {
+    // pseudo-element: a top-level key
+    '::placeholder': {
+      color: '#999',
+    },
+    color: {
+      default: '#333',
+      // pseudo-class: a nested value
+      ':invalid': 'red',
+    },
+  },
+});
+```
+
+> The StyleX docs recommend avoiding `::before` and `::after` where a real `span` or `div` would do. Every pseudo-element you add is CSS that can never be shared with anything else, which works against the whole atomic model.
+
+<Separator />
+
+## Applying Styles with props
+
+`create` gives you style objects. `props` turns them into actual DOM props.
+
+```tsx
+<div {...stylex.props(styles.base)} />
+```
+
+It returns an object with a `className` and a `style` (the latter only carries anything when dynamic styles are involved). That is the whole API surface.
+
+<SubHeadings>Merging: the last one always wins</SubHeadings>
+
+```tsx
+const styles = stylex.create({
+  base: { fontSize: 16, lineHeight: 1.5, color: 'grey' },
+  highlighted: { color: 'rebeccapurple' },
+});
+
+// purple text
+<div {...stylex.props(styles.base, styles.highlighted)} />
+
+// grey text
+<div {...stylex.props(styles.highlighted, styles.base)} />
+```
+
+Read that twice, because it is the single most important guarantee in the library. **The order you declare styles in does not matter. Only the order you apply them in.** No specificity, no source-order roulette, no `!important` escape hatches. It behaves exactly like `Object.assign`, which is precisely the intuition you already have.
+
+You can pass an array instead of separate arguments, and StyleX flattens nested arrays too:
+
+```tsx
+<div {...stylex.props([styles.base, styles.highlighted])} />
+```
+
+<SubHeadings>Conditional styles are just JavaScript</SubHeadings>
+
+There is no special API for this. `props` ignores `null`, `undefined` and `false`, so ordinary expressions work:
+
+```tsx
+<div
+  {...stylex.props(
+    styles.base,
+    props.isHighlighted && styles.highlighted,
+    isActive ? styles.active : styles.inactive,
+  )}
+/>
+```
+
+<SubHeadings>Unsetting a style</SubHeadings>
+
+Set a property to `null` to remove whatever was applied before it. This generates no extra CSS at all, it just drops the class:
+
+```tsx
+const overrides = stylex.create({
+  noColor: { color: null },
+});
+
+<div {...stylex.props(styles.base, overrides.noColor)} />;
+```
+
+<SubHeadings>The sx shorthand and stylex.attrs</SubHeadings>
+
+Recent versions ship a lighter JSX syntax for host elements in React:
+
+```tsx
+<button sx={styles.button}>Save</button>
+```
+
+It compiles to exactly the same output as spreading `stylex.props`. And for Solid, Svelte, Vue or Qwik, where you want `class` and a string `style`, use `attrs`:
+
+```tsx
+<div {...stylex.attrs(styles.card)} />
+```
+
+<Separator />
+
+## The Feature That Actually Sells It: Styles as Props
+
+Here is where StyleX pulls ahead of everything else, and it is the reason design-system teams keep picking it.
+
+In Tailwind, a component that accepts `className` accepts _anything_. Your carefully built `Button` can be handed `position: absolute` and `display: block` by any caller, and there is nothing you can do about it. In runtime CSS-in-JS you can pass style objects around, but you pay for it at render time and you still cannot constrain them.
+
+StyleX lets you pass compiled styles across component boundaries as ordinary props, and **type-check exactly what is allowed**.
+
+```tsx
+import * as stylex from '@stylexjs/stylex';
+import type { StyleXStyles } from '@stylexjs/stylex';
+
+const styles = stylex.create({
+  base: {
+    borderWidth: 0,
+    borderRadius: 8,
+    paddingBlock: 8,
+    paddingInline: 16,
+  },
+});
+
+type Props = {
+  children: React.ReactNode;
+  // accept any StyleX styles
+  style?: StyleXStyles;
+};
+
+export function Button({ children, style }: Props) {
+  // local styles first, caller styles last, so the caller can override
+  return <button {...stylex.props(styles.base, style)}>{children}</button>;
+}
+```
+
+The caller writes:
+
+```tsx
+const local = stylex.create({
+  wide: { width: '100%' },
+});
+
+<Button style={local.wide}>Save</Button>;
+```
+
+Now the interesting part. You can narrow that `style` prop down.
+
+<Tabs items={["Allow-list", "Restrict values", "Block-list", "Static only"]}>
+  <Section slot="Allow-list">
+    ```ts
+    import type { StyleXStyles } from '@stylexjs/stylex';
+
+    type Props = {
+      // callers may ONLY pass these three properties
+      style?: StyleXStyles<{
+        color?: string;
+        backgroundColor?: string;
+        borderColor?: string;
+      }>;
+    };
+    ```
+
+  </Section>
+
+  <Section slot="Restrict values">
+    ```ts
+    import type { StyleXStyles } from '@stylexjs/stylex';
+
+    type Props = {
+      // marginTop is allowed, but only on your spacing scale
+      style?: StyleXStyles<{
+        marginTop: 0 | 4 | 8 | 16;
+      }>;
+    };
+    ```
+
+  </Section>
+
+  <Section slot="Block-list">
+    ```ts
+    import type { StyleXStylesWithout } from '@stylexjs/stylex';
+
+    // everything is allowed EXCEPT layout escape hatches
+    type NoLayout = StyleXStylesWithout<{
+      position: unknown;
+      display: unknown;
+      margin: unknown;
+      top: unknown;
+      left: unknown;
+    }>;
+
+    type Props = {
+      style?: NoLayout;
+    };
+    ```
+
+  </Section>
+
+  <Section slot="Static only">
+    ```ts
+    import type { StaticStyles } from '@stylexjs/stylex';
+
+    type Props = {
+      // rejects dynamic (function) styles, static declarations only
+      style?: StaticStyles;
+    };
+    ```
+
+  </Section>
+</Tabs>
+
+<Callout emoji="🔒" isRegular={false}>
+  This is a **styling contract**, enforced by TypeScript, with zero runtime cost.
+  "You can recolour my button, you cannot break my layout" stops being a code
+  review comment and becomes a type error. Almost nothing else in the React
+  styling world can express that.
+</Callout>
+
+<Separator />
+
+## Variants Without a Variants API
+
+StyleX has no `cva`, no `variants` config, no `compoundVariants`. It does not need one, because object property lookup already does the job.
+
+```tsx
+import * as stylex from '@stylexjs/stylex';
+
+const styles = stylex.create({
+  base: {
+    appearance: 'none',
+    borderWidth: 0,
+    borderRadius: 6,
+    cursor: 'pointer',
+  },
+  disabled: {
+    backgroundColor: 'grey',
+    color: 'rgb(204, 204, 204)',
+    cursor: 'not-allowed',
+  },
+});
+
+const colorVariants = stylex.create({
+  primary: {
+    backgroundColor: { default: 'blue', ':hover': 'darkblue' },
+    color: 'white',
+  },
+  secondary: {
+    backgroundColor: { default: 'gray', ':hover': 'darkgray' },
+    color: 'white',
+  },
+});
+
+const sizeVariants = stylex.create({
+  small: { fontSize: '1rem', paddingBlock: 4, paddingInline: 8 },
+  medium: { fontSize: '1.2rem', paddingBlock: 8, paddingInline: 16 },
+});
+
+function Button({
+  color = 'primary',
+  size = 'small',
+  disabled = false,
+  style,
+  ...props
+}: Props) {
+  return (
+    <button
+      {...props}
+      disabled={disabled}
+      {...stylex.props(
+        styles.base,
+        colorVariants[color],
+        sizeVariants[size],
+        disabled && styles.disabled,
+        style,
+      )}
+    />
+  );
+}
+```
+
+Notice what compound variants cost here: **nothing**. `disabled && styles.disabled` sits after the colour variant, so it wins on every property it declares and leaves the rest alone. In a library like `cva` you would be enumerating `compoundVariants` combinations. Here, deterministic merging does it for free.
+
+<Separator />
+
+## Theming: Variables and Themes
+
+StyleX has a first-class, type-safe layer over CSS Custom Properties. It comes in two halves.
+
+<SubHeadings>1. Define your tokens with defineVars</SubHeadings>
+
+Variables live in files ending in `.stylex.ts` (or `.js`, `.tsx`, `.jsx`). This is not a convention, it is enforced: the compiler treats these files specially, they may only contain named exports, and nothing else can be exported from them.
+
+```ts
+// tokens.stylex.ts
+
+import * as stylex from '@stylexjs/stylex';
+
+const DARK = '@media (prefers-color-scheme: dark)';
+
+export const colors = stylex.defineVars({
+  primaryText: { default: 'black', [DARK]: 'white' },
+  secondaryText: { default: '#333', [DARK]: '#ccc' },
+  accent: { default: 'blue', [DARK]: 'lightblue' },
+  background: { default: 'white', [DARK]: 'black' },
+  lineColor: { default: 'gray', [DARK]: 'lightgray' },
+});
+
+export const spacing = stylex.defineVars({
+  none: '0px',
+  xsmall: '4px',
+  small: '8px',
+  medium: '12px',
+  large: '20px',
+  xlarge: '32px',
+});
+```
+
+Look at what just happened. Your dark mode is defined **inside the token**, not in a separate theme file, and every component that uses `colors.background` gets dark mode for free.
+
+Using them is a normal import:
+
+```tsx
+import * as stylex from '@stylexjs/stylex';
+import { colors, spacing } from './tokens.stylex';
+
+const styles = stylex.create({
+  container: {
+    color: colors.primaryText,
+    backgroundColor: colors.background,
+    padding: spacing.medium,
+  },
+});
+```
+
+TypeScript autocompletes every token, and a typo is a compile error rather than a silently broken `var(--colr-bg)`.
+
+<Callout emoji="📦" isRegular={true}>
+  Because these are real named exports, tokens are **publishable**. A design
+  system can ship its variables on npm and consumers import them with full
+  autocomplete. That is something you simply cannot do with a `tailwind.config`
+  or a global `:root` block.
+</Callout>
+
+<SubHeadings>2. Override them with createTheme</SubHeadings>
+
+A theme is a set of overrides for an existing variable group. Apply it to any element and every descendant picks it up.
+
+```tsx
+// themes.ts
+import * as stylex from '@stylexjs/stylex';
+import { colors } from './tokens.stylex';
+
+const DARK = '@media (prefers-color-scheme: dark)';
+
+export const dracula = stylex.createTheme(colors, {
+  primaryText: { default: 'purple', [DARK]: 'plum' },
+  secondaryText: { default: 'pink', [DARK]: 'hotpink' },
+  accent: 'red',
+  background: { default: '#555', [DARK]: 'black' },
+  lineColor: 'red',
+});
+```
+
+```tsx
+import { dracula } from './themes';
+
+// this subtree is now Dracula-flavoured
+<div {...stylex.props(dracula, styles.container)}>{children}</div>;
+```
+
+Themes are just style objects, so they compose with everything else. Any variable you do not override falls back to its `defineVars` default. Nest them, swap them per-route, apply two and the last one wins. Same rule as always.
+
+<SubHeadings>The modern light/dark approach</SubHeadings>
+
+You can build the classic three themes (`light`, `dark`, `system`) with `createTheme`, and that works everywhere CSS variables do. But on modern browsers there is a much shorter path using the CSS `light-dark()` function:
+
+```ts
+// tokens.stylex.ts
+export const colors = stylex.defineVars({
+  primaryText: 'light-dark(black, white)',
+  background: 'light-dark(white, black)',
+});
+```
+
+```tsx
+const styles = stylex.create({
+  light: { colorScheme: 'light' },
+  dark: { colorScheme: 'dark' },
+  system: { colorScheme: 'light dark' },
+});
+
+<div {...stylex.props(styles[colorScheme])}>{children}</div>;
+```
+
+One token, both modes, and switching themes is a single `colorScheme` value. The two caveats: `light-dark()` only works for colour values, and it is not available in older browsers.
+
+<SubHeadings>Typing your variables with stylex.types.*</SubHeadings>
+
+For variables you plan to animate or transition, wrap them in a type helper. StyleX then emits a proper `@property` rule with the right `syntax` descriptor, which is what makes CSS variables animatable at all:
+
+```ts
+export const theme = stylex.defineVars({
+  accent: stylex.types.color({
+    default: 'blue',
+    '@media (prefers-color-scheme: dark)': 'lightblue',
+  }),
+  sm: stylex.types.length('4px'),
+  duration: stylex.types.time('200ms'),
+});
+```
+
+There are helpers for `angle`, `color`, `url`, `image`, `integer`, `length`, `lengthPercentage`, `percentage`, `number`, `resolution`, `time`, `transformFunction` and `transformList`.
+
+<Advertise title="Button Gradient Border Animation with CSS" />
+
+<Separator />
+
+## defineConsts: Values That Are Not Variables
+
+Not everything needs to be a runtime CSS variable. Media query strings, z-index layers and animation timings never change per-theme, and turning them into `var()` lookups is pure overhead. `defineConsts` gives you shared constants that are **inlined at build time** and produce no CSS variables at all.
+
+```ts
+// constants.stylex.ts
+import * as stylex from '@stylexjs/stylex';
+
+export const breakpoints = stylex.defineConsts({
+  small: '@media (max-width: 600px)',
+  medium: '@media (min-width: 601px) and (max-width: 1024px)',
+  large: '@media (min-width: 1025px)',
+});
+
+export const zIndices = stylex.defineConsts({
+  dropdown: '100',
+  modal: '1000',
+  toast: '2000',
+});
+```
+
+```tsx
+import { breakpoints, zIndices } from './constants.stylex';
+
+const styles = stylex.create({
+  dialog: {
+    zIndex: zIndices.modal,
+    width: {
+      default: 640,
+      [breakpoints.small]: '100%',
+    },
+  },
+});
+```
+
+This is genuinely lovely. Your breakpoints stop being magic strings copy-pasted across forty files, and they cost nothing at runtime.
+
+| API            | What it outputs               | Reach for it when                                   |
+| -------------- | ----------------------------- | --------------------------------------------------- |
+| `defineVars`   | Real CSS custom properties    | Colours, spacing, anything a theme overrides         |
+| `defineConsts` | Values inlined at build time  | Media queries, z-index layers, durations, easings    |
+| `stylex.env.*` | Values inlined from build config | Project-wide style snippets, per-environment values |
+
+<Separator />
+
+## Dynamic Styles: The Escape Hatch
+
+Compile-time generation needs to know your values ahead of time. Sometimes you genuinely do not, a progress bar width, a colour from an API, a drag position. For those, a namespace can be a **function**:
+
+```tsx
+import { useState } from 'react';
+import * as stylex from '@stylexjs/stylex';
+
+const styles = stylex.create({
+  // arguments must be simple identifiers,
+  // no destructuring, no default values
+  bar: (height) => ({
+    // the body must be a single object literal
+    height,
+  }),
+});
+
+function MyComponent() {
+  const [height, setHeight] = useState(10);
+
+  return <div {...stylex.props(styles.bar(height))} />;
+}
+```
+
+Under the hood StyleX generates a static rule that reads a CSS variable and sets that variable inline on the element. Which means dynamic values work **inside media queries and pseudo-classes too**, something inline styles can never do.
+
+<Callout emoji="⚠️" isRegular={true}>
+  Use these sparingly. Every dynamic style adds an inline `style` attribute and
+  breaks the "pure class names" model. For the overwhelming majority of cases,
+  conditional styles with a fixed set of options are what you actually want.
+</Callout>
+
+<Separator />
+
+## Animations, Fallbacks and Modern CSS
+
+<SubHeadings>Keyframes</SubHeadings>
+
+`keyframes` returns an animation name you can use like any other value:
+
+```tsx
+const pulse = stylex.keyframes({
+  '0%': { transform: 'scale(1)' },
+  '50%': { transform: 'scale(1.1)' },
+  '100%': { transform: 'scale(1)' },
+});
+
+const fadeIn = stylex.keyframes({
+  from: { opacity: 0 },
+  to: { opacity: 1 },
+});
+
+const styles = stylex.create({
+  pulse: {
+    animationName: pulse,
+    animationDuration: '1s',
+    animationIterationCount: 'infinite',
+  },
+  // multiple animations, comma separated
+  open: {
+    animationName: `${fadeIn}, ${pulse}`,
+    animationDuration: '1s, 1s',
+  },
+});
+```
+
+No name collisions, ever, because you never invent a name.
+
+<SubHeadings>Fallback values with firstThatWorks</SubHeadings>
+
+In CSS you write the same property three times and let the browser pick the last one it understands. You cannot do that in a JS object, so StyleX gives you:
+
+```tsx
+const styles = stylex.create({
+  header: {
+    position: stylex.firstThatWorks('sticky', '-webkit-sticky', 'fixed'),
+  },
+});
+```
+
+Values are listed **most preferred first**, which reads better than the CSS version.
+
+<SubHeadings>View transitions</SubHeadings>
+
+`viewTransitionClass` generates all four `::view-transition-*` pseudo-element rules behind one class name, which pairs nicely with React's `<ViewTransition />`:
+
+```tsx
+const slide = stylex.viewTransitionClass({
+  old: { animationDuration: '300ms' },
+  new: { animationDuration: '300ms' },
+});
+```
+
+There is also `stylex.positionTry` for CSS anchor positioning, if you are building popovers and tooltips on the modern primitives.
+
+<Separator />
+
+## Ancestor and Sibling Styles with when
+
+StyleX's encapsulation principle says an element's appearance should come only from classes on that element. Great rule, but sometimes you really do need "highlight this child when the row is hovered". The `stylex.when.*` family covers that, safely.
+
+You mark the element being **observed**, then reference its state from the element being **styled**:
+
+```tsx
+import * as stylex from '@stylexjs/stylex';
+
+const styles = stylex.create({
+  card: {
+    transform: {
+      default: 'translateX(0)',
+      [stylex.when.ancestor(':hover')]: 'translateX(10px)',
+    },
+  },
+});
+
+<div {...stylex.props(stylex.defaultMarker())}>
+  <div {...stylex.props(styles.card)}>Hover the parent to move me</div>
+</div>;
+```
+
+Attribute selectors work too, which is perfect for ARIA and `data-state` driven components:
+
+```tsx
+const styles = stylex.create({
+  panel: {
+    opacity: {
+      default: 0.6,
+      [stylex.when.ancestor('[data-state="open"]')]: 1,
+    },
+  },
+});
+```
+
+Five selectors are available: `ancestor`, `descendant`, `anySibling`, `siblingBefore` and `siblingAfter`, ranked in that order when several apply to one element. And when you need two independent contexts in the same tree, define your own markers:
+
+```tsx
+// markers.stylex.ts
+export const rowMarker = stylex.defineMarker();
+export const cellMarker = stylex.defineMarker();
+```
+
+```tsx
+const styles = stylex.create({
+  editButton: {
+    // show the button when the ROW is hovered
+    visibility: {
+      default: 'hidden',
+      [stylex.when.ancestor(':hover', rowMarker)]: 'visible',
+    },
+    // but only fully opaque when the CELL itself is hovered
+    opacity: {
+      default: 0.4,
+      [stylex.when.ancestor(':hover', cellMarker)]: 1,
+    },
+  },
+});
+```
+
+<Callout emoji="🧪" isRegular={true}>
+  The lookahead selectors (`descendant`, `anySibling`, `siblingAfter`) compile
+  down to CSS `:has()`. Support is good in current browsers but check your
+  targets before shipping them. `ancestor` and `siblingBefore` use ordinary
+  combinators and are safe everywhere.
+</Callout>
+
+<Separator />
+
+## @stylexjs/atoms: Inline Atomic Styles
+
+New in v0.19, and the closest thing StyleX has to Tailwind's ergonomics. For one-off styles that do not deserve a named namespace, `@stylexjs/atoms` lets you write atoms inline:
+
+```bash
+npm install @stylexjs/atoms
+```
+
+```tsx
+import * as stylex from '@stylexjs/stylex';
+import x from '@stylexjs/atoms';
+
+function Row({ color, isDisabled }) {
+  return (
+    <div
+      {...stylex.props(
+        x.display['inline-flex'],
+        x.alignItems.center,
+        x.gap._8px,
+        x.borderRadius._6px,
+        x.color(color),
+        isDisabled && x.opacity['0.5'],
+      )}
+    />
+  );
+}
+```
+
+Two syntaxes here. **Static atoms** use property access (`x.display.flex`). **Dynamic atoms** use call syntax and take a single value (`x.color(color)`). Two small rules for awkward values: prefix numeric values with an underscore (`x.padding._16px`, the underscore is compiled away), and use bracket notation for anything with spaces or special characters (`x.opacity['0.5']`).
+
+The important bit: **atoms compile to exactly the same output as `stylex.create`**, and they merge with created styles under the same last-wins rule. There is no second system here, just a different way to spell the same thing.
+
+My rule of thumb: reach for `create` when a set of styles is reused or benefits from a descriptive name, and reach for atoms when the styles are genuinely one-off and reading them at the callsite is clearer.
+
+<Separator />
+
+## Coming From Tailwind
+
+This is the most common migration path right now, and there are two tools worth knowing.
+
+<SubHeadings>Keep Tailwind's design tokens: tailwind-stylex</SubHeadings>
+
+[`tailwind-stylex`](https://github.com/aidenybai/tailwind-stylex) by Aiden Bai gives you Tailwind's entire default design system as typed StyleX constants. No config, no scanning, no codegen step. If your team already thinks in `stone-100` and `spacing-4`, you keep that vocabulary and lose nothing. It is young (still on `0.1.x` at the time of writing) but it is a plain token module, so there is very little that can go wrong.
+
+```bash
+pnpm add tailwind-stylex @stylexjs/stylex
+```
+
+You just have to tell the StyleX compiler to process the package:
+
+<Tabs items={["postcss-plugin", "unplugin"]}>
+  <Section slot="postcss-plugin">
+    ```js
+    // postcss.config.js
+    {
+      include: [
+        'src/**/*.{js,jsx,ts,tsx}',
+        'node_modules/tailwind-stylex/tokens.stylex.js',
+      ],
+    }
+    ```
+
+  </Section>
+
+  <Section slot="unplugin">
+    ```ts
+    stylex({
+      externalPackages: ['tailwind-stylex'],
+    });
+    ```
+
+  </Section>
+</Tabs>
+
+Then import tokens and use them like any other StyleX variables:
+
+```tsx
+import * as stylex from '@stylexjs/stylex';
+import {
+  colors,
+  containers,
+  fontSizes,
+  radii,
+  spacing,
+} from 'tailwind-stylex/tokens.stylex';
+
+const styles = stylex.create({
+  card: {
+    backgroundColor: colors.stone100,
+    borderRadius: radii.lg,
+    color: colors.stone900,
+    padding: spacing[4],
+  },
+  hero: {
+    // bracket notation for numeric Tailwind names
+    fontSize: fontSizes['2xl'],
+    maxWidth: containers['7xl'],
+    padding: spacing[8],
+  },
+});
+```
+
+The exports are grouped the way you would expect: `colors`; `spacing`, `breakpoints`, `mediaQueries`, `containers`, `aspectRatios`, `maxWidths`; `fonts`, `fontSizes`, `fontSizeLineHeights`, `fontWeights`, `letterSpacing`, `lineHeights`; `radii`, `shadows`, `insetShadows`, `dropShadows`, `textShadows`, `blurs`; `easings`, `animations`, `perspectives`. Your editor autocompletes every one and shows its exact value on hover.
+
+<SubHeadings>Convert the markup: tailwind-to-stylex</SubHeadings>
+
+For the class strings themselves, [`tailwind-to-stylex`](https://www.npmjs.com/package/tailwind-to-stylex) is a Babel plugin that rewrites `className` strings (or `tw()` calls) into StyleX. It will not be perfect on complex arbitrary values, but it handles the boring 90% and leaves you the interesting bits. Fair warning: it has not shipped a release since late 2024, so treat it as a one-time codemod you run and review rather than a dependency you keep around.
+
+<SubHeadings>How to actually run the migration</SubHeadings>
+
+The lesson from [Linear's migration write-up](https://www.skovhus.dev/blog/moving-linear-from-styled-components-to-stylex), which is worth reading in full, is that this should be incremental and heavily linted:
+
+- **Let both systems coexist.** Turn on `useCSSLayers` so StyleX output sits in its own layer and does not fight your existing CSS.
+- **Start at the leaves.** Convert leaf components first, shared primitives last. Primitives have the most callers and the most subtle overrides.
+- **Lint aggressively.** Add rules that fail on the old patterns in already-converted directories, otherwise you regress while you migrate.
+- **Keep an escape hatch.** CSS Modules are fine for the handful of truly global selectors that no scoped system should own.
+- **Verify visually.** Agents can convert an astonishing amount of this automatically, but someone still has to look at the screen.
+
+Linear reported **58% of files converted** and roughly **30% faster renders** on page navigation, purely from deleting runtime style generation.
+
+<Separator />
+
+## The Honest Trade-offs
+
+I would not be doing you any favours by only listing the good parts.
+
+- **You need a build step, and it is opinionated.** Babel plus PostCSS is more setup than adding a `<link>` tag. If your bundler is unusual, budget an afternoon.
+- **It is more verbose than Tailwind.** `paddingBlock: 8, paddingInline: 16` is more keystrokes than `py-2 px-4`. You get types and composability in return, but the typing cost is real.
+- **Static analysis is a hard boundary.** No spreads, no imported values (outside `.stylex` files), no function calls in style objects. You will hit this occasionally and have to restructure.
+- **The ecosystem is younger.** There is no shadcn/ui equivalent yet. You will be building your own primitives, or adapting headless libraries like Radix and Base UI, which honestly works fine.
+- **Some newer APIs need modern browsers.** `stylex.when`'s lookahead selectors need `:has()`, `light-dark()` needs recent versions. Both have straightforward fallbacks.
+- **Debugging looks different.** Class names like `x1e2nbdu` mean nothing in DevTools. `dev: true` fixes most of that: it prepends a readable `Card__styles.card` class and stamps a `data-style-src="Card.jsx:2"` attribute pointing straight back at the source line. There is a [StyleX DevTools extension](https://chromewebstore.google.com/detail/stylex-devtools/pfcoadoepdjlhhnchklcinajnmmninem) too.
+
+<SubHeadings>So when should you pick it?</SubHeadings>
+
+StyleX is a very good fit when you are building a **design system or a component library**, when your app is **large enough that CSS bundle size and render performance actually matter**, or when you want **enforceable styling contracts** between teams. Those three things are exactly what it was built for.
+
+It is probably overkill for a landing page, a weekend project, or a small app where Tailwind's speed of iteration wins outright. Meta built this to solve problems at Meta's scale, and it is honest about that.
+
+<Separator />
+
+## Conclusion
+
+StyleX is the first styling system I have used that does not feel like a compromise. Styles sit next to the markup where they belong. Merging is deterministic in a way CSS has never been. The output is atomic, so the bundle stops growing. And the type layer turns "please do not override my layout" from a code review comment into a compile error.
+
+The direction of travel is telling. Figma, Linear, Snowflake, HubSpot, Polar, Mixcloud, Canva, Cursor and Clerk did not all independently pick the same styling library because it was trendy. They picked it because runtime CSS-in-JS was costing their users real milliseconds and string-based utilities could not express the constraints their design systems needed.
+
+If you want to try it, `npx create-stylex-app my-app` gets you running in a minute, and the [official Learn docs](https://stylexjs.com/docs/learn) are genuinely excellent, short, precise and full of examples. There is also a [playground](https://stylexjs.com/playground) where you can paste a `stylex.create` call and watch the atomic CSS come out the other side, which is the single fastest way to make the mental model click.
+
+Give it a weekend. The first hour feels verbose, and then somewhere around hour three you realise you have not thought about specificity once.
+
+Got questions or war stories from your own migration? Drop them in the comments. Happy styling! 🎨
