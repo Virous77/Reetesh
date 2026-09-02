@@ -1,0 +1,225 @@
+---
+title: 'The USB-C Moment for AI: A Developer Guide to Model Context Protocol (MCP)'
+date: 'Sep 02 2026'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://8qbgmple95w84kds.public.blob.vercel-storage.com/mcp-guide.png'
+about: 'Model Context Protocol (MCP) is the open standard that finally lets AI agents talk to your tools, data and APIs in one consistent way. Learn what MCP is, how it works, how to build your own server, and the security you need to think about.'
+tags:
+  [
+    'model context protocol',
+    'what is mcp',
+    'mcp explained',
+    'how to build an mcp server',
+    'mcp server tutorial',
+    'ai agents tooling',
+    'mcp typescript sdk',
+    'anthropic mcp',
+  ]
+related: 'common'
+manualURL: 'the-usb-c-moment-for-ai-a-developer-guide-to-model-context-protocol-mcp'
+---
+
+<TableContent title="The USB-C Moment for AI: A Developer Guide to Model Context Protocol (MCP)" />
+
+An LLM on its own is a brain in a jar. It can reason, write and explain, but it cannot read your database, hit your API, open a file, or check your calendar. To make it actually _useful_, we wire it up to the outside world with tools. And for a while, every one of us was wiring it up in our own custom, one-off, slightly-broken way.
+
+That is the problem **Model Context Protocol (MCP)** was built to kill.
+
+Think about it. If you have **M** AI apps (Claude, Cursor, your own agent) and **N** systems you want them to talk to (GitHub, Postgres, Slack, your internal API), you were on the hook for **M × N** custom integrations. Every app spoke to every tool in its own bespoke dialect. It did not scale, and everyone was reinventing the same wheel.
+
+MCP flips that into **M + N**. Build one MCP server for your tool, and _every_ MCP-compatible app can use it. Build one MCP client into your app, and it can reach _every_ MCP server out there. This is exactly why people call it **"the USB-C port for AI"**, one standard connector instead of a drawer full of proprietary cables.
+
+<Callout emoji="🔌" isRegular={false}>
+  MCP is an open protocol, originally introduced by Anthropic and now adopted
+  across the industry (OpenAI and Google both hopped on in 2025). It is not a
+  Claude-only thing. It is quickly becoming the default way AI apps and tools
+  talk to each other.
+</Callout>
+
+<Separator />
+
+## So What Actually Is MCP?
+
+At its core, MCP is a simple **client-server protocol** that standardises how an AI application feeds context to a model and lets the model take actions. It speaks **JSON-RPC 2.0** under the hood, so if you have ever worked with an API, none of this will feel alien.
+
+There are three roles to keep straight:
+
+- **Host** — the AI application the user actually interacts with (Claude Desktop, Claude Code, Cursor, or your own agent). The host manages the LLM and orchestrates everything.
+- **Client** — lives _inside_ the host. Each client holds a dedicated 1-to-1 connection to a single server.
+- **Server** — a lightweight program that exposes some capability (your database, the GitHub API, a filesystem) through the MCP interface.
+
+So one host can run many clients, and each client talks to one server. Your agent might have a Postgres server, a GitHub server and a filesystem server all connected at once, and it does not care how any of them are implemented internally, they all speak the same protocol.
+
+<Callout emoji="💡" isRegular={true}>
+  The mental model that clicks for most developers: MCP servers are like a REST
+  API, but designed for an LLM to consume instead of a human-written frontend.
+  The model reads the "menu" of what a server offers, then picks what it needs.
+</Callout>
+
+<Separator />
+
+## The Three Primitives Every Server Can Expose
+
+This is the heart of MCP. A server can offer three kinds of things, and the distinction between them matters because they are _controlled_ by different parties.
+
+- **Tools** (model-controlled) — functions the LLM can decide to call, like `create_issue`, `run_query` or `send_email`. These are actions. The model chooses when to invoke them, usually with a human approving the call.
+- **Resources** (application-controlled) — read-only data the server can expose as context, like a file, a database row, or a log. Think of these as things you attach _to_ the conversation rather than actions the model takes.
+- **Prompts** (user-controlled) — reusable, parameterised prompt templates a user can pull in on demand, like a "review this PR" or "summarise this ticket" workflow.
+
+The split is deliberate. **Tools** are powerful and side-effectful, so they sit behind the model's decision plus a human's approval. **Resources** are passive data. **Prompts** are user-triggered shortcuts. Get this separation right and your server feels natural to use.
+
+<Callout emoji="⚙️" isRegular={true}>
+  There are also client-side features flowing the other way, like **sampling**
+  (a server can ask the host's LLM to generate something) and **elicitation** (a
+  server can ask the user for input mid-task). Powerful, but start with tools and
+  resources, that is 90% of what you will build.
+</Callout>
+
+<Separator />
+
+## How a Connection Actually Works
+
+When a client connects to a server, they go through a quick handshake and then settle into normal messaging. Roughly:
+
+1. **Initialize** — the client and server exchange protocol versions and capabilities. "Here is what I support, what about you?"
+2. **Discovery** — the client asks _"what tools/resources/prompts do you have?"_ and the server responds with a list, each with a name, description and input schema.
+3. **Execution** — the model reads those descriptions, decides it needs `get_forecast`, and the client sends a `tools/call` request. The server does the work and returns a result.
+
+The transport underneath can be one of two things:
+
+- **stdio** — the server runs as a local subprocess and talks over standard input/output. Perfect for local tools (filesystem, a local database, git).
+- **Streamable HTTP** — the server runs remotely and talks over HTTP. This is how hosted, multi-user MCP servers work.
+
+You write your server logic once; swapping the transport is a couple of lines.
+
+<Separator />
+
+## Let's Build a Tiny MCP Server
+
+Enough theory. Here is a minimal server in TypeScript using the official SDK. It exposes a single tool that returns a weather forecast.
+
+First install the SDK:
+
+```bash
+npm install @modelcontextprotocol/sdk zod
+```
+
+Now the server itself:
+
+```ts
+// server.ts
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { z } from 'zod';
+
+// 1. Create the server with a name + version
+const server = new McpServer({
+  name: 'weather',
+  version: '1.0.0',
+});
+
+// 2. Register a tool. The Zod schema becomes the input contract the
+//    model sees, so a good description here matters a LOT.
+server.tool(
+  'get_forecast',
+  'Get the current weather forecast for a given city',
+  { city: z.string().describe('City name, e.g. "Bengaluru"') },
+  async ({ city }) => {
+    const res = await fetch(
+      `https://api.example.com/forecast?city=${encodeURIComponent(city)}`
+    );
+    const data = await res.json();
+
+    return {
+      content: [
+        { type: 'text', text: `Forecast for ${city}: ${data.summary}` },
+      ],
+    };
+  }
+);
+
+// 3. Connect over stdio so a local host can spawn it
+const transport = new StdioServerTransport();
+await server.connect(transport);
+```
+
+That is a fully working MCP server. Notice the tool takes a **name**, a **description**, an **input schema** (Zod), and a **handler**. The description and schema are what the model reads to decide when and how to call it, treat them like documentation for a very literal junior developer.
+
+<Callout emoji="📝" isRegular={false}>
+  The single biggest quality lever in an MCP server is your tool descriptions
+  and schemas. The model only knows what you tell it. Vague descriptions lead to
+  the model calling the wrong tool or passing garbage arguments. Be explicit,
+  give examples, and constrain your inputs with the schema.
+</Callout>
+
+<Separator />
+
+## Plugging It Into a Host
+
+To use this server in a host like Claude Desktop or Claude Code, you register it in a config file. The host then spawns your server and wires it into the model automatically.
+
+```json
+{
+  "mcpServers": {
+    "weather": {
+      "command": "node",
+      "args": ["/absolute/path/to/weather-server/build/server.js"]
+    }
+  }
+}
+```
+
+That is it. Restart the host, and the model can now call `get_forecast`. Ask _"what's the weather in Bengaluru?"_ and the model will discover your tool, call it, and fold the result into its answer, no custom glue code on the app side at all.
+
+This is the whole magic of MCP: **you wrote the integration once**, and now any MCP-aware app can use it. The same server works in Cursor, in a custom agent you build, or in the next AI app that has not even shipped yet.
+
+<Advertise title="Claude Code vs OpenCode - Which AI Coding Assistant Should You Use?" />
+
+<Separator />
+
+## Where MCP Fits in the Agentic Wave
+
+MCP did not appear in a vacuum. It landed right as **agentic coding** and autonomous AI workflows went mainstream. An agent is only as capable as the tools it can reach, and before MCP, giving an agent new capabilities meant custom integration work every single time.
+
+Now the loop looks like this: the model reasons about a task, sees the menu of MCP tools available, calls the ones it needs, reads the results, and keeps going until the job is done. The protocol is the connective tissue that makes agents genuinely useful instead of just chatty.
+
+<Advertise title="Agentic Coding: Why AI-Powered Development is the Present and Future" />
+
+<Separator />
+
+## The Part Nobody Should Skip: Security
+
+Here is where I have to put my serious hat on. MCP gives an AI agent real hands, the ability to run queries, hit APIs, touch your filesystem. That power cuts both ways, and the threat model is genuinely new.
+
+A few things to burn into your brain:
+
+- **Prompt injection through tool results.** If a tool returns attacker-controlled text (a web page, an email, a GitHub issue), that text can contain instructions the model might follow. Treat every tool output as untrusted data, never as commands. This is the number one MCP risk.
+- **Over-broad tool permissions.** A server that can run _any_ SQL is a server that can `DROP TABLE`. Scope your tools tightly. A `get_user_by_id` tool is far safer than a raw `run_sql` tool.
+- **Human-in-the-loop on side effects.** Reads can be automatic. Writes, deletes, sends and payments should require explicit user approval. Good hosts enforce this; good servers make it easy.
+- **Malicious or compromised servers.** Installing a random MCP server is running someone else's code with access to your data and machine, exactly the same supply-chain risk as installing a random npm package. Vet what you connect.
+
+That last point is worth dwelling on, because the MCP ecosystem is exploding and it is tempting to `npx` any server you find. Don't. The same discipline you apply to dependencies applies here.
+
+<Advertise title="One npm install Away from Disaster: A Developer Guide to Supply Chain Attacks" />
+
+<Callout emoji="🔒" isRegular={false}>
+  My rule of thumb: an MCP server is code running with your permissions and your
+  data. Read what it does before you connect it, scope its tools to the minimum,
+  and never auto-approve destructive actions. Convenience is not worth a wiped
+  database or a leaked secret.
+</Callout>
+
+<Separator />
+
+## Conclusion
+
+For the longest time, connecting AI to the real world was a mess of one-off integrations that none of us enjoyed writing. **Model Context Protocol** fixes that with a boring, beautiful idea: one open standard, so tools and AI apps can talk to each other without knowing each other's internals. M × N becomes M + N, and suddenly the whole ecosystem compounds.
+
+If you build developer tools, shipping an MCP server is fast becoming table stakes, it is how your product shows up inside every AI app your users already live in. And if you build agents, MCP is the cleanest way to give them capabilities without drowning in glue code.
+
+Start small. Spin up a server with one tool, connect it to Claude Code or Cursor, and watch the model reach out and use it. That first moment where an agent calls _your_ tool and folds the result into its reasoning is genuinely magical, and once you see it, you will start wanting an MCP server for everything.
+
+Just remember the security side while you are having fun. Give your agents good tools, scope them tightly, and keep a human in the loop for anything that bites.
+
+If this helped, or you have built something cool with MCP, drop a comment below. Happy building! 🔌🚀
