@@ -1,7 +1,6 @@
 import { addUserIDToLocalStorage, adminID, getLocalData } from '@/utils/utils';
 import { ThumbsDown, ThumbsUp } from 'lucide-react';
 import React, { useLayoutEffect } from 'react';
-import action from './action';
 import DeleteComment from './delete-comment';
 import { useMutation } from '@tanstack/react-query';
 import { addLikeAction } from './like-action';
@@ -12,7 +11,6 @@ type TLike = {
   like: string[];
   dislike: string[];
   id: string;
-  blogId: string;
   blogUserId: string;
   reply: boolean;
   onClick: () => void;
@@ -22,7 +20,6 @@ const Like: React.FC<TLike> = ({
   id,
   like,
   dislike,
-  blogId,
   blogUserId,
   reply,
   onClick,
@@ -31,8 +28,8 @@ const Like: React.FC<TLike> = ({
 
   const { mutate } = useMutation({
     mutationFn: addLikeAction,
-    onSuccess: () => {
-      action(blogId);
+    onSuccess: (result) => {
+      if ('error' in result) alert(result.error);
     },
     onError: (error) => {
       alert(error.message || 'Failed to like');
@@ -98,7 +95,7 @@ const Like: React.FC<TLike> = ({
         </div>
       </div>
       {(blogUserId === userId || adminID.includes(userId || '')) && (
-        <DeleteComment commentId={id} userId={userId} blogId={blogId} />
+        <DeleteComment commentId={id} userId={userId} />
       )}
     </div>
   );

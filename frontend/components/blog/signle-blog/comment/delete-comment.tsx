@@ -1,6 +1,5 @@
 import { Trash2 } from 'lucide-react';
 import React from 'react';
-import action from './action';
 import { useMutation } from '@tanstack/react-query';
 import { deleteCommentAction } from './delete-action';
 import { Button } from '@/components/ui/button';
@@ -9,18 +8,16 @@ import { ToolTipComp } from '@/components/ui/tooltip';
 type TDeleteComment = {
   userId: string | null;
   commentId: string;
-  blogId: string;
 };
 
 const DeleteComment: React.FC<TDeleteComment> = ({
   userId,
   commentId,
-  blogId,
 }) => {
   const { mutate, isPending } = useMutation({
     mutationFn: deleteCommentAction,
-    onSuccess: () => {
-      action(blogId);
+    onSuccess: (result) => {
+      if ('error' in result) alert(result.error);
     },
     onError: (error) => {
       alert(error.message || 'Failed to delete comment');

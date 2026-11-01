@@ -1,4 +1,3 @@
-import React from 'react';
 import Markdown from 'markdown-to-jsx';
 import Code from './code';
 import { A } from '@/lib/a';

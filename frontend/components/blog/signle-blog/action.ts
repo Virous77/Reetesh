@@ -1,13 +1,17 @@
 'use server';
 
 import dbConnect from '@/db/mongoose';
+import { ActionError, toActionError } from '@/lib/action-error';
+import { blogIdSchema, visitorIdSchema } from '@/lib/blog-schema';
+import { rateLimit } from '@/lib/rate-limit';
 import blogLike, { TBlogLike } from '@/models/blog-like';
 import blogViews, { TBlogViews } from '@/models/blog-views';
+import { revalidatePath } from 'next/cache';
 import z from 'zod';
 
 const schema = z.object({
-  blogId: z.string().min(1, { message: 'Blog id is required' }),
-  viewsId: z.string().min(1, { message: 'User id is required' }),
+  blogId: blogIdSchema,
+  viewsId: visitorIdSchema,
 });
 
 export const addViewsAction = async (params: z.infer<typeof schema>) => {
@@ -15,38 +19,25 @@ export const addViewsAction = async (params: z.infer<typeof schema>) => {
     const validate = schema.parse(params);
 
     await dbConnect();
-    const findBlog: TBlogViews | null = await blogViews.findOne({
-      blogId: validate.blogId,
-    });
 
-    if (findBlog) {
-      const findUser = findBlog.viewsId.find((id) => id === validate.viewsId);
-
-      if (findUser) {
-        return findBlog.viewsId.length;
-      }
-
-      const { viewsId } = findBlog;
-      const newViews = [...viewsId, validate.viewsId];
-      const updateViews: TBlogViews | null = await blogViews.findOneAndUpdate(
-        { blogId: validate.blogId },
-        { viewsId: newViews },
-        { new: true }
-      );
-
-      return updateViews?.viewsId?.length;
-    } else {
-      const createBlog: TBlogViews = await blogViews.create({
+    const { allowed } = await rateLimit('views', 120, 3600);
+    if (!allowed) {
+      const findBlog: TBlogViews | null = await blogViews.findOne({
         blogId: validate.blogId,
-        viewsId: [validate.viewsId],
       });
-      return createBlog.viewsId.length;
+      return findBlog?.viewsId.length ?? 0;
     }
+
+    const updated: TBlogViews | null = await blogViews.findOneAndUpdate(
+      { blogId: validate.blogId },
+      { $addToSet: { viewsId: validate.viewsId } },
+      { upsert: true, returnDocument: 'after' }
+    );
+
+    return updated?.viewsId.length ?? 0;
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to add views');
+    console.error('Failed to add views', error);
+    return 0;
   }
 };
 
@@ -58,50 +49,34 @@ export const addBlogLikeAction = async (params: TAddBlogLikeAction) => {
   try {
     const validate = schema.parse(params);
 
+    const { allowed } = await rateLimit('blog-like', 30, 3600);
+    if (!allowed) {
+      throw new ActionError('Too many likes, please try again later');
+    }
+
     await dbConnect();
-    const findBlog: TBlogLike | null = await blogLike.findOne({
-      blogId: validate.blogId,
-    });
+    const updated: TBlogLike | null = await blogLike.findOneAndUpdate(
+      { blogId: validate.blogId },
+      { $addToSet: { like: validate.viewsId } },
+      { upsert: true, returnDocument: 'after' }
+    );
 
-    if (findBlog) {
-      const findUser = findBlog.like.find((id) => id === validate.viewsId);
-
-      if (findUser) {
-        return { totalLike: findBlog.like.length };
-      }
-
-      const { like } = findBlog;
-      const newViews = [...like, validate.viewsId];
-      const updateViews: TBlogLike | null = await blogLike.findOneAndUpdate(
-        { blogId: validate.blogId },
-        { like: newViews },
-        { new: true }
-      );
-
-      return { totalLike: updateViews?.like.length };
-    } else {
-      const createBlog: TBlogLike = await blogLike.create({
-        blogId: validate.blogId,
-        like: [validate.viewsId],
-      });
-      return { totalLike: createBlog.like.length };
-    }
+    revalidatePath(`/blog/${validate.blogId}`);
+    return { totalLike: updated?.like.length ?? 0 };
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to add like');
+    return toActionError(error, 'Failed to add like');
   }
 };
 
 export const getLikeAction = async ({ blogId }: { blogId: string }) => {
   try {
+    const id = blogIdSchema.parse(blogId);
+
     await dbConnect();
-    const findBlog: TBlogLike | null = await blogLike.findOne({
-      blogId,
-    });
+    const findBlog: TBlogLike | null = await blogLike.findOne({ blogId: id });
     return { totalLike: findBlog?.like.length || 0 };
   } catch (error) {
-    throw new Error('Failed to get like');
+    console.error('Failed to get like', error);
+    return { totalLike: 0 };
   }
 };

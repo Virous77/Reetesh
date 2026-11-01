@@ -8,7 +8,7 @@ import {
 } from '@/utils/utils';
 import AuthorImage from '@/components/common/author-image';
 import { useMutation } from '@tanstack/react-query';
-import action, { createReplyComment } from './action';
+import { createReplyComment } from './action';
 import { startTransition, useOptimistic, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Info } from 'lucide-react';
@@ -53,8 +53,8 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
     onError: (data) => {
       alert(data.message || 'Failed to send comment');
     },
-    onSuccess: () => {
-      action(pathName.split('/')[2]);
+    onSuccess: (result) => {
+      if ('error' in result) alert(result.error);
     },
   });
 
@@ -79,7 +79,7 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
 
     replyMutate({
       blogId: pathName.split('/')[2],
-      userId: id,
+      userId: id || tempId,
       comment: comment.comment,
       parentId: comment.parentId,
     });
@@ -125,7 +125,6 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
                   id={optimisticComment._id.toString()}
                   like={optimisticComment.like}
                   dislike={optimisticComment.dislike}
-                  blogId={optimisticComment.blogId}
                   blogUserId={optimisticComment.userId}
                   onClick={() => setReply(!reply)}
                   reply={reply}

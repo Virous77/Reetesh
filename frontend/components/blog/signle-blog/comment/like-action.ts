@@ -3,11 +3,14 @@
 import dbConnect from '@/db/mongoose';
 import blogComments, { TBlog } from '@/models/blog-comments';
 import z from 'zod';
-import { commonError } from './action';
+import { ActionError, toActionError } from '@/lib/action-error';
+import { commentIdSchema, visitorIdSchema } from '@/lib/blog-schema';
+import { rateLimit } from '@/lib/rate-limit';
+import { revalidatePath } from 'next/cache';
 
 const schema = z.object({
-  commentId: z.string().min(1, { message: 'Comment id is required' }),
-  userId: z.string().min(1, { message: 'User id is required' }),
+  commentId: commentIdSchema,
+  userId: visitorIdSchema,
   type: z.enum(['like', 'dislike'], {
     message: 'Type must be like or dislike',
   }),
@@ -17,17 +20,24 @@ export const addLikeAction = async (input: z.infer<typeof schema>) => {
   try {
     const validate = schema.parse(input);
 
+    const { allowed } = await rateLimit('comment-like', 60, 300);
+    if (!allowed) {
+      throw new ActionError('Too many likes, please try again later');
+    }
+
     await dbConnect();
     const findComment: TBlog | null = await blogComments.findById(
       validate.commentId
     );
     if (!findComment) {
-      throw new Error('Comment not found');
+      throw new ActionError('Comment not found');
     }
     const findLikeUser = findComment.like.find((id) => id === validate.userId);
     const findDislikeUser = findComment.dislike.find(
       (id) => id === validate.userId
     );
+    revalidatePath(`/blog/${findComment.blogId}`);
+
     if (findLikeUser || findDislikeUser) {
       await blogComments.findByIdAndUpdate(validate.commentId, {
         [validate.type === 'like' ? 'dislike' : 'like']: findComment[
@@ -66,6 +76,6 @@ export const addLikeAction = async (input: z.infer<typeof schema>) => {
       message: `${validate.type}d successfully`,
     };
   } catch (error: unknown) {
-    commonError(error, 'Failed to add like');
+    return toActionError(error, 'Failed to add like');
   }
 };

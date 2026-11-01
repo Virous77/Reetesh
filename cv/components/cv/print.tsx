@@ -36,7 +36,7 @@ const Print = () => {
     >
       <div className="  items-center gap-3 md:flex hidden">
         <p className=" font-serif">Print</p>
-        <kbd className="pointer-events-none  hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] text-sm font-medium text-muted-foreground opacity-100  md:inline-flex">
+        <kbd className="pointer-events-none  hidden h-5 select-none items-center gap-1 rounded-sm border bg-muted px-1.5 font-mono text-[10px] text-sm font-medium text-muted-foreground opacity-100  md:inline-flex">
           <span className="text-xs">⌘</span>
           <span className=" text-[10px]">K</span>
         </kbd>

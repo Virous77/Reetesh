@@ -16,6 +16,11 @@ minimumReleaseAgeExclude:
   # the cooldown window; exempt so the security pin can actually resolve.
   - brace-expansion
   - nanoid
+  # Nov 2026: patched releases still inside the cooldown. Remove these once
+  # they pass 15 days (postcss-selector-parser ~Nov 3, minimatch ~Nov 11).
+  - postcss-selector-parser
+  - minimatch
+  - '@isaacs/nonrecursive-glob-match'
 
 # Prefer the lockfile: pnpm install uses exactly what's in pnpm-lock.yaml and
 # only re-resolves when the lockfile is out of sync with package.json.
@@ -28,8 +33,8 @@ preferFrozenLockfile: true
 overrides:
   minimatch@<3.1.3: ^3.1.5
   flatted@<3.4.0: ^3.4.2
-  brace-expansion@<1.1.17: ^1.1.17
-  brace-expansion@>=4.0.0 <5.0.8: ^5.0.8
+  brace-expansion@<1.1.21: ^1.1.21
+  brace-expansion@>=4.0.0 <5.0.12: ^5.0.12
   postcss@<8.5.18: ^8.5.18
   sharp@<0.35.0: ^0.35.0
   ajv@<6.14.0: ^6.15.0
@@ -46,14 +51,26 @@ overrides:
   # info disclosure, retry-interceptor response desync, CRLF/cookie injection.
   # Transitive via open-graph-scraper (+ its cheerio). Both already allow the
   # patched 7.29.0; this pins it so a stale lockfile can't drift back.
-  undici@>=7.0.0 <7.29.0: ^7.29.0
+  undici@>=7.0.0 <7.30.1: ^7.30.1
   # GHSA-5p4m-2wfm-xmqj: js-yaml quadratic CPU in !!omap resolution
   # (CVE-2026-59870 not backported to <3.15.1). Transitive via
   # contentlayer2>gray-matter, which needs the 3.x line - stay on 3.x.
-  js-yaml@>=3.0.0 <3.15.1: ^3.15.1
+  js-yaml@>=3.0.0 <3.15.2: ^3.15.2
   # GHSA-2v37-7h3g-55p8: nanoid custom generators loop forever when size is 0.
   # Transitive via next>postcss; postcss needs the 3.x line - stay on 3.x.
   nanoid@<3.3.18: ^3.3.18
+  # Nov 2026 audit: patched transitive releases, all outside the cooldown.
+  # toml/@grpc via contentlayer2; the rest via next, eslint and build tooling.
+  '@grpc/grpc-js@>=1.14.0 <1.14.5': ^1.14.5
+  baseline-browser-mapping@<2.11.0: ^2.11.0
+  browserslist@<4.28.7: ^4.28.7
+  source-map-js@<1.2.2: ^1.2.2
+  toml@<5.0.1: ^5.0.1
+  zod@<4.6.6: ^4.6.6
+  # GHSA-rj75-hqrm-r3gf: pinned to 6.0.10 by @tailwindcss/typography.
+  postcss-selector-parser@>=6.0.0 <6.1.5: ^6.1.5
+  # GHSA-g3hv-75wg-m249: only eslint internals use it, via named exports.
+  minimatch@>=10.0.0 <11.0.1: ^11.0.1
 
 # Allow build scripts only for trusted first-party/build tooling. Every other
 # package's install scripts (the #1 supply-chain execution vector) stay blocked.

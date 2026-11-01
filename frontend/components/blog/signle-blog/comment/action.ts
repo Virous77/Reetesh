@@ -4,124 +4,112 @@ import z from 'zod';
 import { revalidatePath } from 'next/cache';
 import dbConnect from '@/db/mongoose';
 import blogComments, { TBlog } from '@/models/blog-comments';
-import CommentEmail from '@/components/email/blogComment-mail';
+import { commentEmailHtml } from '@/components/email/blogComment-mail';
 import { Resend } from 'resend';
-import { createClient } from '@vercel/kv';
 import turndonw from 'turndown';
 import sanitizeHtml from 'sanitize-html';
+import { ActionError, toActionError } from '@/lib/action-error';
+import {
+  blogIdSchema,
+  commentIdSchema,
+  visitorIdSchema,
+} from '@/lib/blog-schema';
+import { rateLimit } from '@/lib/rate-limit';
+
+const MAX_COMMENT_LENGTH = 10000;
 
 const schema = z.object({
-  blogId: z.string().min(1, { message: 'Blog id is required' }),
-  userId: z.string().min(1, { message: 'User id is required' }),
-  comment: z.string().min(1, { message: 'Comment is required' }),
-  parentId: z.string().optional(),
+  blogId: blogIdSchema,
+  userId: visitorIdSchema,
+  comment: z
+    .string()
+    .min(1, { message: 'Comment is required' })
+    .max(MAX_COMMENT_LENGTH, { message: 'Comment is too long' }),
+  parentId: commentIdSchema.optional(),
 });
-
-export default async function action(path: string) {
-  revalidatePath(`/blog/${path}`);
-}
 
 const turndownService = new turndonw();
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const commentMail = async (
-  comment: string,
-  blogId: string,
-  shouldMail: boolean | undefined
-) => {
+const commentMail = async (comment: string, blogId: string) => {
   if (process.env.NODE_ENV === 'development') return;
-  if (!shouldMail) return;
 
-  const data = await resend.emails.send({
+  const { error } = await resend.emails.send({
     from: process.env.EMAIL!,
     to: process.env.SEND_TO!,
     subject: 'New  Blog Comment! 🥳',
-    react: CommentEmail({ comment: turndownService.turndown(comment), blogId }),
+    html: commentEmailHtml({
+      comment: turndownService.turndown(comment),
+      blogId,
+    }),
   });
 
-  if (!data.error) {
-    return 'Success!';
-  } else {
-    return 'Failed!';
-  }
-};
-
-const restrictSpamComment = async (userId: string) => {
-  if (process.env.NODE_ENV === 'development') return;
-
-  const kv = createClient({
-    url: process.env.KV_REST_API_URL,
-    token: process.env.KV_REST_API_TOKEN,
-  });
-
-  const user: number | null = await kv.get(`comment:${userId}`);
-
-  if (user === 5) {
-    throw new Error('You have reached the maximum comment limit');
-  } else if (user) {
-    await kv.set(`comment:${userId}`, user + 1, {
-      ex: 300,
-    });
-    return false;
-  } else {
-    await kv.set(`comment:${userId}`, 1, {
-      ex: 300,
-    });
-    return true;
-  }
-};
-
-export const commonError = async (error: unknown, message: string) => {
-  if (error instanceof z.ZodError) {
-    throw new Error(error.message);
-  } else if (error instanceof Error) {
-    throw new Error(error.message);
-  }
-  throw new Error(message);
+  if (error) console.error('Failed to send comment mail', error);
 };
 
 type TInput = z.infer<typeof schema>;
 
+const commonAction = async (params: TInput) => {
+  const { comment, ...rest } = schema.parse(params);
+
+  const { allowed, count } = await rateLimit('comment', 5, 300);
+  if (!allowed) {
+    throw new ActionError('You have reached the maximum comment limit');
+  }
+
+  await dbConnect();
+
+  if (rest.parentId) {
+    const parent: TBlog | null = await blogComments.findById(rest.parentId);
+    if (!parent || parent.blogId !== rest.blogId) {
+      throw new ActionError('Comment not found');
+    }
+  }
+
+  const newComment: TBlog = await blogComments.create({
+    ...rest,
+    parent: rest.parentId || null,
+    comment: sanitizeHtml(comment, {
+      allowedTags: [...sanitizeHtml.defaults.allowedTags, 'img'],
+      allowedAttributes: {
+        a: ['href'],
+        img: ['src', 'alt'],
+      },
+      allowedSchemes: ['http', 'https', 'mailto'],
+      allowProtocolRelative: false,
+    }),
+  });
+
+  if (rest.parentId) {
+    await blogComments.findByIdAndUpdate(rest.parentId, {
+      $push: { children: newComment._id },
+    });
+  }
+
+  revalidatePath(`/blog/${rest.blogId}`);
+
+  // One mail per rate-limit window so a burst cannot flood the inbox.
+  if (count === 1) {
+    await commentMail(sanitizeHtml(comment), rest.blogId).catch((error) =>
+      console.error('Failed to send comment mail', error)
+    );
+  }
+};
+
 export const createComment = async (params: TInput) => {
   try {
     await commonAction(params);
-    return 'Comment added successfully';
+    return { message: 'Comment added successfully' };
   } catch (error) {
-    commonError(error, 'Failed to add comment');
+    return toActionError(error, 'Failed to add comment');
   }
 };
 
 export const createReplyComment = async (params: TInput) => {
   try {
     await commonAction(params);
-    return 'Comment added successfully';
+    return { message: 'Comment added successfully' };
   } catch (error) {
-    commonError(error, 'Failed to add comment');
+    return toActionError(error, 'Failed to add comment');
   }
-};
-
-const commonAction = async (params: TInput) => {
-  const { comment, ...rest } = schema.parse(params);
-  const shouldMail = await restrictSpamComment(rest.userId);
-
-  await dbConnect();
-  const newComment: TBlog = await blogComments.create({
-    ...rest,
-    parent: rest.parentId || null,
-    comment: sanitizeHtml(comment, {
-      allowedTags: false,
-      allowedAttributes: {
-        a: ['href'],
-        img: ['src', 'alt'],
-      },
-    }),
-  });
-
-  if (rest.parentId) {
-    await blogComments.findByIdAndUpdate(params.parentId, {
-      $push: { children: newComment._id },
-    });
-  }
-
-  commentMail(sanitizeHtml(comment), rest.blogId, shouldMail);
 };

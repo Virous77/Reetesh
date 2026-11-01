@@ -3,29 +3,35 @@
 import dbConnect from '@/db/mongoose';
 import blogComments, { TBlog } from '@/models/blog-comments';
 import z from 'zod';
-import { commonError } from './action';
+import { ActionError, toActionError } from '@/lib/action-error';
+import { commentIdSchema, visitorIdSchema } from '@/lib/blog-schema';
+import { rateLimit } from '@/lib/rate-limit';
+import { revalidatePath } from 'next/cache';
 import { adminID } from '@/utils/utils';
 
 const schema = z.object({
-  commentId: z.string().min(1, { message: 'Comment id is required' }),
-  userId: z.string().min(1, { message: 'User id is required' }),
+  commentId: commentIdSchema,
+  userId: visitorIdSchema,
 });
 
 export const deleteCommentAction = async (input: z.infer<typeof schema>) => {
   try {
     const validate = schema.parse(input);
 
+    const { allowed } = await rateLimit('comment-delete', 30, 300);
+    if (!allowed) throw new ActionError('Too many requests');
+
     await dbConnect();
     const findComment: TBlog | null = await blogComments.findById(
       validate.commentId
     );
     if (!findComment) {
-      throw new Error('Comment not found');
+      throw new ActionError('Comment not found');
     }
 
     if (!adminID.includes(validate.userId)) {
       if (findComment.userId !== validate.userId) {
-        throw new Error('You are not authorized to delete this comment');
+        throw new ActionError('You are not authorized to delete this comment');
       }
     }
 
@@ -54,10 +60,12 @@ export const deleteCommentAction = async (input: z.infer<typeof schema>) => {
       await blogComments.findByIdAndDelete(validate.commentId);
     }
 
+    revalidatePath(`/blog/${findComment.blogId}`);
+
     return {
       message: 'Comment deleted successfully',
     };
   } catch (error) {
-    commonError(error, 'Failed to delete comment');
+    return toActionError(error, 'Failed to delete comment');
   }
 };

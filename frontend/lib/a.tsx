@@ -17,6 +17,13 @@ type TDetails = {
 const desktop = '(min-width: 768px)';
 
 export const A = ({ children, ...props }: any) => {
+  // Sanitized comments can leave anchors without an href.
+  if (!props.href) return <span>{children}</span>;
+
+  return <LinkWithPreview {...props}>{children}</LinkWithPreview>;
+};
+
+const LinkWithPreview = ({ children, ...props }: any) => {
   const isDesktop = useMediaQuery(desktop);
   const { theme } = useTheme();
   const [open, setOpen] = useState('');
@@ -31,14 +38,16 @@ export const A = ({ children, ...props }: any) => {
         details.length > 0 && details.find((item) => item.key === href);
       if (isCached) return;
       setIsLoading(true);
-      const res = await fetch('/api/preview?url=' + href, {
-        cache: 'no-cache',
-      });
+      const res = await fetch(
+        `/api/preview?url=${encodeURIComponent(href)}`,
+        { cache: 'no-cache' }
+      );
+      if (!res.ok) throw new Error('No preview available');
       const data = await res.json();
       const { title, description, image } = data;
       setDetails((prev) => [...prev, { title, description, image, key: href }]);
       setIsLoading(false);
-    } catch (error) {
+    } catch {
       setDetails((prev) => [
         ...prev,
         { title: 'error', description: null, image: null, key: href },

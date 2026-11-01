@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import React, { useState } from 'react';
 import Preview from './preview';
