@@ -139,7 +139,8 @@ export const RESUME_DATA = {
       items: "PostgreSQL, MongoDB, MySQL, SQLite, Redis, Kafka, RabbitMQ",
     },
     { label: "Infra", items: "Docker, GitHub Actions, AWS" },
-    { label: "Other", items: "Solidity, Web3, GenAI" },
+    { label: "AI", items: "Claude Code, Codex, Agent Skills, MCP, GenAI" },
+    { label: "Other", items: "Solidity, Web3" },
   ],
   education: [
     {
