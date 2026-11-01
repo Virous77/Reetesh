@@ -1,4 +1,3 @@
-import React from 'react';
 
 const Section = ({ tab, children }: { tab: string; children: any }) => {
   return (

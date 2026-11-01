@@ -10,7 +10,7 @@ import {
   Text,
   Tailwind,
   Link,
-} from '@react-email/components';
+} from 'react-email';
 
 type CommentEmailProps = {
   comment: string;

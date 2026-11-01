@@ -1,7 +1,5 @@
 import { TProject } from '@/models/projects';
 import ProjectList from './project-list';
-import { Home } from 'lucide-react';
-import { Link } from 'next-view-transitions';
 
 type TMyProjects = {
   projects: TProject[];

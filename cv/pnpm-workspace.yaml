@@ -30,8 +30,8 @@ overrides:
   '@types/react-dom': 19.2.3
   minimatch@<3.1.3: ^3.1.5
   flatted@<3.4.0: ^3.4.2
-  brace-expansion@<1.1.17: ^1.1.17
-  brace-expansion@>=4.0.0 <5.0.8: ^5.0.8
+  brace-expansion@<1.1.21: ^1.1.21
+  brace-expansion@>=4.0.0 <5.0.12: ^5.0.12
   postcss@<8.5.18: ^8.5.18
   sharp@<0.35.0: ^0.35.0
   ajv@<6.14.0: ^6.15.0
@@ -40,6 +40,13 @@ overrides:
   # GHSA-4x5r-pxfx-6jf8: arbitrary file read via sourceMappingURL. Pulled in
   # <=7.29.0 transitively by next>styled-jsx and eslint-plugin-react-hooks.
   '@babel/core@<7.29.1': ^7.29.7
+  # Nov 2026 audit: patched transitive releases, all outside the cooldown.
+  '@humanfs/node@<0.16.8': ^0.16.8
+  baseline-browser-mapping@<2.11.0: ^2.11.0
+  browserslist@<4.28.7: ^4.28.7
+  nanoid@<3.3.18: ^3.3.18
+  source-map-js@<1.2.2: ^1.2.2
+  zod@<4.6.6: ^4.6.6
 
 # Allow build scripts only for trusted first-party/build tooling. Every other
 # package's install scripts (the #1 supply-chain execution vector) stay blocked.
