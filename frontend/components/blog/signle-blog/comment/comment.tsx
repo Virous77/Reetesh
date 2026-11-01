@@ -33,19 +33,16 @@ const getComments = async ({ id }: { id: string }) => {
   return JSON.parse(JSON.stringify(comments)) as TBlog[];
 };
 
-export const Comment = async ({ slug }: { slug: string }) => {
+const Comment = async ({ slug }: { slug: string }) => {
   const data = await getComments({ id: slug });
 
   return (
-    <section className="comment-section px-3 md:px-0">
-      <span className="bg-accent mb-3 inline-block h-[2px] w-full"></span>
-
+    <section className="comment-section mt-14">
       <h2 className="text-heading pb-2 text-lg">
         Comments ({data.length || 0})
       </h2>
 
       <CommentProvider data={data} />
-      <span className="bg-accent mb-3 inline-block h-[2px] w-full"></span>
     </section>
   );
 };

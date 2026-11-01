@@ -12,12 +12,10 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { usePathname } from 'next/navigation';
 
 const ThemeSwitcher = memo(function ModeToggle() {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { setTheme, resolvedTheme } = useTheme();
-  const pathName = usePathname();
 
   const isDark = resolvedTheme === 'dark';
 
@@ -65,11 +63,7 @@ const ThemeSwitcher = memo(function ModeToggle() {
   // Use CSS-based icon switching - no mounted state needed
   // Icons are always rendered, CSS shows/hides based on .dark class
   return (
-    <div
-      className={`fixed right-3 flex flex-col gap-2 ${
-        pathName.includes('/blog/') ? 'bottom-5' : 'top-3'
-      } z-101`}
-    >
+    <div className="bg-background/80 fixed top-3 right-3 z-101 flex flex-col gap-2 rounded-full backdrop-blur-sm">
       <Tooltip>
         <TooltipTrigger
           asChild

@@ -1,25 +1,3 @@
-import { GitHubIcon } from './icons/github';
-import Linkedin from './icons/linkedin';
-import { XIcon } from './icons/x';
-
-export const socials = [
-  {
-    name: GitHubIcon,
-    url: 'https://github.com/Virous77',
-    title: 'Github',
-  },
-  {
-    name: XIcon,
-    url: 'https://twitter.com/reetesheth',
-    title: 'Twitter',
-  },
-  {
-    name: Linkedin,
-    url: 'https://www.linkedin.com/in/reetesh-kumar-a1b952178/',
-    title: 'Linkedin',
-  },
-];
-
 export const adminID = [
   '47256c97-2118-40da-9494-20ffa5dfb044',
   '286d1fb9-7d5b-473f-8e7d-d612bb5736cd',
@@ -126,7 +104,7 @@ export const formateDate = (date: string) => {
   return `${month} ${day}, ${year}`;
 };
 
-export const generateUUID = () => {
+const generateUUID = () => {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     const r = (Math.random() * 16) | 0;
     const v = c === 'x' ? r : (r & 0x3) | 0x8;
@@ -173,4 +151,3 @@ export const parseType = (date: string) => {
   }
   return false;
 };
-

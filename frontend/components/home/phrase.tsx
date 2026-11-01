@@ -1,6 +1,6 @@
 'use client';
 
-import { useSyncExternalStore } from 'react';
+import { useEffect, useSyncExternalStore } from 'react';
 import { ScrambleText, useScramble } from './scramble-text';
 
 const subscribe = (onChange: () => void) => {
@@ -70,5 +70,46 @@ export const PhraseButton = ({
     >
       <ScrambleText text={text} />
     </button>
+  );
+};
+
+export const PhraseLink = ({
+  text,
+  href,
+  external = true,
+}: {
+  text: string;
+  href: string;
+  external?: boolean;
+}) => {
+  const { rootRef, scramble } = useScramble<HTMLAnchorElement>();
+
+  return (
+    <a
+      ref={rootRef}
+      href={href}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noopener noreferrer' : undefined}
+      className="home-phrase"
+      aria-label={text}
+      onPointerEnter={scramble}
+      onFocus={scramble}
+    >
+      <ScrambleText text={text} />
+    </a>
+  );
+};
+
+export const ScrambleOnLoad = ({ text }: { text: string }) => {
+  const { rootRef, scramble } = useScramble<HTMLSpanElement>();
+
+  useEffect(() => {
+    scramble();
+  }, []);
+
+  return (
+    <span ref={rootRef} aria-label={text}>
+      <ScrambleText text={text} />
+    </span>
   );
 };

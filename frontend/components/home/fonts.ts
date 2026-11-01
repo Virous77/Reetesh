@@ -1,4 +1,4 @@
-import { Bricolage_Grotesque, Fraunces } from 'next/font/google';
+import { Bricolage_Grotesque, Fraunces, Newsreader } from 'next/font/google';
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -11,4 +11,10 @@ const fraunces = Fraunces({
   variable: '--font-fraunces',
 });
 
-export const fontVariables = `${bricolage.variable} ${fraunces.variable}`;
+const newsreader = Newsreader({
+  subsets: ['latin'],
+  axes: ['opsz'],
+  variable: '--font-newsreader',
+});
+
+export const fontVariables = `${bricolage.variable} ${fraunces.variable} ${newsreader.variable}`;

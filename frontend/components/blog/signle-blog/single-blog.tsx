@@ -1,19 +1,13 @@
-import Author from '@/components/common/author';
-import Social from '@/components/social/social';
-import Footer from '@/components/common/footer';
-import { BookOpenText, CalendarDays, Newspaper } from 'lucide-react';
 import { Post } from '@/.contentlayer/generated';
-import { Mdx } from './mdx';
-import Views from './views';
-import Comment from './comment/comment';
-import ReadMore from './read-more';
-import RelatedPost from '@/components/common/related-post';
+import ContactLinks from '@/components/home/contact-links';
 import { formateDate } from '@/utils/utils';
-import BlogShare from './blog-share';
-import { ToolTipComp } from '@/components/ui/tooltip';
-import React from 'react';
-import BlogHeader from '@/components/common/motion';
 import { Link } from 'next-view-transitions';
+import BlogShare from './blog-share';
+import Comment from './comment/comment';
+import { Mdx } from './mdx';
+import PostToc from './post-toc';
+import ReadMore from './read-more';
+import Views from './views';
 
 type TSingleBlog = {
   blog: Post;
@@ -22,67 +16,60 @@ type TSingleBlog = {
 
 const SingleBlog: React.FC<TSingleBlog> = ({ blog, relatedBlogs }) => {
   return (
-    <React.Fragment>
-      <BlogHeader className="sticky top-0 left-0 z-20 mb-3 flex w-full items-center justify-between p-4 backdrop-blur-sm md:hidden dark:bg-[#111111]/60">
-        <Author />
-
-        <div className="flex items-center gap-3">
-          <Link aria-label="Visit all Blogs" href="/blogs">
-            <Newspaper />
+    <div className="mx-auto flex min-h-dvh max-w-[46rem] flex-col px-6 pt-14 pb-7 md:pt-[8vh]">
+      <header>
+        <div
+          className="home-rise home-soft flex items-baseline justify-between gap-6 text-[0.95rem]"
+          style={{ '--i': 0 } as React.CSSProperties}
+        >
+          <Link href="/" className="home-link">
+            Reetesh Kumar
           </Link>
-          <Social styles="" />
+          <Link href="/blogs" className="home-link">
+            All posts
+          </Link>
         </div>
-      </BlogHeader>
 
-      <div style={{ maxWidth: '750px', margin: 'auto' }}>
-        <BlogHeader className="sticky top-0 z-20 mb-3 hidden items-center justify-between py-3 backdrop-blur-sm md:flex dark:bg-[#111111]/60">
-          <Author />
+        <h1
+          className="home-rise post-title mt-9"
+          style={{ '--i': 1 } as React.CSSProperties}
+        >
+          {blog.title}
+        </h1>
 
-          <div className="flex items-center gap-3">
-            <ToolTipComp name="All Blogs">
-              <Link aria-label="Visit all Blogs" href="/blogs">
-                <Newspaper />
-              </Link>
-            </ToolTipComp>
-            <Social styles="" />
-          </div>
-        </BlogHeader>
+        <p
+          className="home-rise home-soft mt-5 flex flex-wrap gap-x-5 gap-y-1 text-base tabular-nums"
+          style={{ '--i': 2 } as React.CSSProperties}
+        >
+          <span>{formateDate(blog.date)}</span>
+          <span>{blog.readingTime.text}</span>
+          <Views slug={blog.slugAsParams} />
+        </p>
+      </header>
 
-        <section className="mb-8 w-full">
-          <h1 className="m-auto mt-8 -mb-1 w-[90%] text-center text-[1.625rem] leading-snug font-bold md:text-[2rem]">
-            {blog.title}
-          </h1>
-          <div className="m-2 mt-4 rounded border p-2 md:m-0 md:mt-[14px]">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <p className="text-small text-default flex items-center justify-center gap-2 text-[0.875rem] md:text-base">
-                  <CalendarDays size={20} /> {formateDate(blog.date)}
-                </p>
-                <Views slug={blog.slugAsParams} />
-              </div>
-              <span className="text-default flex items-center gap-2 text-[0.875rem] capitalize md:text-base">
-                <BookOpenText size={20} />
-                {blog.readingTime.text}
-              </span>
-            </div>
-          </div>
-        </section>
+      <PostToc />
 
-        <section className="box-fit prose-headings:font-cal prose prose-base prose-neutral dark:prose-invert prose-a:whitespace-nowrap prose-a:text-default prose-a:underline prose-a:underline-offset-4 prose-a:hover:text-defaultMax prose-blockquote:font-light prose-th:p-0 prose-img:mb-0 prose-img:mt-0 mt-6">
-          <Mdx code={blog.body.code} />
-        </section>
-
-        <ReadMore slug={blog.slugAsParams} />
-        <Comment slug={blog.slugAsParams} />
+      <div
+        className="home-rise post-body prose prose-base prose-neutral dark:prose-invert mt-10 max-w-none"
+        style={{ '--i': 3 } as React.CSSProperties}
+      >
+        <Mdx code={blog.body.code} />
       </div>
-      {relatedBlogs.length > 0 && <RelatedPost relatedBlogs={relatedBlogs} />}
-      <Footer />
+
       <BlogShare
         title={blog.title}
         url={`https://reetesh.in/blog/${blog.slugAsParams}`}
         blogId={blog.slugAsParams}
       />
-    </React.Fragment>
+
+      <Comment slug={blog.slugAsParams} />
+
+      <ReadMore slug={blog.slugAsParams} relatedBlogs={relatedBlogs} />
+
+      <footer className="home-soft mt-auto pt-12 text-sm">
+        <ContactLinks />
+      </footer>
+    </div>
   );
 };
 

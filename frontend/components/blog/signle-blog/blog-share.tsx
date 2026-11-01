@@ -1,84 +1,67 @@
 'use client';
 
-import React, { ReactNode } from 'react';
-import { MessageCircle } from 'lucide-react';
-import BlogAction from './blog-action';
-import { XIcon } from '@/utils/icons/x';
-import { ToolTipComp } from '@/components/ui/tooltip';
-import { BlogShareMotion } from '@/components/common/motion';
-import Linkedin from '@/utils/icons/linkedin';
-import Facebook from '@/utils/icons/facebook';
+import { PhraseButton, PhraseLink } from '@/components/home/phrase';
+import { addUserIDToLocalStorage, getLocalData } from '@/utils/utils';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { startTransition, useOptimistic } from 'react';
+import { addBlogLikeAction, getLikeAction } from './action';
 
-type TBlogAction = {
+type TBlogShare = {
   title: string;
   url: string;
   blogId: string;
 };
 
-const BlogShare: React.FC<TBlogAction> = ({ title, url, blogId }) => {
+const BlogShare: React.FC<TBlogShare> = ({ title, url, blogId }) => {
+  const { data, refetch } = useQuery({
+    queryKey: [`like-${blogId}`],
+    queryFn: () => getLikeAction({ blogId }),
+  });
+
+  const [likes, addLike] = useOptimistic(data?.totalLike || 0);
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: addBlogLikeAction,
+    onSuccess: (result) => {
+      if ('error' in result) alert(result.error);
+      refetch();
+    },
+    onError: (error) => {
+      alert(error.message || 'Failed to like');
+    },
+  });
+
+  const handleLike = () => {
+    if (isPending) return;
+
+    const id: string = getLocalData('tempId');
+    const viewId = id || addUserIDToLocalStorage(id);
+
+    startTransition(() => addLike((count) => count + 1));
+    mutate({ blogId, viewsId: viewId, like: 1 });
+  };
+
+  const encodedUrl = encodeURIComponent(url);
+  const encodedTitle = encodeURIComponent(title);
+
   return (
-    <BlogShareMotion>
-      <BlogMain title={title} url={url} blogId={blogId} />
-    </BlogShareMotion>
+    <p className="post-closing mt-14 border-t pt-8">
+      Found this useful? <PhraseButton text="Like it" onClick={handleLike} />
+      {likes > 0 && <span className="home-soft"> ({likes})</span>}, or share it
+      on{' '}
+      <PhraseLink
+        text="X"
+        href={`https://x.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`}
+      />
+      ,{' '}
+      <PhraseLink
+        text="LinkedIn"
+        href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
+      />{' '}
+      and{' '}
+      <PhraseLink text="WhatsApp" href={`https://wa.me/?text=${encodedUrl}`} />.
+    </p>
   );
 };
 
 export default BlogShare;
-
-const BlogMain = ({ blogId, url, title }: TBlogAction) => {
-  return (
-    <div className="flex w-full items-center gap-2">
-      <BlogAction blogId={blogId} />
-      <div className="flex items-center gap-2">
-        <A
-          url={`https://www.facebook.com/sharer/sharer.php?u=${url}`}
-          name="Facebook"
-        >
-          <Facebook />
-        </A>
-
-        <A
-          url={`https://x.com/intent/tweet?url=${url}&text=${title}`}
-          name="Twitter"
-        >
-          <XIcon className="h-[21px] w-[21px]" />
-        </A>
-
-        <A
-          url={`https://www.linkedin.com/shareArticle?mini=true&url=${url}&text=${title}`}
-          name="Linkedin"
-        >
-          <Linkedin />
-        </A>
-
-        <A url={`https://wa.me/?text=${url}`} name="Whatsapp">
-          <MessageCircle />
-          <p className="absolute top-[15px] left-[13.5px] flex h-3 w-3 items-center justify-center text-[0.44rem]">
-            W
-          </p>
-        </A>
-      </div>
-    </div>
-  );
-};
-
-const A: React.FC<{ children: ReactNode; url: string; name: string }> = ({
-  children,
-  url,
-  name,
-}) => {
-  return (
-    <ToolTipComp name={name}>
-      <a
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="bg-primary text-primary-foreground hover:bg-primary/90 relative flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full"
-        title={name}
-        aria-label={name}
-      >
-        {children}
-      </a>
-    </ToolTipComp>
-  );
-};

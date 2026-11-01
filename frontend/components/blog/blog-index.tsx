@@ -7,7 +7,7 @@ import CommandSearch from '@/components/common/command-search';
 import ContactLinks from '@/components/home/contact-links';
 import { Phrase, PhraseButton, useHashSection } from '@/components/home/phrase';
 
-export type TIndexPost = {
+type TIndexPost = {
   _id: string;
   title: string;
   slugAsParams: string;

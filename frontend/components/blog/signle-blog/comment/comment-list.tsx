@@ -9,7 +9,7 @@ import { addUserIDToLocalStorage, getLocalData } from '@/utils/utils';
 import React, { useOptimistic, startTransition } from 'react';
 import CommentTabs from './comment-tabs';
 
-export type TNewComment = {
+type TNewComment = {
   comment: string;
   children: TNewComment[];
   id?: string;

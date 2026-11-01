@@ -12,7 +12,6 @@ import Callout from '@/lib/callout';
 import Table from '@/lib/table';
 import { Separator } from '@/components/ui/separator';
 import SubHeadings from '@/lib/sub-headings';
-import TableContent from '@/lib/table-content';
 import CustomImage from '@/lib/custom-image';
 import { ArrowRight } from 'lucide-react';
 import Summary, { LI } from '@/lib/summary';
@@ -99,7 +98,7 @@ const components = {
       {...props}
     >
       <div className="w-[16px]">
-        <ArrowRight size={16} color="#e21d49" style={{ marginTop: '7px' }} />
+        <ArrowRight size={16} color="#e21d49" style={{ marginTop: '10px' }} />
       </div>
 
       <div>{props.children}</div>
@@ -156,7 +155,8 @@ const components = {
   Table,
   Separator,
   SubHeadings,
-  TableContent,
+  // Older posts include this tag; PostToc now renders the contents.
+  TableContent: () => null,
   Summary,
   LI,
   Youtube,

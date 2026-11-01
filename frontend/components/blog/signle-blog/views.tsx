@@ -1,7 +1,6 @@
 'use client';
 
 import { addUserIDToLocalStorage, getLocalData } from '@/utils/utils';
-import { Eye } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { addViewsAction } from './action';
 
@@ -18,9 +17,11 @@ const Views = ({ slug }: { slug: string }) => {
   });
 
   return (
-    <p className="text-small text-default flex items-center justify-center gap-2 text-[0.875rem] md:text-base">
-      <Eye size={20} /> {data || 0}
-    </p>
+    <span>
+      {data
+        ? `${data.toLocaleString('en-US')} ${data === 1 ? 'view' : 'views'}`
+        : ''}
+    </span>
   );
 };
 

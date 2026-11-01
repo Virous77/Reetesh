@@ -1,40 +1,47 @@
-import { allPosts } from '@/.contentlayer/generated';
+import { allPosts, Post } from '@/.contentlayer/generated';
 import { Link } from 'next-view-transitions';
 
 type TReadMore = {
   slug: string;
+  relatedBlogs: Post[];
 };
-const ReadMore: React.FC<TReadMore> = ({ slug }) => {
-  const findNextAndPrevious = (params: string) => {
-    const index = allPosts
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-      .findIndex((post) => post.slugAsParams === params);
-    const previous = allPosts[index - 1]?.slugAsParams;
-    const next = allPosts[index + 1]?.slugAsParams;
-    return { next, previous };
-  };
 
-  const { next, previous } = findNextAndPrevious(slug);
+const getNeighbours = (slug: string) => {
+  const posts = [...allPosts].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+  const index = posts.findIndex((post) => post.slugAsParams === slug);
+
+  return [
+    { label: 'Newer', post: posts[index - 1] },
+    { label: 'Older', post: posts[index + 1] },
+  ].filter(({ post }) => post);
+};
+
+const ReadMore: React.FC<TReadMore> = ({ slug, relatedBlogs }) => {
+  const neighbours = getNeighbours(slug);
+  const neighbourSlugs = neighbours.map(({ post }) => post.slugAsParams);
+  const related = relatedBlogs
+    .filter((post) => !neighbourSlugs.includes(post.slugAsParams))
+    .slice(0, 3)
+    .map((post) => ({ label: 'Related', post }));
 
   return (
-    <div className="mx-2 mb-3 rounded border px-2 py-3 md:mx-0">
-      <div className="flex items-center justify-between gap-4">
-        <Link
-          href={previous ? `/blog/${previous}` : '/blogs'}
-          className="font-bold underline underline-offset-4 hover:opacity-80"
-          aria-label="Previous Post"
-        >
-          Previous Post
-        </Link>
-        <Link
-          href={next ? `/blog/${next}` : '/blogs'}
-          className="font-bold underline underline-offset-4 hover:opacity-80"
-          aria-label="Next Post"
-        >
-          Next Post
-        </Link>
-      </div>
-    </div>
+    <section className="mt-14">
+      <h2 className="home-soft mb-2 text-sm">Keep reading</h2>
+      <ul>
+        {[...neighbours, ...related].map(({ label, post }) => (
+          <li key={post.slugAsParams}>
+            <Link href={`/blog/${post.slugAsParams}`} className="blog-row">
+              <span className="blog-row-title">
+                <span className="home-row-title">{post.title}</span>
+                <span className="home-soft shrink-0 text-sm">{label}</span>
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 };
 

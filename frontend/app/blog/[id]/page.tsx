@@ -2,17 +2,8 @@ import { allPosts } from '@/.contentlayer/generated';
 import SingleBlog from '@/components/blog/signle-blog/single-blog';
 import { commonMetaData } from '@/utils/utils';
 import { redirect } from 'next/navigation';
-import { Merriweather } from 'next/font/google';
-import {
-  BlogPageReadTracker,
-  PageTransitionMotion,
-} from '@/components/common/motion';
-
-const merriweather = Merriweather({
-  subsets: ['latin'],
-  weight: ['300', '400', '700', '900'],
-  fallback: ['Poppins', 'sans-serif', 'ui-sans-serif', 'system-ui'],
-});
+import { BlogPageReadTracker } from '@/components/common/motion';
+import PageShell from '@/components/home/page-shell';
 
 export const generateStaticParams = async () => {
   const posts = allPosts;
@@ -54,10 +45,10 @@ const SingleBlogPage = async (props: { params: Promise<{ id: string }> }) => {
   if (!blog) return redirect('/blogs');
 
   return (
-    <PageTransitionMotion className={`relative ${merriweather.className}`}>
+    <PageShell>
       <BlogPageReadTracker className="progress-bar" />
       <SingleBlog blog={blog} relatedBlogs={relatedBlogs.slice(0, 5)} />
-    </PageTransitionMotion>
+    </PageShell>
   );
 };
 

@@ -3,31 +3,16 @@ import { CircleAlert } from 'lucide-react';
 type TCallout = {
   emoji: string;
   children: React.ReactNode;
-  isRegular?: boolean;
-  paddingB?: string;
 };
 
-const Callout: React.FC<TCallout> = (props) => {
+const Callout: React.FC<TCallout> = ({ emoji, children }) => {
   return (
-    <div
-      className="callout relative m-auto mt-5 w-[95%] rounded p-1"
-      style={{
-        background: `${props.isRegular ? 'rgb(219 234 254)' : 'rgb(220 252 231)'}`,
-      }}
-    >
-      <span
-        className="bg-background absolute flex h-[40px] w-[40px] items-center justify-center rounded-full text-[1.25rem]"
-        style={{ left: '-20px', top: '-10px' }}
-      >
-        {props.emoji || <CircleAlert size={20} />}
+    <aside className="post-note">
+      <span className="post-note-icon" aria-hidden="true">
+        {emoji || <CircleAlert size={20} />}
       </span>
-      <div
-        className="w-full"
-        style={{ padding: '10px', paddingBottom: props.paddingB || '0px' }}
-      >
-        {props.children}
-      </div>
-    </div>
+      <div className="min-w-0">{children}</div>
+    </aside>
   );
 };
 

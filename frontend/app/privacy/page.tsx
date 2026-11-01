@@ -1,164 +1,178 @@
-import DotPattern from '@/components/ui/dot-patterns';
-import { cn } from '@/lib/utils';
+import ContactLinks from '@/components/home/contact-links';
+import PageShell from '@/components/home/page-shell';
 import { commonMetaData } from '@/utils/utils';
+import { Link } from 'next-view-transitions';
+import { ReactNode } from 'react';
+
+const EMAIL = 'rajreetesh7@gmail.com';
 
 export const generateMetadata = async () => {
   const metaData = commonMetaData({
     name: 'Privacy Policy',
-    desc: 'Privacy Policy for reetesh.in',
+    desc: 'What reetesh.in stores, why it stores it, and how to have it removed.',
     image: 'https://avatars.githubusercontent.com/u/101452588?v=4',
     url: '/privacy',
-    keywords: ['Privacy', 'cookies', 'ads'],
+    keywords: ['Privacy', 'cookies', 'data'],
   });
   return {
     ...metaData,
   };
 };
 
+const SERVER_DATA = [
+  {
+    title: 'Comments',
+    body: 'Your comment and your random visitor ID. Comments are public on the post, and they stay until you or I delete them. I also get an email when someone comments, and it can include the comment text.',
+  },
+  {
+    title: 'Likes and views',
+    body: 'Your random visitor ID against the post, so each person counts once. These stay with the post.',
+  },
+  {
+    title: 'IP address',
+    body: 'Used to limit spam on comments, likes, views and link previews. It sits in a temporary counter that deletes itself within an hour.',
+  },
+  {
+    title: 'Link previews',
+    body: 'When you hover a link in a post, the server fetches that page and caches its title, description and image for up to four days. The preview isn’t tied to you.',
+  },
+];
+
+const SERVICES = [
+  {
+    title: 'Vercel',
+    body: 'Hosts the site, and handles anonymous page analytics and temporary storage. Like most hosts, it processes your IP address to serve the site.',
+  },
+  {
+    title: 'MongoDB Atlas',
+    body: 'Stores comments, likes and view counts.',
+  },
+  { title: 'Resend', body: 'Sends me the comment notification emails.' },
+  {
+    title: 'YouTube and StackBlitz',
+    body: 'Some posts embed a video or code project, which loads from those services and follows their privacy policies.',
+  },
+];
+
+const Section = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) => (
+  <section className="mt-10">
+    <h2 className="home-title">{title}</h2>
+    <div className="home-soft mt-2 space-y-3">{children}</div>
+  </section>
+);
+
+const Rows = ({ rows }: { rows: { title: string; body: string }[] }) => (
+  <dl className="space-y-4">
+    {rows.map((row) => (
+      <div key={row.title}>
+        <dt className="text-foreground font-medium">{row.title}</dt>
+        <dd className="mt-0.5">{row.body}</dd>
+      </div>
+    ))}
+  </dl>
+);
+
 const Privacy = () => {
   return (
-    <main className="fade-in-out mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <section className="relative h-[360px]">
-        <h1
-          className="absolute bottom-[160px] z-10 text-center text-3xl font-extrabold tracking-tight whitespace-nowrap sm:text-4xl md:bottom-32"
-          style={{
-            transform: 'translate(-50%, -50%)',
-            left: '50%',
-          }}
-        >
-          Privacy Policy
-        </h1>
-        <DotPattern
-          className={cn(
-            'mt-0 h-[50vh] rounded-full [mask-image:radial-gradient(200px_circle_at_center,white,transparent)]'
-          )}
-        />
-      </section>
+    <PageShell>
+      <div className="mx-auto flex min-h-dvh max-w-[46rem] flex-col px-6 pt-14 pb-7 md:pt-[8vh]">
+        <main>
+          <Link
+            href="/"
+            className="home-rise home-soft home-link text-[0.95rem]"
+            style={{ '--i': 0 } as React.CSSProperties}
+          >
+            Reetesh Kumar
+          </Link>
 
-      <section className="m-auto mt-[50px] max-w-[97%] md:max-w-[800px]">
-        <div className="text-default">
-          <p className="text-center">
-            <strong>reetesh.in </strong>
-            (&quot;I&quot;) provides this Privacy Policy to inform you of our
-            policies and procedures regarding the collection, use, and
-            disclosure of personal information we may receive from users of our
-            website (&quot;Site&quot;), accessible from{' '}
-            <a
-              className="font-bold text-blue-500 hover:underline"
-              href="https://reetesh.in"
-              aria-label="reetesh.in"
-              title="reetesh.in"
-            >
-              reetesh.in
-            </a>{' '}
-            , and any other services offered by us in connection with our site
-            (collectively, the &quot;Services&quot;).
+          <h1
+            className="home-rise post-title mt-9"
+            style={{ '--i': 1 } as React.CSSProperties}
+          >
+            Privacy
+          </h1>
+
+          <p
+            className="home-rise home-sentence mt-5"
+            style={{ '--i': 2 } as React.CSSProperties}
+          >
+            The short version: no ads, no accounts and no tracking cookies. This
+            site only keeps what it needs to run comments, likes and view
+            counts.
           </p>
 
-          <p className="mt-4 text-center">
-            If you have additional questions or require more information about
-            our Privacy Policy, do not hesitate to contact us at
-            <a
-              href="mailto:rajreetesh7@gmail.com"
-              className="font-bold text-blue-500 hover:underline"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="mail"
-              title="mail"
-            >
-              {' '}
-              rajreetesh7@gmail.com
-            </a>
-            . This Privacy Policy applies only to our online activities and is
-            valid for visitors to our website with regards to the information
-            that they shared and/or collect on{' '}
-            <a
-              className="font-bold text-blue-500 hover:underline"
-              href="https://reetesh.in"
-              aria-label="reetesh.in"
-              title="reetesh.in"
-            >
-              reetesh.in
-            </a>
-            . This policy does not apply to any information collected offline or
-            via channels other than this website.
-          </p>
-        </div>
+          <div
+            className="home-rise"
+            style={{ '--i': 3 } as React.CSSProperties}
+          >
+            <Section title="In your browser">
+              <p>
+                Your browser stores a random visitor ID. It lets the site count
+                your view once and lets you delete your own comments. It
+                isn&apos;t linked to your name.
+              </p>
+              <p>
+                It also stores your theme and your recent searches. You can
+                clear all of this in your browser settings, but you won&apos;t
+                be able to delete comments you left with the old ID.
+              </p>
+            </Section>
 
-        <Box>
-          <BoxTitle>Consent</BoxTitle>
-          <BoxContent>
-            By using our website, you hereby consent to our Privacy Policy and
-            agree to its terms.
-          </BoxContent>
-        </Box>
+            <Section title="On the server">
+              <Rows rows={SERVER_DATA} />
+            </Section>
 
-        <Box>
-          <BoxTitle>Links to Other Sites</BoxTitle>
-          <BoxContent>
-            Our services may contain links to other websites, applications, and
-            online services. If you choose to visit a third-party service or
-            click on another third-party link, you will be directed to that
-            third party&apos;s website, application, or online service. The fact
-            that we link to a website or content is not an endorsement,
-            authorization, or representation of our affiliation with that third
-            party, nor is it an endorsement of their privacy or information
-            security policies or practices. We do not exercise control over
-            third-party websites or services.
-          </BoxContent>
-        </Box>
+            <Section title="Cookies">
+              <p>
+                This site doesn&apos;t set any cookies of its own. An embedded
+                video or code project may set its own once you use it.
+              </p>
+            </Section>
 
-        <Box>
-          <BoxTitle>Third-Party Privacy Policies</BoxTitle>
-          <BoxContent>
-            Our Privacy Policy does not apply to other websites. Thus, we advise
-            you to consult the respective Privacy Policies of these third-party
-            ad servers for more detailed information. It may include their
-            practices and instructions about how to opt out of certain options.
-          </BoxContent>
-          <BoxContent>
-            You can choose to disable cookies through your individual browser
-            options. More detailed information about cookie management with
-            specific web browsers can be found at the browsers respective
-            websites.
-          </BoxContent>
-        </Box>
+            <Section title="Services this site uses">
+              <Rows rows={SERVICES} />
+              <p>
+                I don&apos;t sell your data or share it with anyone beyond these
+                services.
+              </p>
+            </Section>
 
-        <Box>
-          <BoxTitle>Cookies</BoxTitle>
-          <BoxContent>
-            Cookies are small pieces of data stored on your device by your
-            browser. They serve various purposes, such as remembering your
-            preferences, enhancing user experience, and facilitating ads
-            experience.
-          </BoxContent>
-          <BoxContent>
-            By using our site, you consent to the use of cookies for these
-            purposes. You can manage your cookie preferences through your
-            browser settings.
-          </BoxContent>
-        </Box>
+            <Section title="Removing your data">
+              <p>
+                You can delete your own comments from the same browser you used
+                to post them. For anything else, email me at{' '}
+                <a href={`mailto:${EMAIL}`} className="home-link">
+                  {EMAIL}
+                </a>{' '}
+                and I&apos;ll remove it.
+              </p>
+            </Section>
 
-        <Box>
-          <p>
-            <strong>Last Updated : </strong> July, 24 2024
-          </p>
-        </Box>
-      </section>
-    </main>
+            <Section title="Links to other sites">
+              <p>
+                Posts link to other websites. This policy doesn&apos;t cover
+                them, so check their own privacy policies.
+              </p>
+            </Section>
+
+            <p className="home-soft mt-10 text-sm">
+              Last updated November 1, 2026
+            </p>
+          </div>
+        </main>
+
+        <footer className="home-soft mt-auto pt-12 text-sm">
+          <ContactLinks />
+        </footer>
+      </div>
+    </PageShell>
   );
 };
 
 export default Privacy;
-
-const Box = ({ children }: { children: React.ReactNode }) => {
-  return <div className="mt-12">{children}</div>;
-};
-
-const BoxTitle = ({ children }: { children: React.ReactNode }) => {
-  return <h2 className="text-2xl font-bold">{children}</h2>;
-};
-
-const BoxContent = ({ children }: { children: React.ReactNode }) => {
-  return <p className="text-default mt-2">{children}</p>;
-};

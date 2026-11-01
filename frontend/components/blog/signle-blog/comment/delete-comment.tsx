@@ -10,10 +10,7 @@ type TDeleteComment = {
   commentId: string;
 };
 
-const DeleteComment: React.FC<TDeleteComment> = ({
-  userId,
-  commentId,
-}) => {
+const DeleteComment: React.FC<TDeleteComment> = ({ userId, commentId }) => {
   const { mutate, isPending } = useMutation({
     mutationFn: deleteCommentAction,
     onSuccess: (result) => {
