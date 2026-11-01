@@ -3,6 +3,7 @@
 import { ReactNode, useSyncExternalStore } from 'react';
 import { Link } from 'next-view-transitions';
 import portfolio from '@/data/portfolio.json';
+import { ScrambleText, useScramble } from './scramble-text';
 
 const SECTIONS = ['work', 'projects', 'skills', 'writing'] as const;
 type TSection = (typeof SECTIONS)[number];
@@ -52,22 +53,12 @@ const Home = ({ posts, stats }: TProps) => {
         >
           I&apos;m a full stack engineer in Ahmedabad, and I&apos;ve been
           building web products for close to four years. Here&apos;s{' '}
-          <Phrase active={active} section="work">
-            where I&apos;ve worked
-          </Phrase>
-          ,{' '}
-          <Phrase active={active} section="projects">
-            what I&apos;ve made
-          </Phrase>{' '}
-          on the side and{' '}
-          <Phrase active={active} section="skills">
-            the tools I use
-          </Phrase>
-          . I also{' '}
-          <Phrase active={active} section="writing">
-            write
-          </Phrase>{' '}
-          about what I learn.
+          <Phrase active={active} section="work" text="where I've worked" />,{' '}
+          <Phrase active={active} section="projects" text="what I've made" /> on
+          the side and{' '}
+          <Phrase active={active} section="skills" text="the tools I use" />. I
+          also <Phrase active={active} section="writing" text="write" /> about
+          what I learn.
         </p>
 
         <div
@@ -186,17 +177,29 @@ type TSectionProps = {
   children: ReactNode;
 };
 
-const Phrase = ({ active, section, children }: TSectionProps) => (
-  <a
-    href={`#${section}`}
-    className="home-phrase"
-    aria-controls={`panel-${section}`}
-    aria-current={active === section ? 'true' : undefined}
-    data-active={active === section}
-  >
-    {children}
-  </a>
-);
+const Phrase = ({
+  active,
+  section,
+  text,
+}: Omit<TSectionProps, 'children'> & { text: string }) => {
+  const { rootRef, scramble } = useScramble();
+
+  return (
+    <a
+      ref={rootRef}
+      href={`#${section}`}
+      className="home-phrase"
+      aria-label={text}
+      aria-controls={`panel-${section}`}
+      aria-current={active === section ? 'true' : undefined}
+      data-active={active === section}
+      onPointerEnter={scramble}
+      onFocus={scramble}
+    >
+      <ScrambleText text={text} />
+    </a>
+  );
+};
 
 const Panel = ({ active, section, children }: TSectionProps) => (
   <div

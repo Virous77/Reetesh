@@ -579,6 +579,7 @@ button {
 }
 
 .home-phrase {
+  --underline: var(--home-line);
   cursor: pointer;
   font-family: var(--font-fraunces), Georgia, serif;
   font-size: 1.1em;
@@ -586,17 +587,27 @@ button {
   font-weight: 600;
   line-height: 1;
   letter-spacing: -0.01em;
-  text-decoration: underline 1px var(--home-line);
-  text-underline-offset: 0.2em;
-  transition:
-    color 0.5s ease,
-    text-decoration-color 0.5s ease;
+  /* Inline-block letters cannot inherit text-decoration, so draw the line here. */
+  background: linear-gradient(var(--underline), var(--underline)) 0 100% / 100%
+    1px no-repeat;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: color 0.5s ease;
 }
 
 .home-phrase:hover,
 .home-phrase[data-active='true'] {
+  --underline: currentColor;
   color: var(--home-accent);
-  text-decoration-color: currentColor;
+}
+
+.home-word {
+  white-space: nowrap;
+}
+
+.home-char {
+  display: inline-block;
+  text-align: center;
 }
 
 .home-phrase:focus-visible,
