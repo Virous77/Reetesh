@@ -196,11 +196,3 @@ export const LiveDot = () => {
   );
 };
 
-export const LiveDotComp = ({ children }: { children: ReactNode }) => {
-  return (
-    <div className="relative">
-      <LiveDot />
-      {children}
-    </div>
-  );
-};

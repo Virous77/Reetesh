@@ -4,7 +4,7 @@ import React from 'react';
 export const generateMetadata = async () => {
   const metaData = commonMetaData({
     name: 'Blogs',
-    desc: 'Explore the digital realm of Reetesh Kumar, a seasoned full-stack developer. Immerse yourself in a collection of insightful blogs.',
+    desc: 'Posts by Reetesh Kumar on Next.js, React, AI and the backend, written while learning and building.',
     image: 'https://avatars.githubusercontent.com/u/101452588?v=4',
     url: '/blogs',
     keywords: ['blogs', 'articles', 'posts', 'insights', 'experiences'],

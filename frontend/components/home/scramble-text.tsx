@@ -10,8 +10,8 @@ const randomGlyph = () => GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
 
 // The scramble writes to the DOM directly, because one React render per frame
 // would be wasted work on a component that otherwise never changes.
-export const useScramble = () => {
-  const rootRef = useRef<HTMLAnchorElement>(null);
+export const useScramble = <T extends HTMLElement>() => {
+  const rootRef = useRef<T>(null);
   const frame = useRef<number | null>(null);
 
   useEffect(

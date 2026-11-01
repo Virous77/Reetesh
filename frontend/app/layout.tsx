@@ -6,7 +6,6 @@ import { commonMetaData } from '@/utils/utils';
 import { Provider } from '@/lib/reactQuery-provider';
 import { Analytics } from '@vercel/analytics/react';
 import Accessibility from '@/components/common/accessibility';
-import MenuProvider from '@/lib/menu-provider';
 import { ViewTransitions } from 'next-view-transitions';
 import NextTopLoader from 'nextjs-toploader';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -86,14 +85,12 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
               shadow="0 0 10px #e21d49,0 0 5px #e21d49"
             />
             <Provider>
-              <MenuProvider>
-                {children}
-                <Analytics debug={false} />
-                <TooltipProvider>
-                  <ThemeSwitcher />
-                </TooltipProvider>
-                <Accessibility />
-              </MenuProvider>
+              {children}
+              <Analytics debug={false} />
+              <TooltipProvider>
+                <ThemeSwitcher />
+              </TooltipProvider>
+              <Accessibility />
             </Provider>
           </ThemeProviderComp>
         </body>

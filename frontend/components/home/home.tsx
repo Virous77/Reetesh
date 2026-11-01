@@ -1,27 +1,13 @@
 'use client';
 
-import { ReactNode, useSyncExternalStore } from 'react';
+import { ReactNode } from 'react';
 import { Link } from 'next-view-transitions';
 import portfolio from '@/data/portfolio.json';
-import { ScrambleText, useScramble } from './scramble-text';
+import ContactLinks from './contact-links';
+import { Phrase, useHashSection } from './phrase';
 
 const SECTIONS = ['work', 'projects', 'skills', 'writing'] as const;
 type TSection = (typeof SECTIONS)[number];
-
-const subscribe = (onChange: () => void) => {
-  window.addEventListener('hashchange', onChange);
-  return () => window.removeEventListener('hashchange', onChange);
-};
-
-const useActiveSection = (): TSection => {
-  const hash = useSyncExternalStore(
-    subscribe,
-    () => window.location.hash.slice(1),
-    () => ''
-  );
-
-  return SECTIONS.find((section) => section === hash) ?? 'work';
-};
 
 type TPost = {
   slug: string;
@@ -35,7 +21,7 @@ type TProps = {
 };
 
 const Home = ({ posts, stats }: TProps) => {
-  const active = useActiveSection();
+  const active = useHashSection(SECTIONS, 'work');
 
   return (
     <div className="mx-auto flex min-h-dvh max-w-[46rem] flex-col px-6 pt-14 pb-7 md:pt-[8vh]">
@@ -53,12 +39,30 @@ const Home = ({ posts, stats }: TProps) => {
         >
           I&apos;m a full stack engineer in Ahmedabad, and I&apos;ve been
           building web products for close to four years. Here&apos;s{' '}
-          <Phrase active={active} section="work" text="where I've worked" />,{' '}
-          <Phrase active={active} section="projects" text="what I've made" /> on
-          the side and{' '}
-          <Phrase active={active} section="skills" text="the tools I use" />. I
-          also <Phrase active={active} section="writing" text="write" /> about
-          what I learn.
+          <Phrase
+            section="work"
+            active={active === 'work'}
+            text="where I've worked"
+          />
+          ,{' '}
+          <Phrase
+            section="projects"
+            active={active === 'projects'}
+            text="what I've made"
+          />{' '}
+          on the side and{' '}
+          <Phrase
+            section="skills"
+            active={active === 'skills'}
+            text="the tools I use"
+          />
+          . I also{' '}
+          <Phrase
+            section="writing"
+            active={active === 'writing'}
+            text="write"
+          />{' '}
+          about what I learn.
         </p>
 
         <div
@@ -147,19 +151,7 @@ const Home = ({ posts, stats }: TProps) => {
         className="home-rise home-soft mt-auto flex flex-wrap items-center justify-between gap-x-8 gap-y-2 pt-12 text-sm"
         style={{ '--i': 3 } as React.CSSProperties}
       >
-        <nav aria-label="Contact" className="flex flex-wrap gap-x-5 gap-y-1">
-          {portfolio.contact.map((link) => (
-            <a
-              key={link.label}
-              href={link.url}
-              target={link.url.startsWith('http') ? '_blank' : undefined}
-              rel="noreferrer"
-              className="home-link"
-            >
-              {link.label}
-            </a>
-          ))}
-        </nav>
+        <ContactLinks />
         {stats && (
           <p>
             {stats.contributions.toLocaleString('en-US')} contributions,{' '}
@@ -175,30 +167,6 @@ type TSectionProps = {
   active: TSection;
   section: TSection;
   children: ReactNode;
-};
-
-const Phrase = ({
-  active,
-  section,
-  text,
-}: Omit<TSectionProps, 'children'> & { text: string }) => {
-  const { rootRef, scramble } = useScramble();
-
-  return (
-    <a
-      ref={rootRef}
-      href={`#${section}`}
-      className="home-phrase"
-      aria-label={text}
-      aria-controls={`panel-${section}`}
-      aria-current={active === section ? 'true' : undefined}
-      data-active={active === section}
-      onPointerEnter={scramble}
-      onFocus={scramble}
-    >
-      <ScrambleText text={text} />
-    </a>
-  );
 };
 
 const Panel = ({ active, section, children }: TSectionProps) => (

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { Newspaper, Search } from 'lucide-react';
 import {
   CommandDialog,
@@ -10,16 +10,15 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
-import { Post } from '@/.contentlayer/generated';
 import { useRouter } from 'next/navigation';
 import { getLocalData, slugify } from '@/utils/utils';
-import { Button } from '../ui/button';
 
 type TCommandSearch = {
-  blogs: Post[];
+  blogs: { _id: string; title: string; slugAsParams: string }[];
+  trigger: (open: () => void) => ReactNode;
 };
 
-const CommandSearch: React.FC<TCommandSearch> = ({ blogs }) => {
+const CommandSearch: React.FC<TCommandSearch> = ({ blogs, trigger }) => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState<string[] | []>([]);
   const router = useRouter();
@@ -65,25 +64,7 @@ const CommandSearch: React.FC<TCommandSearch> = ({ blogs }) => {
 
   return (
     <React.Fragment>
-      <div>
-        <Button
-          className="hover:bg-accent flex cursor-pointer items-center gap-10 rounded border bg-transparent p-2 pr-6 transition-colors duration-200 ease-in-out md:pr-2"
-          onClick={() => {
-            setOpen(!open);
-          }}
-        >
-          <span className="flex items-center gap-2">
-            <Search size={16} className="text-muted-foreground" />
-            <p className="text-muted-foreground text-[0.875rem]">
-              Search Posts
-            </p>
-          </span>
-          <kbd className="bg-muted text-muted-foreground pointer-events-none hidden h-5 items-center gap-1 rounded border px-1.5 font-mono text-sm text-[10px] font-medium opacity-100 select-none md:inline-flex">
-            <span className="text-xs">⌘</span>
-            <span className="text-[0.625rem]">K</span>
-          </kbd>
-        </Button>
-      </div>
+      {trigger(() => setOpen(true))}
       <CommandDialog
         open={open}
         onOpenChange={() => {

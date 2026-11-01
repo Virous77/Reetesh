@@ -62,19 +62,6 @@
   }
 }
 
-/* Used via an arbitrary animation value in components/ui/shine-border.tsx. */
-@keyframes shine-pulse {
-  0% {
-    background-position: 0% 0%;
-  }
-  50% {
-    background-position: 100% 100%;
-  }
-  100% {
-    background-position: 0% 0%;
-  }
-}
-
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still
@@ -669,14 +656,57 @@ button {
   }
 }
 
+.blog-row {
+  display: block;
+  padding-block: 0.45rem;
+}
+
+.blog-row-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.blog-row:hover .home-row-title {
+  color: var(--home-accent);
+}
+
+/* Sits in the empty margin beside the list, so it needs a wide screen. */
+.blog-preview {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: calc(50% + 25rem);
+  width: min(19rem, calc(50vw - 27rem));
+  pointer-events: none;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.blog-preview-image {
+  width: 100%;
+  aspect-ratio: 1200 / 630;
+  object-fit: cover;
+  border-radius: 6px;
+  animation: home-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (min-width: 1280px) {
+  .blog-preview {
+    display: block;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .home-glow span,
-  .home-rise {
+  .home-rise,
+  .blog-preview-image {
     animation: none;
   }
 
   .home-panel,
-  .home-phrase {
+  .home-phrase,
+  .blog-preview {
     transition: none;
   }
 }
