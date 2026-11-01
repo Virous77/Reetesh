@@ -131,7 +131,10 @@ const Home = ({ posts, stats }: TProps) => {
             <ul className="space-y-4">
               {posts.map((post) => (
                 <li key={post.slug}>
-                  <Link href={`/blog/${post.slug}`} className="home-row">
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="home-row home-row-stack"
+                  >
                     <span className="home-row-title">{post.title}</span>
                     <span className="home-soft shrink-0 text-sm tabular-nums">
                       {post.date}

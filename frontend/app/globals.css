@@ -697,6 +697,20 @@ button {
   }
 }
 
+/* Long titles need the full width on a phone, so dates move above them. */
+@media (max-width: 639px) {
+  .home-row-stack,
+  .blog-row-title {
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .home-row-stack > :last-child,
+  .blog-row-title > :last-child {
+    order: -1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .home-glow span,
   .home-rise,
