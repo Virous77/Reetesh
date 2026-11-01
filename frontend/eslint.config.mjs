@@ -1,5 +1,7 @@
 import { defineConfig, globalIgnores } from 'eslint/config';
-import nextCoreWebVitals from 'eslint-config-next/core-web-vitals';
+import nextPlugin from '@next/eslint-plugin-next';
+import reactHooks from 'eslint-plugin-react-hooks';
+import tseslint from 'typescript-eslint';
 
 export default defineConfig([
   globalIgnores([
@@ -9,14 +11,16 @@ export default defineConfig([
     '__test__/',
     'coverage/',
     'public/',
+    'next-env.d.ts',
   ]),
-  ...nextCoreWebVitals,
+  ...tseslint.configs.recommended,
+  reactHooks.configs.flat.recommended,
+  nextPlugin.configs['core-web-vitals'],
   {
     rules: {
-      'react/react-in-jsx-scope': 'off',
-      'react/prop-types': 'off',
-      'no-undef': 'off',
       'react-hooks/exhaustive-deps': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-require-imports': 'off',
     },
   },
 ]);

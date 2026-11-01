@@ -16,6 +16,11 @@ minimumReleaseAgeExclude:
   # the cooldown window; exempt so the security pin can actually resolve.
   - brace-expansion
   - nanoid
+  # Nov 2026: patched releases still inside the cooldown. Remove these once
+  # they pass 15 days (postcss-selector-parser ~Nov 3, minimatch ~Nov 11).
+  - postcss-selector-parser
+  - minimatch
+  - '@isaacs/nonrecursive-glob-match'
 
 # Prefer the lockfile: pnpm install uses exactly what's in pnpm-lock.yaml and
 # only re-resolves when the lockfile is out of sync with package.json.
@@ -62,6 +67,10 @@ overrides:
   source-map-js@<1.2.2: ^1.2.2
   toml@<5.0.1: ^5.0.1
   zod@<4.6.6: ^4.6.6
+  # GHSA-rj75-hqrm-r3gf: pinned to 6.0.10 by @tailwindcss/typography.
+  postcss-selector-parser@>=6.0.0 <6.1.5: ^6.1.5
+  # GHSA-g3hv-75wg-m249: only eslint internals use it, via named exports.
+  minimatch@>=10.0.0 <11.0.1: ^11.0.1
 
 # Allow build scripts only for trusted first-party/build tooling. Every other
 # package's install scripts (the #1 supply-chain execution vector) stay blocked.

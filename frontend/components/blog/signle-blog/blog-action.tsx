@@ -4,8 +4,7 @@ import { Button } from '@/components/ui/button';
 import { MessageSquareQuote, ThumbsUp } from 'lucide-react';
 import { addBlogLikeAction, getLikeAction } from './action';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import action from './comment/action';
-import { getLocalData } from '@/utils/utils';
+import { addUserIDToLocalStorage, getLocalData } from '@/utils/utils';
 import { ToolTipComp } from '@/components/ui/tooltip';
 import { startTransition, useOptimistic } from 'react';
 
@@ -33,12 +32,12 @@ const BlogAction = ({ blogId }: { blogId: string }) => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: addBlogLikeAction,
-    onSuccess: () => {
+    onSuccess: (result) => {
+      if ('error' in result) alert(result.error);
       refetch();
-      action(blogId);
     },
     onError: (error) => {
-      alert(error.message || 'Failed to delete comment');
+      alert(error.message || 'Failed to like');
     },
   });
 
@@ -50,7 +49,8 @@ const BlogAction = ({ blogId }: { blogId: string }) => {
   };
 
   const handleLike = () => {
-    const viewId = getLocalData('tempId');
+    const id: string = getLocalData('tempId');
+    const viewId = id || addUserIDToLocalStorage(id);
     startTransition(() => {
       setOptimisticLike((prev) => prev + 1);
     });

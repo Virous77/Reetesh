@@ -3,7 +3,7 @@
 import { TBlog } from '@/models/blog-comments';
 import CommentsItem, { commonFields } from './comment-item';
 import { usePathname } from 'next/navigation';
-import action, { createComment } from './action';
+import { createComment } from './action';
 import { useMutation } from '@tanstack/react-query';
 import { addUserIDToLocalStorage, getLocalData } from '@/utils/utils';
 import React, { useOptimistic, startTransition } from 'react';
@@ -29,8 +29,8 @@ const CommentList = ({ data }: { data: TBlog[] }) => {
     onError: (data) => {
       alert(data.message || 'Failed to send comment');
     },
-    onSuccess: () => {
-      action(pathName.split('/')[2]);
+    onSuccess: (result) => {
+      if ('error' in result) alert(result.error);
     },
   });
 
@@ -53,7 +53,7 @@ const CommentList = ({ data }: { data: TBlog[] }) => {
     );
     mutate({
       comment: comment.comment,
-      userId: id,
+      userId: id || tempId,
       blogId: pathName.split('/')[2],
       parentId: undefined,
     });
