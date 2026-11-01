@@ -1,9 +1,19 @@
-import { Inter } from "next/font/google";
+import { IBM_Plex_Mono, Newsreader } from "next/font/google";
 import "./globals.css";
 import ThemeProviderComp from "@/lib/theme-provider";
 import ThemeSwitcher from "@/components/theme/theme";
 
-const inter = Inter({ subsets: ["latin"] });
+const serif = Newsreader({
+  subsets: ["latin"],
+  axes: ["opsz"],
+  variable: "--font-newsreader",
+});
+
+const mono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-plex-mono",
+});
 
 export default function RootLayout({
   children,
@@ -12,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={`${serif.variable} ${mono.variable}`}>
         <ThemeProviderComp attribute="class" defaultTheme="dark">
           {children}
           <ThemeSwitcher />

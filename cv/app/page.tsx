@@ -1,9 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Metadata } from "next";
-import { GlobeIcon, MailIcon, PhoneIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { RESUME_DATA } from "@/components/cv/data";
 import { ProjectCard } from "@/components/cv/project-card";
 import { Section } from "@/components/cv/section";
@@ -52,188 +48,139 @@ export const metadata: Metadata = {
   ],
 };
 
+const { name, initials, location, about, summary, avatarUrl, contact } =
+  RESUME_DATA;
+
 const CV = () => {
   return (
-    <main className="container relative mx-auto scroll-my-12 overflow-auto p-4 md:p-16 print:p-12">
-      <section className="mx-auto w-full max-w-2xl space-y-8 print:space-y-6">
-        <div className="flex items-center justify-between">
-          <div className="flex-1 space-y-1.5">
-            <h1 className="text-2xl font-bold">{RESUME_DATA.name}</h1>
-            <p className="max-w-lg font-mono text-sm leading-relaxed text-default">
-              {RESUME_DATA.about}
-            </p>
-            <p className="max-w-md items-center font-mono text-xs text-default">
-              <a
-                className="inline-flex gap-x-1.5 align-baseline leading-none hover:underline"
-                href={RESUME_DATA.locationLink}
-                target="_blank"
-              >
-                <GlobeIcon className="size-3" />
-                {RESUME_DATA.location}
-              </a>
-            </p>
-            <div className="flex gap-x-1 pt-1 font-mono text-sm  print:hidden">
-              {RESUME_DATA.contact.email ? (
-                <Button
-                  className="size-8"
-                  variant="outline"
-                  size="icon"
-                  asChild
-                >
-                  <a href={`mailto:${RESUME_DATA.contact.email}`}>
-                    <MailIcon className="size-4" />
-                  </a>
-                </Button>
-              ) : null}
-              {RESUME_DATA.contact.tel ? (
-                <Button
-                  className="size-8"
-                  variant="outline"
-                  size="icon"
-                  asChild
-                >
-                  <a href={`tel:${RESUME_DATA.contact.tel}`}>
-                    <PhoneIcon className="size-4" />
-                  </a>
-                </Button>
-              ) : null}
-              {RESUME_DATA.contact.social.map((social) => (
-                <Button
-                  key={social.name}
-                  className="size-8"
-                  variant="outline"
-                  size="icon"
-                  asChild
-                >
-                  <a href={social.url}>
-                    <social.icon className="size-4" />
-                  </a>
-                </Button>
-              ))}
-            </div>
-            <div className="hidden flex-col gap-x-1 font-mono text-sm  print:flex">
-              {RESUME_DATA.contact.email ? (
-                <a href={`mailto:${RESUME_DATA.contact.email}`}>
-                  <span className="underline">{RESUME_DATA.contact.email}</span>
-                </a>
-              ) : null}
-              {RESUME_DATA.contact.tel ? (
-                <a href={`tel:${RESUME_DATA.contact.tel}`}>
-                  <span className="underline">{RESUME_DATA.contact.tel}</span>
-                </a>
-              ) : null}
-            </div>
-          </div>
-
-          <Avatar className="size-28">
-            <AvatarImage alt={RESUME_DATA.name} src={RESUME_DATA.avatarUrl} />
-            <AvatarFallback>{RESUME_DATA.initials}</AvatarFallback>
-          </Avatar>
-        </div>
-        <Section>
-          <h2 className="text-xl font-bold">About</h2>
-          <p className="font-mono text-sm leading-relaxed text-default">
-            {RESUME_DATA.summary}
+    <main className="mx-auto max-w-3xl px-5 py-12 md:py-20 print:max-w-none print:p-0">
+      <header className="flex items-start justify-between gap-6">
+        <div>
+          <h1 className="text-5xl font-normal tracking-tight md:text-6xl print:text-[30pt]">
+            {name}
+          </h1>
+          <p className="mt-3 text-lg text-muted-foreground print:mt-1 print:text-[11pt]">
+            {about}
           </p>
-        </Section>
+        </div>
+        <Avatar className="size-20 shrink-0 md:size-24 print:size-16">
+          <AvatarImage alt={name} src={avatarUrl} />
+          <AvatarFallback>{initials}</AvatarFallback>
+        </Avatar>
+      </header>
 
-        <Section>
-          <h2 className="text-xl font-bold">Work Experience</h2>
-          {RESUME_DATA.work.map((work) => {
-            return (
-              <Card
-                key={work.company}
-                className=" m-0 border-none p-0 shadow-none"
-              >
-                <CardHeader className=" m-0 p-0">
-                  <div className="flex items-start justify-between gap-x-2 text-base">
-                    <h3 className="inline-flex items-center justify-center gap-x-1 font-semibold leading-none">
-                      <a className="hover:underline" href={work.link}>
-                        {work.company}
-                      </a>
+      <ul className="mt-6 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-muted-foreground print:mt-3">
+        <li>{location}</li>
+        <li>
+          <a className="hover:text-foreground" href={`mailto:${contact.email}`}>
+            {contact.email}
+          </a>
+        </li>
+        <li>
+          <a className="hover:text-foreground" href={`tel:${contact.tel}`}>
+            {contact.tel}
+          </a>
+        </li>
+        {contact.links.map((link) => (
+          <li key={link.url}>
+            <a
+              className="hover:text-foreground"
+              href={link.url}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
 
-                      <span className="inline-flex gap-x-1">
-                        {work.badges.map((badge) => (
-                          <Badge
-                            variant="secondary"
-                            className="align-middle text-xs"
-                            key={badge}
-                          >
-                            {badge}
-                          </Badge>
-                        ))}
-                      </span>
-                    </h3>
-                    <div className="text-sm tabular-nums text-gray-500 text-nowrap">
-                      {work.start} - {work.end}
-                    </div>
-                  </div>
-
-                  <h4 className="font-mono text-sm leading-none">
-                    {work.title}
-                  </h4>
-                </CardHeader>
-                <CardContent className="m-0 mt-3 p-0 font-mono text-xs leading-relaxed">
-                  {work.description}
-                </CardContent>
-                <CardContent className="m-0 mt-2 p-0 font-mono text-xs leading-relaxed text-gray-600">
-                  {work.subDescription}
-                </CardContent>
-              </Card>
-            );
-          })}
-        </Section>
-        <Section>
-          <h2 className="text-xl font-bold">Education</h2>
-          {RESUME_DATA.education.map((education) => {
-            return (
-              <Card
-                key={education.school}
-                className=" m-0 border-none p-0 shadow-none"
-              >
-                <CardHeader className=" m-0 p-0">
-                  <div className="flex items-start justify-between gap-x-2 text-base">
-                    <h3 className="font-semibold md:leading-none">
-                      {education.school}
-                    </h3>
-                    <div className="text-sm tabular-nums text-gray-500 whitespace-nowrap">
-                      {education.start} - {education.end}
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="m-0 mt-2 p-0 font-mono text-[14px]">
-                  {education.degree}
-                </CardContent>
-              </Card>
-            );
-          })}
-        </Section>
-        <Section>
-          <h2 className="text-xl font-bold">Skills</h2>
-          <div className="flex flex-wrap gap-1">
-            {RESUME_DATA.skills.map((skill) => {
-              return <Badge key={skill}>{skill}</Badge>;
-            })}
+      <div className="mt-10 space-y-8 print:mt-4 print:space-y-3">
+        <Section title="About">
+          <div className="space-y-3 leading-relaxed print:space-y-1.5">
+            {summary.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
           </div>
         </Section>
 
-        <Section className="print-force-new-page scroll-mb-16">
-          <h2 className="text-xl font-bold">Projects</h2>
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 print:grid-cols-3 print:gap-2">
-            {RESUME_DATA.projects.map((project) => {
-              return (
-                <ProjectCard
-                  key={project.title}
-                  title={project.title}
-                  description={project.description}
-                  tags={project.techStack}
-                  link={"link" in project ? project.link.href : undefined}
-                />
-              );
-            })}
+        <Section title="Experience">
+          <div className="space-y-7 print:space-y-3">
+            {RESUME_DATA.work.map((work) => (
+              <article key={work.company} className="break-inside-avoid">
+                <div className="flex flex-wrap items-baseline justify-between gap-x-4">
+                  <h3 className="text-lg font-medium leading-snug print:text-[11pt]">
+                    <a
+                      href={work.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="decoration-heading underline-offset-4 hover:underline"
+                    >
+                      {work.company}
+                    </a>
+                  </h3>
+                  <span className="font-mono text-xs tabular-nums text-muted-foreground">
+                    {work.start} to {work.end}
+                  </span>
+                </div>
+                <p className="font-mono text-xs text-muted-foreground">
+                  {work.title}
+                </p>
+                <ul className="mt-2 space-y-1 leading-relaxed">
+                  {work.points.map((point) => (
+                    <li key={point}>{point}</li>
+                  ))}
+                </ul>
+              </article>
+            ))}
           </div>
         </Section>
-      </section>
+
+        <Section title="Projects">
+          <div className="space-y-6 print:space-y-2.5">
+            {RESUME_DATA.projects.map((project) => (
+              <ProjectCard
+                key={project.title}
+                title={project.title}
+                year={project.year}
+                description={project.description}
+                tags={project.techStack}
+                link={project.link}
+              />
+            ))}
+          </div>
+        </Section>
+
+        <Section title="Skills">
+          <dl className="space-y-1.5 print:space-y-0.5">
+            {RESUME_DATA.skills.map((group) => (
+              <div key={group.label} className="flex gap-x-3">
+                <dt className="w-20 shrink-0 pt-px font-mono text-xs leading-relaxed text-muted-foreground">
+                  {group.label}
+                </dt>
+                <dd className="leading-relaxed">{group.items}</dd>
+              </div>
+            ))}
+          </dl>
+        </Section>
+
+        <Section title="Education">
+          {RESUME_DATA.education.map((education) => (
+            <div
+              key={education.school}
+              className="flex flex-wrap items-baseline justify-between gap-x-4"
+            >
+              <p>
+                {education.degree}, {education.school}
+              </p>
+              <span className="font-mono text-xs tabular-nums text-muted-foreground">
+                {education.start} to {education.end}
+              </span>
+            </div>
+          ))}
+        </Section>
+      </div>
+
       <Print />
     </main>
   );

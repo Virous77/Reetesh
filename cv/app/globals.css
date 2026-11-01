@@ -24,6 +24,9 @@
   --color-popover-foreground: hsl(var(--popover-foreground));
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
+  --color-heading: hsl(var(--heading));
+  --font-serif: var(--font-newsreader), Georgia, serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
@@ -36,8 +39,8 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --background: 40 33% 98%;
+    --foreground: 30 8% 12%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
@@ -47,12 +50,12 @@
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
     --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+    --muted-foreground: 30 5% 38%;
     --accent: 240 4.8% 95.9%;
     --accent-foreground: 240 5.9% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
+    --border: 35 14% 87%;
     --input: 240 5.9% 90%;
     --ring: 240 5.9% 10%;
     --radius: 0.5rem;
@@ -63,8 +66,8 @@
   }
 
   .dark {
-    --background: 0 0% 7%;
-    --foreground: 0 0% 98%;
+    --background: 30 6% 8%;
+    --foreground: 36 20% 90%;
     --card: 0 0% 8%;
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 8%;
@@ -74,12 +77,12 @@
     --secondary: 0 0% 15.9%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 3.7% 15.9%;
-    --muted-foreground: 0 5% 64.9%;
+    --muted-foreground: 32 8% 64%;
     --accent: 0 0% 13%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 3.7% 15.9%;
+    --border: 30 5% 19%;
     --input: 0 3.7% 15.9%;
     --ring: 0 4.9% 83.9%;
     --default: 240 5% 75%;
@@ -95,9 +98,36 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-newsreader), Georgia, serif;
+    font-size: 1.0625rem;
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
   }
   button:not(:disabled),
   [role='button']:not(:disabled) {
     cursor: pointer;
+  }
+}
+
+@page {
+  size: A4;
+  margin: 13mm 15mm;
+}
+
+@media print {
+  :root,
+  .dark {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 7%;
+    --muted-foreground: 0 0% 32%;
+    --border: 0 0% 82%;
+    --heading: 346.8 77.2% 42%;
+  }
+
+  body {
+    font-size: 10pt;
+    line-height: 1.35;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 }
