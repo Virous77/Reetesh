@@ -10,7 +10,7 @@ export function ProjectCard({ title, year, description, tags, link }: Props) {
   return (
     <article className="break-inside-avoid">
       <div className="flex items-baseline justify-between gap-4">
-        <h3 className="text-lg font-medium leading-snug print:text-[11pt]">
+        <h3 className="text-xl font-semibold leading-snug print:text-[12pt]">
           <a
             href={link.href}
             target="_blank"

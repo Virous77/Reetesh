@@ -109,7 +109,7 @@ const CV = () => {
             {RESUME_DATA.work.map((work) => (
               <article key={work.company} className="break-inside-avoid">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-4">
-                  <h3 className="text-lg font-medium leading-snug print:text-[11pt]">
+                  <h3 className="text-xl font-semibold leading-snug print:text-[12pt]">
                     <a
                       href={work.link}
                       target="_blank"

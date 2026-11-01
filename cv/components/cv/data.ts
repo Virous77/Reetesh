@@ -13,12 +13,12 @@ export const RESUME_DATA = {
     tel: "+91 8210830957",
     links: [
       { label: "reetesh.in", url: "https://reetesh.in" },
-      { label: "github.com/virous77", url: "https://github.com/virous77" },
+      { label: "GitHub", url: "https://github.com/virous77" },
       {
         label: "LinkedIn",
         url: "https://www.linkedin.com/in/reetesh-kumar-a1b952178/",
       },
-      { label: "x.com/reetesheth", url: "https://x.com/reetesheth" },
+      { label: "X", url: "https://x.com/reetesheth" },
     ],
   },
   work: [
