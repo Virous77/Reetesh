@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/command';
 import { useRouter } from 'next/navigation';
 import { getLocalData, slugify } from '@/utils/utils';
+import { fontVariables } from '@/components/home/fonts';
 
 type TCommandSearch = {
   blogs: { _id: string; title: string; slugAsParams: string }[];
@@ -66,6 +67,7 @@ const CommandSearch: React.FC<TCommandSearch> = ({ blogs, trigger }) => {
     <React.Fragment>
       {trigger(() => setOpen(true))}
       <CommandDialog
+        className={`${fontVariables} home-font`}
         open={open}
         onOpenChange={() => {
           setOpen(false);
