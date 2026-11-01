@@ -580,6 +580,12 @@ button {
 
 .home-phrase {
   cursor: pointer;
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 1.1em;
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.01em;
   text-decoration: underline 1px var(--home-line);
   text-underline-offset: 0.2em;
   transition:

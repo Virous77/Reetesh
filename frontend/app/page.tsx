@@ -5,11 +5,17 @@ import { githubAction } from '@/components/common/action';
 import Home from '@/components/home/home';
 import GrainOverlay from '@/components/ui/grain-overlay';
 import { formateDate } from '@/utils/utils';
-import { Bricolage_Grotesque } from 'next/font/google';
+import { Bricolage_Grotesque, Fraunces } from 'next/font/google';
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
   variable: '--font-bricolage',
+});
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  style: 'italic',
+  variable: '--font-fraunces',
 });
 
 const getStats = async () => {
@@ -36,7 +42,7 @@ const Page = async () => {
     }));
 
   return (
-    <div className={`home ${bricolage.variable}`}>
+    <div className={`home ${bricolage.variable} ${fraunces.variable}`}>
       <div className="home-glow" aria-hidden="true">
         <span />
         <span />
