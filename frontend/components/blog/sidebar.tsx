@@ -16,7 +16,7 @@ const Sidebar = () => {
     },
     {
       name: 'Projects',
-      path: '/projects',
+      path: '/#projects',
       icon: null,
     },
   ];

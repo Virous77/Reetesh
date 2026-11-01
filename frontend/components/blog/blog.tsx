@@ -20,7 +20,7 @@ const Blog: React.FC<TBlog> = ({ blogs }) => {
         <CommandSearch blogs={blogs} />
 
         <div className="flex items-center gap-4 pr-2 md:hidden">
-          <Link href="/projects" aria-label="Visit Projects Page">
+          <Link href="/#projects" aria-label="Visit Projects Page">
             <LibrarySquare size={22} />
           </Link>
 

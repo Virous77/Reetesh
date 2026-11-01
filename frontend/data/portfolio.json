@@ -1,0 +1,93 @@
+{
+  "name": "Reetesh Kumar",
+  "contact": [
+    { "label": "Email", "url": "mailto:rajreetesh7@gmail.com" },
+    { "label": "GitHub", "url": "https://github.com/Virous77" },
+    {
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/reetesh-kumar-a1b952178/"
+    },
+    { "label": "X", "url": "https://x.com/reetesheth" },
+    { "label": "CV", "url": "https://cv.reetesh.in" }
+  ],
+  "work": [
+    {
+      "company": "Furrisic Infotech",
+      "url": "https://furrisic.com",
+      "role": "MERN Stack Engineer",
+      "period": "2026 to now",
+      "summary": "Shipping features on live products alongside the product team."
+    },
+    {
+      "company": "Inara Consultancy Services",
+      "url": "https://www.inaraconsultancy.com",
+      "role": "Software Engineer",
+      "period": "2023 to 2026",
+      "summary": "My first engineering job. Geospatial dashboards, e-commerce, CRM, and web3 apps on Ethereum and Solana."
+    }
+  ],
+  "projects": [
+    {
+      "title": "Tracker",
+      "year": "2025",
+      "summary": "My spending and investments in one place. I still use it.",
+      "live": "https://portfolio.reetesh.in/",
+      "code": "https://github.com/Virous77/investment-tracker"
+    },
+    {
+      "title": "Nikeway",
+      "year": "2023",
+      "summary": "The Nike site, rebuilt as closely as I could manage.",
+      "live": "https://nikee-1.onrender.com",
+      "code": "https://github.com/Virous77/Nikee"
+    },
+    {
+      "title": "Globe Graph",
+      "year": "2024",
+      "summary": "World Bank data on GDP and population, turned into charts.",
+      "live": "https://globe-graph.vercel.app/",
+      "code": "https://github.com/Virous77/GlobeGraph"
+    },
+    {
+      "title": "Charity DApp",
+      "year": "2024",
+      "summary": "Fundraising on the blockchain, so anyone can see where the money went.",
+      "live": "https://charity-next-dapp.vercel.app/",
+      "code": "https://github.com/Virous77/charity-dapp"
+    },
+    {
+      "title": "Solex",
+      "year": "2023",
+      "summary": "An Airbnb-style booking app with Stripe payments.",
+      "live": "https://solex.onrender.com/",
+      "code": "https://github.com/Virous77/solex-hospitality.service"
+    },
+    {
+      "title": "Graze",
+      "year": "2022",
+      "summary": "A Swiggy-style food app where anyone can open a store.",
+      "live": "https://graze-food-app.onrender.com/",
+      "code": "https://github.com/Virous77/graze-food-delivery-app"
+    }
+  ],
+  "skills": [
+    {
+      "label": "Frontend",
+      "items": "TypeScript, React, Next.js, Angular, Tailwind, TanStack Query"
+    },
+    {
+      "label": "Backend",
+      "items": "Node.js, Express, Nest.js, Hono, GraphQL, tRPC"
+    },
+    {
+      "label": "Data",
+      "items": "PostgreSQL, MongoDB, MySQL, Redis, Kafka, RabbitMQ"
+    },
+    { "label": "Infra", "items": "Docker, GitHub Actions, AWS" },
+    {
+      "label": "AI",
+      "items": "Claude Code, Codex, Agent Skills, MCP"
+    },
+    { "label": "Web3", "items": "Solidity, Ethereum, Solana" }
+  ]
+}

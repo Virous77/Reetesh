@@ -1,28 +1,50 @@
 export const revalidate = 3600;
 
-import About from '@/components/about/about';
-import Author from '@/components/author/author';
-import Footer from '@/components/common/footer';
-import GithubStreak from '@/components/common/github-streak';
-import Recent from '@/components/recent/recent';
+import { allPosts } from '@/.contentlayer/generated';
+import { githubAction } from '@/components/common/action';
+import Home from '@/components/home/home';
 import GrainOverlay from '@/components/ui/grain-overlay';
-import React from 'react';
+import { formateDate } from '@/utils/utils';
+import { Bricolage_Grotesque } from 'next/font/google';
 
-const Home = () => {
+const bricolage = Bricolage_Grotesque({
+  subsets: ['latin'],
+  variable: '--font-bricolage',
+});
+
+const getStats = async () => {
+  try {
+    const { stats } = await githubAction();
+    return {
+      contributions: stats.totalContributions,
+      streak: stats.currentStreak.length,
+    };
+  } catch {
+    return null;
+  }
+};
+
+const Page = async () => {
+  const stats = await getStats();
+  const posts = [...allPosts]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 4)
+    .map((post) => ({
+      slug: post.slugAsParams,
+      title: post.title,
+      date: formateDate(post.date),
+    }));
+
   return (
-    <React.Fragment>
-      <main className="fade-in-out relative z-10 m-auto grid-cols-2 items-start gap-5 px-4 sm:max-w-full md:grid md:max-w-[1050px] md:overflow-hidden">
-        <Author />
-        <section className="body flex flex-col gap-[30px] md:h-full md:pt-[70px] md:pb-8">
-          <About />
-          <GithubStreak />
-          <Recent />
-          <Footer />
-        </section>
-      </main>
-      <GrainOverlay/>
-    </React.Fragment>
+    <div className={`home ${bricolage.variable}`}>
+      <div className="home-glow" aria-hidden="true">
+        <span />
+        <span />
+      </div>
+      <Home posts={posts} stats={stats} />
+      <GrainOverlay />
+    </div>
   );
 };
 
-export default Home;
+export default Page;

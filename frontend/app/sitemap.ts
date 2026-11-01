@@ -18,18 +18,6 @@ const sitemap = async () => {
       changeFrequency: 'daily',
     },
     {
-      url: `${URL}/projects`,
-      lastModified: new Date(),
-      priority: 0.8,
-      changeFrequency: 'weekly',
-    },
-    {
-      url: `${URL}/skills`,
-      lastModified: new Date(),
-      priority: 0.8,
-      changeFrequency: 'weekly',
-    },
-    {
       url: `${URL}/privacy`,
       lastModified: new Date(),
       priority: 0.8,

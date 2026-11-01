@@ -59,6 +59,13 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      { source: '/projects', destination: '/#projects', permanent: true },
+      { source: '/skills', destination: '/#skills', permanent: true },
+      { source: '/skill/:id', destination: '/#skills', permanent: true },
+    ];
+  },
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
   },

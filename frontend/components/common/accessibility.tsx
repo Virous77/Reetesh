@@ -6,6 +6,15 @@ import { useEffect } from 'react';
 const Accessibility = () => {
   const router = useRouter();
 
+  // Next.js navigation does not fire hashchange, which the home page listens to.
+  const openHomeSection = (section: string) => {
+    if (window.location.pathname === '/') {
+      window.location.hash = section;
+    } else {
+      router.push(`/#${section}`);
+    }
+  };
+
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       const key = e.key.toLowerCase();
@@ -23,12 +32,12 @@ const Accessibility = () => {
 
       if (key === 'p' && masterKey) {
         e.preventDefault();
-        router.push('/projects');
+        openHomeSection('projects');
       }
 
       if (key === 's' && masterKey) {
         e.preventDefault();
-        router.push('/skills');
+        openHomeSection('skills');
       }
 
       if (key === 'u' && masterKey) {

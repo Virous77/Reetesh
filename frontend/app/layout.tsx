@@ -21,7 +21,7 @@ const montserrat = Montserrat({
 export const generateMetadata = async () => {
   const metaData = commonMetaData({
     name: '',
-    desc: "I'm passionate full-stack developer with strong proficiency in versatile set of technologies like React, Next.js, Node.js, TypeScript, Docker, Kubernetes, Solidity.",
+    desc: "I'm Reetesh, a full stack engineer in Ahmedabad building web products, mostly with React, Next.js and Node.js.",
     image: 'https://avatars.githubusercontent.com/u/101452588?v=4',
     url: '/',
     keywords: [
@@ -39,13 +39,7 @@ export const generateMetadata = async () => {
   };
 };
 
-const RootLayout = ({
-  children,
-  modal,
-}: {
-  children: React.ReactNode;
-  modal: React.ReactNode;
-}) => {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <ViewTransitions>
       <html lang="en" suppressHydrationWarning>
@@ -93,7 +87,6 @@ const RootLayout = ({
             />
             <Provider>
               <MenuProvider>
-                {modal}
                 {children}
                 <Analytics debug={false} />
                 <TooltipProvider>
