@@ -118,10 +118,10 @@ const Home = ({ posts, stats }: TProps) => {
               {portfolio.skills.map((group) => (
                 <div
                   key={group.label}
-                  className="grid gap-x-6 sm:grid-cols-[5.5rem_1fr]"
+                  className="grid items-baseline gap-x-6 sm:grid-cols-[7rem_1fr]"
                 >
-                  <dt className="home-soft">{group.label}</dt>
-                  <dd>{group.items}</dd>
+                  <dt className="home-title">{group.label}</dt>
+                  <dd className="home-soft">{group.items}</dd>
                 </div>
               ))}
             </dl>
