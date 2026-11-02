@@ -124,6 +124,13 @@ html {
   scroll-behavior: smooth;
 }
 
+/* iOS Safari tints its bars from this colour, so it matches the page as seen
+   with grain on top. Android Chrome gets the same value from theme-color. */
+html.dark,
+html.dark body {
+  background-color: #171717;
+}
+
 body {
   scroll-behavior: smooth;
   scrollbar-width: none;
@@ -393,6 +400,8 @@ button {
   isolation: isolate;
   overflow: clip;
   min-height: 100dvh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
   background: hsl(var(--background));
   color: hsl(var(--foreground));
   font-family: var(--font-bricolage), system-ui, sans-serif;
@@ -457,7 +466,8 @@ button {
 .dark .home-grain {
   display: block;
   position: fixed;
-  inset: 0;
+  /* Runs past the viewport so it carries on under the browser bars. */
+  inset: -8rem 0;
   z-index: 2147483647;
   pointer-events: none;
   background-image: url('/grain.png');

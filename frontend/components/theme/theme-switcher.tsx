@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useCallback, memo } from 'react';
+import { useRef, useCallback, useEffect, memo } from 'react';
 import { flushSync } from 'react-dom';
 import { useTheme } from 'next-themes';
 
@@ -18,6 +18,12 @@ const ThemeSwitcher = memo(function ModeToggle() {
   const { setTheme, resolvedTheme } = useTheme();
 
   const isDark = resolvedTheme === 'dark';
+
+  useEffect(() => {
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute('content', isDark ? '#171717' : '#ffffff');
+  }, [isDark]);
 
   const onToggle = useCallback(async () => {
     if (!buttonRef.current) return;
@@ -63,7 +69,7 @@ const ThemeSwitcher = memo(function ModeToggle() {
   // Use CSS-based icon switching - no mounted state needed
   // Icons are always rendered, CSS shows/hides based on .dark class
   return (
-    <div className="bg-background/80 fixed top-3 right-3 z-101 flex flex-col gap-2 rounded-full backdrop-blur-sm">
+    <div className="bg-background/80 fixed top-[calc(0.75rem+env(safe-area-inset-top))] right-[calc(0.75rem+env(safe-area-inset-right))] z-101 flex flex-col gap-2 rounded-full backdrop-blur-sm">
       <Tooltip>
         <TooltipTrigger
           asChild

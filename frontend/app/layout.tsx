@@ -1,3 +1,4 @@
+import type { Viewport } from 'next';
 import { Montserrat } from 'next/font/google';
 import './globals.css';
 import ThemeProviderComp from '@/lib/theme-provider';
@@ -16,6 +17,12 @@ const montserrat = Montserrat({
   style: 'normal',
   fallback: ['Poppins', 'sans-serif', 'ui-sans-serif', 'system-ui'],
 });
+
+// Dark is the default theme. ThemeSwitcher updates this when the theme changes.
+export const viewport: Viewport = {
+  themeColor: '#171717',
+  viewportFit: 'cover',
+};
 
 export const generateMetadata = async () => {
   const metaData = commonMetaData({
