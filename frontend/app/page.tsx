@@ -4,6 +4,7 @@ import { allPosts } from '@/.contentlayer/generated';
 import { githubAction } from '@/components/common/action';
 import Home from '@/components/home/home';
 import PageShell from '@/components/home/page-shell';
+import { getContributions } from '@/lib/contributions';
 import { formateDate } from '@/utils/utils';
 
 const getStats = async () => {
@@ -19,7 +20,10 @@ const getStats = async () => {
 };
 
 const Page = async () => {
-  const stats = await getStats();
+  const [stats, contributions] = await Promise.all([
+    getStats(),
+    getContributions(),
+  ]);
   const posts = [...allPosts]
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 4)
@@ -31,7 +35,7 @@ const Page = async () => {
 
   return (
     <PageShell>
-      <Home posts={posts} stats={stats} />
+      <Home posts={posts} stats={stats} contributions={contributions} />
     </PageShell>
   );
 };

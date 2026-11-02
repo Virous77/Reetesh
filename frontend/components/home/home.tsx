@@ -3,7 +3,9 @@
 import { ReactNode } from 'react';
 import { Link } from 'next-view-transitions';
 import portfolio from '@/data/portfolio.json';
+import type { TContributionYear } from '@/lib/contributions';
 import ContactLinks from './contact-links';
+import ContributionGraph from './contribution-graph';
 import { Phrase, useHashSection } from './phrase';
 
 const SECTIONS = ['work', 'projects', 'skills', 'writing'] as const;
@@ -18,9 +20,10 @@ type TPost = {
 type TProps = {
   posts: TPost[];
   stats: { contributions: number; streak: number } | null;
+  contributions: TContributionYear[] | null;
 };
 
-const Home = ({ posts, stats }: TProps) => {
+const Home = ({ posts, stats, contributions }: TProps) => {
   const active = useHashSection(SECTIONS, 'work');
 
   return (
@@ -66,7 +69,7 @@ const Home = ({ posts, stats }: TProps) => {
         </p>
 
         <div
-          className="home-rise home-panels mt-10"
+          className="home-rise mt-10"
           style={{ '--i': 2 } as React.CSSProperties}
         >
           <Panel active={active} section="work">
@@ -150,9 +153,11 @@ const Home = ({ posts, stats }: TProps) => {
         </div>
       </main>
 
+      {contributions && <ContributionGraph years={contributions} />}
+
       <footer
         className="home-rise home-soft mt-auto flex flex-wrap items-center justify-between gap-x-8 gap-y-2 pt-12 text-sm"
-        style={{ '--i': 3 } as React.CSSProperties}
+        style={{ '--i': 4 } as React.CSSProperties}
       >
         <ContactLinks />
         {stats && (
