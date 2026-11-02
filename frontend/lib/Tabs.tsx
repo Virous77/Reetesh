@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
 
 const Tabs = ({ children, items }: { children: any; items: string[] }) => {
   const [activeTab, setActiveTab] = React.useState(0);
@@ -22,14 +21,9 @@ const Tabs = ({ children, items }: { children: any; items: string[] }) => {
           </button>
         ))}
       </div>
-      <motion.div
-        key={activeTab}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
+      <div key={activeTab} className="post-tab-panel">
         {children[activeTab]}
-      </motion.div>
+      </div>
     </div>
   );
 };

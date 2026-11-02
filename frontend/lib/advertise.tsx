@@ -1,6 +1,5 @@
 import React from 'react';
 import { allPosts } from '@/.contentlayer/generated';
-import { AdvertiseParent } from '@/components/common/motion';
 import { Link } from 'next-view-transitions';
 
 type TAdvertise = {
@@ -16,7 +15,7 @@ const Advertise: React.FC<TAdvertise> = ({ title }) => {
   const { about, blogImage, slugAsParams } = post;
 
   return (
-    <AdvertiseParent>
+    <div className="post-advertise mt-2 flex w-full items-center justify-end rounded border-2 p-2">
       <div className="flex w-full flex-col items-center justify-between gap-3 md:flex-row md:items-end">
         <div>
           <h1 className="text-center text-xl capitalize">{title}</h1>
@@ -41,7 +40,7 @@ const Advertise: React.FC<TAdvertise> = ({ title }) => {
           style={{ marginTop: '5px', marginBottom: '10px' }}
         />
       </div>
-    </AdvertiseParent>
+    </div>
   );
 };
 

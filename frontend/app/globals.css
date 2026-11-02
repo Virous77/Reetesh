@@ -320,15 +320,44 @@ li code {
   width: fit-content !important;
 }
 
+/* Scroll-linked effects need no JS. Older browsers skip them. */
 .progress-bar {
-  background: hsl(var(--heading));
-  height: 3px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  transform-origin: 0%;
-  z-index: 50;
+  display: none;
+}
+
+@keyframes read-progress {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes post-advertise {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  .progress-bar {
+    display: block;
+    background: hsl(var(--heading));
+    height: 3px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transform-origin: 0%;
+    z-index: 50;
+    animation: read-progress linear both;
+    animation-timeline: scroll(root);
+  }
+
+  .post-advertise {
+    animation: post-advertise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 70%;
+  }
 }
 
 button {
@@ -391,9 +420,12 @@ button {
   position: absolute;
   width: 60vmax;
   height: 60vmax;
-  border-radius: 50%;
-  background: var(--home-glow);
-  filter: blur(110px);
+  /* A gradient, because an animated blur filter stalls painting on iPhones. */
+  background: radial-gradient(
+    closest-side,
+    var(--home-glow) 35%,
+    transparent 100%
+  );
   top: -30vmax;
   left: -18vmax;
   animation: home-breathe 26s ease-in-out infinite alternate;
@@ -417,9 +449,37 @@ button {
   }
 }
 
+/* Dark only: over a white page the grain has nothing to show. */
+.home-grain {
+  display: none;
+}
+
+.dark .home-grain {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  pointer-events: none;
+  background-image: url('/grain.png');
+  opacity: 0.2;
+}
+
+.post-tab-panel {
+  animation: home-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 .home-rise {
   animation: home-rise 1s cubic-bezier(0.22, 1, 0.36, 1) both;
   animation-delay: calc(var(--i, 0) * 140ms);
+}
+
+/* iOS Safari can hold delayed animations at their first frame for seconds,
+   which leaves the page blank. Text must never wait on a fade there. */
+@supports (-webkit-touch-callout: none) {
+  .home-rise,
+  .home-glow span {
+    animation: none;
+  }
 }
 
 @keyframes home-rise {
@@ -869,6 +929,8 @@ button {
 @media (prefers-reduced-motion: reduce) {
   .home-glow span,
   .home-rise,
+  .post-tab-panel,
+  .post-advertise,
   .blog-preview-image {
     animation: none;
   }

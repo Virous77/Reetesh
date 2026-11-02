@@ -3,10 +3,6 @@
   initial-value: 0deg;
   inherits: false;
 }
-@property --Color {
-  syntax: '<color>';
-  initial-value: hsl(var(--heading));
-}
 
 @keyframes rotate {
   0% {

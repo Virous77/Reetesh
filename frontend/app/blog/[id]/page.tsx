@@ -2,7 +2,6 @@ import { allPosts } from '@/.contentlayer/generated';
 import SingleBlog from '@/components/blog/signle-blog/single-blog';
 import { commonMetaData } from '@/utils/utils';
 import { redirect } from 'next/navigation';
-import { BlogPageReadTracker } from '@/components/common/motion';
 import PageShell from '@/components/home/page-shell';
 
 export const generateStaticParams = async () => {
@@ -46,7 +45,7 @@ const SingleBlogPage = async (props: { params: Promise<{ id: string }> }) => {
 
   return (
     <PageShell>
-      <BlogPageReadTracker className="progress-bar" />
+      <div className="progress-bar" aria-hidden="true" />
       <SingleBlog blog={blog} relatedBlogs={relatedBlogs.slice(0, 5)} />
     </PageShell>
   );
