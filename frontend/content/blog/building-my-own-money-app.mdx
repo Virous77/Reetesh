@@ -1,0 +1,220 @@
+---
+title: 'I Built My Own Money App Because Nothing Else Fit'
+date: 'Nov 05 2026'
+author: 'Reetesh Kumar'
+authorImage: 'https://avatars.githubusercontent.com/u/101452588?v=4'
+blogImage: 'https://8qbgmple95w84kds.public.blob.vercel-storage.com/money-tracker-app.png'
+about: 'Indian stocks on Zerodha, US stocks, crypto loans, three bank accounts, two credit cards and a spreadsheet I kept forgetting to update. So I built one app for all of it, with SMS capture from my iPhone, a tax calculator and a passcode. Here is how it all fits together.'
+tags:
+  [
+    'personal finance app',
+    'expense tracker india',
+    'zerodha kite api',
+    'iphone shortcuts sms automation',
+    'crypto loan tracker',
+    'indian income tax calculator',
+    'nextjs finance app',
+    'net worth tracker',
+  ]
+related: 'common'
+manualURL: 'i-built-my-own-money-app-because-nothing-else-fit'
+---
+
+<TableContent title="I Built My Own Money App Because Nothing Else Fit" />
+
+My money lives in too many places. Indian stocks and mutual funds sit in Zerodha. US stocks are in another broker. Crypto is spread across exchanges, and some of it is bought with borrowed USDT. Then there are bank accounts, credit cards, a bit of cash, and money a friend still owes me.
+
+Every app I tried handled one of these well and ignored the rest. Spreadsheets worked for about three weeks, until I stopped updating them. So I built my own. It started as a crypto tracker and slowly grew into the place where all my money lives.
+
+It's live at [**portfolio.reetesh.in**](https://portfolio.reetesh.in). This post is a quick tour of what it does and, more importantly, how the pieces connect.
+
+<Separator />
+
+## How It Started: Paper, v1, Then v2
+
+I built this for one user: me. There was no plan to sell it or launch it, so every feature came from something that annoyed me in my own money life.
+
+Before writing any code, I sat down and drew it out. Every piece got a box: brokers, exchanges, bank accounts, cards, loans, spending. Then I drew lines for how money moves between them. Salary lands in the bank, the bank pays the card, the card pays for food, the bank sends money to Zerodha. That drawing became my wish list, and it's still the best map of the app I have.
+
+**v1** was me building it piece by piece with that drawing next to me. It worked, I used it every day, but it was rough. Balances drifted, some screens felt like a website on a phone, and security was "it has a login".
+
+**v2** is where I polished it with the help of AI. I used it as a pair programmer and a strict reviewer, and the goals were clear:
+
+- **Security first**: a passcode the server enforces, tighter auth, origin checks on every change, and risky actions like export asking for the passcode again
+- **Money you can trust**: one rule for how balances are worked out, with tests that run every money flow against a separate test database
+- **UX that feels native**: sheets, haptics, offline saves and a mobile view I actually enjoy opening
+
+The AI helped me move fast, but the decisions were mine. I still read every change and tested it on my phone before it shipped. Most of what you'll read below is v2.
+
+<Separator />
+
+## One Net Worth, Three Markets
+
+The home screen answers one question: **what am I worth today?** It adds up everything:
+
+- **India**: stocks and mutual funds synced from Zerodha through the Kite API
+- **US stocks**: holdings, trades, realised P&L and dividends
+- **Crypto**: coins priced live from CoinGecko, plus loans and stablecoin cash
+- **Accounts**: banks, cash, cards, gold, property, loans and money lent out
+
+Crypto and US stocks are kept in dollars, India in rupees. The server converts with a live USD to INR rate, so I can flip the whole app between ₹ and $ and every number follows. A cron job takes a snapshot every morning, which is what draws the net worth chart over time.
+
+For Zerodha, you add your own Kite API keys once, sign in through Zerodha's login, and holdings and funds come in. No manual entry for the Indian side at all. The keys never sit in the database as plain text. Each one is encrypted with AES-256-GCM, with its own salt and IV, and only the server can read it back when it talks to Kite.
+
+Not everyone has money in all three markets, though. In settings you can hide any section you don't use, like US stocks or crypto. It disappears from the menu, its pages are closed off, and the app stays clean for what you actually have. You can turn it back on anytime.
+
+<Separator />
+
+## Accounts Are the Glue
+
+This is the part I'm proudest of, and the part that took the longest to get right.
+
+Early on, spending was just a list of rows. It told me I spent ₹4,000 on food, but not which account it came out of, so my bank balance in the app never matched the real one. The fix was making **accounts** the centre of everything.
+
+An account can be a bank, cash, a card, a loan, or money someone owes you. And here's the key rule: **a balance is never typed. It's worked out.**
+
+```text
+balance = last CHECK (what the bank showed)
+        + every move since (transfers, EMIs, buys, sells)
+        + every expense and income linked to the account
+```
+
+When I open my bank app and see the real figure, I add a quick check. The app stores the difference, and everything after that counts from there. Once it's set up, it rarely drifts.
+
+Because every money move goes through accounts, the rest of the app plugs straight in:
+
+- **Spending** an expense on a card raises what the card owes
+- **Transfers** between my own accounts move money but never count as income or spending
+- **Investing** money into Zerodha or an exchange leaves the bank, but counts as saved, not spent
+- **Credit card bills** paid from the bank are just a transfer, so the spend isn't counted twice
+- **EMIs** split themselves: the part that repays the loan is a transfer, and only the interest and fees count as spending
+- **Lending** money to a friend sits as an account until they pay it back
+
+<Callout emoji="💡" isRegular={true}>
+  The rule that made all of this click: money moving between my own pockets is
+  never income or spending. Once I followed that everywhere, my savings rate
+  finally started showing real numbers.
+</Callout>
+
+<Separator />
+
+## SMS From My iPhone Becomes a Draft
+
+Typing every expense by hand is why most people give up on trackers. I know I did.
+
+So now my iPhone does it. Every bank sends an SMS for every transaction, and iOS Shortcuts can run an automation when a message arrives. Mine looks for words like _debited_, _credited_, _spent_ or _Txn_, then posts the message to my app with a token.
+
+```text
+Bank SMS  →  iPhone Shortcut  →  POST /api/capture  →  "To confirm" list
+```
+
+The server reads the amount, merchant and direction. It's careful about what it ignores: OTPs, offers, "will be debited" reminders, failed payments, payment requests and card bill receipts are all dropped. Only money that actually moved gets through.
+
+It doesn't save the expense right away, though. It becomes a **draft** on a To confirm list, with the category already filled in from what that merchant usually is. I tap the tick and it's in, linked to the right account. Nothing counts until I say so.
+
+The token is limited on purpose. It can only add a draft. It can't read my data, and it can't change anything. If the phone is lost, I remove the token from the Account page.
+
+The same To confirm list also catches US **dividends**. The app knows what I held on each ex-date, works out what I was paid, converts it to rupees and asks me to confirm. Monthly SIPs and recurring bills land there too.
+
+<Separator />
+
+## Analytics That Actually Tell Me Something
+
+The analytics page is where the data pays off. It shows:
+
+- **Cash flow**: what came in, what went out and what I kept
+- **Trends** by month, with a drill down into any category
+- A **spending heatmap**, so the expensive weekends stand out
+- **Budgets** that warn me when I'm ahead of the month's pace, not only once I'm over
+- **Subscriptions**: every recurring expense with its next date and what it costs me a month
+- A **financial health score** built from savings rate, income stability and a few other signals
+
+There's also a **Next 30 days** view with every bill, EMI and SIP coming up, so a big debit is never a surprise.
+
+<Separator />
+
+## Tax Without the Panic
+
+Every year around ITR time I used to scramble. Now the tax page does most of the thinking:
+
+- **Indian income tax** on the new and old regimes, with the FY26 slabs, standard deduction, the 87A rebate and cess
+- **Crypto gains** worked out from every buy and sell, with cost basis and holding periods
+- **Dividend tax**, using the dividends already confirmed in the tracker
+- A **filing calendar** with the dates I should not miss
+
+It's not a CA, and I still check the numbers. But it gets me to the right answer in minutes instead of a weekend.
+
+<Separator />
+
+## Crypto Loans, Tracked Properly
+
+Sometimes I borrow USDT against ETH to buy coins. Most trackers have no idea what to do with that. Here, a loan holds what I borrowed, my collateral and the LTV at which the platform liquidates.
+
+Coins bought with that loan carry its id, so I can see exactly how the borrowed money is doing. Closing the loan repays it and settles the profit into cash or a new buy.
+
+The app also watches the loan's health. If it slides from safe to watch to risk, I get an email, and while it stays at risk I get another one every 12 hours. I would rather be annoyed than liquidated.
+
+<Separator />
+
+## Email Reminders I Actually Read
+
+Cards have a statement day and a due day, and loans have their EMI dates. Three days before any of them, an email lands in my inbox. The same job also tells me when a budget gets close to its limit, and every week (plus a longer one each month) I get a short digest: what I spent, the top categories, the biggest expenses and how net worth moved.
+
+None of this is noisy. Each alert goes out once and the app remembers it sent it.
+
+<Separator />
+
+## It Feels Like an iPhone App
+
+I use this on my phone far more than on my laptop, so the mobile view got the most love. I wanted it to feel like a proper iOS app, not a website squeezed onto a small screen.
+
+- It's an **installable PWA**. Open it in Safari, tap Add to Home Screen, and it launches full screen with its own icon, no browser bar, just like an app from the App Store
+- Forms open in **bottom sheets** you can drag down to close, like native iOS sheets
+- Haptics on taps, smooth number count ups, and a clean light and dark theme
+- Amounts can be hidden with one tap when someone is looking over my shoulder
+- **Offline saves**: add an expense on the metro with no signal and it syncs later, without making a duplicate
+
+<Separator />
+
+## A Passcode That Actually Locks
+
+This is the feature I care about most. It's my whole financial life in one app, so "it has a login" was never going to be enough.
+
+The app has its own passcode, like a banking app. But most app locks are just a screen drawn on top. Close it with the browser's dev tools and everything is right there. Mine is enforced **on the server**:
+
+- Without a fresh unlock, the API returns nothing, even to someone holding my phone with an active session
+- No financial data is baked into the page HTML, so there's nothing to peek at behind the lock screen
+- An unlock lasts 12 hours at most, however long the app stays open
+- Wrong tries slow down after five, an email warns me, and after ten every device is signed out
+- Risky actions like exporting data, adding API keys or creating an SMS token ask for the passcode again, even when the app is already unlocked
+
+<Callout emoji="🔒" isRegular={true}>
+  The passcode itself is never stored. The server keeps only a slow scrypt
+  hash of it, so even someone with the database can't read it back.
+</Callout>
+
+<Separator />
+
+## How It's Built
+
+Nothing exotic, just tools I trust:
+
+- **Next.js** with the App Router, deployed on Vercel
+- **MongoDB** through Prisma
+- **BetterAuth** for sign in and email verification
+- **TanStack Query** for server state, with persisted caches per user
+- **Tailwind** and **shadcn/ui** for the UI
+- **Resend** with React Email for every email
+- **Redis** for caching prices and dashboards
+
+Most of the hard work is in small rules, not big libraries. How a balance is calculated. What counts as spending. When an SMS is just noise. Getting those right is what makes the numbers trustworthy.
+
+<Separator />
+
+## Wrapping Up
+
+Building your own finance app sounds like overkill, and honestly, it kind of is. But it's the first tracker I've kept using for more than a month, mainly because I barely have to type anything anymore. My phone catches the spends, Zerodha syncs itself, and the accounts keep everything honest.
+
+If you're the kind of person with money in five places and a spreadsheet you keep meaning to update, I really recommend building something like this for yourself. Start small, make accounts the centre, and let your phone do the typing.
+
+You can see the app at [**portfolio.reetesh.in**](https://portfolio.reetesh.in). Install it to your home screen and it feels right at home on an iPhone.
