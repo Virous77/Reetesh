@@ -31,6 +31,7 @@
     {
       "title": "Tracker",
       "year": "2025",
+      "badge": "Daily driver",
       "summary": "My spending and investments in one place. I still use it.",
       "live": "https://portfolio.reetesh.in/",
       "code": "https://github.com/Virous77/investment-tracker"

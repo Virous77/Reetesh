@@ -28,14 +28,14 @@ const ReadMore: React.FC<TReadMore> = ({ slug, relatedBlogs }) => {
 
   return (
     <section className="mt-14">
-      <h2 className="home-soft mb-2 text-sm">Keep reading</h2>
-      <ul>
+      <h2 className="eyebrow mb-3">Keep reading</h2>
+      <ul className="ledger">
         {[...neighbours, ...related].map(({ label, post }) => (
           <li key={post.slugAsParams}>
-            <Link href={`/blog/${post.slugAsParams}`} className="blog-row">
-              <span className="blog-row-title">
-                <span className="home-row-title">{post.title}</span>
-                <span className="home-soft shrink-0 text-sm">{label}</span>
+            <Link href={`/blog/${post.slugAsParams}`} className="ledger-row">
+              <span className="ledger-head">
+                <span className="ledger-title">{post.title}</span>
+                <span className="ledger-meta">{label}</span>
               </span>
             </Link>
           </li>

@@ -3,7 +3,7 @@
 import { useLayoutEffect } from 'react';
 import './globals.css';
 import ContactLinks from '@/components/home/contact-links';
-import PageShell from '@/components/home/page-shell';
+import ShellFrame from '@/components/home/shell-frame';
 import {
   PhraseButton,
   PhraseLink,
@@ -35,8 +35,8 @@ const GlobalError = ({
         <title>Something went wrong | Reetesh Kumar</title>
       </head>
       <body className="antialiased">
-        <PageShell>
-          <div className="mx-auto flex min-h-dvh max-w-[46rem] flex-col px-6 pt-14 pb-7 md:pt-[8vh]">
+        <ShellFrame>
+          <div className="mx-auto flex min-h-dvh max-w-[46rem] flex-col px-6 pt-8 pb-10 md:px-8 md:pt-12">
             <main className="my-auto">
               <h1 className="not-found-code home-rise">
                 <ScrambleOnLoad text="Oops" />
@@ -55,7 +55,7 @@ const GlobalError = ({
               <ContactLinks />
             </footer>
           </div>
-        </PageShell>
+        </ShellFrame>
       </body>
     </html>
   );

@@ -2,9 +2,9 @@
 
 import { ReactNode } from 'react';
 import { Link } from 'next-view-transitions';
+import { ArrowUpRight } from 'lucide-react';
 import portfolio from '@/data/portfolio.json';
 import type { TContributionYear } from '@/lib/contributions';
-import ContactLinks from './contact-links';
 import ContributionGraph from './contribution-graph';
 import { Phrase, useHashSection } from './phrase';
 
@@ -15,192 +15,262 @@ type TPost = {
   slug: string;
   title: string;
   date: string;
+  about: string;
 };
 
 type TProps = {
   posts: TPost[];
-  stats: { contributions: number; streak: number } | null;
+  postCount: number;
+  streak: number | null;
   contributions: TContributionYear[] | null;
 };
 
-const Home = ({ posts, stats, contributions }: TProps) => {
+const projects = [...portfolio.projects].sort(
+  (a, b) => Number(b.year) - Number(a.year)
+);
+
+const Home = ({ posts, postCount, streak, contributions }: TProps) => {
   const active = useHashSection(SECTIONS, 'work');
 
+  const tabs: { id: TSection; label: string; count: number }[] = [
+    { id: 'work', label: 'Work', count: portfolio.work.length },
+    { id: 'projects', label: 'Projects', count: projects.length },
+    { id: 'skills', label: 'Stack', count: portfolio.skills.length },
+    { id: 'writing', label: 'Writing', count: postCount },
+  ];
+
   return (
-    <div className="mx-auto flex min-h-dvh max-w-[46rem] flex-col px-6 pt-14 pb-7 md:pt-[8vh]">
-      <main>
-        <h1
-          className="home-rise home-soft text-[0.95rem]"
-          style={{ '--i': 0 } as React.CSSProperties}
-        >
-          {portfolio.name}
-        </h1>
+    <main className="mt-9">
+      <p
+        className="home-rise home-sentence"
+        style={{ '--i': 0 } as React.CSSProperties}
+      >
+        I&apos;m a full stack engineer in Ahmedabad, and I&apos;ve been building
+        web products for close to four years. Here&apos;s{' '}
+        <Phrase
+          section="work"
+          active={active === 'work'}
+          text="where I've worked"
+        />
+        ,{' '}
+        <Phrase
+          section="projects"
+          active={active === 'projects'}
+          text="what I've made"
+        />{' '}
+        on the side and{' '}
+        <Phrase
+          section="skills"
+          active={active === 'skills'}
+          text="the tools I use"
+        />
+        . I also{' '}
+        <Phrase section="writing" active={active === 'writing'} text="write" />{' '}
+        about what I learn.
+      </p>
 
-        <p
-          className="home-rise home-sentence mt-5"
-          style={{ '--i': 1 } as React.CSSProperties}
-        >
-          I&apos;m a full stack engineer in Ahmedabad, and I&apos;ve been
-          building web products for close to four years. Here&apos;s{' '}
-          <Phrase
-            section="work"
-            active={active === 'work'}
-            text="where I've worked"
-          />
-          ,{' '}
-          <Phrase
-            section="projects"
-            active={active === 'projects'}
-            text="what I've made"
-          />{' '}
-          on the side and{' '}
-          <Phrase
-            section="skills"
-            active={active === 'skills'}
-            text="the tools I use"
-          />
-          . I also{' '}
-          <Phrase
-            section="writing"
-            active={active === 'writing'}
-            text="write"
-          />{' '}
-          about what I learn.
-        </p>
+      <nav
+        aria-label="Sections"
+        className="home-rise seg mt-8"
+        style={{ '--i': 1 } as React.CSSProperties}
+      >
+        {tabs.map((tab) => (
+          <a
+            key={tab.id}
+            href={`#${tab.id}`}
+            className="seg-pill"
+            data-active={active === tab.id}
+            aria-current={active === tab.id ? 'true' : undefined}
+          >
+            {tab.label}
+            <span className="seg-count">{tab.count}</span>
+          </a>
+        ))}
+      </nav>
 
-        <div
-          className="home-rise mt-10"
-          style={{ '--i': 2 } as React.CSSProperties}
+      <div
+        className="home-rise mt-8"
+        style={{ '--i': 2 } as React.CSSProperties}
+      >
+        <Panel
+          active={active}
+          section="work"
+          eyebrow="01 / Experience"
+          aside={<span className="ledger-meta">2023 — Present</span>}
         >
-          <Panel active={active} section="work">
-            <ul className="space-y-6">
-              {portfolio.work.map((job) => (
-                <li key={job.company}>
-                  <Row title={job.company} href={job.url} meta={job.period} />
-                  <p className="home-soft mt-1">
-                    {job.role}. {job.summary}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </Panel>
+          <ul className="ledger">
+            {portfolio.work.map((job, index) => (
+              <li key={job.company} className="ledger-row">
+                <div className="ledger-head">
+                  <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
+                    <a
+                      href={job.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="ledger-title inline-flex items-center gap-1"
+                    >
+                      {job.company}
+                      <ArrowUpRight
+                        size={13}
+                        className="opacity-50"
+                        aria-hidden="true"
+                      />
+                    </a>
+                    <span
+                      className={`text-sm font-medium ${index === 0 ? 'text-heading' : 'home-soft'}`}
+                    >
+                      · {job.role}
+                    </span>
+                  </div>
+                  <span className="ledger-meta">{job.period}</span>
+                </div>
+                <p className="ledger-text">{job.summary}</p>
+              </li>
+            ))}
+          </ul>
+        </Panel>
 
-          <Panel active={active} section="projects">
-            <ul className="space-y-3">
-              {portfolio.projects.map((project) => (
-                <li key={project.title}>
-                  <div className="flex items-baseline justify-between gap-6">
+        <Panel
+          active={active}
+          section="projects"
+          eyebrow="02 / Selected side projects"
+          aside={
+            <a
+              href="https://github.com/Virous77"
+              target="_blank"
+              rel="noreferrer"
+              className="home-link home-soft font-mono text-xs"
+            >
+              <span className="sm:hidden">GitHub ↗</span>
+              <span className="max-sm:hidden">github.com/Virous77 ↗</span>
+            </a>
+          }
+        >
+          <ul className="ledger">
+            {projects.map((project) => (
+              <li key={project.title} className="ledger-row">
+                <div className="ledger-head">
+                  <div className="flex items-center gap-2.5">
                     <a
                       href={project.live}
                       target="_blank"
                       rel="noreferrer"
-                      className="home-row-title"
+                      className="ledger-title"
                     >
                       {project.title}
                     </a>
-                    <span className="home-soft flex shrink-0 gap-4 text-sm tabular-nums">
-                      <a
-                        href={project.code}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="home-link"
-                      >
-                        Code
-                      </a>
-                      {project.year}
-                    </span>
+                    {project.badge && (
+                      <span className="badge">{project.badge}</span>
+                    )}
                   </div>
-                  <p className="home-soft">{project.summary}</p>
-                </li>
-              ))}
-            </ul>
-          </Panel>
-
-          <Panel active={active} section="skills">
-            <dl className="space-y-3">
-              {portfolio.skills.map((group) => (
-                <div
-                  key={group.label}
-                  className="grid items-baseline gap-x-6 sm:grid-cols-[7rem_1fr]"
-                >
-                  <dt className="home-title">{group.label}</dt>
-                  <dd className="home-soft">{group.items}</dd>
+                  <div className="flex shrink-0 items-center gap-2">
+                    <a
+                      href={project.live}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="micro-pill"
+                    >
+                      Live ↗
+                    </a>
+                    <a
+                      href={project.code}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="micro-pill"
+                    >
+                      Code
+                    </a>
+                    <span className="ledger-meta ml-1">{project.year}</span>
+                  </div>
                 </div>
-              ))}
-            </dl>
-          </Panel>
+                <p className="ledger-text">{project.summary}</p>
+              </li>
+            ))}
+          </ul>
+        </Panel>
 
-          <Panel active={active} section="writing">
-            <ul className="space-y-4">
-              {posts.map((post) => (
-                <li key={post.slug}>
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="home-row home-row-stack"
-                  >
-                    <span className="home-row-title">{post.title}</span>
-                    <span className="home-soft shrink-0 text-sm tabular-nums">
-                      {post.date}
+        <Panel
+          active={active}
+          section="skills"
+          eyebrow="03 / Technical stack"
+          aside={<span className="ledger-meta">What I reach for</span>}
+        >
+          <dl className="ledger">
+            {portfolio.skills.map((group) => (
+              <div key={group.label} className="skill-row">
+                <dt className="text-[0.95rem] font-medium">{group.label}</dt>
+                <dd className="flex flex-wrap gap-1.5">
+                  {group.items.split(', ').map((item) => (
+                    <span key={item} className="skill-token">
+                      {item}
                     </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <Link href="/blogs" className="home-link mt-6 inline-block">
-              All posts
+                  ))}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </Panel>
+
+        <Panel
+          active={active}
+          section="writing"
+          eyebrow="04 / Latest writing"
+          aside={
+            <Link
+              href="/blogs"
+              className="home-link home-soft font-mono text-xs"
+            >
+              All {postCount} posts →
             </Link>
-          </Panel>
-        </div>
-      </main>
+          }
+        >
+          <ul className="ledger">
+            {posts.map((post) => (
+              <li key={post.slug}>
+                <Link href={`/blog/${post.slug}`} className="ledger-row">
+                  <span className="ledger-head">
+                    <span className="ledger-title">{post.title}</span>
+                    <span className="ledger-meta">{post.date}</span>
+                  </span>
+                  <span className="ledger-text line-clamp-1 text-sm">
+                    {post.about}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Panel>
+      </div>
 
-      {contributions && <ContributionGraph years={contributions} />}
-
-      <footer
-        className="home-rise home-soft mt-auto flex flex-wrap items-center justify-between gap-x-8 gap-y-2 pt-12 text-sm"
-        style={{ '--i': 4 } as React.CSSProperties}
-      >
-        <ContactLinks />
-        {stats && (
-          <p>
-            {stats.contributions.toLocaleString('en-US')} contributions,{' '}
-            {stats.streak} day streak
-          </p>
-        )}
-      </footer>
-    </div>
+      {contributions && (
+        <ContributionGraph years={contributions} streak={streak} />
+      )}
+    </main>
   );
 };
 
-type TSectionProps = {
+type TPanelProps = {
   active: TSection;
   section: TSection;
+  eyebrow: string;
+  aside: ReactNode;
   children: ReactNode;
 };
 
-const Panel = ({ active, section, children }: TSectionProps) => (
-  <div
-    id={`panel-${section}`}
-    className="home-panel"
-    data-active={active === section}
-    inert={active !== section}
-  >
-    {children}
-  </div>
-);
+// Only the open section renders, so the page is as tall as its content.
+const Panel = ({ active, section, eyebrow, aside, children }: TPanelProps) => {
+  if (active !== section) return null;
 
-const Row = ({
-  title,
-  href,
-  meta,
-}: {
-  title: string;
-  href: string;
-  meta: string;
-}) => (
-  <a href={href} target="_blank" rel="noreferrer" className="home-row">
-    <span className="home-row-title">{title}</span>
-    <span className="home-soft shrink-0 text-sm tabular-nums">{meta}</span>
-  </a>
-);
+  return (
+    <section id={`panel-${section}`} className="home-swap">
+      {/* Both sides stay on one line, so labels never break mid-phrase. */}
+      <div className="mb-3 flex items-center justify-between gap-4 whitespace-nowrap">
+        <h2 className="eyebrow">{eyebrow}</h2>
+        {aside}
+      </div>
+      {children}
+    </section>
+  );
+};
 
 export default Home;

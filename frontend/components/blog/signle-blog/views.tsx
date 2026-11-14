@@ -16,12 +16,15 @@ const Views = ({ slug }: { slug: string }) => {
     enabled: slug ? true : false,
   });
 
+  if (!data) return null;
+
   return (
-    <span>
-      {data
-        ? `${data.toLocaleString('en-US')} ${data === 1 ? 'view' : 'views'}`
-        : ''}
-    </span>
+    <>
+      <span aria-hidden="true">·</span>
+      <span>
+        {data.toLocaleString('en-US')} {data === 1 ? 'view' : 'views'}
+      </span>
+    </>
   );
 };
 

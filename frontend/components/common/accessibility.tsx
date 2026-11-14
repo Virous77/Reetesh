@@ -49,11 +49,6 @@ const Accessibility = () => {
         e.preventDefault();
         router.replace('https://cv.reetesh.in');
       }
-
-      if (key === 'k' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        router.push('/blogs');
-      }
     };
 
     window.addEventListener('keydown', handleEsc);

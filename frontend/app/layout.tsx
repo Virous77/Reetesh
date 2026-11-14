@@ -1,8 +1,6 @@
 import type { Viewport } from 'next';
-import { Montserrat } from 'next/font/google';
 import './globals.css';
 import ThemeProviderComp from '@/lib/theme-provider';
-import ThemeSwitcher from '@/components/theme/theme-switcher';
 import { commonMetaData } from '@/utils/utils';
 import { Provider } from '@/lib/reactQuery-provider';
 import { Analytics } from '@vercel/analytics/react';
@@ -10,17 +8,11 @@ import Accessibility from '@/components/common/accessibility';
 import { ViewTransitions } from 'next-view-transitions';
 import NextTopLoader from 'nextjs-toploader';
 import { TooltipProvider } from '@/components/ui/tooltip';
-
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['300', '400', '700', '900', '600', '500', '800'],
-  style: 'normal',
-  fallback: ['Poppins', 'sans-serif', 'ui-sans-serif', 'system-ui'],
-});
+import { fontVariables } from '@/components/home/fonts';
 
 // Dark is the default theme. ThemeSwitcher updates this when the theme changes.
 export const viewport: Viewport = {
-  themeColor: '#171717',
+  themeColor: '#111110',
   viewportFit: 'cover',
 };
 
@@ -48,7 +40,7 @@ export const generateMetadata = async () => {
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <ViewTransitions>
-      <html lang="en" suppressHydrationWarning>
+      <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
         <head>
           <meta
             name="google-site-verification"
@@ -74,29 +66,26 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           />
           <link rel="preconnect" href="https://res.cloudinary.com" />
         </head>
-        <body className={`${montserrat.className} antialiased`}>
+        <body className={`${fontVariables} home-font antialiased`}>
           <ThemeProviderComp
             attribute="class"
             defaultTheme="dark"
             disableTransitionOnChange
           >
             <NextTopLoader
-              color="#e21d49"
+              color="hsl(var(--heading))"
               initialPosition={0.08}
               crawlSpeed={200}
-              height={3}
+              height={2}
               crawl={true}
               showSpinner={false}
               easing="ease"
               speed={200}
-              shadow="0 0 10px #e21d49,0 0 5px #e21d49"
+              shadow={false}
             />
             <Provider>
-              {children}
+              <TooltipProvider>{children}</TooltipProvider>
               <Analytics debug={false} />
-              <TooltipProvider>
-                <ThemeSwitcher />
-              </TooltipProvider>
               <Accessibility />
             </Provider>
           </ThemeProviderComp>

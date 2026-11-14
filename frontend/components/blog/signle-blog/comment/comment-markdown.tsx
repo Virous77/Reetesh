@@ -2,32 +2,28 @@ import Markdown from 'markdown-to-jsx';
 import Code from './code';
 import { A } from '@/lib/a';
 
-const CommentMarkdown = ({
-  comment,
-  isCode,
-}: {
-  comment: string;
-  isCode: boolean;
-}) => {
+const CommentMarkdown = ({ comment }: { comment: string }) => {
   return (
     <Markdown
       options={{
         overrides: {
           a: A,
+          // Fenced blocks get a language class or span lines; inline code gets neither.
           code: {
-            component: ({ children }) => {
-              if (isCode) {
-                return <Code>{children}</Code>;
-              } else {
-                return <code>{children}</code>;
+            component: ({ children, className }) => {
+              const language = /lang-(\w+)/.exec(className ?? '')?.[1];
+              const text = String(children).replace(/^(\s*\n)+|\s+$/g, '');
+              if (language || text.includes('\n')) {
+                return <Code language={language}>{text}</Code>;
               }
+              return <code>{children}</code>;
             },
           },
           p: {
             component: ({ children }) => <p>{children}</p>,
           },
           pre: {
-            component: ({ children }) => <pre className="p-0">{children}</pre>,
+            component: ({ children }) => <>{children}</>,
           },
           h1: {
             component: ({ children }) => <h1 className="m-0">{children}</h1>,

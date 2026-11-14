@@ -3,15 +3,10 @@
 import { useRef, useCallback, useEffect, memo } from 'react';
 import { flushSync } from 'react-dom';
 import { useTheme } from 'next-themes';
-
 import { Moon, Sun } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+// Matches the page colour, so the browser bars blend in.
+const BAR_COLOR = { dark: '#111110', light: '#faf8f5' };
 
 const ThemeSwitcher = memo(function ModeToggle() {
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -22,7 +17,7 @@ const ThemeSwitcher = memo(function ModeToggle() {
   useEffect(() => {
     document
       .querySelector('meta[name="theme-color"]')
-      ?.setAttribute('content', isDark ? '#171717' : '#ffffff');
+      ?.setAttribute('content', isDark ? BAR_COLOR.dark : BAR_COLOR.light);
   }, [isDark]);
 
   const onToggle = useCallback(async () => {
@@ -30,7 +25,6 @@ const ThemeSwitcher = memo(function ModeToggle() {
 
     const newTheme = isDark ? 'light' : 'dark';
 
-    // Check if View Transitions API is supported
     if (!document.startViewTransition) {
       setTheme(newTheme);
       return;
@@ -66,34 +60,19 @@ const ThemeSwitcher = memo(function ModeToggle() {
     );
   }, [isDark, setTheme]);
 
-  // Use CSS-based icon switching - no mounted state needed
-  // Icons are always rendered, CSS shows/hides based on .dark class
+  // Both icons render and CSS picks one, so the button needs no mounted state.
   return (
-    <div className="bg-background/80 fixed top-[calc(0.75rem+env(safe-area-inset-top))] right-[calc(0.75rem+env(safe-area-inset-right))] z-101 flex flex-col gap-2 rounded-full backdrop-blur-sm">
-      <Tooltip>
-        <TooltipTrigger
-          asChild
-          className="bg-transparent! hover:bg-transparent"
-        >
-          <Button
-            ref={buttonRef}
-            onClick={onToggle}
-            variant="outline"
-            size="icon"
-            className="text-secondary-foreground flex h-8 w-8 cursor-pointer items-center justify-center border-none bg-transparent! hover:bg-transparent"
-            aria-label="Toggle theme"
-          >
-            {/* Sun icon - visible in dark mode */}
-            <Sun className="absolute h-4 w-4 scale-100 rotate-0 transition-transform dark:scale-0 dark:rotate-90" />
-            {/* Moon icon - visible in light mode */}
-            <Moon className="absolute h-4 w-4 scale-0 rotate-90 transition-transform dark:scale-100 dark:rotate-0" />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          Switch to {isDark ? 'light' : 'dark'} mode
-        </TooltipContent>
-      </Tooltip>
-    </div>
+    <button
+      ref={buttonRef}
+      type="button"
+      onClick={onToggle}
+      className="site-nav-tool relative px-0"
+      aria-label="Toggle theme"
+      title="Switch theme"
+    >
+      <Sun className="absolute h-[15px] w-[15px] scale-0 rotate-90 transition-transform dark:scale-100 dark:rotate-0" />
+      <Moon className="absolute h-[15px] w-[15px] scale-100 rotate-0 transition-transform dark:scale-0 dark:-rotate-90" />
+    </button>
   );
 });
 

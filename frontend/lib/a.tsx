@@ -4,7 +4,6 @@
 import { ToolTipLink } from '@/components/ui/tooltip';
 import React, { useState } from 'react';
 import { useMediaQuery } from './media-query';
-import { useTheme } from 'next-themes';
 import { ArrowUpRight } from 'lucide-react';
 
 type TDetails = {
@@ -25,7 +24,6 @@ export const A = ({ children, ...props }: any) => {
 
 const LinkWithPreview = ({ children, ...props }: any) => {
   const isDesktop = useMediaQuery(desktop);
-  const { theme } = useTheme();
   const [open, setOpen] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [details, setDetails] = useState<TDetails[] | []>([]);
@@ -38,10 +36,9 @@ const LinkWithPreview = ({ children, ...props }: any) => {
         details.length > 0 && details.find((item) => item.key === href);
       if (isCached) return;
       setIsLoading(true);
-      const res = await fetch(
-        `/api/preview?url=${encodeURIComponent(href)}`,
-        { cache: 'no-cache' }
-      );
+      const res = await fetch(`/api/preview?url=${encodeURIComponent(href)}`, {
+        cache: 'no-cache',
+      });
       if (!res.ok) throw new Error('No preview available');
       const data = await res.json();
       const { title, description, image } = data;
@@ -74,10 +71,7 @@ const LinkWithPreview = ({ children, ...props }: any) => {
         >
           <a
             {...props}
-            className="font-bold underline underline-offset-4"
-            style={{
-              color: theme === 'dark' ? '#ffffff' : '#000000',
-            }}
+            className="post-link"
             onClick={(e) => {
               if (props.href[0] === '#') {
                 return scrollY > 0 && scroll(0, 0);
@@ -111,59 +105,36 @@ const Content = ({
   isLoading: boolean;
   open: string;
 }) => {
+  if (isLoading || !currentLink) {
+    return <p className="link-preview-status">Loading preview...</p>;
+  }
+
+  if (currentLink.title === 'error') {
+    return (
+      <div>
+        <p className="link-preview-status">No preview for this link.</p>
+        <VisitLink href={open || '#'} />
+      </div>
+    );
+  }
+
   return (
-    <div className="tooltip-visit h-full w-full">
-      {isLoading ? (
-        <p className="text-foreground m-0 w-full p-0 text-center">Loading...</p>
-      ) : (
-        <React.Fragment>
-          {currentLink?.title === 'error' ? (
-            <div>
-              <p
-                className="m-0 w-full p-0 text-center"
-                style={{
-                  fontSize: '0.75rem',
-                  color: 'red',
-                }}
-              >
-                opps! no content found
-              </p>
-              <VisitLink href={open || '#'} />
-            </div>
-          ) : (
-            <div>
-              <h3 className="mt-0 mb-1 text-base font-semibold">
-                {currentLink?.title}
-              </h3>
-              <p
-                className="text-default"
-                style={{
-                  fontSize: '0.75rem',
-                }}
-              >
-                {currentLink?.description}
-              </p>
-              {currentLink?.image && (
-                <img
-                  src={currentLink.image}
-                  alt={currentLink.title || ''}
-                  title={currentLink.title || ''}
-                  aria-label={currentLink.title || ''}
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
-                  className="mt-3 h-32 w-full object-cover shadow"
-                  style={{
-                    borderRadius: '0.5rem',
-                    height: '8rem',
-                  }}
-                />
-              )}
-              {currentLink && <VisitLink href={currentLink?.key || '#'} />}
-            </div>
-          )}
-        </React.Fragment>
+    <div>
+      {currentLink.image && (
+        <img
+          src={currentLink.image}
+          alt=""
+          onError={(e) => {
+            e.currentTarget.style.display = 'none';
+          }}
+          className="link-preview-image"
+        />
       )}
+      <p className="link-preview-title">{currentLink.title}</p>
+      {currentLink.description && (
+        <p className="link-preview-text">{currentLink.description}</p>
+      )}
+      <VisitLink href={currentLink.key || '#'} />
     </div>
   );
 };
@@ -172,7 +143,7 @@ const MobileA = ({ children, ...props }: any) => {
   return (
     <a
       {...props}
-      className="font-medium underline underline-offset-4"
+      className="post-link"
       title="content link"
       aria-label="visit link"
     >
@@ -187,11 +158,9 @@ const VisitLink = ({ href }: { href: string }) => {
       href={href}
       target="_blank"
       rel="noreferrer"
-      className="text-foreground mt-2 flex items-center justify-center font-medium underline underline-offset-4"
-      title="content link"
-      aria-label="visit link"
+      className="link-preview-visit"
     >
-      Visit to read more <ArrowUpRight size={18} className="mt-1" />
+      Visit to read more <ArrowUpRight size={14} aria-hidden="true" />
     </a>
   );
 };

@@ -7,21 +7,18 @@ import PageShell from '@/components/home/page-shell';
 import { getContributions } from '@/lib/contributions';
 import { formateDate } from '@/utils/utils';
 
-const getStats = async () => {
+const getStreak = async () => {
   try {
     const { stats } = await githubAction();
-    return {
-      contributions: stats.totalContributions,
-      streak: stats.currentStreak.length,
-    };
+    return stats.currentStreak.length as number;
   } catch {
     return null;
   }
 };
 
 const Page = async () => {
-  const [stats, contributions] = await Promise.all([
-    getStats(),
+  const [streak, contributions] = await Promise.all([
+    getStreak(),
     getContributions(),
   ]);
   const posts = [...allPosts]
@@ -31,11 +28,17 @@ const Page = async () => {
       slug: post.slugAsParams,
       title: post.title,
       date: formateDate(post.date),
+      about: post.about,
     }));
 
   return (
     <PageShell>
-      <Home posts={posts} stats={stats} contributions={contributions} />
+      <Home
+        posts={posts}
+        postCount={allPosts.length}
+        streak={streak}
+        contributions={contributions}
+      />
     </PageShell>
   );
 };

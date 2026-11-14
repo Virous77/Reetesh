@@ -11,7 +11,6 @@ const CustomImage = ({ ...props }: any) => {
         height={0}
         sizes="100vw"
         className="h-full w-full shadow-lg"
-        priority={true}
         style={{ cursor: 'zoom-in' }}
       />
     </ImageZoom>

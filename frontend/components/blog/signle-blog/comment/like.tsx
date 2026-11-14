@@ -1,11 +1,9 @@
 import { addUserIDToLocalStorage, adminID, getLocalData } from '@/utils/utils';
 import { ThumbsDown, ThumbsUp } from 'lucide-react';
-import React, { useLayoutEffect } from 'react';
+import React from 'react';
 import DeleteComment from './delete-comment';
 import { useMutation } from '@tanstack/react-query';
 import { addLikeAction } from './like-action';
-import { Button } from '@/components/ui/button';
-import { ToolTipComp } from '@/components/ui/tooltip';
 
 type TLike = {
   like: string[];
@@ -24,7 +22,10 @@ const Like: React.FC<TLike> = ({
   reply,
   onClick,
 }) => {
-  const [userId, setUserId] = React.useState<string | null>(null);
+  // Comments only render in the browser (ssr: false), so storage is ready here.
+  const [userId] = React.useState<string | null>(
+    () => getLocalData('tempId') || null
+  );
 
   const { mutate } = useMutation({
     mutationFn: addLikeAction,
@@ -45,55 +46,44 @@ const Like: React.FC<TLike> = ({
     });
   };
 
-  useLayoutEffect(() => {
-    const userId = getLocalData('tempId');
-    setUserId(userId);
-  }, []);
+  const pending = id.includes('opt_');
+  const liked = like?.includes(userId || '');
+  const disliked = dislike?.includes(userId || '');
 
   return (
-    <div className="flex items-end justify-between">
-      <div className="-ml-1 flex items-center gap-2">
-        <ToolTipComp name="Like">
-          <div className="flex items-center">
-            <Button
-              size={'icon'}
-              className={`text-secondary-foreground hover:bg-accent flex h-[30px] w-[30px] items-center justify-center rounded-full bg-transparent ${like?.includes(userId || '') ? 'text-heading' : ''}`}
-              onClick={() => handleLike('like')}
-              disabled={id.includes('opt_')}
-            >
-              <ThumbsUp size={18} cursor="pointer" />
-            </Button>
-            <p>{like?.length}</p>
-          </div>
-        </ToolTipComp>
-
-        <ToolTipComp name="Dislike">
-          <div className="flex items-center">
-            <Button
-              size={'icon'}
-              className={`text-secondary-foreground hover:bg-accent flex h-[30px] w-[30px] items-center justify-center rounded-full bg-transparent ${
-                dislike?.includes(userId || '') ? 'text-heading' : ''
-              } `}
-              onClick={() => handleLike('dislike')}
-              disabled={id.includes('opt_')}
-            >
-              <ThumbsDown size={18} cursor="pointer" />
-            </Button>
-            <p>{dislike.length}</p>
-          </div>
-        </ToolTipComp>
-
-        <div className="flex items-center">
-          <Button
-            size={'icon'}
-            className="text-secondary-foreground hover:bg-accent flex h-[30px] w-[55px] cursor-pointer items-center justify-center rounded-full bg-transparent text-[15px]"
-            onClick={onClick}
-            disabled={id.includes('opt_')}
-          >
-            {reply ? 'Cancel' : 'Reply'}
-          </Button>
-        </div>
-      </div>
+    <div className="comment-actions">
+      <button
+        type="button"
+        className="comment-action"
+        data-active={liked}
+        aria-pressed={liked}
+        aria-label="Like comment"
+        onClick={() => handleLike('like')}
+        disabled={pending}
+      >
+        <ThumbsUp size={14} aria-hidden="true" />
+        <span className="tabular-nums">{like?.length ?? 0}</span>
+      </button>
+      <button
+        type="button"
+        className="comment-action"
+        data-active={disliked}
+        aria-pressed={disliked}
+        aria-label="Dislike comment"
+        onClick={() => handleLike('dislike')}
+        disabled={pending}
+      >
+        <ThumbsDown size={14} aria-hidden="true" />
+        <span className="tabular-nums">{dislike?.length ?? 0}</span>
+      </button>
+      <button
+        type="button"
+        className="comment-action"
+        onClick={onClick}
+        disabled={pending}
+      >
+        {reply ? 'Cancel' : 'Reply'}
+      </button>
       {(blogUserId === userId || adminID.includes(userId || '')) && (
         <DeleteComment commentId={id} userId={userId} />
       )}

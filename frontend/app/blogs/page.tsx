@@ -30,6 +30,7 @@ const BlogPage = () => {
         slugAsParams: post.slugAsParams,
         about: post.about,
         image: post.blogImage,
+        readTime: post.readingTime.text as string,
         year: date.toLocaleDateString('en-US', {
           year: 'numeric',
           timeZone: TIME_ZONE,

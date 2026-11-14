@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ArrowDown } from 'lucide-react';
 
 type THeading = {
   id: string;
@@ -89,7 +89,10 @@ const PostToc = () => {
       <details ref={detailsRef} className="post-toc-inline">
         <summary>
           On this page
-          <ChevronDown size={18} aria-hidden="true" />
+          <span className="home-faint flex items-center gap-1.5 font-mono text-xs font-normal">
+            {headings.length > 0 && `${headings.length} sections`}
+            <ArrowDown size={13} aria-hidden="true" />
+          </span>
         </summary>
         <TocLinks
           headings={headings}
@@ -99,7 +102,7 @@ const PostToc = () => {
       </details>
 
       <nav aria-label="On this page" className="post-toc">
-        <p className="home-soft mb-2 text-sm">On this page</p>
+        <p className="eyebrow mb-3">On this page</p>
         <TocLinks headings={headings} activeId={activeId} />
       </nav>
     </>

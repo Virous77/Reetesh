@@ -6,15 +6,13 @@ import {
   getLocalData,
   parseType,
 } from '@/utils/utils';
-import AuthorImage from '@/components/common/author-image';
 import { useMutation } from '@tanstack/react-query';
 import { createReplyComment } from './action';
 import { startTransition, useOptimistic, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { Info } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import turndonw from 'turndown';
-import CommentTabs from './comment-tabs';
+import CommentComposer from './comment-composer';
 
 const Like = dynamic(() => import('./like'));
 const CommentMarkdown = dynamic(() => import('./comment-markdown'));
@@ -33,6 +31,10 @@ export const commonFields = {
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 };
+
+// A short, stable tag from the visitor ID, so readers stay anonymous.
+const readerTag = (userId: string) =>
+  `#${(userId.replace(/[^a-f0-9]/gi, '') || userId).slice(0, 4).toLowerCase()}`;
 
 const CommentsItem = ({ comment }: { comment: TBlog }) => {
   const [reply, setReply] = useState(false);
@@ -88,60 +90,55 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
     ? turndownService.turndown(optimisticComment.comment)
     : optimisticComment.comment;
 
+  const isAuthor = adminID.includes(optimisticComment.userId.toLowerCase());
+
   return (
-    <div
-      className={`mt-2 ${comment.children.length > 0 ? 'border-l-2' : 'border-none'} p-2 pr-0 pl-3`}
-    >
+    <div>
       {optimisticComment.isDeleted ? (
-        <div className="bg-accent text-default flex items-center gap-2 rounded-md p-2 text-[0.938rem]">
-          <Info size={18} />
-          <p>Comment has been deleted</p>
+        <div className="comment-card home-faint text-sm">
+          This comment was deleted.
         </div>
       ) : (
-        <div
-          key={optimisticComment._id.toString()}
-          className="grid-cols-custom mb-4 grid items-start gap-3"
-        >
-          {!adminID.includes(optimisticComment.userId.toLowerCase()) ? (
-            <div className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-gray-200">
-              <span className="text-heading text-[1.125rem] font-bold">
-                {optimisticComment.userId.slice(0, 2)}
-              </span>
-            </div>
-          ) : (
-            <AuthorImage />
-          )}
-          <div className="overflow-scroll">
-            <div className="just-way box-fit prose-headings:font-cal prose prose-base prose-neutral dark:prose-invert prose-a:text-default prose-a:underline prose-a:underline-offset-4 prose-a:hover:text-defaultMax prose-blockquote:font-light prose-img:rounded-lg">
-              <CommentMarkdown
-                comment={commentContent}
-                isCode={commentContent.includes('```')}
-              />
-            </div>
-
-            <div className="mt-2 flex flex-col">
-              {optimisticComment && (
-                <Like
-                  id={optimisticComment._id.toString()}
-                  like={optimisticComment.like}
-                  dislike={optimisticComment.dislike}
-                  blogUserId={optimisticComment.userId}
-                  onClick={() => setReply(!reply)}
-                  reply={reply}
-                />
+        <article className="comment-card">
+          <header className="flex items-baseline justify-between gap-4">
+            <p className="text-[0.95rem] font-medium">
+              {isAuthor ? (
+                <>
+                  Reetesh <span className="badge ml-1">Author</span>
+                </>
+              ) : (
+                <>Reader · {readerTag(optimisticComment.userId)}</>
               )}
-              <p className="text-default text-xs">
-                {formateDate(optimisticComment.createdAt)}
-              </p>
-            </div>
+            </p>
+            <time
+              dateTime={optimisticComment.createdAt}
+              className="ledger-meta"
+            >
+              {formateDate(optimisticComment.createdAt)}
+            </time>
+          </header>
+
+          <div className="just-way comment-body mt-2">
+            <CommentMarkdown comment={commentContent} />
           </div>
-        </div>
+
+          <Like
+            id={optimisticComment._id.toString()}
+            like={optimisticComment.like}
+            dislike={optimisticComment.dislike}
+            blogUserId={optimisticComment.userId}
+            onClick={() => setReply(!reply)}
+            reply={reply}
+          />
+        </article>
       )}
 
-      <div className="mt-2 mb-2">
-        {reply && (
-          <CommentTabs
-            handleAddComment={(e) => {
+      {reply && (
+        <div className="mt-3">
+          <CommentComposer
+            isReply
+            onCancel={() => setReply(false)}
+            onSubmit={(e) => {
               handleSubmit({
                 id: optimisticComment._id,
                 comment: e.comment,
@@ -149,13 +146,16 @@ const CommentsItem = ({ comment }: { comment: TBlog }) => {
               });
             }}
           />
-        )}
-      </div>
-      <div>
-        {optimisticComment.children.map((child) => (
-          <CommentsItem key={child._id} comment={child} />
-        ))}
-      </div>
+        </div>
+      )}
+
+      {optimisticComment.children.length > 0 && (
+        <div className="comment-replies">
+          {optimisticComment.children.map((child) => (
+            <CommentsItem key={child._id} comment={child} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

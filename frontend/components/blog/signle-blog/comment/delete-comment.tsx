@@ -2,8 +2,6 @@ import { Trash2 } from 'lucide-react';
 import React from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { deleteCommentAction } from './delete-action';
-import { Button } from '@/components/ui/button';
-import { ToolTipComp } from '@/components/ui/tooltip';
 
 type TDeleteComment = {
   userId: string | null;
@@ -26,16 +24,16 @@ const DeleteComment: React.FC<TDeleteComment> = ({ userId, commentId }) => {
   };
 
   return (
-    <ToolTipComp name="Delete">
-      <Button
-        size="icon"
-        disabled={isPending || commentId.includes('opt_')}
-        className="text-secondary-foreground hover:bg-accent flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full bg-transparent"
-        onClick={handleDelete}
-      >
-        <Trash2 size={18} />
-      </Button>
-    </ToolTipComp>
+    <button
+      type="button"
+      className="comment-action ml-auto"
+      disabled={isPending || commentId.includes('opt_')}
+      onClick={handleDelete}
+      aria-label="Delete comment"
+      title="Delete comment"
+    >
+      <Trash2 size={14} aria-hidden="true" />
+    </button>
   );
 };
 

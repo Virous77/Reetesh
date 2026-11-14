@@ -37,10 +37,16 @@ const Comment = async ({ slug }: { slug: string }) => {
   const data = await getComments({ id: slug });
 
   return (
-    <section className="comment-section mt-14">
-      <h2 className="text-heading pb-2 text-lg">
-        Comments ({data.length || 0})
-      </h2>
+    <section className="comment-section border-t border-(--home-border) pt-10">
+      <div className="mb-4 flex items-baseline justify-between gap-4">
+        <h2 className="text-[1.15rem] font-medium">
+          Discussion{' '}
+          <span className="home-faint font-mono text-sm">
+            ({data.length || 0})
+          </span>
+        </h2>
+        <span className="home-faint font-mono text-xs">Markdown supported</span>
+      </div>
 
       <CommentProvider data={data} />
     </section>

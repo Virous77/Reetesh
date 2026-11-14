@@ -53,7 +53,13 @@ const buildGraph = ({ start, counts, levels }: TContributionYear) => {
   };
 };
 
-const ContributionGraph = ({ years }: { years: TContributionYear[] }) => {
+const ContributionGraph = ({
+  years,
+  streak,
+}: {
+  years: TContributionYear[];
+  streak: number | null;
+}) => {
   const [active, setActive] = useState(years[0].label);
   const sectionRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -103,12 +109,22 @@ const ContributionGraph = ({ years }: { years: TContributionYear[] }) => {
   return (
     <section
       ref={sectionRef}
-      className="home-rise relative mt-12"
+      className="home-rise contrib-card mt-12"
       aria-label="GitHub contributions"
       style={{ '--i': 3 } as React.CSSProperties}
     >
-      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-        <h2 className="home-title">{year.heading}</h2>
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-(--home-border) pb-3.5">
+        {/* The heading stays on one line; the streak drops below it when space runs out. */}
+        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
+          <h2 className="text-[0.92rem] font-medium whitespace-nowrap sm:text-[0.98rem]">
+            {year.heading}
+          </h2>
+          {streak ? (
+            <span className="badge rounded-full! px-2!">
+              {streak} day streak
+            </span>
+          ) : null}
+        </div>
         <div className="contrib-years">
           {years.map(({ label }) => (
             <button
@@ -168,12 +184,22 @@ const ContributionGraph = ({ years }: { years: TContributionYear[] }) => {
 
       <div ref={tipRef} className="contrib-tip" aria-hidden="true" />
 
-      <div className="contrib-legend" aria-hidden="true">
-        Less
-        {[0, 1, 2, 3, 4].map((level) => (
-          <span key={level} className="contrib-cell" data-level={level} />
-        ))}
-        More
+      <div className="mt-3.5 flex items-center justify-between gap-4">
+        <a
+          href="https://github.com/Virous77"
+          target="_blank"
+          rel="noreferrer"
+          className="home-faint font-mono text-[0.7rem] whitespace-nowrap transition-colors hover:text-(--home-accent)"
+        >
+          @Virous77<span className="max-sm:hidden"> on GitHub</span>
+        </a>
+        <div className="contrib-legend" aria-hidden="true">
+          Less
+          {[0, 1, 2, 3, 4].map((level) => (
+            <span key={level} className="contrib-cell" data-level={level} />
+          ))}
+          More
+        </div>
       </div>
     </section>
   );

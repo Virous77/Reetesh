@@ -98,7 +98,11 @@ const components = {
       {...props}
     >
       <div className="w-[16px]">
-        <ArrowRight size={16} color="#e21d49" style={{ marginTop: '10px' }} />
+        <ArrowRight
+          size={16}
+          className="text-heading"
+          style={{ marginTop: '10px' }}
+        />
       </div>
 
       <div>{props.children}</div>

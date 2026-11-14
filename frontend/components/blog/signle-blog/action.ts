@@ -68,15 +68,28 @@ export const addBlogLikeAction = async (params: TAddBlogLikeAction) => {
   }
 };
 
-export const getLikeAction = async ({ blogId }: { blogId: string }) => {
+// With a visitor ID it also says whether that visitor already liked the post.
+export const getLikeAction = async ({
+  blogId,
+  viewsId,
+}: {
+  blogId: string;
+  viewsId?: string;
+}) => {
   try {
     const id = blogIdSchema.parse(blogId);
+    const visitor = viewsId ? visitorIdSchema.safeParse(viewsId) : null;
 
     await dbConnect();
     const findBlog: TBlogLike | null = await blogLike.findOne({ blogId: id });
-    return { totalLike: findBlog?.like.length || 0 };
+    const likes = findBlog?.like ?? [];
+
+    return {
+      totalLike: likes.length,
+      liked: visitor?.success ? likes.includes(visitor.data) : false,
+    };
   } catch (error) {
     console.error('Failed to get like', error);
-    return { totalLike: 0 };
+    return { totalLike: 0, liked: false };
   }
 };

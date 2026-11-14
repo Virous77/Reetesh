@@ -1,41 +1,21 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
+import CodeHeader from './code-header';
 import { Icon } from './icons';
-import CopyComp from './copy';
+
+type TIconName = Parameters<typeof Icon>[0]['name'];
 
 export const Pre = ({ children, ...props }: any) => {
   const preRef = useRef<HTMLPreElement>(null);
-  const [copied, setCopied] = useState(false);
-
-  const onClick = async () => {
-    if (preRef.current?.innerText) {
-      await navigator.clipboard.writeText(preRef.current.innerText);
-      setCopied(true);
-      setTimeout(() => {
-        setCopied(false);
-      }, 10000);
-    }
-  };
+  const language: string | undefined = props['data-language'];
 
   return (
-    <div className="pre relative rounded border">
-      <div
-        className="bg-background absolute z-10 flex items-center justify-end rounded-lg border px-3"
-        style={{
-          top: '-24px',
-          right: '-1px',
-        }}
-      >
-        <span className="text-primary mr-2 flex items-center gap-2 font-mono text-xs uppercase">
-          <Icon name={props['data-language']?.toLowerCase()} />
-          {props['data-language']}
-        </span>
-        <CopyComp
-          onClick={onClick}
-          isActive={copied}
-          className="text-secondary-foreground w-fit bg-transparent pl-3 hover:bg-transparent"
-        />
-      </div>
+    <div className="code-window not-prose">
+      <CodeHeader
+        label={language ?? 'code'}
+        icon={language && <Icon name={language.toLowerCase() as TIconName} />}
+        getText={() => preRef.current?.innerText}
+      />
       <pre {...props} ref={preRef}>
         {children}
       </pre>

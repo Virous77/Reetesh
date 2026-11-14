@@ -59,13 +59,12 @@ export const ToolTipLink = ({
     <TooltipProvider delayDuration={duration}>
       <Tooltip>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
-        <TooltipContent
-          className={cn(
-            'h-fit max-w-64 rounded-[20px] p-3 text-white shadow-sm'
-          )}
-        >
-          {name}
-        </TooltipContent>
+        {/* Portalled, so a rich card never ends up inside the link's <p>. */}
+        <TooltipPrimitive.Portal>
+          <TooltipContent className="link-preview" sideOffset={8}>
+            {name}
+          </TooltipContent>
+        </TooltipPrimitive.Portal>
       </Tooltip>
     </TooltipProvider>
   );
