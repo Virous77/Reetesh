@@ -60,7 +60,8 @@
     --default: 240 4% 35%;
     --default-max: 240 6% 10%;
     --pretty: 0 0% 100%;
-    --heading: 346.8 77.2% 49.8%;
+    /* Terracotta, matching the portfolio (reetesh.in). */
+    --heading: 10 61% 49%;
   }
 
   .dark {
@@ -86,7 +87,7 @@
     --default: 240 5% 75%;
     --default-max: 0 0% 98%;
     --pretty: 240 6% 10%;
-    --heading: 346.8 77.2% 49.8%;
+    --heading: 11 72% 62%;
   }
 }
 
@@ -119,7 +120,8 @@
     --foreground: 0 0% 7%;
     --muted-foreground: 0 0% 32%;
     --border: 0 0% 82%;
-    --heading: 346.8 77.2% 42%;
+    /* A shade darker, so it holds up on paper. */
+    --heading: 10 61% 40%;
   }
 
   body {
