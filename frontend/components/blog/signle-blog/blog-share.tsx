@@ -64,6 +64,7 @@ const BlogShare: React.FC<TBlogShare> = ({ title, url, blogId }) => {
   const shares = [
     {
       label: 'Share on X',
+      short: 'X',
       href: `https://x.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
     },
     {
@@ -75,47 +76,52 @@ const BlogShare: React.FC<TBlogShare> = ({ title, url, blogId }) => {
   return (
     <section className="post-after mt-14">
       <h2 className="post-after-label">Thanks for reading</h2>
-      <div className="post-after-actions">
-        <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            className="btn-ghost"
-            onClick={handleLike}
-            data-active={liked}
-            aria-pressed={liked}
-            aria-label={`${liked ? 'Liked' : 'Like this post'}${likes > 0 ? `, ${likes} likes` : ''}`}
-          >
-            <Heart
-              size={14}
-              aria-hidden="true"
-              fill={liked ? 'currentColor' : 'none'}
-            />
-            {liked ? 'Liked' : 'Like'}
-            {likes > 0 && (
-              <span className="home-faint font-mono text-xs tabular-nums">
-                {likes}
-              </span>
-            )}
-          </button>
-          <button type="button" className="btn-ghost" onClick={copyLink}>
-            {copied && <Check size={14} aria-hidden="true" />}
-            {copied ? 'Copied' : 'Copy link'}
-          </button>
-        </div>
-        <nav aria-label="Share" className="share-links">
-          {shares.map((share) => (
-            <a
-              key={share.label}
-              href={share.href}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {share.label}
-              <ArrowUpRight size={13} aria-hidden="true" />
-            </a>
-          ))}
-        </nav>
+      <div className="post-after-buttons">
+        <button
+          type="button"
+          className="btn-ghost"
+          onClick={handleLike}
+          data-active={liked}
+          aria-pressed={liked}
+          aria-label={`${liked ? 'Liked' : 'Like this post'}${likes > 0 ? `, ${likes} likes` : ''}`}
+        >
+          <Heart
+            size={14}
+            aria-hidden="true"
+            fill={liked ? 'currentColor' : 'none'}
+          />
+          {liked ? 'Liked' : 'Like'}
+          {likes > 0 && (
+            <span className="home-faint font-mono text-xs tabular-nums">
+              {likes}
+            </span>
+          )}
+        </button>
+        <button type="button" className="btn-ghost" onClick={copyLink}>
+          {copied && <Check size={14} aria-hidden="true" />}
+          {copied ? 'Copied' : 'Copy link'}
+        </button>
       </div>
+      <nav aria-label="Share" className="share-links">
+        {shares.map((share) => (
+          <a
+            key={share.label}
+            href={share.href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {share.short ? (
+              <>
+                <span className="sm:hidden">{share.short}</span>
+                <span className="hidden sm:inline">{share.label}</span>
+              </>
+            ) : (
+              share.label
+            )}
+            <ArrowUpRight size={13} aria-hidden="true" />
+          </a>
+        ))}
+      </nav>
     </section>
   );
 };

@@ -623,8 +623,15 @@ button {
   flex: 1;
   min-width: 0;
   background: transparent;
-  font-size: 0.9375rem;
+  /* iOS Safari zooms into any focused field under 16px. */
+  font-size: 1rem;
   outline: none;
+}
+
+@media (min-width: 640px) {
+  .cmdk-input {
+    font-size: 0.9375rem;
+  }
 }
 
 .cmdk-input::placeholder {
@@ -713,15 +720,6 @@ button {
 /* Switching a section or topic is quicker than arriving on a page. */
 .home-swap {
   animation: home-rise 0.42s var(--ease-out, ease-out) both;
-}
-
-/* iOS Safari can hold delayed animations at their first frame for seconds,
-   which leaves the page blank. Text must never wait on a fade there. */
-@supports (-webkit-touch-callout: none) {
-  .home-rise,
-  .home-swap {
-    animation: none;
-  }
 }
 
 /* ───────────────────────── Hero sentence ───────────────────────── */
@@ -1532,32 +1530,52 @@ a.ledger-title:hover {
 }
 
 /* "Thanks for reading": a label in the margin, actions beside it. */
+/* Phones: label and share links share a row, the two buttons split the
+   row below. Wider screens keep everything on one line. */
 .post-after {
   display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'label share'
+    'buttons buttons';
+  align-items: center;
   gap: 1rem;
   padding-block: 2rem;
   border-top: 1px solid var(--home-border);
 }
 
-@media (min-width: 640px) {
-  .post-after {
-    grid-template-columns: 9rem minmax(0, 1fr);
-    align-items: center;
-    gap: 1.5rem;
-  }
-}
-
 .post-after-label {
+  grid-area: label;
   font-size: 0.875rem;
   font-weight: 500;
 }
 
-.post-after-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+.post-after-buttons {
+  grid-area: buttons;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.post-after-buttons .btn-ghost {
+  justify-content: center;
+}
+
+.post-after .share-links {
+  grid-area: share;
+  justify-self: end;
+}
+
+@media (min-width: 640px) {
+  .post-after {
+    grid-template-columns: 9rem auto minmax(0, 1fr);
+    grid-template-areas: 'label buttons share';
+    gap: 1.5rem;
+  }
+
+  .post-after-buttons {
+    display: flex;
+  }
 }
 
 .btn-ghost {
@@ -1593,7 +1611,7 @@ a.ledger-title:hover {
 .share-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem 1.35rem;
+  gap: 0.25rem 1.1rem;
   color: var(--home-soft);
   font-size: 0.875rem;
 }

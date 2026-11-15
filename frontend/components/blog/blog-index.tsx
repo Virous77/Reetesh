@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Link } from 'next-view-transitions';
+import Link from 'next/link';
 import { openCommandSearch } from '@/components/common/command-search';
 import { Phrase, PhraseButton, useHashSection } from '@/components/home/phrase';
 

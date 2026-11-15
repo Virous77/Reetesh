@@ -36,7 +36,6 @@
     "next": "16.4.3",
     "next-contentlayer2": "^0.5.8",
     "next-themes": "^0.4.6",
-    "next-view-transitions": "^0.3.5",
     "nextjs-toploader": "^3.9.17",
     "open-graph-scraper": "^6.12.0",
     "react": "19.3.1",

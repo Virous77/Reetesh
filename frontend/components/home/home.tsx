@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { Link } from 'next-view-transitions';
+import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import portfolio from '@/data/portfolio.json';
 import type { TContributionYear } from '@/lib/contributions';

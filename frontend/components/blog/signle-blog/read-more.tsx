@@ -1,5 +1,5 @@
 import { allPosts, Post } from '@/.contentlayer/generated';
-import { Link } from 'next-view-transitions';
+import Link from 'next/link';
 
 type TReadMore = {
   slug: string;

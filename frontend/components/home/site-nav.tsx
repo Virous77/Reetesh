@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { Link } from 'next-view-transitions';
+import Link from 'next/link';
 import { ArrowUpRight, Search } from 'lucide-react';
 import CommandSearch from '@/components/common/command-search';
 import ThemeSwitcher from '@/components/theme/theme-switcher';

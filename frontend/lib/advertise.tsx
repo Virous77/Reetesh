@@ -1,6 +1,6 @@
 import React from 'react';
 import { allPosts } from '@/.contentlayer/generated';
-import { Link } from 'next-view-transitions';
+import Link from 'next/link';
 
 type TAdvertise = {
   title: string;

@@ -5,7 +5,6 @@ import { commonMetaData } from '@/utils/utils';
 import { Provider } from '@/lib/reactQuery-provider';
 import { Analytics } from '@vercel/analytics/react';
 import Accessibility from '@/components/common/accessibility';
-import { ViewTransitions } from 'next-view-transitions';
 import NextTopLoader from 'nextjs-toploader';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { fontVariables } from '@/components/home/fonts';
@@ -39,59 +38,57 @@ export const generateMetadata = async () => {
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ViewTransitions>
-      <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
-        <head>
-          <meta
-            name="google-site-verification"
-            content="ymnya5tVzcP4bwvG455V0AZC282mwI4Iy3mnS3uBTD0"
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
+      <head>
+        <meta
+          name="google-site-verification"
+          content="ymnya5tVzcP4bwvG455V0AZC282mwI4Iy3mnS3uBTD0"
+        />
+        <meta name="googlebot" content="index, follow" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
+        <link rel="preconnect" href="https://res.cloudinary.com" />
+      </head>
+      <body className={`${fontVariables} home-font antialiased`}>
+        <ThemeProviderComp
+          attribute="class"
+          defaultTheme="dark"
+          disableTransitionOnChange
+        >
+          <NextTopLoader
+            color="hsl(var(--heading))"
+            initialPosition={0.08}
+            crawlSpeed={200}
+            height={2}
+            crawl={true}
+            showSpinner={false}
+            easing="ease"
+            speed={200}
+            shadow={false}
           />
-          <meta name="googlebot" content="index, follow" />
-          <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="/apple-touch-icon.png"
-          />
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="/favicon-32x32.png"
-          />
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="/favicon-16x16.png"
-          />
-          <link rel="preconnect" href="https://res.cloudinary.com" />
-        </head>
-        <body className={`${fontVariables} home-font antialiased`}>
-          <ThemeProviderComp
-            attribute="class"
-            defaultTheme="dark"
-            disableTransitionOnChange
-          >
-            <NextTopLoader
-              color="hsl(var(--heading))"
-              initialPosition={0.08}
-              crawlSpeed={200}
-              height={2}
-              crawl={true}
-              showSpinner={false}
-              easing="ease"
-              speed={200}
-              shadow={false}
-            />
-            <Provider>
-              <TooltipProvider>{children}</TooltipProvider>
-              <Analytics debug={false} />
-              <Accessibility />
-            </Provider>
-          </ThemeProviderComp>
-        </body>
-      </html>
-    </ViewTransitions>
+          <Provider>
+            <TooltipProvider>{children}</TooltipProvider>
+            <Analytics debug={false} />
+            <Accessibility />
+          </Provider>
+        </ThemeProviderComp>
+      </body>
+    </html>
   );
 };
 
