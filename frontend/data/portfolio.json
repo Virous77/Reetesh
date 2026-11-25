@@ -29,6 +29,14 @@
   ],
   "projects": [
     {
+      "title": "Tax Tracker",
+      "year": "Oct 2026 to now",
+      "badge": "Open source",
+      "summary": "Free, open-source, self-hosted tool for Indian ITR working papers on crypto (Schedule VDA, 1% TDS) and US stocks (Form 67, Schedule FA) — local-first with raw-row traceability, a review queue, and zero telemetry.",
+      "live": "https://taxweb-production.up.railway.app/welcome",
+      "code": "https://github.com/Virous77/tax-tracker"
+    },
+    {
       "title": "Tracker",
       "year": "2025",
       "badge": "Daily driver",
@@ -63,13 +71,6 @@
       "summary": "An Airbnb-style booking app with Stripe payments.",
       "live": "https://solex.onrender.com/",
       "code": "https://github.com/Virous77/solex-hospitality.service"
-    },
-    {
-      "title": "Graze",
-      "year": "2022",
-      "summary": "A Swiggy-style food app where anyone can open a store.",
-      "live": "https://graze-food-app.onrender.com/",
-      "code": "https://github.com/Virous77/graze-food-delivery-app"
     }
   ],
   "skills": [

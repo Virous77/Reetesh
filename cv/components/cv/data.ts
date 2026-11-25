@@ -50,6 +50,25 @@ export const RESUME_DATA = {
   ],
   projects: [
     {
+      title: "Tax Tracker",
+      year: "Oct 2026 to Present",
+      description:
+        "A free, open-source, self-hosted tool that generates Indian ITR working papers for crypto (Schedule VDA with FIFO, 1% TDS reconciliation, income and gifts) and US stocks (capital gains, dividends, Form 67 and Schedule FA with SBI TT rates). Imports from Binance, CoinDCX, EVM wallets, Vested and custom CSVs with raw-row traceability, a priority review queue, encrypted key vault, zero telemetry and CSV/XLSX exports.",
+      techStack: [
+        "Next.js",
+        "TypeScript",
+        "SQLite",
+        "Drizzle",
+        "Zod",
+        "Docker",
+        "PWA",
+      ],
+      link: {
+        label: "taxweb-production.up.railway.app",
+        href: "https://taxweb-production.up.railway.app/welcome",
+      },
+    },
+    {
       title: "Tracker",
       year: "2025",
       description:
@@ -110,17 +129,6 @@ export const RESUME_DATA = {
       link: {
         label: "solex.onrender.com",
         href: "https://solex.onrender.com",
-      },
-    },
-    {
-      title: "Graze",
-      year: "2022",
-      description:
-        "A Swiggy-style food ordering app. People can order from different restaurants or set up a store of their own.",
-      techStack: ["React", "JavaScript", "Firebase", "Stripe", "Node.js"],
-      link: {
-        label: "graze-food-app.onrender.com",
-        href: "https://graze-food-app.onrender.com",
       },
     },
   ],

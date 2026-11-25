@@ -25,8 +25,10 @@ type TProps = {
   contributions: TContributionYear[] | null;
 };
 
+const parseYear = (value: string) => Number(value.match(/\d{4}/)?.[0] ?? 0);
+
 const projects = [...portfolio.projects].sort(
-  (a, b) => Number(b.year) - Number(a.year)
+  (a, b) => parseYear(b.year) - parseYear(a.year)
 );
 
 const Home = ({ posts, postCount, streak, contributions }: TProps) => {
